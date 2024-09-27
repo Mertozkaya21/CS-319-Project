@@ -44,16 +44,14 @@
   - Tours from other cities farther away 
   - First Come First Serve
   - e.g. Star school from Ankara gets preference over Maintenance school from farther away.
-
-### For all high schools that apply for a time slot on a specific day, evaluate the priority of the high schools as a percentage using an equation based on their distance to Bilkent and their ranking. 
+  - For all high schools that apply for a time slot on a specific day, evaluate the priority of the high schools as a percentage using an equation based on their distance to Bilkent and their ranking. 
 - Choose the top 3-4 tour applicants and accept their tour. If there are 2 schools that have the same percentage (with a discrepancy of 5-10%), an email can be sent to the coordinator to manually accept one out of the two tours. 
 - Accepted high-schools gets automated email of confirmation of tour 
 - Accepted tours are automatically transferred to a separate sheet where guides can view and claim the tours they would like to lead. 
 - These tours should be uploaded to the excel sheet 2 weeks before the tour date.
 - 1 guide can lead up to 60 people. The amount of guides needed for each tour should be specified by the algorithm based on the number of people coming.
 - Accepted tours are categorized into colors: red for unassigned, yellow for assigned but not yet completed, and green for completed tours
-
-### If no guide selects a tour, then the guides will be emailed that there is an unconfirmed tour. 
+- If no guide selects a tour, then the guides will be emailed that there is an unconfirmed tour. 
 - If still no guide selects the tour, then 3 days before the tour, the advisor will be notified that they have to complete the tour and their name will be entered into the sheet.
 - The data of high-schools that come for accepted tours and the guides that led those tours should be preserved. 
 - 3 days before an accepted tour, confirmation from the counselor that they will definitely participate in the tour can be done by an automated survey via mail. The same can be done for individual students.
@@ -87,7 +85,7 @@
 - OR Completed tours will automatically be added to the Puantaj page of the guides that completed it so that they don’t have to manually enter the hours worked on tours. 
 - They should have the option to log any additional work hours they completed for the Tanıtım Office along with the description of the work. There can be a drop-down list of the types of other work done by the guides so that they can just choose from the list instead of writing it down. 
 
-### Guides will have points in order to find out who is the best guide and who is the worst guide. It can be open for only Coordinators and above.
+- Guides will have points in order to find out who is the best guide and who is the worst guide. It can be open for only Coordinators and above.
 
 ### Trainees:
 - There may be an automated system to record the trainees’ training process and automatically inform the advisor when 6 months have passed.
@@ -97,6 +95,3 @@
 - Survey for participants of the tours: How likely are they to choose Bilkent for their undergraduate education (Integer point selection), which departments were preferred by the visitors the most (Multiple choice option), confidence about scholarships (Integer point selection), etc. We could represent this data as figures for the coordinator to see and analyze. 
 - Satisfaction survey for students regarding tours and request for ideas of improvements, holding this data on our app.
 
-### A list of potential "Nurturing" high schools is useful. In which high schools successful students do not prefer Bilkent to go to?
-
-### The tours that are completed to show the guides and marked as I am finished in that week.
