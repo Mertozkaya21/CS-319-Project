@@ -37,7 +37,6 @@
 - They should not be allowed to select national holidays
 - Duplicate applications should be caught
 - Dates closer than 2 weeks should not be available to select as an option
-
 - Conditions where no more tours should be accepted:
   - If 3-4 tours are already accepted for that time-slot 
   - Maximum number of participants are those that 6-8 guides can handle: approximately 360-480 people
