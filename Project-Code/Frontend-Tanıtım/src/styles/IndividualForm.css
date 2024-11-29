@@ -1,0 +1,134 @@
+
+.highschool-form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .highschool-form-header {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #00274c;
+    margin-bottom: 20px;
+  }
+
+    .bilkent-logo {
+        height: 80px;
+        position: absolute;
+        top: 260px;
+        left: 270px;
+    }
+  .stepper-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+  
+  .step {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+    background-color: gray;
+    margin: 0 10px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .step.completed {
+    background-color: #7b2d26; 
+    color: white;
+  }
+  
+  .step-description {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: #555;
+  }
+  
+  
+  .step-content {
+    max-width: 600px;
+    text-align: left;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+  }
+  
+  .navigation-buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .navigation-buttons button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #7b2d26;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .navigation-buttons button:disabled {
+    background-color: gray;
+    cursor: not-allowed;
+  }
+  .shape-container {
+    position: absolute;
+    right: -100px;
+    top: 50;
+    height: 100%;
+    width: 40%;
+    background: none;
+  }
+  
+  .shape-container::before {
+    content: "";
+    position: absolute;
+    height: 1000px;
+    width: 1000px;
+    border-radius: 50%;
+    background-color: rgba(219, 82, 82, 0.2);
+    top: 50%;
+    right: -400px;
+    transform: translateY(-50%);
+  }
+  
+  .shape-container::after {
+    content: "";
+    position: absolute;
+    height: 800px;
+    width: 800px;
+    border-radius: 50%;
+    background-color: rgba(219, 82, 82, 0.767);
+    top: 50%;
+    right: -300px;
+    transform: translateY(-50%);
+    z-index: -1;
+  }
+
+  .shape-inner{
+    content: "";
+    position: absolute;
+    height: 600px;
+    width: 600px;
+    border-radius: 50%;
+    background-color: rgba(169, 40, 40, 0.917);
+    top: 50%;
+    right: -200px;
+    transform: translateY(-50%);
+  } 

@@ -1,0 +1,420 @@
+body, html {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Kenar ve dolgu hesaplamalarını düzeltir */
+  overflow-x: hidden; /* Yatay kaydırmayı engeller */
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  background-color: #7b2d26;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 100; 
+  position: relative; /* Diğer bölümlerin altında kalmasını engeller */
+}
+
+.hero-section {
+  position: relative;
+  text-align: center;
+  color: white;
+  background-color: #7b2d26;
+  padding: 0px 0px; 
+  margin-top: 1700px; /* Header ile çakışmayı önler */
+  overflow: hidden; /* İçeriğin taşmasını önler */
+}
+
+.hero-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover; /* Görselin düzgün şekilde kesilmesini sağlar */
+  display: block; /* Varsayılan boşlukları önler */
+}
+.hero-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-size: 30px; 
+  font-weight: bold; 
+  text-shadow: 8px 8px 10px rgba(0, 0, 0, 0.5);
+}
+.header-left {
+  display: flex; /* Elemanları yatay hizalar */
+  align-items: center; /* Dikey olarak ortalar */
+  gap: 15px; /* Logo ile buton arasına boşluk bırakır */
+}
+  .home-bilkent-logo {
+    height: 135px;
+    width: 137px;
+    position: relative; 
+    top: 1900px; 
+    left: 14px; 
+  }
+  .nav-links {
+    display: flex; /* Menü öğelerini yatay hizalar */
+    gap: 1px; /* Menü öğeleri arasına boşluk bırakır */
+    margin-left: 0px;
+  }
+  .nav-link {
+    position: relative;
+    background: none;
+    border: none;
+    color: rgba(0, 0, 0, 0.7);
+    cursor: pointer;
+    height: 60px; /* Buton yüksekliği */
+    top: 1920px; 
+    left: 0px; 
+    padding: 10px 20px; /* İç dolgu */
+    font-size: 19px;
+    font-weight: bold;
+    border-radius: 5px; /* Köşeleri yuvarla */
+    transition: all 0.3s ease;
+  }
+  
+  .nav-link:hover {
+    color: #a04236; /* Hover sırasında renk değişimi */
+    text-decoration: underline; /* Alt çizgi ekle */
+  }
+  
+  .nav-links a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+  }
+  .header-buttons {
+    z-index: 1000;
+    position: relative;
+  }
+  .header-buttons button {
+    display: flex;
+    gap: 10px; /* Butonlar arasında boşluk */
+    margin-left: auto; /* Header'ın sağ tarafına taşımak için */
+    margin-left: 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  
+.login-button {
+  background-color: white; 
+  border: 2px solid #7b2d26; 
+  color: rgba(0, 0, 0, 0.7);
+  cursor: pointer;
+  height: 50px; 
+  width: 115px;
+  text-align: center; 
+  font-size: 22px; 
+  font-weight: bold; 
+
+  transition: all 0.3s ease; 
+  display: inline-block; 
+  position: relative; 
+  top: 1925px; 
+  right: 225px; 
+}
+
+.login-button:hover {
+  background-color: #7b2d26; 
+  color: white;
+  transform: scale(1.1); 
+}
+
+
+  .signup-button {
+    background-color: white; 
+    border: 2px solid #7b2d26; 
+    color: rgba(0, 0, 0, 0.7); 
+    cursor: pointer;
+    height: 50px; 
+    width: 120px; 
+    text-align: center; 
+    font-size: 22px; 
+    font-weight: bold; 
+    
+    transition: all 0.3s ease; 
+    position: relative; 
+    top: 1875px; 
+    right: 55px; 
+    display: inline-block;
+    text-decoration: none;
+  }
+  
+  .signup-button:hover {
+    background-color: #7b2d26; 
+    color: white; 
+    transform: scale(1.1); 
+  }
+  
+  .info-section {
+    padding: 20px 50px;
+    text-align: center;
+    background-color: #7b2d26; 
+    color: rgb(255, 255, 255); 
+    line-height: 2.2; 
+  }
+  
+  
+  .get-started-button {
+    padding: 10px 20px;
+    background-color: #7b2d26;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+  }
+  
+  /* Action Boxes */
+  .action-boxes {
+    display: flex;
+    justify-content: space-around;
+    padding: 40px;
+    background-color: #f9f9f9;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 300px; 
+  }
+  
+  .action-card {
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 10px;
+    border: 1px solid #ddd;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin: 50px;
+    width: 300px; 
+    height: 170px;
+    background-color: white;
+  }
+  
+  .action-card h3 {
+    margin-bottom: 15px;
+  }
+  
+  .action-buttons button {
+    margin: 5px;
+    padding: 10px 20px;
+    border-radius: 20px;
+    background-color: #7b2d26;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+
+  .action-buttons button:hover {
+    background-color: #a04236;
+  }
+  
+  /* Courses Section */
+  .courses-section {
+    text-align: center;
+    padding: 40px 20px;
+  }
+  
+  .course-cards {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  .course-card {
+    width: 200px;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    text-align: center;
+    transition: transform 0.2s ease;
+  }
+  .course-card:hover {
+    transform: scale(1.05);
+  }
+  .course-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 15px;
+  }
+  .see-all-button {
+    margin-top: 20px;
+  }
+  .see-all-button button {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    background-color: #7b2d26;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  .see-all-button button:hover {
+    background-color: #a04236;
+    transform: scale(1.05);
+  }
+  .newsletter {
+    text-align: center; 
+    margin-bottom: 20px;
+    display: flex; /* Checkbox ve yazıyı hizalamak için flex kullan */
+    flex-direction: column; /* Elemanları dikeyde sıralamak */
+    align-items: center; 
+  }
+  .newsletter input[type="email"] {
+    padding: 10px;
+    margin-top: 10px;
+    width: 80%; 
+    max-width: 400px; 
+    border-radius: 5px;
+    border: none;
+  }
+  .newsletter input[type="checkbox"] {
+    margin-right: 10px; 
+  }
+  
+  .newsletter div {
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    gap: 10px; 
+    margin-top: 10px; 
+  }
+  
+  .newsletter-button {
+    padding: 15px 30px; 
+    background-color: #7b2d26;
+    color: white;
+    border: none;
+    border-radius: 5px; 
+    cursor: pointer;
+    font-size: 1.2rem; 
+    font-weight: bold; 
+    transition: transform 0.2s, background-color 0.2s; 
+  }
+  
+  .newsletter-button:hover {
+    background-color: #a04236; 
+    transform: scale(1.05);
+  }
+  
+  
+  .footer {
+    background-color: #7b2d26;
+    color: white;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .footer-links a {
+    color: white;
+    margin: 0 10px;
+    text-decoration: none;
+  }
+  
+  .footer-links a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Help Section */
+.help-section {
+  padding: 40px 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff; /* White background */
+}
+
+.help-container {
+  display: flex;
+  align-items: center;
+  max-width: 1200px;
+  gap: 20px; /* Spacing between image and text */
+}
+
+/* Left Image */
+.help-image-container {
+  flex: 1;
+}
+
+.help-image {
+  width: 90%; /* Görselin genişliğini %90'a düşürdük */
+  max-width: 400px; /* Maksimum genişlik sınırı */
+  height: auto; /* Görüntü oranını korur */
+  border-radius: 8px; /* Köşeleri yuvarlar */
+  object-fit: cover; /* Görüntüyü düzgün ölçekler */
+  margin: 0 auto; /* Görseli ortalamak için */
+}
+
+/* Right Content */
+.help-content {
+  flex: 1;
+  text-align: left;
+}
+
+.help-content h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #333333; /* Dark gray */
+}
+
+.help-content p {
+  font-size: 1rem;
+  color: #555555; /* Medium gray */
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+/* Buttons */
+.help-buttons {
+  display: flex;
+  gap: 15px;
+}
+
+.help-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.faqs-button {
+  background-color: #a04236;
+  color: white;
+}
+
+.ask-question-button {
+  background-color: transparent;
+  color: #a04236;
+  border: 2px solid #a04236;
+}
+
+.faqs-button:hover {
+  background-color: #7b2d26;
+}
+
+.ask-question-button:hover {
+  background-color: #fcebe8;
+}
+
+
+
+  /* Header'daki yeni nav butonları */
+.nav-buttons-header {
+  display: flex;
+  gap: 15px; /* Butonlar arasında boşluk */
+  align-items: center; /* Dikey hizalama */
+  margin-left: auto; /* Header'da sağa yasla */
+}
