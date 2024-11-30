@@ -1,8 +1,8 @@
 package com.cs319.backend.User;
-import com.cs319.backend.enums.*;
-
 import java.util.HashMap;
 import java.util.List;
+
+import com.cs319.backend.Enums.*;
 import com.cs319.backend.Event.Event;
 import com.cs319.backend.Payment.Payment;
 

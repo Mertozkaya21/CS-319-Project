@@ -1,6 +1,6 @@
-package com.cs319.backend.enums;
+package com.cs319.backend.Enums;
 
-public enum ApplicationFormType {
+public enum ApplicationFormStatus {
     PENDING,
     BTO_APPROVED,
     BTO_DENIED,

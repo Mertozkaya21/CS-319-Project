@@ -1,7 +1,8 @@
 package com.cs319.backend.Event;
 
 import java.util.Date;
-import com.cs319.backend.enums.EventStatus;
+
+import com.cs319.backend.Enums.EventStatus;
 
 public class Fair extends Event {
     private String name;

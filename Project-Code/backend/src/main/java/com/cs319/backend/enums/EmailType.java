@@ -1,4 +1,4 @@
-package com.cs319.backend.enums;
+package com.cs319.backend.Enums;
 
 public enum EmailType {
     GROUP_TOUR_CONFIRMATION,

@@ -1,8 +1,8 @@
 package com.cs319.backend.User;
-import  com.cs319.backend.enums.*;
-
 import java.io.File;
 import java.util.List;
+
+import com.cs319.backend.Enums.*;
 import com.cs319.backend.Event.GroupTour;
 
 public class Trainee extends User {
@@ -44,7 +44,7 @@ public class Trainee extends User {
     public void setTours(GroupTour[] tours) {
         this.tours = tours;
     }
-    
+
     public TraineeStatus getStatus() {
         return status;
     }

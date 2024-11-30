@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Date;
 import java.util.List;
 import com.cs319.backend.Event.EventDay;
+import com.cs319.backend.Forms.ApplicationForm;
 import com.cs319.backend.Payment.Payment;
 
 public class Coordinator extends User {

@@ -1,10 +1,10 @@
 package com.cs319.backend.Event;
 
+import com.cs319.backend.Enums.EventStatus;
 import com.cs319.backend.Highschool.Highschool;
 import com.cs319.backend.User.Trainee;
 import com.cs319.backend.User.Advisor;
 import com.cs319.backend.User.Guide;
-import com.cs319.backend.enums.EventStatus;
 
 import java.util.List;
 

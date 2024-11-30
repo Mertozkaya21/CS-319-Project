@@ -1,4 +1,4 @@
-package com.cs319.backend.enums;
+package com.cs319.backend.Enums;
 
 public enum NotificationType {
     PENDING_APPLICATION_FORM,
