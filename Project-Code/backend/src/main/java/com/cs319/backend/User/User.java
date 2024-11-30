@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 
 public class User {
+    private int id;
     private String userName;
     private String name;
     private String email;
@@ -17,8 +18,9 @@ public class User {
     private List<String> notifications;
 
     
-    public User(String userName, String name, String email, String password, String phoneNo, String attribute,
+    public User(int id,String userName, String name, String email, String password, String phoneNo, String attribute,
                 String city, File imageFile, List<String> latestAcitivites, List<String> notifications) {
+        this.id = id;
         this.userName = userName;
         this.name = name;
         this.email = email;
@@ -32,6 +34,7 @@ public class User {
     }
 
     public User() {
+        this.id = -1;
         this.userName = null;
         this.name = null;
         this.email = null;
@@ -46,6 +49,14 @@ public class User {
     
 
     // Getters and Setters
+    public int getID(){
+        return id;
+    }
+    
+    public void setID(int id){
+        this.id = id;
+    }
+
     public String getUserName() {
         return userName;
     }

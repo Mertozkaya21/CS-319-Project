@@ -1,4 +1,6 @@
 package com.cs319.backend.User;
+
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
@@ -6,8 +8,7 @@ import com.cs319.backend.Enums.*;
 import com.cs319.backend.Event.Event;
 import com.cs319.backend.Payment.Payment;
 
-public class Guide {
-    private int guideId;
+public class Guide extends User {
     private HashMap<Days, TourHours> availableTimes;
     private List<Event> assignedEvents;
     private Payment payment;
@@ -15,8 +16,7 @@ public class Guide {
 
     // Default Constructor
     public Guide() {
-        super();
-        this.guideId = 0;
+        super(); // Calls the default constructor from the User class
         this.availableTimes = null;
         this.assignedEvents = null;
         this.payment = null;
@@ -24,8 +24,11 @@ public class Guide {
     }
 
     // Parameterized Constructor
-    public Guide(int guideId, HashMap<Days, TourHours> availableTimes, List<Event> assignedEvents, Payment payment, int tourParticipantSurveyRanking) {
-        this.guideId = guideId;
+    public Guide(int id, String userName, String name, String email, String password, String phoneNo, String attribute,
+                 String city, File imageFile, List<String> latestAcitivites, List<String> notifications,
+                 HashMap<Days, TourHours> availableTimes, List<Event> assignedEvents, Payment payment,
+                 int tourParticipantSurveyRanking) {
+        super(id, userName, name, email, password, phoneNo, attribute, city, imageFile, latestAcitivites, notifications);
         this.availableTimes = availableTimes;
         this.assignedEvents = assignedEvents;
         this.payment = payment;
@@ -33,14 +36,6 @@ public class Guide {
     }
 
     // Getters and Setters
-    public int getGuideId() {
-        return guideId;
-    }
-
-    public void setGuideId(int guideId) {
-        this.guideId = guideId;
-    }
-
     public HashMap<Days, TourHours> getAvailableTimes() {
         return availableTimes;
     }

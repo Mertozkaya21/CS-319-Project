@@ -9,7 +9,6 @@ import com.cs319.backend.Forms.ApplicationForm;
 import com.cs319.backend.Payment.Payment;
 
 public class Advisor extends User {
-    private int advisorID;
     private List<Days> undertakenDays;
     private List<EventDay> eventDays;
     private Payment payment;
@@ -18,7 +17,6 @@ public class Advisor extends User {
 
     public Advisor() {
         super();
-        this.advisorID = 0;
         this.undertakenDays = null;
         this.eventDays = null;
         this.payment = null;
@@ -28,23 +26,14 @@ public class Advisor extends User {
 
     public Advisor(String userName, String name, String email, String password, String phoneNo, String attribute,
                    String city, File imageFile, List<String> latestAcitivites, List<String> notifications,
-                   int advisorID, List<Days> undertakenDays, List<EventDay> eventDays, Payment payment,
+                   int id, List<Days> undertakenDays, List<EventDay> eventDays, Payment payment,
                    Days dateAdded, List<ApplicationForm> applicationForms) {
-        super(userName, name, email, password, phoneNo, attribute, city, imageFile, latestAcitivites, notifications);
-        this.advisorID = advisorID;
+        super(id,userName, name, email, password, phoneNo, attribute, city, imageFile, latestAcitivites, notifications);
         this.undertakenDays = undertakenDays;
         this.eventDays = eventDays;
         this.payment = payment;
         this.dateAdded = dateAdded;
         this.applicationForms = applicationForms;
-    }
-
-    public int getAdvisorID() {
-        return advisorID;
-    }
-
-    public void setAdvisorID(int advisorID) {
-        this.advisorID = advisorID;
     }
 
     public List<Days> getUndertakenDays() {
