@@ -3,6 +3,8 @@ package com.cs319.backend.User;
 import java.io.File;
 import java.util.Date;
 import java.util.List;
+import com.cs319.backend.Event.EventDay;
+import com.cs319.backend.Payment.Payment;
 
 public class Coordinator extends User {
     private List<Guide> advisors;

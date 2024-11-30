@@ -3,6 +3,8 @@ import com.cs319.backend.enums.*;
 
 import java.util.HashMap;
 import java.util.List;
+import com.cs319.backend.Event.Event;
+import com.cs319.backend.Payment.Payment;
 
 public class Guide {
     private int guideId;

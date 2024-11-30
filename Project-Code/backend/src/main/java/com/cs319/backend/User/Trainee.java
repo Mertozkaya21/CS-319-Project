@@ -3,6 +3,7 @@ import  com.cs319.backend.enums.*;
 
 import java.io.File;
 import java.util.List;
+import com.cs319.backend.Event.GroupTour;
 
 public class Trainee extends User {
     private int traineeId;
@@ -43,7 +44,7 @@ public class Trainee extends User {
     public void setTours(GroupTour[] tours) {
         this.tours = tours;
     }
- 
+    
     public TraineeStatus getStatus() {
         return status;
     }

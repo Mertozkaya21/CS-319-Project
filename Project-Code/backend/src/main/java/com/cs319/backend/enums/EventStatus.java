@@ -1,6 +1,6 @@
 package com.cs319.backend.enums;
 
-public enum EventType {
+public enum EventStatus {
     SCHEDULED,
     ASSSIGNED,
     COMPLETED,
