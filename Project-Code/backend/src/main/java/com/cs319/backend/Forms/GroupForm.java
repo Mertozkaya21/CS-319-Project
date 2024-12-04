@@ -1,6 +1,6 @@
-package com.cs319.backend.Forms;
+package com.cs319.backend.forms;
 
-import com.cs319.backend.Highschool.Counselor;
+import com.cs319.backend.highschool.Counselor;
 
 public class GroupForm extends ApplicationForm {
     private int noOfParticipants;
@@ -12,18 +12,6 @@ public class GroupForm extends ApplicationForm {
         this.noOfParticipants = 0;
         this.counselor = null;
         this.chaperoneRole = null;
-    }
-
-    public GroupForm(int ID, java.util.Date submitTime, String notes,
-                     com.cs319.backend.Enums.ApplicationFormStatus status,
-                     String applicantName, String applicantPhone, String applicantEmail,
-                     com.cs319.backend.Event.TourTime[] vTimes,
-                     com.cs319.backend.Highschool.Highschool highschool,
-                     int noOfParticipants, Counselor counselor, String chaperoneRole) {
-        super(ID, submitTime, notes, status, applicantName, applicantPhone, applicantEmail, vTimes, highschool);
-        this.noOfParticipants = noOfParticipants;
-        this.counselor = counselor;
-        this.chaperoneRole = chaperoneRole;
     }
 
     public int getNoOfParticipants() {

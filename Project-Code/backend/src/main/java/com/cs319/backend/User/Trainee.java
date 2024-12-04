@@ -1,9 +1,9 @@
-package com.cs319.backend.User;
+package com.cs319.backend.user;
 import java.io.File;
 import java.util.List;
 
-import com.cs319.backend.Enums.*;
-import com.cs319.backend.Event.GroupTour;
+import com.cs319.backend.enums.*;
+import com.cs319.backend.event.GroupTour;
 
 public class Trainee extends User {
     private GroupTour[] tours;

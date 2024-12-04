@@ -1,4 +1,4 @@
-package com.cs319.backend.Enums;
+package com.cs319.backend.enums;
 
 public enum EventStatus {
     SCHEDULED,

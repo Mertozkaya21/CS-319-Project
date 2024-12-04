@@ -1,8 +1,8 @@
-package com.cs319.backend.Event;
+package com.cs319.backend.event;
 
 import java.util.Date;
 
-import com.cs319.backend.Enums.TourHours;
+import com.cs319.backend.enums.TourHours;
 
 public class TourTime {
     private TourHours tourHours; // This is an enumeration

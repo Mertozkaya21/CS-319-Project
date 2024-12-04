@@ -1,6 +1,6 @@
-package com.cs319.backend.Event;
+package com.cs319.backend.event;
 
-import com.cs319.backend.Enums.EventStatus;
+import com.cs319.backend.enums.EventStatus;
 
 public class Event {
     private EventStatus eventStatus;

@@ -1,4 +1,4 @@
-package com.cs319.backend.Payment;
+package com.cs319.backend.payment;
 
 public class Payment {
     private String receiptFullName;

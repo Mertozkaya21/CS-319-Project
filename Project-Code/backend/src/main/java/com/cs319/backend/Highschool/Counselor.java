@@ -1,4 +1,4 @@
-package com.cs319.backend.Highschool;
+package com.cs319.backend.highschool;
 
 public class Counselor {
     private String name;

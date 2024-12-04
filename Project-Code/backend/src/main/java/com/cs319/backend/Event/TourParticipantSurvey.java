@@ -1,4 +1,4 @@
-package com.cs319.backend.Event;
+package com.cs319.backend.event;
 
 public class TourParticipantSurvey {
     private int ID;

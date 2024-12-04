@@ -1,4 +1,4 @@
-package com.cs319.backend.Services;
+package com.cs319.backend.services;
 
 public class PaymentManagement {
     

@@ -1,12 +1,12 @@
-package com.cs319.backend.User;
+package com.cs319.backend.user;
 
 import java.io.File;
 import java.util.List;
 
-import com.cs319.backend.Enums.*;
-import com.cs319.backend.Event.EventDay;
-import com.cs319.backend.Forms.ApplicationForm;
-import com.cs319.backend.Payment.Payment;
+import com.cs319.backend.enums.*;
+import com.cs319.backend.event.EventDay;
+import com.cs319.backend.forms.ApplicationForm;
+import com.cs319.backend.payment.Payment;
 
 public class Advisor extends User {
     private List<Days> undertakenDays;

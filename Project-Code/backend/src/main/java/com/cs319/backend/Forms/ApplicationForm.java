@@ -1,12 +1,13 @@
-package com.cs319.backend.Forms;
+package com.cs319.backend.forms;
 
 import java.util.Date;
-import com.cs319.backend.Enums.ApplicationFormStatus;
-import com.cs319.backend.Event.TourTime;
-import com.cs319.backend.Highschool.Highschool;
+
+import com.cs319.backend.highschool.Highschool;
+import com.cs319.backend.enums.ApplicationFormStatus;
+import com.cs319.backend.event.TourTime;
 
 public class ApplicationForm {
-    private int ID;
+    private int id;
     private Date submitTime;
     private String notes;
     private ApplicationFormStatus status;
@@ -18,7 +19,7 @@ public class ApplicationForm {
 
 
     public ApplicationForm() {
-        this.ID = 0;
+        this.id = 0;
         this.submitTime = null;
         this.notes = null;
         this.status = null;
@@ -29,26 +30,13 @@ public class ApplicationForm {
         this.highschool = null;
     }
 
-    public ApplicationForm(int ID, Date submitTime, String notes, ApplicationFormStatus status, String applicantName,
-                           String applicantPhone, String applicantEmail, TourTime[] vTimes, Highschool highschool) {
-        this.ID = ID;
-        this.submitTime = submitTime;
-        this.notes = notes;
-        this.status = status;
-        this.applicantName = applicantName;
-        this.applicantPhone = applicantPhone;
-        this.applicantEmail = applicantEmail;
-        this.vTimes = vTimes;
-        this.highschool = highschool;
-    }
-
     // Getters and Setters
     public int getID() {
-        return ID;
+        return id;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Date getSubmitTime() {
@@ -118,7 +106,7 @@ public class ApplicationForm {
     @Override
     public String toString() {
         return "ApplicationForm{" +
-                "ID=" + ID +
+                "ID=" + id +
                 ", submitTime=" + submitTime +
                 ", notes='" + notes + '\'' +
                 ", status=" + status +
