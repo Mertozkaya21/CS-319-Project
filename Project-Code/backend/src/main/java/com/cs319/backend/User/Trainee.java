@@ -11,7 +11,7 @@ public class Trainee extends User {
 
     // Default Constructor
     public Trainee() {
-        super(-1 ,null, null, null, null, null, null, null, null, null, null);
+        super(null, null, null, null, null, null, null, null, null, null);
         this.tours = null;
         this.status = null;
     }
@@ -19,8 +19,8 @@ public class Trainee extends User {
     // Parameterized Constructor
     public Trainee(String userName, String name, String email, String password, String phoneNo, String attribute,
                    String city, File imageFile, List<String> latestAcitivites, List<String> notifications,
-                   int traineeId, GroupTour[] tours, TraineeStatus status) {
-        super(traineeId ,userName, name, email, password, phoneNo, attribute, city, imageFile, latestAcitivites, notifications);
+                   GroupTour[] tours, TraineeStatus status) {
+        super(userName, name, email, password, phoneNo, attribute, city, imageFile, latestAcitivites, notifications);
         this.tours = tours;
         this.status = status;
     }

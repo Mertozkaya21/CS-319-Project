@@ -17,11 +17,11 @@ public class Coordinator extends User {
     private List<ApplicationForm> applicationForms;
 
     // Constructor
-    public Coordinator(int id,String userName, String name, String email, String password, String phoneNo, String attribute,
+    public Coordinator(String userName, String name, String email, String password, String phoneNo, String attribute,
                        String city, File imageFile, List<String> latestAcitivites, List<String> notifications,
                        List<Guide> advisors, List<Trainee> trainees, List<EventDay> eventDays, Payment payment,
                        Date dateAdded, List<ApplicationForm> applicationForms) {
-        super(id,userName, name, email, password, phoneNo, attribute, city, imageFile, latestAcitivites, notifications);
+        super(userName, name, email, password, phoneNo, attribute, city, imageFile, latestAcitivites, notifications);
         this.advisors = advisors;
         this.trainees = trainees;
         this.eventDays = eventDays;

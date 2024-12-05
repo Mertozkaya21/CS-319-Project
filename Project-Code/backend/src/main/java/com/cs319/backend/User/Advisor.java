@@ -26,9 +26,9 @@ public class Advisor extends User {
 
     public Advisor(String userName, String name, String email, String password, String phoneNo, String attribute,
                    String city, File imageFile, List<String> latestAcitivites, List<String> notifications,
-                   int id, List<Days> undertakenDays, List<EventDay> eventDays, Payment payment,
+                   List<Days> undertakenDays, List<EventDay> eventDays, Payment payment,
                    Days dateAdded, List<ApplicationForm> applicationForms) {
-        super(id,userName, name, email, password, phoneNo, attribute, city, imageFile, latestAcitivites, notifications);
+        super(userName, name, email, password, phoneNo, attribute, city, imageFile, latestAcitivites, notifications);
         this.undertakenDays = undertakenDays;
         this.eventDays = eventDays;
         this.payment = payment;

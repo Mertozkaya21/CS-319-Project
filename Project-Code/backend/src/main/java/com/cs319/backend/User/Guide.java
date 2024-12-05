@@ -24,11 +24,11 @@ public class Guide extends User {
     }
 
     // Parameterized Constructor
-    public Guide(int id, String userName, String name, String email, String password, String phoneNo, String attribute,
+    public Guide(String userName, String name, String email, String password, String phoneNo, String attribute,
                  String city, File imageFile, List<String> latestAcitivites, List<String> notifications,
                  HashMap<Days, TourHours> availableTimes, List<Event> assignedEvents, Payment payment,
                  int tourParticipantSurveyRanking) {
-        super(id, userName, name, email, password, phoneNo, attribute, city, imageFile, latestAcitivites, notifications);
+        super(userName, name, email, password, phoneNo, attribute, city, imageFile, latestAcitivites, notifications);
         this.availableTimes = availableTimes;
         this.assignedEvents = assignedEvents;
         this.payment = payment;
