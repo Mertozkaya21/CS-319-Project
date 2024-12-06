@@ -1,8 +1,8 @@
 body, html {
   margin: 0;
   padding: 0;
-  box-sizing: border-box; /* Kenar ve dolgu hesaplamalarını düzeltir */
-  overflow-x: hidden; /* Yatay kaydırmayı engeller */
+  box-sizing: border-box; /* Kenar ve dolgu hesaplamalarÄ±nÄ± dÃ¼zeltir */
+  overflow-x: hidden; /* Yatay kaydÄ±rmayÄ± engeller */
 }
 
 .header {
@@ -13,7 +13,7 @@ body, html {
   background-color: #7b2d26;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   z-index: 100; 
-  position: relative; /* Diğer bölümlerin altında kalmasını engeller */
+  position: relative; /* DiÄŸer bÃ¶lÃ¼mlerin altÄ±nda kalmasÄ±nÄ± engeller */
 }
 
 .hero-section {
@@ -22,15 +22,15 @@ body, html {
   color: white;
   background-color: #7b2d26;
   padding: 0px 0px; 
-  margin-top: 1700px; /* Header ile çakışmayı önler */
-  overflow: hidden; /* İçeriğin taşmasını önler */
+  margin-top: 1700px; /* Header ile Ã§akÄ±ÅŸmayÄ± Ã¶nler */
+  overflow: hidden; /* Ä°Ã§eriÄŸin taÅŸmasÄ±nÄ± Ã¶nler */
 }
 
 .hero-image {
   width: 100%;
   height: auto;
-  object-fit: cover; /* Görselin düzgün şekilde kesilmesini sağlar */
-  display: block; /* Varsayılan boşlukları önler */
+  object-fit: cover; /* GÃ¶rselin dÃ¼zgÃ¼n ÅŸekilde kesilmesini saÄŸlar */
+  display: block; /* VarsayÄ±lan boÅŸluklarÄ± Ã¶nler */
 }
 .hero-text {
   position: absolute;
@@ -43,9 +43,9 @@ body, html {
   text-shadow: 8px 8px 10px rgba(0, 0, 0, 0.5);
 }
 .header-left {
-  display: flex; /* Elemanları yatay hizalar */
+  display: flex; /* ElemanlarÄ± yatay hizalar */
   align-items: center; /* Dikey olarak ortalar */
-  gap: 15px; /* Logo ile buton arasına boşluk bırakır */
+  gap: 15px; /* Logo ile buton arasÄ±na boÅŸluk bÄ±rakÄ±r */
 }
   .home-bilkent-logo {
     height: 135px;
@@ -55,8 +55,8 @@ body, html {
     left: 14px; 
   }
   .nav-links {
-    display: flex; /* Menü öğelerini yatay hizalar */
-    gap: 1px; /* Menü öğeleri arasına boşluk bırakır */
+    display: flex; /* MenÃ¼ Ã¶ÄŸelerini yatay hizalar */
+    gap: 1px; /* MenÃ¼ Ã¶ÄŸeleri arasÄ±na boÅŸluk bÄ±rakÄ±r */
     margin-left: 0px;
   }
   .nav-link {
@@ -65,19 +65,19 @@ body, html {
     border: none;
     color: rgba(0, 0, 0, 0.7);
     cursor: pointer;
-    height: 60px; /* Buton yüksekliği */
+    height: 60px; /* Buton yÃ¼ksekliÄŸi */
     top: 1920px; 
     left: 0px; 
-    padding: 10px 20px; /* İç dolgu */
+    padding: 10px 20px; /* Ä°Ã§ dolgu */
     font-size: 19px;
     font-weight: bold;
-    border-radius: 5px; /* Köşeleri yuvarla */
+    border-radius: 5px; /* KÃ¶ÅŸeleri yuvarla */
     transition: all 0.3s ease;
   }
   
   .nav-link:hover {
-    color: #a04236; /* Hover sırasında renk değişimi */
-    text-decoration: underline; /* Alt çizgi ekle */
+    color: #a04236; /* Hover sÄ±rasÄ±nda renk deÄŸiÅŸimi */
+    text-decoration: underline; /* Alt Ã§izgi ekle */
   }
   
   .nav-links a {
@@ -92,8 +92,8 @@ body, html {
   }
   .header-buttons button {
     display: flex;
-    gap: 10px; /* Butonlar arasında boşluk */
-    margin-left: auto; /* Header'ın sağ tarafına taşımak için */
+    gap: 10px; /* Butonlar arasÄ±nda boÅŸluk */
+    margin-left: auto; /* Header'Ä±n saÄŸ tarafÄ±na taÅŸÄ±mak iÃ§in */
     margin-left: 10px;
     padding: 10px 20px;
     border: none;
@@ -266,8 +266,8 @@ body, html {
   .newsletter {
     text-align: center; 
     margin-bottom: 20px;
-    display: flex; /* Checkbox ve yazıyı hizalamak için flex kullan */
-    flex-direction: column; /* Elemanları dikeyde sıralamak */
+    display: flex; /* Checkbox ve yazÄ±yÄ± hizalamak iÃ§in flex kullan */
+    flex-direction: column; /* ElemanlarÄ± dikeyde sÄ±ralamak */
     align-items: center; 
   }
   .newsletter input[type="email"] {
@@ -347,12 +347,12 @@ body, html {
 }
 
 .help-image {
-  width: 90%; /* Görselin genişliğini %90'a düşürdük */
-  max-width: 400px; /* Maksimum genişlik sınırı */
-  height: auto; /* Görüntü oranını korur */
-  border-radius: 8px; /* Köşeleri yuvarlar */
-  object-fit: cover; /* Görüntüyü düzgün ölçekler */
-  margin: 0 auto; /* Görseli ortalamak için */
+  width: 90%; /* GÃ¶rselin geniÅŸliÄŸini %90'a dÃ¼ÅŸÃ¼rdÃ¼k */
+  max-width: 400px; /* Maksimum geniÅŸlik sÄ±nÄ±rÄ± */
+  height: auto; /* GÃ¶rÃ¼ntÃ¼ oranÄ±nÄ± korur */
+  border-radius: 8px; /* KÃ¶ÅŸeleri yuvarlar */
+  object-fit: cover; /* GÃ¶rÃ¼ntÃ¼yÃ¼ dÃ¼zgÃ¼n Ã¶lÃ§ekler */
+  margin: 0 auto; /* GÃ¶rseli ortalamak iÃ§in */
 }
 
 /* Right Content */
@@ -411,10 +411,10 @@ body, html {
 
 
 
-  /* Header'daki yeni nav butonları */
+  /* Header'daki yeni nav butonlarÄ± */
 .nav-buttons-header {
   display: flex;
-  gap: 15px; /* Butonlar arasında boşluk */
+  gap: 15px; /* Butonlar arasÄ±nda boÅŸluk */
   align-items: center; /* Dikey hizalama */
-  margin-left: auto; /* Header'da sağa yasla */
+  margin-left: auto; /* Header'da saÄŸa yasla */
 }

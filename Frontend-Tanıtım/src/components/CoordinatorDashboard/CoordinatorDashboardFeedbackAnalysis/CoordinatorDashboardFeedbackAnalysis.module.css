@@ -1,0 +1,566 @@
+/* Main Dashboard Container */
+.feedbackanalysis {
+  display: flex;
+  height: 100vh; /* Full viewport height */
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Main Content */
+.mainContent {
+  margin-left: 250px; /* Offset for the fixed sidebar */
+  padding: 20px 40px;
+  flex: 1; /* Take the remaining width */
+  background-color: #f8f9fa;
+  overflow-y: auto; /* Enable vertical scrolling for content */
+}
+
+/* Title Styling */
+.feedbackanlysisTitle {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333333;
+}
+/* Info Cards Container */
+.infoCardsContainer {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin: 20px 0;
+  background-color: #ffffff; /* Box background */
+  padding: 20px; /* Inner padding for spacing */
+  border-radius: 12px; /* Rounded corners */
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+/* Individual InfoCard */
+.infoCard {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* Spacing between icon and text */
+  background-color: #ffffff; /* Card background */
+  padding: 20px 30px; /* Inner padding */
+  border-radius: 12px; /* Rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.infoCard:hover {
+  transform: translateY(-3px); /* Lift effect */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Icon Container */
+.iconContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px; /* Circle width */
+  height: 50px; /* Circle height */
+  border-radius: 50%; /* Circular shape */
+  color: #ffffff; /* Icon color */
+  font-size: 24px; /* Icon size */
+}
+
+/* Text Container */
+.textContainer {
+  display: flex;
+  flex-direction: column; /* Stack title and value */
+  justify-content: center;
+}
+
+/* Value */
+.value {
+  font-size: 24px; /* Bold value size */
+  font-weight: bold;
+  color: #343a40; /* Dark text color */
+}
+
+/* Title */
+.title {
+  font-size: 14px; /* Smaller title size */
+  color: #6c757d; /* Gray subtitle color */
+}
+
+/* Graph Container */
+.graphContainer {
+  background-color: #ffffff; /* White background */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  padding: 20px; /* Internal padding */
+  margin-top: 20px; /* Spacing from other elements */
+  width: 100%; /* Full width of the content area */
+  max-width: 800px; /* Limit max width for better layout */
+  box-sizing: border-box;
+}
+
+/* Graph Header */
+.graphHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.graphHeader h2 {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.tourStats {
+  text-align: right;
+}
+
+.tourStats p {
+  margin: 0;
+  font-size: 14px;
+  color: #555555; /* Neutral gray for text */
+}
+
+/* Graph Body */
+.graphBody {
+  height: 300px; /* Fixed height for the graph */
+}
+
+/* Calendar Container */
+.calendarContainer {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+/* Calendar Header */
+.calendarHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.calendarHeader h2 {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.calendarMonth {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #6c757d;
+}
+
+.toggleMonthButton {
+  background-color: transparent;
+  border: none;
+  color: #6c757d;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.toggleMonthButton:hover {
+  color: #343a40;
+}
+
+/* Calendar Grid */
+.calendarGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px; /* Space between cells */
+}
+
+.calendarDayLabel {
+  font-size: 12px;
+  font-weight: bold;
+  color: #6c757d;
+  text-align: center;
+}
+
+/* Calendar Days */
+.calendarDay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  width: 40px;
+  border-radius: 50%; /* Circular shape for dates */
+  background-color: #f8f9fa;
+  font-size: 14px;
+  font-weight: bold;
+  color: #343a40;
+  text-align: center;
+}
+
+.calendarDay:hover {
+  background-color: #e9ecef;
+  cursor: pointer;
+}
+
+/* Event Types */
+.tourDay {
+  background-color: #8a0303; /* Match the mockup dark red */
+  color: #ffffff;
+}
+
+.eventDay {
+  background-color: #e83e8c; /* Match the pink for events */
+  color: #ffffff;
+}
+
+.pieChartContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff; /* White background */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  padding: 20px;
+  margin: 20px;
+}
+
+.chartTitle {
+  font-size: 18px;
+  font-weight: bold;
+  color: #374151; /* Navy */
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+/* For bottom section containing Calendar and Pie Chart */
+.bottomSection {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+/* Container for Calendar and Pie Chart */
+.calendarAndPieContainer {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%; /* Ensure it spans the available space */
+}
+
+/* Calendar Container */
+.calendarContainer {
+  flex: 1; /* Take up equal space */
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Pie Chart Container */
+.pieChartContainer {
+  flex: 1; /* Take up equal space */
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+/* Container for the table section */
+.tableContainer {
+  margin-top: 20px; /* Add spacing from the above sections */
+  background-color: #ffffff; /* White background for the table */
+  border-radius: 10px; /* Rounded corners */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for a polished look */
+  padding: 20px; /* Add padding around the table */
+}
+
+.tableTitle {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 10px 15px;
+  text-align: left;
+}
+
+.table th {
+  background-color: #f7f7f7;
+  color: #555555;
+  font-weight: bold;
+}
+
+.table tbody tr:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+.table tbody tr:hover {
+  background-color: #f1f1f1;
+}
+
+.moreButton {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #555555;
+}
+
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.pageButton {
+  margin: 0 5px;
+  padding: 5px 10px;
+  background-color: #f7f7f7;
+  border: 1px solid #dddddd;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.pageButton:hover {
+  background-color: #e0e0e0;
+}
+
+.activePageButton {
+  background-color: #6610f2;
+  color: white;
+}
+/* Right Sidebar */
+.rightSidebar {
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-family: 'Poppins', sans-serif;
+}
+
+.topSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* User Info with Icons */
+.userInfoWithIcons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+/* Notifications and Settings */
+.topIcons {
+  display: flex;
+  gap: 12px;
+}
+
+.iconButton {
+  background-color: #ffffff;
+  border: none;
+  border-radius: 50%;
+  padding: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  position: relative;
+}
+
+.iconButton:hover {
+  background-color: #f8d7da;
+}
+
+.notificationDot {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 8px;
+  height: 8px;
+  background-color: #dc3545;
+  border-radius: 50%;
+}
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Space between avatar and text */
+}
+
+.userAvatar {
+  flex-shrink: 0; /* Prevent avatar from resizing */
+}
+
+.avatarImage {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.userName {
+  font-weight: bold;
+  color: #343a40;
+  margin: 0;
+}
+
+.userRole {
+  color: #6c757d;
+  margin: 0;
+}
+/* Section Titles */
+.sectionTitle {
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #8a0303; /* Match mockup text color */
+}
+
+/* Contact List */
+.contactList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.contactItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.contactAvatar {
+  margin-right: 10px;
+}
+
+.avatarImage {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.contactName {
+  flex-grow: 1;
+  font-weight: 500;
+  color: #495057;
+}
+
+.contactButton {
+  background-color: #f8d7da;
+  color: #dc3545;
+  border: none;
+  border-radius: 50%;
+  padding: 6px;
+  cursor: pointer;
+}
+
+.contactButton:hover {
+  background-color: #f5c6cb;
+}
+
+/* Message List */
+.messageList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.messageItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.messageAvatar {
+  margin-right: 10px;
+}
+
+.messageContent {
+  flex-grow: 1;
+}
+
+.messageName {
+  font-weight: 500;
+  color: #495057;
+}
+
+.messageText {
+  font-size: 14px;
+  color: #6c757d;
+  margin: 5px 0;
+}
+
+.messageTime {
+  font-size: 12px;
+  color: #6c757d;
+  flex-shrink: 0;
+}
+
+/* Fairs Section */
+.fairList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.fairItem {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.fairImage {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  background-color: #f8d7da;
+  margin-right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fairImageContent {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.fairTitle {
+  font-size: 14px;
+  color: #495057;
+}
+
+/* View All Button */
+.viewAllButton {
+  display: block;
+  width: 100%;
+  background: #8a0303;
+  color: #ffffff;
+  border: none;
+  padding: 10px;
+  border-radius: 12px;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.viewAllButton:hover {
+  background: #660202;
+}

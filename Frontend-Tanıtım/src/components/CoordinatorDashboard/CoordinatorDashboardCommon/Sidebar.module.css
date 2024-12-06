@@ -1,0 +1,160 @@
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    height: 100vh; /* Full height */
+    background-color: #8a0303; /* Dark red */
+    color: #ffffff; /* White text */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Left align items */
+    padding: 0px 0px; /* Padding on top and bottom */
+    overflow-y: auto; /* Scrollable if content exceeds height */
+    position: fixed; /* Fixed sidebar */
+    left: 0;
+    top: 0;
+    z-index: 10;
+}
+  
+/* Logo Section */
+.logo {
+    display: flex; /* Use flexbox for alignment */
+    align-items: center; /* Vertically center items */
+    gap: 10px; /* Space between the logo and the text */
+    text-align: center;
+    margin-bottom: 8px; /* Reduced margin */
+    width: 100%;
+    padding: 20px 20px; /* Padding inside the container */
+}
+
+.logo img {
+    width: 40px; /* Adjusted width for smaller dimensions */
+    height: 40px; /* Adjusted height for smaller dimensions */
+    margin: 0; /* Remove unnecessary margin */
+}
+
+.logo h2 {
+    font-size: 20px; /* Match text size with the example */
+    font-weight: bold;
+    margin: 0;
+    color: #ffffff; /* White logo text */
+    font-family: 'Arial', sans-serif; /* Match font style */
+}
+
+/* Navigation Links */
+.nav {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px; /* Increase gap between nav items */
+}
+
+/* General Navigation Item Styles */
+.navItem {
+    text-decoration: none;
+    color: #ffffff; /* White text */
+    display: flex;
+    align-items: center; /* Vertically align items */
+    gap: 12px; /* Add consistent spacing between icon and text */
+    padding: 12px 20px; /* Increase padding for larger height */
+    border-radius: 6px; /* Slightly rounded corners */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    font-weight: 500;
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+/* Hover Effect */
+.navItem:hover {
+    background-color: #b14343; /* Hover background color */
+    color: #ffffff; /* Ensure text color stays white */
+}
+
+/* Active Link */
+.active {
+    background-color: #ffffff; /* Lighter red for active link */
+    color: #8a0303; /* Red text */
+    font-weight: bold;
+    border-radius: 20px 0 0 20px; /* Rounded left corners */
+    padding-left: 16px; /* Add spacing */
+    width: calc(100% - 5px); /* Dynamically adjust to sidebar width */
+    box-sizing: border-box; /* Include border and padding in width */
+    display: flex;
+    align-items: center; /* Center align items */
+}
+
+/* Icon Styling */
+.icon {
+    font-size: 30px; /* Compact icon size */
+    color: #ffffff; /* White icons */
+}
+
+/* Active Icon Styling */
+.activeIcon {
+    color: #8a0303; /* Red color for active icons */
+} 
+                
+/* Dropdown Styling */
+.MuiAccordion-root {
+    background-color: #8a0303 !important; /* Red background */
+    color: #ffffff !important; /* White text */
+    border: none; /* Remove border */
+    box-shadow: none; /* Remove shadow */
+    width: 100%;
+    padding: 0; /* No extra padding */
+}
+
+.MuiAccordionSummary-root {
+    color: #ffffff; /* White dropdown titles */
+    display: flex;
+    align-items: center; /* Align icon and text */
+    gap: 10px; /* Consistent spacing */
+    padding: 10px 16px; /* Compact padding for summary */
+    min-height: 48px; /* Consistent height */
+}
+.MuiAccordionSummary-expandIconWrapper {
+    color: #ffffff; /* White expand/collapse icon */
+}
+
+.MuiAccordionDetails-root {
+    background-color: #8a0303; /* Red background for dropdown content */
+    color: #ffffff; /* White text */
+    padding: 8px 16px; /* Add padding for dropdown items */
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    gap: 8px; /* Add spacing between items */
+}
+
+.MuiListItem-root {
+    color: #ffffff; /* White text for items */
+    display: flex;
+    align-items: center; /* Align icon and text */
+    gap: 10px; /* Consistent spacing */
+    padding: 10px 16px; /* Increase padding for larger height */
+    min-height: 48px; /* Ensure consistent height */
+    white-space: nowrap; /* Prevent text wrapping */
+}
+.MuiListItemIcon-root {
+    color: #ffffff; /* White icons */
+    min-width: 25px; /* Reduced icon width */
+}
+
+.MuiListItemText-primary {
+    color: #ffffff; /* White text */
+    font-size: 14px; /* Smaller font for dropdown items */
+    line-height: 1.2; /* Adjusted line height for compact spacing */
+}
+
+/* Specific Dropdown Hover Effect for List Items */
+.MuiListItem-root:hover {
+    background-color: #b14343 !important; /* Match hover color */
+    color: #ffffff; /* Ensure text remains white */
+}
+
+/* Dropdown Expand Icon Styling */
+.MuiAccordionSummary-expandIconWrapper {
+    transition: transform 0.3s ease;
+}
+
+/* Rotate Expand Icon on Hover */
+.MuiAccordionSummary-root:hover .MuiAccordionSummary-expandIconWrapper {
+    transform: rotate(90deg); /* Optional: Rotate icon for visual feedback */
+}

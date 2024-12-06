@@ -1,0 +1,532 @@
+/* Main Dashboard Container */
+.dashboard {
+  display: flex;
+  height: 100vh; /* Full viewport height */
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden; /* Prevent any overflow outside of the viewport */
+}
+
+
+/* Main Content */
+.mainContent {
+  margin-left: 250px; /* Offset for the fixed sidebar */
+  padding: 20px 40px;
+  flex: 1; /* Take up the remaining width */
+  background-color: #f8f9fa;
+  overflow-y: auto; /* Enable vertical scrolling for content if needed */
+  height: 100%; /* Match the height of the viewport */
+  box-sizing: border-box; /* Ensure padding is included in height */
+}
+
+/* Title Styling */
+.dashboardTitle {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333333;
+}
+/* Info Cards Container */
+.infoCardsContainer {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin: 20px 0;
+  background-color: #ffffff; /* Box background */
+  padding: 20px; /* Inner padding for spacing */
+  border-radius: 12px; /* Rounded corners */
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+              /* Individual InfoCard */
+              .infoCard {
+                display: flex;
+                align-items: center; /* Vertically align icon and text */
+                gap: 15px; /* Space between icon and text */
+                flex: 1; /* Flex for equal width */
+                padding: 10px 15px; /* Padding inside the card */
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+              }
+
+              .infoCard:hover {
+                transform: translateY(-5px); /* Lift on hover */
+                box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15); /* Highlight shadow */
+                border-radius: 12px; /* Rounded corners */
+
+              }
+
+              /* Icon Container */
+              .iconContainer {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 50px; /* Fixed size for the icon container */
+                height: 50px;
+                background-color: var(--icon-bg); /* Background color dynamically set */
+                border-radius: 50%; /* Circular background */
+                color: #fff; /* Icon color */
+                font-size: 20px; /* Icon size */
+              }
+
+              /* Text Container */
+              .textContainer {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start; /* Align text to the left */
+              }
+
+              .textContainer .value {
+                font-size: 20px;
+                font-weight: bold;
+                color: #2c3e50;
+              }
+
+              .textContainer .title {
+                font-size: 14px;
+                color: #7f8c8d;
+              }
+/* Graph Container */
+.graphContainer {
+  background-color: #ffffff; /* White background */
+  border-radius: 12px; /* Rounded corners */
+  margin: 20px 0; /* Spacing around the graph */
+  width: 100%; /* Full width of the content area */
+  max-width: 800px; /* Limit max width */
+}
+
+              /* Graph Header */
+              .graphHeader {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 15px;
+              }
+
+              .graphHeader h2 {
+                font-size: 18px;
+                font-weight: bold;
+                margin: 0;
+                color: #374151; /* Navy */
+              }
+
+              .graphHeader p {
+                margin: 0;
+                font-size: 14px;
+                color: #6b7280; /* Neutral gray for text */
+              }
+
+              .tourStats {
+                text-align: right;
+                display: flex;
+                gap: 16px;
+              }
+
+              .tourStats span {
+                font-weight: bold;
+                font-size: 14px;
+              }
+
+              .tourStats .scheduled-dot {
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                background-color: #f59e0b;
+              }
+
+              .tourStats .completed-dot {
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                background-color: #ef4444;
+              }
+
+          
+/* Wrapper for Calendar */
+.calendarWrapper {
+  margin-bottom: 20px; /* Add spacing below the calendar block */
+  flex: 1; /* Take equal space */
+}
+/* Title for Calendar */
+.calendarTitle {
+  font-size: 18px;
+  font-weight: bold;
+  color: #374151;
+  margin-bottom: 10px; /* Spacing below the title */
+  text-align: center; /* Align title to the center */
+}
+/* Wrapper for Pie Chart */
+.pieChartWrapper {
+  margin-bottom: 20px;
+  flex: 1; /* Take equal space */
+}
+
+/* Title for Pie Chart */
+.chartTitle {
+  font-size: 18px;
+  font-weight: bold;
+  color: #374151;
+  margin-bottom: 10px; /* Spacing below the title */
+  text-align: center; /* Align title to the center */
+}
+
+/* Calendar and Pie Chart Containers */
+.calendarContainer,
+.pieChartContainer {
+  flex: 1; /* Equal width */
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 15px; /* Adjust padding to reduce height */
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  display: flex; /* Enable flex for centering */
+  flex-direction: column; /* Stack content vertically */
+  justify-content: center; /* Center vertically */
+  align-items: center; /* Center horizontally */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Hover Effect */
+.calendarContainer:hover,
+.pieChartContainer:hover {
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+  transform: translateY(-5px);
+}
+
+/* Flex Container for Calendar and Pie Chart */
+.calendarAndPieContainer {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px; /* Adjust spacing between the two components */
+  width: 100%;
+  align-items: flex-start; /* Ensures alignment for the titles */
+}
+
+/* Calendar and Pie Chart Wrappers */
+.calendarWrapper,
+.pieChartWrapper {
+  width: calc(50% - 10px); /* Make them equal width */
+  display: flex;
+  flex-direction: column; /* Stack title and container vertically */
+  align-items: center; /* Center content horizontally */
+}
+
+/* Material UI Overrides */
+.MuiDayPicker {
+  padding-top: 0; /* Remove extra padding */
+}
+
+/* Material UI DayPicker Overrides */
+.MuiPickersDay-root {
+  border-radius: 50%; /* Circular day shapes */
+}
+
+/* Selected Day */
+.MuiPickersDay-root.Mui-selected {
+  background-color: #343a40; /* Dark gray */
+  color: #ffffff;
+}
+
+/* Hover Effect for Non-Selected Days */
+.MuiPickersDay-root:not(.Mui-selected):not(.Mui-disabled):hover {
+  background-color: #e9ecef; /* Light gray hover */
+}
+
+/* Days Outside Current Month */
+.MuiPickersDay-root.MuiDayPicker-dayOutsideMonth {
+  color: #d3d3d3; /* Gray for out-of-month days */
+}
+
+/* Custom Event Colors */
+.MuiPickersDay-root.tour {
+  background-color: #8a0303; /* Red for tours */
+  color: #ffffff;
+}
+
+.MuiPickersDay-root.fair {
+  background-color: #4267B2; /* Blue for fairs */
+  color: #ffffff;
+}
+
+/* Calendar Day Labels (e.g., Sun, Mon, etc.) */
+.calendarDayLabel {
+  font-size: 12px;
+  font-weight: bold;
+  color: #6c757d;
+  text-align: center;
+}
+
+/* Container for the table section */
+.tableContainer {
+  margin-top: 10px; /* Reduced spacing from the above sections */
+  background-color: transparent; /* Make container background consistent with layout */
+}
+
+/* Title Styling */
+.tableTitle {
+  font-size: 20px; /* Reduced font size */
+  font-weight: bold;
+  margin-bottom: 10px; /* Reduced bottom margin */
+  text-align: left; /* Align title to the left */
+}
+
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.pageButton {
+  margin: 0 5px;
+  padding: 5px 10px;
+  background-color: #f7f7f7;
+  border: 1px solid #dddddd;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.pageButton:hover {
+  background-color: #e0e0e0;
+}
+
+.activePageButton {
+  background-color: #6610f2;
+  color: white;
+}
+
+/* Right Sidebar */
+.rightSidebar {
+  padding: 20px; /* Padding on all sides */
+  padding-bottom: 0; /* Remove padding at the bottom */
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-family: 'Poppins', sans-serif;
+  height: 100vh; /* Full height of the viewport */
+  overflow-y: auto; /* Enable independent scrolling for the right sidebar */
+  position: sticky; /* Stay fixed relative to the viewport */
+  top: 0; /* Ensure sticky works */
+}
+
+.topSection {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* User Info with Icons */
+.userInfoWithIcons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.iconButton svg {
+  color: #686565; /* Set icon color to dark red */
+}
+
+.iconButton:hover svg {
+  color: #686565; /* Darker red on hover */
+}
+
+/* Notifications and Settings */
+.topIcons {
+  display: flex;
+  gap: 12px;
+}
+
+.iconButton {
+  background-color: #ffffff;
+  border: none;
+  border-radius: 50%;
+  padding: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  position: relative;
+}
+.iconButton:hover {
+  background-color: #f8d7da; /* Light red background on hover */
+}
+.notificationDot {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 8px;
+  height: 8px;
+  background-color: #dc3545;
+  border-radius: 50%;
+}
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Space between avatar and text */
+}
+
+.userAvatar {
+  flex-shrink: 0; /* Prevent avatar from resizing */
+}
+
+.avatarImage {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.userName {
+  font-weight: bold;
+  color: #343a40;
+  margin: 0;
+}
+
+.userRole {
+  color: #6c757d;
+  margin: 0;
+}
+/* Section Titles */
+.sectionTitle {
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #8a0303; /* Match mockup text color */
+}
+
+/* Contact List */
+.contactList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.contactItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.contactAvatar {
+  margin-right: 10px;
+}
+
+.avatarImage {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+
+.contactName {
+  flex-grow: 1;
+  font-weight: 500;
+  color: #495057;
+}
+
+.contactButton {
+  background-color: #f8d7da;
+  color: #dc3545;
+  border: none;
+  border-radius: 50%;
+  padding: 6px;
+  cursor: pointer;
+}
+
+.contactButton:hover {
+  background-color: #f5c6cb;
+}
+
+/* Message List */
+.messageList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.messageItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.messageAvatar {
+  margin-right: 10px;
+}
+
+.messageContent {
+  flex-grow: 1;
+}
+
+.messageName {
+  font-weight: 500;
+  color: #495057;
+}
+
+.messageText {
+  font-size: 14px;
+  color: #6c757d;
+  margin: 5px 0;
+}
+
+.messageTime {
+  font-size: 12px;
+  color: #6c757d;
+  flex-shrink: 0;
+}
+
+/* Fairs Section */
+.fairList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.fairItem {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.fairImage {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  background-color: #f8d7da;
+  margin-right: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fairImageContent {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.fairTitle {
+  font-size: 14px;
+  color: #495057;
+}
+
+/* View All Button */
+.viewAllButton {
+  display: block;
+  width: 100%;
+  background: #8a0303;
+  color: #ffffff;
+  border: none;
+  padding: 10px;
+  border-radius: 12px;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-bottom: 20px; /* Add spacing at the bottom to prevent overlap */
+}
+
+.viewAllButton:hover {
+  background: #660202;
+}
