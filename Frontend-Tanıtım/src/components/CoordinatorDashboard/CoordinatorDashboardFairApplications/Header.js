@@ -12,7 +12,7 @@ const Header = ({ title, onSearchSelection }) => {
   const [sortOption, setSortOption] = useState('Date Updated');
 
   // Transform fairApplicationsRows into a format suitable for Autocomplete
-  const highSchoolOptions = fairApplicationsRows.map((school) => ({
+  const organisationOptions = fairApplicationsRows.map((school) => ({
     label: school.name, // Only the school name will be displayed
   }));
 
@@ -49,7 +49,7 @@ const Header = ({ title, onSearchSelection }) => {
         {/* Replace Search Bar with Autocomplete */}
         <Autocomplete
           disablePortal
-          options={highSchoolOptions} // High school name options
+          options={organisationOptions} // organisation name options
           onChange={(event, value) => onSearchSelection(value)} // Handle selection
           sx={{
             width: 300,
@@ -76,13 +76,11 @@ const Header = ({ title, onSearchSelection }) => {
             },
           }}
           renderInput={(params) => (
-            <TextField {...params} label="Search High School" />
+            <TextField {...params} label="Search Organisation" />
           )}
         />
 
           <Button
-            component={NavLink}
-            to="/coordinatordashboardaddguide" // Route for Add New Guide
             variant="contained" // Contained style
             startIcon={<AddIcon />}
             sx={{

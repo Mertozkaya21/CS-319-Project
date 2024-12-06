@@ -81,8 +81,6 @@ const Header = ({ title, onSearchSelection }) => {
         />
 
           <Button
-            component={NavLink}
-            to="/coordinatordashboardaddguide" // Route for Add New Guide
             variant="contained" // Contained style
             startIcon={<AddIcon />}
             sx={{

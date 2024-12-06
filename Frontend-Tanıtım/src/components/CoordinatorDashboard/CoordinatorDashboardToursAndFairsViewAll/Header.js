@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import styles from './CoordinatorDashboardToursAndFairsViewAll.module.css';
-import { FaBell, FaCog, FaSearch } from 'react-icons/fa';
+import { FaBell, FaCog } from 'react-icons/fa';
+import DoDisturbIcon from '@mui/icons-material/DoDisturb';
+import Button from '@mui/material/Button';
+import Autocomplete from '@mui/material/Autocomplete';
+import TextField from '@mui/material/TextField';
+import { eventRows } from './ToursAndFairsTable'; // Import event data
 
-const Header = ({ title }) => {
-  const [sortOption, setSortOption] = useState('Time');
+const Header = ({ title, onSearchSelection }) => {
+  const [sortOption, setSortOption] = useState('Date Updated');
 
-  const handleDropdownChange = (option) => {
-    setSortOption(option);
-    // Logic to sort the table can go here
-  };
-
-  const handleSearch = () => {
-    console.log('Search functionality triggered');
-    // Logic to handle search can go here
-  };
+  // Transform eventRows into a format suitable for Autocomplete
+  const eventOptions = eventRows.map((school) => ({
+    label: school.name, // Only the school name will be displayed
+  }));
 
   return (
     <div className={styles.header}>
@@ -21,13 +22,18 @@ const Header = ({ title }) => {
       <div className={styles.headerTopRow}>
         <h1 className={styles.headerTitle}>{title}</h1>
         <div className={styles.userSection}>
-          <button className={styles.iconButton}>
+          {/* Notification Button */}
+          <NavLink to="/coordinatordashboardnotifications" className={styles.iconButton}>
             <FaBell className={styles.notificationIcon} />
             <span className={styles.notificationDot}></span>
-          </button>
-          <button className={styles.iconButton}>
+          </NavLink>
+
+          {/* Settings Button */}
+          <NavLink to="/coordinatordashboardsettings" className={styles.iconButton}>
             <FaCog />
-          </button>
+          </NavLink>
+
+          {/* User Info */}
           <div className={styles.userAvatar}>
             <div className={styles.avatarCircle}></div>
             <div className={styles.userInfoText}>
@@ -40,23 +46,54 @@ const Header = ({ title }) => {
 
       {/* Search and Action Buttons Row */}
       <div className={styles.headerBottomRow}>
-        <div className={styles.searchBar}>
-          <button className={styles.searchIconButton} onClick={handleSearch}>
-            <FaSearch className={styles.searchIcon} />
-          </button>
-          <input type="text" placeholder="Search High School Name" />
-        </div>
-        <div className={styles.actions}>
-          <div className={styles.dropdown}>
-            <button
-              className={styles.dropdownButton}
-              onClick={() => handleDropdownChange('High School Name')}
-            >
-              {sortOption} <span className={styles.dropdownArrow}>▼</span>
-            </button>
-            {/* For accessibility, add dropdown options */}
-          </div>
-        </div>
+        {/* Replace Search Bar with Autocomplete */}
+        <Autocomplete
+          disablePortal
+          options={eventOptions} // event name options
+          onChange={(event, value) => onSearchSelection(value)} // Handle selection
+          sx={{
+            width: 300,
+            '& .MuiOutlinedInput-root': {
+              '& fieldset': {
+                borderColor: '#8a0303', // Red outline
+              },
+              '&:hover fieldset': {
+                borderColor: '#6c0101', // Darker red on hover
+              },
+              '&.Mui-focused fieldset': {
+                borderColor: '#8a0303', // Red outline when focused
+              },
+              color: '#8a0303', // Ensures input text stays red
+            },
+            '& .MuiInputBase-input': {
+              color: '#8a0303', // Set the text color of the input
+            },
+            '& .MuiInputLabel-root': {
+              color: '#8a0303', // Red label color
+            },
+            '& .MuiInputLabel-root.Mui-focused': {
+              color: '#6c0101', // Darker red when label is focused
+            },
+          }}
+          renderInput={(params) => (
+            <TextField {...params} label="Search Name" />
+          )}
+        />
+
+        <Button
+          variant="outlined"
+          startIcon={<DoDisturbIcon />}
+          sx={{
+            color: '#8a0303', // Red text
+            borderColor: '#8a0303', // Red border
+            '&:hover': {
+              backgroundColor: '#fbe8e8', // Light red background on hover
+              borderColor: '#6c0101', // Darker red border on hover
+            },
+          }}
+        >
+          Cancel Selected
+        </Button>
       </div>
     </div>
   );

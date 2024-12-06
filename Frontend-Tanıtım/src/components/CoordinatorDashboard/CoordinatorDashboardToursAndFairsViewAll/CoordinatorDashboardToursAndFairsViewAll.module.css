@@ -10,9 +10,7 @@
   flex: 1;
   display: flex;
   flex-direction: column; /* Stack elements vertically */
-  padding: 20px;
   margin-left: 250px; /* Offset for the fixed sidebar width */
-  box-sizing: border-box; /* Include padding in the width calculation */
   background-color: #f8f9fa;
   overflow-y: auto;
 }
@@ -21,11 +19,12 @@
 .header {
   display: flex;
   flex-direction: column; /* Separate title and controls into two rows */
-  gap: 10px; /* Add spacing between rows */
+  gap: 20px; /* Add spacing between rows */
   padding: 20px;
+  padding-left: 0%;
+  padding-right: 0%;
+  padding-bottom: 0%;
   background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   width: 100%;
   box-sizing: border-box;
 }
@@ -35,6 +34,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0 0px; /* Add horizontal padding to align with the table edges */
 }
 
 .headerTitle {
@@ -42,7 +42,6 @@
   font-weight: bold;
   color: #343a40;
 }
-
 
 /* User Section */
 .userSection {
@@ -61,8 +60,16 @@
   position: relative;
 }
 
+.iconButton svg {
+  color: #686565; /* Set icon color to dark red */
+}
+
+.iconButton:hover svg {
+  color: #686565; /* Darker red on hover */
+}
+
 .iconButton:hover {
-  background-color: #f8d7da;
+  background-color: #f8d7da; /* Light red background on hover */
 }
 
 .notificationDot {
@@ -88,7 +95,6 @@
   border-radius: 50%;
 }
 
-
 .userInfoText {
   display: flex;
   flex-direction: column;
@@ -107,12 +113,13 @@
   color: #6c757d;
 }
 
-
-/* Search and Button Row */
-.buttonRow {
+/* Header Bottom Row */
+.headerBottomRow {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 20px;
+  padding: 0 20px; /* Add horizontal padding to align with the table edges */
+  box-sizing: border-box; /* Ensure padding is included in the element's total width */
 }
 
 .searchBar {
@@ -124,6 +131,7 @@
   padding: 10px;
   width: 300px;
   position: relative;
+  margin-right: auto; /* Push the search bar to the left */
 }
 
 .searchIconButton {
@@ -188,7 +196,7 @@
   background-color: #8a0303;
   color: white;
   padding: 10px 20px;
-  border: none;
+  border: 1px solid #8a0303;
   border-radius: 12px;
   font-weight: bold;
   cursor: pointer;
@@ -196,6 +204,7 @@
 
 .removeButton:hover {
   background-color: #6c0101;
+  border-color: #6c0101;
 }
 
 /* Bottom Row */
@@ -212,7 +221,6 @@
   padding: 20px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   flex: 1;
-  overflow-x: auto; /* Enable horizontal scrolling for smaller screens */
 }
 
 .highSchoolTable {
@@ -224,17 +232,25 @@
 .highSchoolTable th {
   background: #f7f7f7;
   font-weight: bold;
-  text-align: left;
+  text-align: center; /* Center text horizontally */
+  vertical-align: middle; /* Center text vertically */
   padding: 12px;
   color: #555555;
-  font-size: 14px;
 }
 
 .highSchoolTable td {
   padding: 12px;
   border-bottom: 1px solid #ddd;
-  font-size: 14px;
-  color: #333333;
+  text-align: center; /* Center content horizontally */
+  vertical-align: middle; /* Center content vertically */
+}
+
+/* Contact buttons container */
+.contactButtons {
+  display: flex;
+  justify-content: center; /* Center the buttons horizontally */
+  align-items: center; /* Center the buttons vertically */
+  gap: 10px; /* Space between buttons */
 }
 
 .contactButton {
@@ -247,30 +263,13 @@
   cursor: pointer;
 }
 
-.contactButton:hover {
-  background: #eac4c4;
-}
-
-
 .priorityScore {
-  background: #fbe8e8;
-  color: #dc3545;
-  border-radius: 12px;
+  color: #dc3545; /* Red text */
+  border-radius: 12px; /* Keep the rounded edges if needed */
   text-align: center;
-  padding: 5px 10px;
-}
-
-.pageButton {
-  background: #f7f7f7;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 8px 12px;
-  margin: 0 5px;
-  cursor: pointer;
-}
-
-.pageButton:hover {
-  background: #eaeaea;
+  padding: 0; /* Remove unnecessary padding */
+  background: none; /* Remove background color */
+  border: none; /* Ensure there's no border applied */
 }
 
 /* Pagination */
@@ -313,3 +312,4 @@
   color: #bbb;
   cursor: not-allowed;
 }
+

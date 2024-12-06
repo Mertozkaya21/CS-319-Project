@@ -9,10 +9,8 @@ const DashboardFairApplications = () => {
   const [filteredRows, setFilteredRows] = useState(fairApplicationsRows); // Manage filtered rows
 
   const handleSearchSelection = (value) => {
-    if (value && value.label) {
-      const filtered = fairApplicationsRows.filter((row) =>
-        row.name.toLowerCase() === value.label.toLowerCase()
-      );
+    if (value) {
+      const filtered = fairApplicationsRows.filter((row) => row.name === value.label);
       setFilteredRows(filtered);
     } else {
       setFilteredRows(fairApplicationsRows);

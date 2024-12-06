@@ -1,106 +1,138 @@
-/* Header */
-.header {
-  position: fixed;
-  top: 0;
-  left: 250px; /* Align to the right of the sidebar */
-  width: calc(100% - 250px); /* Full width minus sidebar width */
-  height: 70px; /* Set header height */
-  background-color: #ffffff;
-  padding: 10px 20px; /* Adjust spacing */
+/* Main Dashboard Container */
+.dashboardContainer {
   display: flex;
-  justify-content: space-between; /* Space between title and user info */
-  align-items: center; /* Center content vertically */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  z-index: 20; /* Ensure it stays on top */
-}
-
-/* Title Section */
-.headerTitle {
-  font-size: 20px;
-  font-weight: bold;
-  color: #343a40;
-}
-
-/* User Info Section */
-.userSection {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin-right: 0; /* Ensure it doesn't overflow */
-}
-
-/* Avatar */
-.avatarCircle {
-  width: 40px;
-  height: 40px;
-  background-color: #8a0303;
-  border-radius: 50%;
-}
-
-/* User Info Text */
-.userInfoText {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start; /* Align text */
-}
-
-.userName {
-  font-weight: bold;
-  font-size: 14px;
-}
-
-.userRole {
-  font-size: 12px;
-  color: #6c757d;
-}
-
-
-.iconButton {
-  background: #ffffff;
-  border: none;
-  border-radius: 50%;
-  padding: 8px;
-  cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.iconButton:hover {
-  background-color: #f8d7da;
+  height: 100vh; /* Full viewport height */
+  width: 100%; /* Full width */
+  background-color: #ffffff; /* Light background */
+  overflow: hidden; /* Prevent unwanted scrollbars */
+  box-sizing: border-box;
 }
 
 /* Main Content */
 .mainContent {
-  margin-left: 250px; /* Account for sidebar */
-  margin-top: 70px; /* Account for header */
-  padding: 20px;
+  margin-left: 250px; /* Offset for the fixed sidebar */
   display: flex;
-  gap: 20px;
-  flex-direction: column; /* Stack content vertically */
+  flex-direction: column;
+  flex-grow: 1; /* Fill remaining width */
+  padding: 20px;
+  box-sizing: border-box;
+  overflow: hidden; /* Prevent horizontal scrolling */
 }
 
-/* Calendar Section */
-.calendarContainer {
-  flex: 1; /* Take up available space */
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   background-color: #ffffff;
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.headerTitle {
+  font-size: 24px;
+  font-weight: bold;
+  color: #374151;
+}
+
+.userSection {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.iconButton {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  position: relative;
+}
+
+.notificationDot {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 8px;
+  height: 8px;
+  background-color: #dc3545;
+  border-radius: 50%;
+}
+
+.userAvatar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatarCircle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #8b0000;
+}
+
+.userInfoText {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.userName {
+  font-weight: bold;
+  color: #374151;
+}
+
+.userRole {
+  color: #6b7280;
+}
+
+/* Content Section Layout */
+.contentSection {
+  display: flex;
+  height: calc(100% - 100px); /* Subtract header height */
+  gap: 20px;
+  width: 100%; /* Take up the full available width */
+}
+
+/* Calendar Section */
+.calendarSection {
+  flex: 2; /* Calendar takes 2/3 of the screen */
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .calendarHeader {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   margin-bottom: 20px;
+}
+
+.monthDropdown,
+.yearDropdown {
+  padding: 10px 15px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background-color: #ffffff;
+  font-size: 16px;
+  color: #374151;
+  cursor: pointer;
 }
 
 .calendarGrid {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 5px;
+  grid-template-columns: repeat(7, 1fr); /* 7 columns for each day of the week */
+  gap: 15px; /* Spacing between calendar cells */
+  flex-grow: 1; /* Allow the grid to grow to fill space */
 }
 
 .dayLabel {
+  font-size: 16px;
   font-weight: bold;
   text-align: center;
   color: #6b7280;
@@ -109,97 +141,127 @@
 .calendarDay {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  border: 1px solid #ddd;
+  justify-content: center;
+  padding: 20px;
+  border: 1px solid #e5e7eb;
   border-radius: 12px;
-  padding: 15px;
-  position: relative;
   cursor: pointer;
+  position: relative;
   background-color: #ffffff;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s, border-color 0.3s;
+  height: 35px; /* Taller calendar cells */
+  width: 70px;
 }
 
 .calendarDay:hover {
-  background-color: #f9ecec;
+  background-color: #f1f5f9;
 }
 
-.tourDay {
-  border: 2px solid #e53e3e;
+.calendarDay.selected {
+  background-color: #f8d7da;
+  border-color: #8b0000;
+}
+/* Event Indicators (Circles) */
+.eventIndicators {
+  display: flex;
+  gap: 3px; /* Space between event dots */
+  margin-top: 5px;
+  flex-wrap: wrap; /* Wrap dots when there are many events */
 }
 
-.fairDay {
-  border: 2px solid #3b82f6;
+.eventIndicator {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
 }
+
+.eventIndicator.tour {
+  background-color: #ff0000; /* Red for Tours */
+}
+
+.eventIndicator.fair {
+  background-color: #0000ff; /* Blue for Fairs */
+}
+
+.eventIndicator.more {
+  background-color: #6c757d; /* Neutral color for "more" indicator */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+}
+
+.multiEvent {
+  background-color: #6c757d;
+}
+
 /* Events Section */
 .eventsSection {
-  margin-top: 20px;
-  padding: 20px;
+  flex: 1; /* Takes 1/3 of the screen */
   background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-.eventIndicator {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  background-color: #8a0303;
-  color: #ffffff;
-  border-radius: 50%;
-  padding: 2px 6px;
-}
-
-/* Right Sidebar */
-.rightSidebar {
-  width: 300px;
-  background: #ffffff;
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  flex-shrink: 0;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  overflow-y: auto; /* Enable scrolling for the events section */
 }
 
-.sidebarTitle {
-  font-size: 18px;
-  margin-bottom: 15px;
+.eventsTitle {
+  font-size: 20px;
   font-weight: bold;
+  color: #374151;
+  margin-bottom: 20px;
 }
 
 .eventCard {
   display: flex;
   flex-direction: column;
-  border: 1px solid #ddd;
-  padding: 10px;
+  gap: 10px;
+  padding: 15px;
+  background-color: #f8f9fa;
   border-radius: 12px;
-  margin-bottom: 10px;
+  border: 1px solid #e5e7eb;
+  margin-bottom: 15px;
 }
 
 .eventType {
+  font-size: 16px;
   font-weight: bold;
-  color: #343a40;
+  color: #8b0000;
 }
 
 .eventDetails {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 10px;
   font-size: 14px;
+  color: #6b7280;
+}
+
+.eventDetails .icon {
+  color: #8b0000;
 }
 
 .noEvents {
-  text-align: center;
-  color: #888;
+  font-size: 14px;
+  color: #6b7280;
 }
 
 .viewAllButton {
-  background-color: #8a0303;
+  width: 100%;
+  padding: 12px;
+  background-color: #8b0000;
   color: #ffffff;
   border: none;
   border-radius: 8px;
-  padding: 10px;
+  font-size: 14px;
+  font-weight: bold;
   cursor: pointer;
+  margin-top: 20px;
 }
 
 .viewAllButton:hover {
-  background-color: #6c0101;
+  background-color: #660202;
 }

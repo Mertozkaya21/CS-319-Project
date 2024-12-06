@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import styles from './CoordinatorDashboardToursAndFairs.module.css';
 import Sidebar from "../CoordinatorDashboardCommon/Sidebar";
 import { FaCalendarAlt, FaClock } from 'react-icons/fa';
@@ -8,6 +9,7 @@ const DashboardToursAndFairs = () => {
   const [currentYear, setCurrentYear] = useState(2024);
   const [selectedDay, setSelectedDay] = useState(null);
 
+  // Dummy data for calendar events
   const calendarEvents = [
     { date: 10, type: 'tour', count: 2 },
     { date: 15, type: 'fair', count: 1 },
@@ -16,6 +18,7 @@ const DashboardToursAndFairs = () => {
     { date: 29, type: 'tour', count: 1 },
   ];
 
+  // Dummy data for schedule details
   const scheduleDetails = [
     { date: 10, type: 'tour', time: '09:00 - 11:00' },
     { date: 10, type: 'fair', time: '10:00 - 12:00' },
@@ -25,45 +28,52 @@ const DashboardToursAndFairs = () => {
     { date: 29, type: 'tour', time: '09:00 - 11:00' },
   ];
 
-  const daysInMonth = 31;
+  const daysInMonth = 31; // Static for simplicity
   const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
+  // Handle day click
   const handleDayClick = (day) => {
     setSelectedDay(day);
   };
 
+  // Render calendar days
   const renderCalendarDays = () => {
     const days = [];
     for (let i = 1; i <= daysInMonth; i++) {
-      const event = calendarEvents.find((e) => e.date === i);
+      // Filter all events for the current day
+      const eventsForDay = calendarEvents.filter((e) => e.date === i);
+  
       days.push(
         <div
           key={i}
           className={`${styles.calendarDay} ${
-            event
-              ? event.type === 'tour'
-                ? styles.tourDay
-                : styles.fairDay
-              : ''
+            selectedDay === i ? styles.selected : ''
           }`}
           onClick={() => handleDayClick(i)}
         >
           <span>{i}</span>
-          {event && (
+        <div className={styles.eventIndicators}>
+          {eventsForDay.slice(0, 3).map((event, idx) => (
             <div
+              key={idx}
               className={`${styles.eventIndicator} ${
-                event.count > 1 ? styles.multiEvent : ''
+                event.type === 'tour' ? styles.tour : styles.fair
               }`}
-            >
-              {event.count > 1 ? `${event.count}+` : ''}
+            ></div>
+          ))}
+          {eventsForDay.length > 3 && (
+            <div className={`${styles.eventIndicator} ${styles.more}`}>
+              +{eventsForDay.length - 3}
             </div>
           )}
+          </div>
         </div>
       );
     }
     return days;
   };
 
+  // Filter schedule details for selected day
   const filteredDetails = scheduleDetails.filter((event) => event.date === selectedDay);
 
   return (
@@ -153,7 +163,12 @@ const DashboardToursAndFairs = () => {
                 {selectedDay ? 'No events for this day' : 'No upcoming events'}
               </p>
             )}
-            <button className={styles.viewAllButton}>View All</button>
+            <NavLink
+              to="/coordinatordashboardtoursandfairsviewall"
+              className={styles.viewAllButton}
+            >
+              View All
+            </NavLink>
           </div>
         </div>
       </div>

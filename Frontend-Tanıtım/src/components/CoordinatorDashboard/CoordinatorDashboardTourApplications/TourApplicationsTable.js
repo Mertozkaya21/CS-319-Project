@@ -97,12 +97,10 @@ const columns = [
   },
 ];
 
-const TourApplicationsTable = () => {
+const TourApplicationsTable = ({ rows }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogContent, setDialogContent] = useState('');
-  const [filteredRows, setFilteredRows] = useState(tourApplicationsRows);
   const [decisions, setDecisions] = useState({}); // Store decisions for each row
-  const [selectedRows, setSelectedRows] = useState([]); // Store selected rows
 
   const handleContactClick = (type, row) => {
     const content =
@@ -131,18 +129,16 @@ const TourApplicationsTable = () => {
     }));
   };
 
-  const handleRowSelection = (ids) => {
-    setSelectedRows(ids); // Update selected rows
-  };
-
-  const rowsWithHandlers = filteredRows.map((row) => ({
+  // Map rows and add handlers to each row
+  const rowsWithHandlers = rows.map((row) => ({
     ...row,
-    handleContactClick,
-    handleDecisionChange,
-    handleResetDecision,
-    decision: decisions[row.id] || null, // Get decision state or default to null
+    handleContactClick, // Add the handler for contact
+    handleDecisionChange, // Add the handler for decision change
+    handleResetDecision, // Add the handler for reset
+    decision: decisions[row.id] || null, // Attach decision state
   }));
 
+  
   return (
     <div className={styles.tableContainer}>
       <Paper
@@ -155,13 +151,12 @@ const TourApplicationsTable = () => {
         }}
       >
         <DataGrid
-          rows={rowsWithHandlers} // Rows with handlers
+          rows={rowsWithHandlers} // Pass rows with handlers
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5, 10]}
           checkboxSelection
           disableSelectionOnClick
-          onSelectionModelChange={(ids) => handleRowSelection(ids)}
           sx={{
             '& .MuiDataGrid-columnHeaders': {
               backgroundColor: '#f7f7f7',

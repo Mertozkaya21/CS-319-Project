@@ -34,8 +34,8 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@mui/material';
-import styles from './CoordinatorDashboardTourApplications.module.css';
-import bilkentLogo from '../../assets/bilkent-logo.png';
+import styles from './Sidebar.module.css';
+import bilkentLogo from '../../../assets/bilkent-logo.png';
 
 // Create a custom theme for the sidebar
 const theme = createTheme({
@@ -145,7 +145,7 @@ const Sidebar = () => {
         <nav>
           {/* Dashboard */}
           <NavLink
-            to="/coordinatordashboard"
+            to="/advisordashboard"
             className={({ isActive }) =>
               `${styles.navItem} ${isActive ? styles.active : ''}`
             }
@@ -157,7 +157,7 @@ const Sidebar = () => {
           </NavLink>
 
           <NavLink
-            to="/coordinatordashboardhighschool"
+            to="/advisordashboardhighschool"
                   className={({ isActive }) =>
                     `${styles.navItem} ${isActive ? styles.active : ''}`
                   }

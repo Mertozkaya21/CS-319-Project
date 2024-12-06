@@ -6,7 +6,7 @@ const InfoCard = ({ title, value, icon, bgColor }) => {
     <div className={styles.infoCard}>
       <div
         className={styles.iconContainer}
-        style={{ backgroundColor: bgColor }} // Dynamic background color
+        style={{ backgroundColor: bgColor }} // Dynamic circle color
       >
         {icon}
       </div>

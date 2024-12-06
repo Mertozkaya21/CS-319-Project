@@ -9,10 +9,8 @@ const DashboardTourApplications = () => {
   const [filteredRows, setFilteredRows] = useState(tourApplicationsRows); // Manage filtered rows
 
   const handleSearchSelection = (value) => {
-    if (value && value.label) {
-      const filtered = tourApplicationsRows.filter((row) =>
-        row.name.toLowerCase() === value.label.toLowerCase()
-      );
+    if (value) {
+      const filtered = tourApplicationsRows.filter((row) => row.name === value.label);
       setFilteredRows(filtered);
     } else {
       setFilteredRows(tourApplicationsRows);
