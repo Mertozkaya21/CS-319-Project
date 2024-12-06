@@ -1,10 +1,10 @@
-package com.cs319.backend.event;
+package com.cs319.backend.events;
 
 import java.util.List;
 
 import com.cs319.backend.enums.EventStatus;
-import com.cs319.backend.user.Advisor;
-import com.cs319.backend.user.Guide;
+import com.cs319.backend.users.Advisor;
+import com.cs319.backend.users.Guide;
 
 public class Tour extends Event {
     private TourTime tourTime;

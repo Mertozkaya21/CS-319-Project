@@ -1,4 +1,4 @@
-package com.cs319.backend.event;
+package com.cs319.backend.events;
 
 import java.util.Date;
 

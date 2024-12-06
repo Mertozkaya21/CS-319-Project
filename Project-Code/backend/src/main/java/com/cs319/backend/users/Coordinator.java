@@ -1,12 +1,12 @@
-package com.cs319.backend.user;
+package com.cs319.backend.users;
 
 import java.io.File;
 import java.util.Date;
 import java.util.List;
 
-import com.cs319.backend.payment.Payment;
-import com.cs319.backend.event.EventDay;
-import com.cs319.backend.forms.ApplicationForm;
+import com.cs319.backend.payments.Payment;
+import com.cs319.backend.events.EventDay;
+import com.cs319.backend.form.ApplicationForm;
 
 public class Coordinator extends User {
     private List<Guide> advisors;

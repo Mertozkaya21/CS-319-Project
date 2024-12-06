@@ -2,7 +2,7 @@ package com.cs319.backend.services;
 
 import java.util.ArrayList;
 
-import com.cs319.backend.user.User;
+import com.cs319.backend.users.User;
 
 public class UserManager {
     private ArrayList<User> users;

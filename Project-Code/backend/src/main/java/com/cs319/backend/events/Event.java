@@ -1,4 +1,4 @@
-package com.cs319.backend.event;
+package com.cs319.backend.events;
 
 import com.cs319.backend.enums.EventStatus;
 

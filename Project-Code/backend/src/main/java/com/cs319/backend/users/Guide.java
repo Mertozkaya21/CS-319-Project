@@ -1,12 +1,12 @@
-package com.cs319.backend.user;
+package com.cs319.backend.users;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 
 import com.cs319.backend.enums.*;
-import com.cs319.backend.event.Event;
-import com.cs319.backend.payment.Payment;
+import com.cs319.backend.events.Event;
+import com.cs319.backend.payments.Payment;
 
 public class Guide extends User {
     private HashMap<Days, TourHours> availableTimes;

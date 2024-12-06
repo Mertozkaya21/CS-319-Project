@@ -1,4 +1,4 @@
-package com.cs319.backend.user;
+package com.cs319.backend.users;
 
 import java.io.File;
 import java.util.List;

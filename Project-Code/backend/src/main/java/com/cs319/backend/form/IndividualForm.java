@@ -1,4 +1,4 @@
-package com.cs319.backend.forms;
+package com.cs319.backend.form;
 import java.util.List;
 
 public class IndividualForm extends ApplicationForm {

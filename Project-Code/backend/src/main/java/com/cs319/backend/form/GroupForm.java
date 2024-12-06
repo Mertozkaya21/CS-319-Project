@@ -1,6 +1,6 @@
-package com.cs319.backend.forms;
+package com.cs319.backend.form;
 
-import com.cs319.backend.highschool.Counselor;
+import com.cs319.backend.highschools.Counselor;
 
 public class GroupForm extends ApplicationForm {
     private int noOfParticipants;

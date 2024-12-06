@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cs319.backend.services.UserManager;
-import com.cs319.backend.user.User;
+import com.cs319.backend.users.User;
 
 @RestController
 @RequestMapping("/public")

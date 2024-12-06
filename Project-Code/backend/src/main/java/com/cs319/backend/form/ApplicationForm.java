@@ -1,10 +1,10 @@
-package com.cs319.backend.forms;
+package com.cs319.backend.form;
 
 import java.util.Date;
 
-import com.cs319.backend.highschool.Highschool;
+import com.cs319.backend.highschools.Highschool;
 import com.cs319.backend.enums.ApplicationFormStatus;
-import com.cs319.backend.event.TourTime;
+import com.cs319.backend.events.TourTime;
 
 public class ApplicationForm {
     private int id;

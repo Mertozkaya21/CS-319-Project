@@ -1,9 +1,9 @@
-package com.cs319.backend.highschool;
+package com.cs319.backend.highschools;
 
 import java.util.Date;
 import java.util.List;
 
-import com.cs319.backend.event.GroupTour;
+import com.cs319.backend.events.GroupTour;
 
 public class Highschool {
     private int ID;
