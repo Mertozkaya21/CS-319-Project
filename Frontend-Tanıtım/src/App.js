@@ -14,6 +14,7 @@ import CoordinatorDashboardFairApplications from './components/CoordinatorDashbo
 import CoordinatorDashboardToursAndFairs from './components/CoordinatorDashboard/CoordinatorDashboardToursAndFairs/DashboardToursAndFairs';
 import CoordinatorDashboardToursAndFairsViewAll from './components/CoordinatorDashboard/CoordinatorDashboardToursAndFairsViewAll/DashboardToursAndFairsViewAll';
 import CoordinatorDashboardFeedbackAnalysis from './components/CoordinatorDashboard/CoordinatorDashboardFeedbackAnalysis/DashboardFeedbackAnalysis';
+import CoordinatorDashboardPayments from './components/CoordinatorDashboard/CoordinatorDashboardPayments/DashboardPayments';
 import CoordinatorDashboardProfile from './components/CoordinatorDashboard/CoordinatorDashboardProfile/DashboardProfile';
 import CoordinatorDashboardChat from './components/CoordinatorDashboard/CoordinatorDashboardChat/DashboardChat';
 import CoordinatorDashboardSettings from './components/CoordinatorDashboard/CoordinatorDashboardSettings/DashboardSettings';
@@ -67,6 +68,7 @@ const App = () => {
         <Route path="/coordinatordashboardtoursandfairs" element={<CoordinatorDashboardToursAndFairs />} />
         <Route path="/coordinatordashboardtoursandfairsviewall" element={<CoordinatorDashboardToursAndFairsViewAll />} />
         <Route path="/coordinatordashboardfeedbackanalysis" element={<CoordinatorDashboardFeedbackAnalysis />} />
+        <Route path="/coordinatordashboardpayments" element={<CoordinatorDashboardPayments />} />
         <Route path="/coordinatordashboardprofile" element={<CoordinatorDashboardProfile />} />
         <Route path="/coordinatordashboardchat" element={<CoordinatorDashboardChat />} />
         <Route path="/coordinatordashboardsettings" element={<CoordinatorDashboardSettings />} />

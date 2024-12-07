@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PieChart as RePieChart, Pie, Cell, Legend, Tooltip } from 'recharts';
+import { Typography } from '@mui/material';
 
 const PieChart = () => {
   const [data] = useState([
@@ -20,7 +21,19 @@ const PieChart = () => {
 
   return (
     <div className="pieChartWrapper">
-      <h2 className="chartTitle">Departments of Interest</h2>
+      {/* Updated Title using Material-UI's Typography */}
+      <Typography
+        variant="h6"
+        sx={{
+          fontWeight: 'bold',
+          color: '#374151',
+          marginBottom: '16px',
+          textAlign: 'center',
+        }}
+      >
+        Departments of Interest
+      </Typography>
+
       <div
         className="pieChartContainer"
         onClick={handleClick}

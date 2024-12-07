@@ -178,16 +178,15 @@
   background-color: #ffffff;
   border-radius: 12px;
   padding: 15px; /* Adjust padding to reduce height */
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
   display: flex; /* Enable flex for centering */
   flex-direction: column; /* Stack content vertically */
   justify-content: center; /* Center vertically */
   align-items: center; /* Center horizontally */
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden; /* Prevent overflow of content */
 }
 
 /* Hover Effect */
-.calendarContainer:hover,
 .pieChartContainer:hover {
   box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
   transform: translateY(-5px);
@@ -205,47 +204,100 @@
 /* Calendar and Pie Chart Wrappers */
 .calendarWrapper,
 .pieChartWrapper {
-  width: calc(50% - 10px); /* Make them equal width */
+  width: calc(50% - 10px); /* Ensure equal width for calendar and pie chart */
   display: flex;
-  flex-direction: column; /* Stack title and container vertically */
+  flex-direction: column; /* Stack title and content vertically */
   align-items: center; /* Center content horizontally */
 }
 
-/* Material UI Overrides */
-.MuiDayPicker {
-  padding-top: 0; /* Remove extra padding */
+/* Calendar Header */
+.calendarHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 10px; /* Add spacing below the header */
+  padding: 0 10px; /* Add padding for spacing */
 }
 
-/* Material UI DayPicker Overrides */
-.MuiPickersDay-root {
-  border-radius: 50%; /* Circular day shapes */
+/* Month and Year Label */
+.monthYearLabel {
+  font-size: 16px;
+  font-weight: bold;
+  color: #374151; /* Dark gray */
+  text-align: center;
+}
+
+/* Arrow Buttons */
+.arrowButton {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #343a40;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.arrowButton:hover {
+  color: #8b0000; /* Dark red on hover */
+  transform: scale(1.2); /* Slight zoom effect on hover */
+}
+
+/* Day Labels */
+.dayLabels {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /* 7 columns for the week */
+  gap: 5px;
+  width: 100%;
+  margin-bottom: 10px; /* Add spacing below the labels */
+}
+
+.dayLabel {
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+  color: #6c757d; /* Neutral gray */
+}
+
+/* Calendar Grid */
+.calendarGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /* 7 columns for each day of the week */
+  gap: 5px; /* Adjust spacing between cells */
+  flex-grow: 1;
+  width: 100%; /* Ensure it stretches across the container */
+}
+
+/* Calendar Day */
+.calendarDay {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #e5e7eb; /* Light border */
+  border-radius: 12px;
+  background-color: #ffffff; /* White background */
+  color: #374151; /* Neutral gray for text */
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  height: 20px; /* Fixed height for day cells */
+  width: 25px; /* Fixed width for day cells */
+}
+
+/* Hover Effect for Calendar Day (Single cohesive hover) */
+.calendarDay:hover {
+  background-color: #f1f5f9; /* Light gray hover */
+  border-color: #d3d3d3; /* Gray border on hover */
+  transform: translateY(-2px); /* Slight lift effect */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
 }
 
 /* Selected Day */
-.MuiPickersDay-root.Mui-selected {
-  background-color: #343a40; /* Dark gray */
-  color: #ffffff;
-}
-
-/* Hover Effect for Non-Selected Days */
-.MuiPickersDay-root:not(.Mui-selected):not(.Mui-disabled):hover {
-  background-color: #e9ecef; /* Light gray hover */
-}
-
-/* Days Outside Current Month */
-.MuiPickersDay-root.MuiDayPicker-dayOutsideMonth {
-  color: #d3d3d3; /* Gray for out-of-month days */
-}
-
-/* Custom Event Colors */
-.MuiPickersDay-root.tour {
-  background-color: #8a0303; /* Red for tours */
-  color: #ffffff;
-}
-
-.MuiPickersDay-root.fair {
-  background-color: #4267B2; /* Blue for fairs */
-  color: #ffffff;
+.calendarDay.selected {
+  background-color: #f8d7da; /* Light red for selected day */
+  border-color: #8b0000; /* Dark red border for selected day */
 }
 
 /* Calendar Day Labels (e.g., Sun, Mon, etc.) */
@@ -254,6 +306,39 @@
   font-weight: bold;
   color: #6c757d;
   text-align: center;
+}
+
+/* Event Indicators (Circles) */
+.eventIndicators {
+  display: flex;
+  gap: 3px; /* Space between event dots */
+  margin-top: 5px;
+  flex-wrap: wrap; /* Wrap dots when there are many events */
+  justify-content: center; /* Center dots */
+}
+
+.eventIndicator {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+
+.eventIndicator.tour {
+  background-color: #ff0000; /* Red for Tours */
+}
+
+.eventIndicator.fair {
+  background-color: #0000ff; /* Blue for Fairs */
+}
+
+.eventIndicator.more {
+  background-color: #6c757d; /* Neutral color for "more" indicator */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 5px;
+  font-weight: bold;
 }
 
 /* Container for the table section */

@@ -22,7 +22,7 @@ const Header = ({ title }) => {
             <div className={styles.userInfoText}>
               <p className={styles.userName}>Nabila A.</p>
               <p className={styles.userRole}>Coordinator</p>
-            </div>
+            </div> 
           </div>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { BarChart } from '@mui/x-charts/BarChart';
 import { axisClasses } from '@mui/x-charts/ChartsAxis';
+import { Typography, Box } from '@mui/material';
 
 const chartData = {
   xAxis: [
@@ -39,21 +40,48 @@ const chartSetting = {
   height: 400, // Adjusted for better layout
   sx: {
     [`.${axisClasses.left} .${axisClasses.label}`]: {
-      transform: 'translate(-20px, 0)',
+      transform: 'translate(0px, 0)',
     },
     [`.${axisClasses.bottom} .${axisClasses.label}`]: {
-      transform: 'translate(0, 10px)',
+      transform: 'translate(0, 0px)',
     },
   },
 };
 
-export default function BarChartGuideRating() {
+const BarChartGuideRating = () => {
   return (
-    <BarChart
-      dataset={chartData.data}
-      xAxis={chartData.xAxis}
-      series={chartData.series}
-      {...chartSetting}
-    />
+    <Box>
+      {/* Title for the Chart */}
+      <Typography
+        variant="h6"
+        sx={{
+          fontWeight: 'bold',
+          color: '#374151',
+          marginBottom: '16px',
+          textAlign: 'center',
+        }}
+      >
+        Average Guide Rating
+      </Typography>
+
+      {/* Bar Chart */}
+      <Box
+        sx={{
+          '& .MuiBarChart-bar:hover': {
+            transform: 'translateY(-5px)', // Lift effect
+            transition: 'transform 0.3s ease', // Smooth animation
+          },
+        }}
+      >
+        <BarChart
+          dataset={chartData.data}
+          xAxis={chartData.xAxis}
+          series={chartData.series}
+          {...chartSetting}
+        />
+      </Box>
+    </Box>
   );
-}
+};
+
+export default BarChartGuideRating;

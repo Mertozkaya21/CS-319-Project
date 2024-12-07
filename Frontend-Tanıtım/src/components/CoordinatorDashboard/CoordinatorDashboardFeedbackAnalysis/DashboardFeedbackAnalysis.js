@@ -2,11 +2,14 @@ import React from "react";
 import Sidebar from "../CoordinatorDashboardCommon/Sidebar";
 import InfoCard from "./InfoCard";
 import PieChart from "./PieChartDepartments";
+import Comments from "./Comments";
+import Header from "./Header";
+import BarChartGuideRating from "./BarChartGuideRating";
 import LineChartTours from "./LineChartNumberofTours"; // Import the Line Chart
 import LineChartSatisfaction from "./LineChartAverageTourSatisfaction"; // Import the Line Chart
 import { FaUsers, FaChalkboardTeacher, FaRoute, FaBuilding } from "react-icons/fa";
 import styles from "./CoordinatorDashboardFeedbackAnalysis.module.css";
-
+ 
 const DashboardFeedbackAnalysis = () => {
   const dummyInfoData = [
     {
@@ -36,8 +39,7 @@ const DashboardFeedbackAnalysis = () => {
 
       {/* Main Content */}
       <div className={styles.mainContent}>
-        <h1 className={styles.dashboardTitle}>Feedback Analysis</h1>
-
+      <Header title="Feedback Analysis" />
         {/* Info Cards */}
         <div className={styles.infoCardsContainer}>
           {dummyInfoData.map((data, index) => (
@@ -55,20 +57,25 @@ const DashboardFeedbackAnalysis = () => {
         <div className={styles.graphContainer}>
           <LineChartTours /> {/* Include the line chart component */}
         </div>
-        <div className={styles.graphContainer}>
-          <LineChartSatisfaction /> {/* Include the line chart component */}
-        </div>
-        
 
-        {/* Bottom Section */}
-        <div className={styles.bottomSection}>
+        <div className={styles.chartSection}>
           {/* Pie Chart */}
-          <div className={styles.calendarAndPieContainer}>
-            <div className={styles.pieChartContainer}>
-              <PieChart />
-            </div>
+          <div className={styles.pieChartContainer}>
+            <PieChart />
+          </div>
+
+          {/* Bar Chart */}
+          <div className={styles.barChartContainer}>
+            <BarChartGuideRating />
           </div>
         </div>
+
+        {/* Line Chart for Average Satisfaction */}
+        <div className={styles.graphContainer}>
+          <LineChartSatisfaction /> {/* Line chart for Average Tour Satisfaction */}
+        </div>
+        
+        <Comments />
 
       </div>
     </div>

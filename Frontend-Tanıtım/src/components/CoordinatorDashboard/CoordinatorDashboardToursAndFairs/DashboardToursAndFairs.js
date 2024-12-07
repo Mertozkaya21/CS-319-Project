@@ -1,172 +1,175 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import styles from './CoordinatorDashboardToursAndFairs.module.css';
-import Sidebar from "../CoordinatorDashboardCommon/Sidebar";
+import Sidebar from '../CoordinatorDashboardCommon/Sidebar';
 import { FaCalendarAlt, FaClock } from 'react-icons/fa';
+import { format, getDaysInMonth, startOfMonth, getDay, addDays } from 'date-fns';
+import styles from './CoordinatorDashboardToursAndFairs.module.css';
+import Header from './Header';
 
 const DashboardToursAndFairs = () => {
-  const [currentMonth, setCurrentMonth] = useState('October');
-  const [currentYear, setCurrentYear] = useState(2024);
+  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth()); // Current month (0-based)
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const [selectedDay, setSelectedDay] = useState(null);
-
-  // Dummy data for calendar events
-  const calendarEvents = [
-    { date: 10, type: 'tour', count: 2 },
-    { date: 15, type: 'fair', count: 1 },
-    { date: 18, type: 'tour', count: 1 },
-    { date: 20, type: 'fair', count: 3 },
-    { date: 29, type: 'tour', count: 1 },
-  ];
-
-  // Dummy data for schedule details
+ 
   const scheduleDetails = [
-    { date: 10, type: 'tour', time: '09:00 - 11:00' },
-    { date: 10, type: 'fair', time: '10:00 - 12:00' },
-    { date: 15, type: 'tour', time: '13:30 - 16:00' },
-    { date: 18, type: 'fair', time: '14:00 - 16:00' },
-    { date: 20, type: 'tour', time: '11:00 - 13:00' },
-    { date: 29, type: 'tour', time: '09:00 - 11:00' },
+    { date: '2024-12-10', type: 'tour', time: '09:00 - 11:00' },
+    { date: '2024-12-10', type: 'fair', time: '10:00 - 12:00' },
+    { date: '2024-12-10', type: 'fair', time: '10:00 - 12:00' },
+    { date: '2024-12-10', type: 'fair', time: '10:00 - 12:00' },
+    { date: '2024-12-10', type: 'fair', time: '10:00 - 12:00' },
+    { date: '2024-12-10', type: 'fair', time: '10:00 - 12:00' },
+    { date: '2024-12-15', type: 'tour', time: '13:30 - 16:00' },
+    { date: '2024-12-15', type: 'tour', time: '13:30 - 16:00' },
+    { date: '2024-12-15', type: 'tour', time: '13:30 - 16:00' },
+    { date: '2024-12-15', type: 'tour', time: '13:30 - 16:00' },
+    { date: '2024-12-18', type: 'fair', time: '14:00 - 16:00' },
+    { date: '2024-12-20', type: 'tour', time: '11:00 - 13:00' },
+    { date: '2024-12-20', type: 'tour', time: '11:00 - 13:00' },
+    { date: '2024-12-20', type: 'tour', time: '11:00 - 13:00' },
+    { date: '2024-12-20', type: 'tour', time: '11:00 - 13:00' },
+    { date: '2024-12-29', type: 'tour', time: '09:00 - 11:00' },
   ];
 
-  const daysInMonth = 31; // Static for simplicity
-  const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+  const daysInMonth = getDaysInMonth(new Date(currentYear, currentMonth));
+  const firstDayOfMonth = getDay(startOfMonth(new Date(currentYear, currentMonth)));
 
-  // Handle day click
-  const handleDayClick = (day) => {
-    setSelectedDay(day);
-  };
-
-  // Render calendar days
-  const renderCalendarDays = () => {
+  const generateCalendarDays = () => {
     const days = [];
-    for (let i = 1; i <= daysInMonth; i++) {
-      // Filter all events for the current day
-      const eventsForDay = calendarEvents.filter((e) => e.date === i);
+    const adjustedFirstDay = (firstDayOfMonth === 0 ? 6 : firstDayOfMonth - 1); // Adjust so Monday is the first day
+    const totalCells = adjustedFirstDay + daysInMonth; // Account for empty days before the first day
   
-      days.push(
-        <div
-          key={i}
-          className={`${styles.calendarDay} ${
-            selectedDay === i ? styles.selected : ''
-          }`}
-          onClick={() => handleDayClick(i)}
-        >
-          <span>{i}</span>
-        <div className={styles.eventIndicators}>
-          {eventsForDay.slice(0, 3).map((event, idx) => (
-            <div
-              key={idx}
-              className={`${styles.eventIndicator} ${
-                event.type === 'tour' ? styles.tour : styles.fair
-              }`}
-            ></div>
-          ))}
-          {eventsForDay.length > 3 && (
-            <div className={`${styles.eventIndicator} ${styles.more}`}>
-              +{eventsForDay.length - 3}
+    for (let i = 0; i < totalCells; i++) {
+      if (i < adjustedFirstDay) {
+        days.push(<div key={`empty-${i}`} className={styles.calendarDay}></div>); // Empty cells
+      } else {
+        const day = i - adjustedFirstDay + 1;
+        const formattedDate = format(
+          new Date(currentYear, currentMonth, day),
+          'yyyy-MM-dd'
+        );
+  
+        const eventsForDay = scheduleDetails.filter(
+          (event) => event.date === formattedDate
+        );
+  
+        days.push(
+          <div
+            key={day}
+            className={`${styles.calendarDay} ${
+              selectedDay === formattedDate ? styles.selected : ''
+            }`}
+            onClick={() => setSelectedDay(formattedDate)}
+          >
+            <span>{day}</span>
+            <div className={styles.eventIndicators}>
+              {eventsForDay.slice(0, 2).map((event, idx) => (
+                <div
+                  key={idx}
+                  className={`${styles.eventIndicator} ${
+                    event.type === 'tour' ? styles.tour : styles.fair
+                  }`}
+                ></div>
+              ))}
+              {eventsForDay.length > 2 && (
+                <div className={`${styles.eventIndicator} ${styles.more}`}>
+                  +{eventsForDay.length - 2}
+                </div>
+              )}
             </div>
-          )}
           </div>
-        </div>
-      );
+        );
+      }
     }
     return days;
   };
 
-  // Filter schedule details for selected day
   const filteredDetails = scheduleDetails.filter((event) => event.date === selectedDay);
 
-  return (
+  return ( 
     <div className={styles.dashboardContainer}>
-      {/* Sidebar */}
       <Sidebar />
-
-      {/* Main Content */}
       <div className={styles.mainContent}>
-        {/* Header */}
-        <div className={styles.header}>
-          <h1 className={styles.headerTitle}>Tours & Fairs</h1>
-          <div className={styles.userSection}>
-            <div className={styles.avatarCircle}></div>
-            <div className={styles.userInfoText}>
-              <p className={styles.userName}>Nabila A.</p>
-              <p className={styles.userRole}>Coordinator</p>
+        <Header title="Tours & Fairs" />
+        <div className={styles.contentSection}>
+        <div className={styles.calendarSection}>
+          <div className={styles.calendarHeader}>
+            {/* Previous Month Button */}
+            <button
+              className={styles.arrowButton}
+              onClick={() => {
+                if (currentMonth === 0) {
+                  setCurrentMonth(11); // December
+                  setCurrentYear(currentYear - 1);
+                } else {
+                  setCurrentMonth(currentMonth - 1);
+                }
+              }}
+            >
+              &#8249; {/* Left arrow */}
+            </button>
+
+            {/* Month and Year Label */}
+            <div className={styles.monthYearLabel}>
+              {format(new Date(currentYear, currentMonth), 'MMMM yyyy')}
             </div>
+
+            {/* Next Month Button */}
+            <button
+              className={styles.arrowButton}
+              onClick={() => {
+                if (currentMonth === 11) {
+                  setCurrentMonth(0); // January
+                  setCurrentYear(currentYear + 1);
+                } else {
+                  setCurrentMonth(currentMonth + 1);
+                }
+              }}
+            >
+              &#8250; {/* Right arrow */}
+            </button>
+          </div>
+
+          <div className={styles.calendarContainer}>
+            {/* Days of the Week */}
+            <div className={styles.dayLabels}>
+              {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map((day, index) => (
+                <div key={index} className={styles.dayLabel}>
+                  {day}
+                </div>
+              ))}
+            </div>
+
+            {/* Calendar Grid */}
+            <div className={styles.calendarGrid}>{generateCalendarDays()}</div>
           </div>
         </div>
 
-        {/* Content */}
-        <div className={styles.contentSection}>
-          {/* Calendar Section */}
-          <div className={styles.calendarSection}>
-            <div className={styles.calendarContainer}>
-              <div className={styles.calendarHeader}>
-                <select
-                  value={currentMonth}
-                  onChange={(e) => setCurrentMonth(e.target.value)}
-                  className={styles.monthDropdown}
-                >
-                  {months.map((month) => (
-                    <option key={month} value={month}>
-                      {month}
-                    </option>
-                  ))}
-                </select>
-                <select
-                  value={currentYear}
-                  onChange={(e) => setCurrentYear(e.target.value)}
-                  className={styles.yearDropdown}
-                >
-                  <option value={2023}>2023</option>
-                  <option value={2024}>2024</option>
-                  <option value={2025}>2025</option>
-                </select>
-              </div>
-              <div className={styles.calendarGrid}>
-                <div className={styles.dayLabel}>Mon</div>
-                <div className={styles.dayLabel}>Tue</div>
-                <div className={styles.dayLabel}>Wed</div>
-                <div className={styles.dayLabel}>Thu</div>
-                <div className={styles.dayLabel}>Fri</div>
-                <div className={styles.dayLabel}>Sat</div>
-                <div className={styles.dayLabel}>Sun</div>
-                {renderCalendarDays()}
-              </div>
-            </div>
-          </div>
-
-          {/* Events Section */}
           <div className={styles.eventsSection}>
             <h3 className={styles.eventsTitle}>
-              {selectedDay
-                ? `Schedule Details - ${currentMonth} ${selectedDay}, ${currentYear}`
-                : 'Upcoming Events'}
+              {selectedDay ? `Schedule Details - ${selectedDay}` : 'Upcoming Events'}
             </h3>
-            {filteredDetails.length > 0 ? (
-              filteredDetails.map((event, index) => (
-                <div key={index} className={styles.eventCard}>
-                  <div className={styles.eventType}>
-                    {event.type === 'tour' ? 'Tour' : 'Fair'}
+            <div className={styles.eventsList}>
+              {filteredDetails.length > 0 ? (
+                filteredDetails.map((event, idx) => (
+                  <div key={idx} className={styles.eventCard}>
+                    <div className={styles.eventType}>
+                      {event.type === 'tour' ? 'Tour' : 'Fair'}
+                    </div>
+                    <div className={styles.eventDetails}>
+                      <FaCalendarAlt />
+                      <span>{event.date}</span>
+                    </div>
+                    <div className={styles.eventDetails}>
+                      <FaClock />
+                      <span>{event.time}</span>
+                    </div>
                   </div>
-                  <div className={styles.eventDetails}>
-                    <FaCalendarAlt className={styles.icon} />
-                    <span>{`${currentMonth} ${event.date}, ${currentYear}`}</span>
-                  </div>
-                  <div className={styles.eventDetails}>
-                    <FaClock className={styles.icon} />
-                    <span>{event.time}</span>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p className={styles.noEvents}>
-                {selectedDay ? 'No events for this day' : 'No upcoming events'}
-              </p>
-            )}
-            <NavLink
-              to="/coordinatordashboardtoursandfairsviewall"
-              className={styles.viewAllButton}
-            >
+                ))
+              ) : (
+                <p>No events for this day</p>
+              )}
+            </div>
+            <NavLink to="/coordinatordashboardtoursandfairsviewall" className={styles.viewAllButton}>
               View All
             </NavLink>
           </div>
