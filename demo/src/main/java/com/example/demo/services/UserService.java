@@ -5,6 +5,10 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.example.demo.entities.user.Advisor;
+import com.example.demo.entities.user.Coordinator;
+import com.example.demo.entities.user.Guide;
+import com.example.demo.entities.user.Trainee;
 import com.example.demo.entities.user.User;
 import com.example.demo.repositories.user.AdvisorRepository;
 import com.example.demo.repositories.user.CoordinatorRepository;
@@ -35,8 +39,36 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User saveOneUser(User newUser) {
-        return userRepository.save(newUser);
+    public List<Coordinator> getCoordinator() {
+        return coordinatorRepository.findAll();
+    }
+
+    public List<Advisor> getAllAdvisors() {
+        return advisorRepository.findAll();
+    }
+
+    public List<Guide> getAllGuides() {
+        return guideRepository.findAll();
+    }
+
+    public List<Trainee> getAllTrainees() {
+        return traineeRepository.findAll();
+    }
+
+    public Coordinator saveCoordinator(Coordinator theCoordinator) {
+        return coordinatorRepository.save(theCoordinator);
+    }
+
+    public Advisor saveAdvisor(Advisor anAdvisor) {
+        return advisorRepository.save(anAdvisor);
+    }
+
+    public Guide saveGuide(Guide aGuide) {
+        return guideRepository.save(aGuide);
+    }
+
+    public Trainee saveTrainee(Trainee aTrainee) {
+        return traineeRepository.save(aTrainee);
     }
 
     public User getOneUser(Long userId){
