@@ -3,7 +3,6 @@ package com.example.demo.entities.form;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.example.demo.entities.event.PreferredVisitTime;
 import com.example.demo.entities.highschool.Highschool;
 import com.example.demo.entities.user.Advisor;
 import com.example.demo.entities.user.Coordinator;

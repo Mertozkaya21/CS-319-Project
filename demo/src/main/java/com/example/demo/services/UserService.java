@@ -6,15 +6,29 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entities.user.User;
-import com.example.demo.repositories.UserRepository;
+import com.example.demo.repositories.user.AdvisorRepository;
+import com.example.demo.repositories.user.CoordinatorRepository;
+import com.example.demo.repositories.user.GuideRepository;
+import com.example.demo.repositories.user.TraineeRepository;
+import com.example.demo.repositories.user.UserRepository;
 
 @Service
 public class UserService {
     
-    UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final CoordinatorRepository coordinatorRepository;
+    private final AdvisorRepository advisorRepository;
+    private final GuideRepository guideRepository;
+    private final TraineeRepository traineeRepository;
 
-    public UserService(UserRepository userRepo){
+    public UserService(UserRepository userRepo, CoordinatorRepository coordinatorRepo,
+                        AdvisorRepository advisorRepo, GuideRepository guideRepo,
+                        TraineeRepository traineeRepo){
         this.userRepository = userRepo;
+        this.coordinatorRepository = coordinatorRepo;
+        this.advisorRepository = advisorRepo;
+        this.guideRepository = guideRepo;
+        this.traineeRepository = traineeRepo;
     }
 
     public List<User> getAllUsers() {

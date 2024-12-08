@@ -6,10 +6,10 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.entities.user.Advisor;
 import com.example.demo.enums.Days;
-import com.example.demo.repositories.AdvisorRepository;
+import com.example.demo.repositories.user.AdvisorRepository;
 
 @Service
-public class AdvisorService {
+public class AdvisorService { //This class is for testing purposes
 
     private final AdvisorRepository advisorRepository;
 
