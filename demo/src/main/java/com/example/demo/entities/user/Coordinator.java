@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -31,7 +31,7 @@ public class Coordinator extends User {
 
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
-    private Date dateAdded;
+    private LocalDate dateAdded;
 
     @OneToMany(mappedBy = "coordinator", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ApplicationForm> applicationForms;

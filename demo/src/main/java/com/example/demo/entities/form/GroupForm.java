@@ -22,6 +22,6 @@ public class GroupForm extends ApplicationForm{
     @ManyToOne
     @JoinColumn(name = "counselorID", nullable = false)
     private Counselor counselor;
-
+    
     private String chaperoneRole;
 }

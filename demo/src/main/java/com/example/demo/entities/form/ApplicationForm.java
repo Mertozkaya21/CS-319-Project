@@ -43,6 +43,7 @@ public class ApplicationForm {
     @Column(nullable = false)
     private LocalDate submitTime;
     
+    @Column(columnDefinition = "text")
     private String notes;
 
     @Enumerated
