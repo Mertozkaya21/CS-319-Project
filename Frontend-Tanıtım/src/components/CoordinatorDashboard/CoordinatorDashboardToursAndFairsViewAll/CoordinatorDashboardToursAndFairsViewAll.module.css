@@ -1,0 +1,315 @@
+/* Dashboard Container */
+.dashboardContainer {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Main Content */
+.mainContent {
+  flex: 1;
+  display: flex;
+  flex-direction: column; /* Stack elements vertically */
+  margin-left: 250px; /* Offset for the fixed sidebar width */
+  background-color: #f8f9fa;
+  overflow-y: auto;
+}
+
+/* Header */
+.header {
+  display: flex;
+  flex-direction: column; /* Separate title and controls into two rows */
+  gap: 20px; /* Add spacing between rows */
+  padding: 20px;
+  padding-left: 0%;
+  padding-right: 0%;
+  padding-bottom: 0%;
+  background-color: #ffffff;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Top Row */
+.headerTopRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0px; /* Add horizontal padding to align with the table edges */
+}
+
+.headerTitle {
+  font-size: 24px;
+  font-weight: bold;
+  color: #343a40;
+}
+
+/* User Section */
+.userSection {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.iconButton {
+  background: #ffffff;
+  border: none;
+  border-radius: 50%;
+  padding: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.iconButton svg {
+  color: #686565; /* Set icon color to dark red */
+}
+
+.iconButton:hover svg {
+  color: #686565; /* Darker red on hover */
+}
+
+.iconButton:hover {
+  background-color: #f8d7da; /* Light red background on hover */
+}
+
+.notificationDot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background-color: #dc3545;
+  border-radius: 50%;
+  top: 4px;
+  right: 4px;
+}
+
+.userAvatar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatarCircle {
+  width: 40px;
+  height: 40px;
+  background-color: #8a0303;
+  border-radius: 50%;
+}
+
+.userInfoText {
+  display: flex;
+  flex-direction: column;
+}
+
+.userName {
+  font-weight: bold;
+  font-size: 14px;
+  margin: 0;
+  color: #343a40;
+}
+
+.userRole {
+  font-size: 12px;
+  margin: 0;
+  color: #6c757d;
+}
+
+/* Header Bottom Row */
+.headerBottomRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px; /* Add horizontal padding to align with the table edges */
+  box-sizing: border-box; /* Ensure padding is included in the element's total width */
+}
+
+.searchBar {
+  display: flex;
+  align-items: center;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 10px;
+  width: 300px;
+  position: relative;
+  margin-right: auto; /* Push the search bar to the left */
+}
+
+.searchIconButton {
+  background: none;
+  border: none;
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.searchIcon {
+  color: #8a0303;
+  font-size: 16px;
+}
+
+.searchBar input {
+  border: none;
+  outline: none;
+  font-size: 14px;
+  padding-left: 35px; /* Ensure input text doesn't overlap the icon */
+  flex: 1;
+}
+
+.searchBar input::placeholder {
+  color: #bbb;
+}
+
+.searchBar input:focus {
+  border-color: #8a0303; /* Highlight border on focus */
+}
+
+/* Dropdown Button */
+.dropdown {
+  display: inline-block;
+}
+
+.dropdownButton {
+  background-color: transparent;
+  color: #8a0303;
+  border: 1px solid #8a0303;
+  border-radius: 12px;
+  padding: 10px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.dropdownButton:hover {
+  background-color: #fbe8e8;
+}
+
+.dropdownArrow {
+  font-size: 12px;
+}
+
+/* Remove Selected Button */
+.removeButton {
+  background-color: #8a0303;
+  color: white;
+  padding: 10px 20px;
+  border: 1px solid #8a0303;
+  border-radius: 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.removeButton:hover {
+  background-color: #6c0101;
+  border-color: #6c0101;
+}
+
+/* Bottom Row */
+.headerBottomRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Table Container */
+.tableContainer {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  flex: 1;
+}
+
+.highSchoolTable {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+.highSchoolTable th {
+  background: #f7f7f7;
+  font-weight: bold;
+  text-align: center; /* Center text horizontally */
+  vertical-align: middle; /* Center text vertically */
+  padding: 12px;
+  color: #555555;
+}
+
+.highSchoolTable td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  text-align: center; /* Center content horizontally */
+  vertical-align: middle; /* Center content vertically */
+}
+
+/* Contact buttons container */
+.contactButtons {
+  display: flex;
+  justify-content: center; /* Center the buttons horizontally */
+  align-items: center; /* Center the buttons vertically */
+  gap: 10px; /* Space between buttons */
+}
+
+.contactButton {
+  background: #f8d7da;
+  color: #dc3545;
+  border: none;
+  border-radius: 50%;
+  padding: 8px;
+  margin-right: 5px;
+  cursor: pointer;
+}
+
+.priorityScore {
+  color: #dc3545; /* Red text */
+  border-radius: 12px; /* Keep the rounded edges if needed */
+  text-align: center;
+  padding: 0; /* Remove unnecessary padding */
+  background: none; /* Remove background color */
+  border: none; /* Ensure there's no border applied */
+}
+
+/* Pagination */
+.pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.pageButton {
+  background: #f7f7f7;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 8px 12px;
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+.pageButton:hover {
+  background: #eaeaea;
+}
+
+.activePageButton {
+  background-color: #8a0303;
+  color: #ffffff;
+}
+
+.pageArrow {
+  background: #f7f7f7;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.pageArrow:disabled {
+  background: #eaeaea;
+  color: #bbb;
+  cursor: not-allowed;
+}
+
