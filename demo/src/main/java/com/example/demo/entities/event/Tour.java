@@ -70,7 +70,7 @@ public class Tour extends Event {
     @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TourParticipantSurvey> tourParticipantSurveys;
 
-    private int QAroomID;
+    private int qAroomID;
 
     @Column(nullable = false)
     private int noOfGuests;

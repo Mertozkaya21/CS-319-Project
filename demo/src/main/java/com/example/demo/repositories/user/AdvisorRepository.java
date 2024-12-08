@@ -1,4 +1,4 @@
-package com.example.demo.repositories;
+package com.example.demo.repositories.user;
 
 import com.example.demo.entities.user.Advisor;
 import com.example.demo.enums.Days;

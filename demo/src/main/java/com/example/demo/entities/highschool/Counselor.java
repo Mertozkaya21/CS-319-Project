@@ -31,7 +31,7 @@ public class Counselor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long ID;
+    private long id;
 
     @Column(nullable = false)
     private String name;
