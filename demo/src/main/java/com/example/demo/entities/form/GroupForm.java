@@ -18,10 +18,10 @@ import lombok.Setter;
 public class GroupForm extends ApplicationForm{
 
     private int noOfParticipants;
-
+    
     @ManyToOne
     @JoinColumn(name = "counselorID", nullable = false)
     private Counselor counselor;
-    
+
     private String chaperoneRole;
 }

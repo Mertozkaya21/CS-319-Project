@@ -44,7 +44,7 @@ public class Tour extends Event {
 
     @ManyToOne
     @JoinColumn(name = "visitorSchoolID", nullable = true)
-    private Highschool visitorSchool; // Optional for tours that don't involve schools
+    private Highschool visitorSchool; 
 
     @ElementCollection
     @CollectionTable(name = "DepartmentInterest", joinColumns = @JoinColumn(name = "tourID"))

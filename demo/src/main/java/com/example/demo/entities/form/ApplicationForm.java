@@ -65,10 +65,10 @@ public class ApplicationForm {
     private Highschool highschool;
 
     @ManyToOne
-    @JoinColumn(name = "advisor_id") // Matches the 'mappedBy' in Advisor
+    @JoinColumn(name = "advisor_id") 
     private Advisor advisor;
 
     @ManyToOne
-    @JoinColumn(name = "coordinator_id") // Matches the 'mappedBy' in Coordinator
+    @JoinColumn(name = "coordinator_id")
     private Coordinator coordinator;
 }

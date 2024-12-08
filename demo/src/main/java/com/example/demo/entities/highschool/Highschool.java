@@ -3,6 +3,7 @@ package com.example.demo.entities.highschool;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.example.demo.entities.event.Tour;
 import com.example.demo.entities.event.TourParticipantSurvey;
 
 import jakarta.persistence.CascadeType;
@@ -47,5 +48,6 @@ public class Highschool {
     @OneToMany(mappedBy = "highschool", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TourParticipantSurvey> surveys;
     
-    //private List<Tour> groupTours;
+    @OneToMany(mappedBy = "visitorSchool", cascade = CascadeType.ALL, orphanRemoval = true) 
+    private List<Tour> groupTours;
 }
