@@ -3,6 +3,8 @@ package com.example.demo.entities.highschool;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.example.demo.entities.event.TourParticipantSurvey;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,7 +27,7 @@ import lombok.Setter;
 public class Highschool {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long highschoolID;
+    private long ID;
 
     @Column(nullable = false)
     private String name;
@@ -42,5 +44,8 @@ public class Highschool {
     @OneToMany(mappedBy = "highschool", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Counselor> counselors;
 
-    //private List<GroupTour> groupTours;
+    @OneToMany(mappedBy = "highschool", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TourParticipantSurvey> surveys;
+    
+    //private List<Tour> groupTours;
 }

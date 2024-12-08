@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.example.demo.entities.event.PreferredVisitTime;
 import com.example.demo.entities.highschool.Highschool;
+import com.example.demo.entities.user.Advisor;
+import com.example.demo.entities.user.Coordinator;
 import com.example.demo.enums.ApplicationFormStatus;
 
 import jakarta.persistence.CascadeType;
@@ -37,11 +39,14 @@ public class ApplicationForm {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long applicationFormID;
+
     @Column(nullable = false)
     private LocalDate submitTime;
+    
     private String notes;
 
     @Enumerated
+    @Column(name = "Status")
     private ApplicationFormStatus status;
 
     @Column(nullable = false)
@@ -57,4 +62,12 @@ public class ApplicationForm {
     @ManyToOne
     @JoinColumn(name = "highschoolID", nullable = false)
     private Highschool highschool;
+
+    @ManyToOne
+    @JoinColumn(name = "advisor_id") // Matches the 'mappedBy' in Advisor
+    private Advisor advisor;
+
+    @ManyToOne
+    @JoinColumn(name = "coordinator_id") // Matches the 'mappedBy' in Coordinator
+    private Coordinator coordinator;
 }
