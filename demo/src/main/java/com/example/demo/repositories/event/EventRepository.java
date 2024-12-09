@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.demo.entities.event.Event;
 
-public interface EventRepository extends JpaRepository<Event, Long>{
+public interface EventRepository<T extends Event> extends JpaRepository<T, Long>{
 
 }

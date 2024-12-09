@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -9,25 +10,27 @@ import com.example.demo.entities.form.ApplicationForm;
 import com.example.demo.entities.form.GroupForm;
 import com.example.demo.entities.form.IndividualForm;
 import com.example.demo.enums.ApplicationFormStatus;
-import com.example.demo.repositories.form.ApplicationFormRepository;
 import com.example.demo.repositories.form.GroupFormRepository;
 import com.example.demo.repositories.form.IndividualFormRepository;
 
 @Service
 public class ApplicationFormService {
-    private final ApplicationFormRepository applicationFormRepository;
     private final GroupFormRepository groupFormRepository;
     private final IndividualFormRepository individualFormRepository;
 
-    public ApplicationFormService(ApplicationFormRepository applicationFormRepo, GroupFormRepository groupFormRepo,
+    public ApplicationFormService(GroupFormRepository groupFormRepo,
                                     IndividualFormRepository individualFormRepo){
-        this.applicationFormRepository = applicationFormRepo;
         this.groupFormRepository = groupFormRepo;
         this.individualFormRepository = individualFormRepo;
     }
 
     public List<ApplicationForm> getAllApplicationForms() {
-        return applicationFormRepository.findAll();
+    
+        List<ApplicationForm> allForms = new ArrayList<>();
+        allForms.addAll(groupFormRepository.findAll());
+        allForms.addAll(individualFormRepository.findAll());
+
+        return allForms;
     }
 
     public List<GroupForm> getGroupForm() {
@@ -46,33 +49,62 @@ public class ApplicationFormService {
         return groupFormRepository.save(aGroupForm);
     }
 
-    public ApplicationForm getOneForm(Long formId){
-        return applicationFormRepository.findById(formId).orElse(null);
+    public ApplicationForm getOneForm(Long formId) {
+        Optional<GroupForm> groupFormOpt = groupFormRepository.findById(formId);
+        if (groupFormOpt.isPresent()) return groupFormOpt.get();
+
+        Optional<IndividualForm> individualFormOpt = individualFormRepository.findById(formId);
+        if (individualFormOpt.isPresent()) return individualFormOpt.get();
+    
+        return null;
     }
 
-    public ApplicationForm updateOneApplicationFormStatus(Long formId, ApplicationFormStatus newStatus) {
-        Optional<ApplicationForm> applicationForm = applicationFormRepository.findById(formId);
-        if(applicationForm.isPresent()){
-            ApplicationForm foundApplicationForm = applicationForm.get();
-            foundApplicationForm.setStatus(newStatus);
-            applicationFormRepository.save(foundApplicationForm);
-            return foundApplicationForm;
-        } else {
-            return null;
+
+    public boolean updateOneApplicationFormStatus(Long formId, ApplicationFormStatus newStatus) {
+        Optional<GroupForm> groupFormOpt = groupFormRepository.findById(formId);
+        if (groupFormOpt.isPresent()) {
+            GroupForm foundForm = groupFormOpt.get();
+            foundForm.setStatus(newStatus);
+            groupFormRepository.save(foundForm);
+            return true;
         }
+        Optional<IndividualForm> individualFormOpt = individualFormRepository.findById(formId);
+        if (individualFormOpt.isPresent()){
+            IndividualForm foundForm = individualFormOpt.get();
+            foundForm.setStatus(newStatus);
+            individualFormRepository.save(foundForm);
+            return true;
+        } 
+    
+        return false;
     }
 
     public ApplicationFormStatus getOneApplicationFormStatus(Long formId) {
-        Optional<ApplicationForm> applicationForm = applicationFormRepository.findById(formId);
-        if(applicationForm.isPresent()){
-            ApplicationForm foundApplicationForm = applicationForm.get();
+        Optional<GroupForm> groupForm = groupFormRepository.findById(formId);
+        if(groupForm.isPresent()){
+            ApplicationForm foundApplicationForm = groupForm.get();
             return foundApplicationForm.getStatus();
-        } else {
-            return null;
-        }
+        } 
+        Optional<IndividualForm> individualForm = individualFormRepository.findById(formId);
+        if(individualForm.isPresent()){
+            ApplicationForm foundApplicationForm = individualForm.get();
+            return foundApplicationForm.getStatus();
+        } 
+        return null;
+        
     }
 
-    public void deleteById(Long eventId) {
-        applicationFormRepository.deleteById(eventId);
+    public boolean deleteById(Long formId) {
+        if (groupFormRepository.existsById(formId)) {
+            groupFormRepository.deleteById(formId);
+            return true;
+        }
+
+        else if (individualFormRepository.existsById(formId)) {
+            individualFormRepository.deleteById(formId);
+            return true;
+        }
+
+        return false;
     }
 }

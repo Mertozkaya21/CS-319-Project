@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,24 +9,25 @@ import org.springframework.stereotype.Service;
 import com.example.demo.entities.event.Event;
 import com.example.demo.entities.event.Fair;
 import com.example.demo.entities.event.Tour;
-import com.example.demo.repositories.event.EventRepository;
 import com.example.demo.repositories.event.FairRepository;
 import com.example.demo.repositories.event.TourRepository;
 
 @Service
 public class EventService {
-    private final EventRepository eventRepository;
     private final FairRepository fairRepository;
     private final TourRepository tourRepository;
 
-    public EventService(EventRepository eventRepo, FairRepository fairRepo, TourRepository tourRepo){
-        this.eventRepository = eventRepo;
+    public EventService(FairRepository fairRepo, TourRepository tourRepo){
         this.fairRepository = fairRepo;
         this.tourRepository = tourRepo;
     }
 
     public List<Event> getAllEvents() {
-        return eventRepository.findAll();
+        
+        List<Event> events = new ArrayList<>();
+        events.addAll(fairRepository.findAll());
+        events.addAll(tourRepository.findAll());
+        return events;
     }
 
     public List<Fair> getFair() {
@@ -44,25 +46,27 @@ public class EventService {
         return fairRepository.save(aFair);
     }
 
-    public Event getOneEvent(Long eventId){
-        return eventRepository.findById(eventId).orElse(null);
+    public Event getOneEvent(Long eventId) {
+        Optional<Fair> fairOpt = fairRepository.findById(eventId);
+        if (fairOpt.isPresent()) return fairOpt.get();
+
+        Optional<Tour> tourOpt = tourRepository.findById(eventId);
+        if (tourOpt.isPresent()) return tourOpt.get();
+    
+        return null;
     }
 
-    public Event updateOneUser(Long eventId, Event newEvent) {
-        Optional<Event> event = eventRepository.findById(eventId);
-        if(event.isPresent()){
-            Event foundEvent = event.get();
-            foundEvent.setStatus(newEvent.getStatus());
-            foundEvent.setDate(newEvent.getDate());
-            foundEvent.setGuide(newEvent.getGuide());
-            eventRepository.save(foundEvent);
-            return foundEvent;
-        } else {
-            return null;
+    public boolean deleteById(Long eventId) {
+        if (fairRepository.existsById(eventId)) {
+            fairRepository.deleteById(eventId);
+            return true;
         }
-    }
 
-    public void deleteById(Long eventId) {
-        eventRepository.deleteById(eventId);
+        else if (tourRepository.existsById(eventId)) {
+            tourRepository.deleteById(eventId);
+            return true;
+        }
+
+        return false;
     }
 }
