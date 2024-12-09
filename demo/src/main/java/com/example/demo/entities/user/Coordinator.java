@@ -31,7 +31,7 @@ public class Coordinator extends User {
 
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
-    private LocalDate dateAdded;
+    private LocalDate dateAdded; // Bunu User'a taşıyamaz mıyız, Advisorda da var?
 
     @OneToMany(mappedBy = "coordinator", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ApplicationForm> applicationForms;

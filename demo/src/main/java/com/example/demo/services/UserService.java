@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,21 +15,17 @@ import com.example.demo.repositories.user.AdvisorRepository;
 import com.example.demo.repositories.user.CoordinatorRepository;
 import com.example.demo.repositories.user.GuideRepository;
 import com.example.demo.repositories.user.TraineeRepository;
-import com.example.demo.repositories.user.UserRepository;
 
 @Service
 public class UserService {
-    
-    private final UserRepository userRepository;
     private final CoordinatorRepository coordinatorRepository;
     private final AdvisorRepository advisorRepository;
     private final GuideRepository guideRepository;
     private final TraineeRepository traineeRepository;
 
-    public UserService(UserRepository userRepo, CoordinatorRepository coordinatorRepo,
+    public UserService(CoordinatorRepository coordinatorRepo,
                         AdvisorRepository advisorRepo, GuideRepository guideRepo,
                         TraineeRepository traineeRepo){
-        this.userRepository = userRepo;
         this.coordinatorRepository = coordinatorRepo;
         this.advisorRepository = advisorRepo;
         this.guideRepository = guideRepo;
@@ -36,7 +33,12 @@ public class UserService {
     }
 
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        List<User> users = new ArrayList<>();
+        users.addAll(coordinatorRepository.findAll());
+        users.addAll(advisorRepository.findAll());
+        users.addAll(guideRepository.findAll());
+        users.addAll(traineeRepository.findAll());
+        return users;
     }
 
     public List<Coordinator> getCoordinator() {
@@ -71,25 +73,43 @@ public class UserService {
         return traineeRepository.save(aTrainee);
     }
 
-    public User getOneUser(Long userId){
-        return userRepository.findById(userId).orElse(null);
+    public User getOneUser(Long userId) {
+        Optional<Coordinator> coordinatorOpt = coordinatorRepository.findById(userId);
+        if (coordinatorOpt.isPresent()) return coordinatorOpt.get();
+
+        Optional<Advisor> advisorOpt = advisorRepository.findById(userId);
+        if (advisorOpt.isPresent()) return advisorOpt.get();
+    
+        Optional<Guide> guideOpt = guideRepository.findById(userId);
+        if (guideOpt.isPresent()) return guideOpt.get();
+    
+        Optional<Trainee> traineeOpt = traineeRepository.findById(userId);
+        if (traineeOpt.isPresent()) return traineeOpt.get();
+    
+        return null;
     }
 
-    public User updateOneUser(Long userId, User newUser) {
-        Optional<User> user = userRepository.findById(userId);
-        if(user.isPresent()){
-            User foundUser = user.get();
-            // Örnek olarak isim ve şifresini değiştirip kaydettim
-            foundUser.setName(newUser.getName());
-            foundUser.setPassword(newUser.getPassword());
-            userRepository.save(foundUser);
-            return foundUser;
-        } else {
-            return null;
+    public boolean deleteById(Long userId) {
+        if (coordinatorRepository.existsById(userId)) {
+            coordinatorRepository.deleteById(userId);
+            return true;
         }
-    }
 
-    public void deleteById(Long userId) {
-        userRepository.deleteById(userId);
+        else if (advisorRepository.existsById(userId)) {
+            advisorRepository.deleteById(userId);
+            return true;
+        }
+    
+        else if (guideRepository.existsById(userId)) {
+            guideRepository.deleteById(userId);
+            return true;
+        }
+    
+        else if (traineeRepository.existsById(userId)) {
+            traineeRepository.deleteById(userId);
+            return true;
+        }
+
+        return false;
     }
 }

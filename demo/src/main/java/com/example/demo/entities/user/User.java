@@ -1,23 +1,20 @@
 package com.example.demo.entities.user;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
-import jakarta.persistence.Table;
+import jakarta.persistence.MappedSuperclass;
 import lombok.*;
 
-@Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@Table(name="Users")
+@MappedSuperclass
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public abstract class User {
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,6 +29,6 @@ public class User {
     private String phoneNo;
     private String imagePath;
     
-    //private List<Long> latestAcitivites; // Contains ID's of latest Activities
-    //private List<Long> notifications; 
+    private List<Long> latestAcitivites; // Contains ID's of latest Activities
+    private List<Long> notifications;
 }
