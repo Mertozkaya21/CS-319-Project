@@ -31,7 +31,7 @@ import lombok.Setter;
 public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long ID;
+    private long id;
 
     @Column(nullable = false)
     @Enumerated
@@ -42,5 +42,5 @@ public class Event {
     
     @ManyToOne
     @JoinColumn(name = "guide_id") 
-    private Guide guide;
+    private Guide guide; //Bir eventin birden fazla guide'ı olabiliyor, burada bir tane gibi olmuş
 }

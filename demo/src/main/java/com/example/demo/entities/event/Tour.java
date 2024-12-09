@@ -36,7 +36,7 @@ public class Tour extends Event {
 
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
-    private LocalDate date;
+    private LocalDate date; //date zaten Event classında var, buradaki gereksiz gibi
 
     @ManyToOne
     @JoinColumn(name = "advisorID", nullable = false)
@@ -57,7 +57,7 @@ public class Tour extends Event {
             joinColumns = @JoinColumn(name = "tour_id"),
             inverseJoinColumns = @JoinColumn(name = "guide_id")
     )
-    private List<Guide> guides;
+    private List<Guide> guides; //Bunun Event sınıfında olması lazım, Event'deki guide guides olacak burdaki gibi
 
     @ManyToMany
     @JoinTable(
