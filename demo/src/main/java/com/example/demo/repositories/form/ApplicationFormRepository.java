@@ -16,5 +16,6 @@ public interface ApplicationFormRepository extends JpaRepository<ApplicationForm
 
     List<ApplicationForm> findByDate(LocalDate date);
     List<ApplicationForm> findByTourHour(TourHours tourHour);
+    List<ApplicationForm> findByTourHourAndDate(TourHours tourHour, LocalDate date);
     List<ApplicationForm> findByStatus(ApplicationFormStatus status);
 }

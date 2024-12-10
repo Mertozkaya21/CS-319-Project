@@ -42,14 +42,14 @@ public class ApplicationFormService {
     }
 
     public IndividualForm saveIndividualForm(IndividualForm individualForm) {
-        if (individualForm.getDate() == null || individualForm.getTourHour() == null) {
+        if (individualForm.getEventDate() == null || individualForm.getTourHour() == null) {
             throw new IllegalArgumentException("Date and Tour Hour must not be null");
         }
         return individualFormRepository.save(individualForm);
     }
     
     public GroupForm saveGroupForm(GroupForm groupForm) {
-        if (groupForm.getDate() == null || groupForm.getTourHour() == null) {
+        if (groupForm.getEventDate() == null || groupForm.getTourHour() == null) {
             throw new IllegalArgumentException("Date and Tour Hour must not be null");
         }
         return groupFormRepository.save(groupForm);

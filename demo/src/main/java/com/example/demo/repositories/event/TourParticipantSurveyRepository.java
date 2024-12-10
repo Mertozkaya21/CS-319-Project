@@ -13,5 +13,4 @@ public interface TourParticipantSurveyRepository extends JpaRepository<TourParti
     List<TourParticipantSurvey> findByGuideRate(double guideRate);
     List<TourParticipantSurvey> findByHighschool(Highschool highschool);
     List<TourParticipantSurvey> findByTourSurveyID(long tourSurveyID);
-
 }

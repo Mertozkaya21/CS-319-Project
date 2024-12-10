@@ -42,11 +42,15 @@ public class ApplicationForm {
 
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)
-    private LocalDate date;
+    private LocalDate submitTimDate;
 
     @Enumerated
     @Column(nullable = false)
     private TourHours tourHour;
+
+    @Column(nullable = false)
+    @Temporal(TemporalType.DATE)
+    private LocalDate eventDate;
     
     @Column(columnDefinition = "text")
     private String comments;
