@@ -14,7 +14,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -34,10 +33,6 @@ public class Tour extends Event {
     @Column(nullable = false)
     private TourHours tourHours;
 
-    @Temporal(TemporalType.DATE)
-    @Column(nullable = false)
-    private LocalDate date; //date zaten Event classında var, buradaki gereksiz gibi
-
     @ManyToOne
     @JoinColumn(name = "advisorID", nullable = false)
     private Advisor advisor;
@@ -49,15 +44,7 @@ public class Tour extends Event {
     @ElementCollection
     @CollectionTable(name = "DepartmentInterest", joinColumns = @JoinColumn(name = "tourID"))
     @Column(name = "departmentID")
-    private List<Integer> idsOfDepartmentsOfInterest; // For individual tours
-
-    @ManyToMany
-    @JoinTable(
-            name = "guide_tour",
-            joinColumns = @JoinColumn(name = "tour_id"),
-            inverseJoinColumns = @JoinColumn(name = "guide_id")
-    )
-    private List<Guide> guides; //Bunun Event sınıfında olması lazım, Event'deki guide guides olacak burdaki gibi
+    private List<Integer> idsOfDepartmentsOfInterest; 
 
     @ManyToMany
     @JoinTable(
@@ -74,4 +61,13 @@ public class Tour extends Event {
 
     @Column(nullable = false)
     private int noOfGuests;
+
+    @ManyToMany
+    @JoinTable(
+        name = "guide_tour",
+        joinColumns = @JoinColumn(name = "tour_id"),
+        inverseJoinColumns = @JoinColumn(name = "guide_id")
+    )
+    private List<Guide> guides;
+
 }

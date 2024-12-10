@@ -5,8 +5,10 @@ import com.example.demo.enums.Days;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface  AdvisorRepository extends UserRepository<Advisor>{
+
+public interface  AdvisorRepository extends JpaRepository<Advisor, Long>{
     
     List<Advisor> findByName(String name);
 

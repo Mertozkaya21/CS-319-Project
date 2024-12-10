@@ -39,9 +39,9 @@ public class TourParticipantSurvey {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "highschool_id", referencedColumnName = "ID", nullable = false)
-    private Highschool highschool; // Link to the Highschool entity
+    private Highschool highschool; 
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "tour_id", referencedColumnName = "ID", nullable = false)
-    private Tour tour; // Link to the Tour entity
+    private Tour tour; 
 }

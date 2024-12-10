@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -28,10 +27,6 @@ public class Coordinator extends User {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "payment_id")
     private Payment payment;
-
-    @Temporal(TemporalType.DATE)
-    @Column(nullable = false)
-    private LocalDate dateAdded; // Bunu User'a taşıyamaz mıyız, Advisorda da var?
 
     @OneToMany(mappedBy = "coordinator", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ApplicationForm> applicationForms;

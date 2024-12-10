@@ -3,7 +3,8 @@ package com.example.demo.entities.user;
 import java.util.HashMap;
 import java.util.List;
 
-import com.example.demo.entities.event.Event;
+import com.example.demo.entities.event.Fair;
+import com.example.demo.entities.event.Tour;
 import com.example.demo.entities.payment.Payment;
 import com.example.demo.enums.Days;
 import com.example.demo.enums.TourHours;
@@ -15,9 +16,10 @@ import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapKeyEnumerated;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -39,12 +41,27 @@ public class Guide extends User{
     @Column(name = "tour_hours")
     private HashMap<Days, TourHours> availableTimes;
 
-    @OneToMany(mappedBy = "guide", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Event> assignedEvents;
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "payment_id")
     private Payment payment;
+    
+    // Relationship with Tour
+    @ManyToMany
+    @JoinTable(
+        name = "guide_tour",
+        joinColumns = @JoinColumn(name = "guide_id"),
+        inverseJoinColumns = @JoinColumn(name = "tour_id")
+    )
+    private List<Tour> tours;
+
+    // Relationship with Fair
+    @ManyToMany
+    @JoinTable(
+        name = "guide_fair",
+        joinColumns = @JoinColumn(name = "guide_id"),
+        inverseJoinColumns = @JoinColumn(name = "fair_id")
+    )
+    private List<Fair> fairs;
 
     private double tourParticipantSurveyRanking;
     

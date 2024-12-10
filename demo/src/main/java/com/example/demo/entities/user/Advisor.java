@@ -28,10 +28,6 @@ public class Advisor extends User {
     @JoinColumn(name = "payment_id")
     private Payment payment;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Days dateAdded;
-
     @OneToMany(mappedBy = "advisor", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ApplicationForm> applicationForms;
 }

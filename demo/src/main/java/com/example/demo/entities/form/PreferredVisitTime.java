@@ -38,6 +38,6 @@ public class PreferredVisitTime {
     private TourHours tourHour;
 
     @ManyToOne
-    @JoinColumn(name = "application_form_id", nullable = false) // This establishes the foreign key
-    private ApplicationForm applicationForm;   
+    @JoinColumn(name = "application_form_id", nullable = true)
+    private ApplicationForm applicationForm;
 }
