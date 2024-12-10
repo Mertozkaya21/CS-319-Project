@@ -22,7 +22,7 @@ html, body {
 
 /* Logo styles */
 .headerLogo {
-    height: 70px; /* Adjust logo size */
+    height: 80px; /* Adjust logo size */
     width: auto; /* Maintain aspect ratio */
 }
 
@@ -33,7 +33,7 @@ html, body {
 }
 
 .headerTitle {
-    font-size: 1.8rem; /* Adjusted title size */
+    font-size: 2rem; /* Adjusted title size */
     font-weight: bold;
     color: #003366; /* Bilkent blue */
     margin: 0;
@@ -47,7 +47,7 @@ html, body {
 }
 
 .headerSubtitle {
-    font-size: 1.2rem; /* Adjusted subtitle size */
+    font-size: 1.5rem; /* Adjusted subtitle size */
     color: #003366;
     margin: 0;
 }
@@ -106,7 +106,7 @@ html, body {
   flex-direction: column; /* Stack children vertically */
   justify-content: space-between; /* Space out content and buttons */
   position: absolute;
-  top: 20%;
+  top: 23%;
   left: 8%;
   width: 45%;
   background-color: #ffffff;

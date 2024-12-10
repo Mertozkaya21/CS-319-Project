@@ -23,6 +23,8 @@ import GroupIcon from '@mui/icons-material/Group';
 import SchoolIcon from '@mui/icons-material/School';
 import BadgeIcon from '@mui/icons-material/Badge'; // For Chaperone Role
 import PersonIcon from '@mui/icons-material/Person'; // For Chaperone Name
+import dayjs from 'dayjs';
+import FormHelperText from '@mui/material/FormHelperText';
 
 // Custom theme for overriding default styles
 const customTheme = createTheme({
@@ -64,7 +66,14 @@ const Form = () => {
     termsAccepted: false,
   });
 
+  const [formErrors, setFormErrors] = useState({
+    email: '',
+    phoneNumber: '',
+  });
+
   const [activeStep, setActiveStep] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submissionSuccess, setSubmissionSuccess] = useState(false);
 
   const steps = ['Contact Details', 'Date & Time', 'Attendee Details', 'Submit Request'];
 
@@ -73,7 +82,18 @@ const Form = () => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
+
+    // Update form data
     setFormData({ ...formData, [name]: value });
+
+    // Validate fields
+    if (name === 'email') {
+      const emailValid = value.includes('@') && value.includes('.');
+      setFormErrors({ ...formErrors, email: emailValid ? '' : 'Invalid email address.' });
+    } else if (name === 'phoneNumber') {
+      const phoneValid = /^\d+$/.test(value); // Only numbers
+      setFormErrors({ ...formErrors, phoneNumber: phoneValid ? '' : 'Phone number must be numeric.' });
+    }
   };
 
   const handleCheckboxChange = (e) => {
@@ -85,54 +105,79 @@ const Form = () => {
     setFormData({ ...formData, timeSlot: time });
   };
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submissionSuccess, setSubmissionSuccess] = useState(false);
-
+  const validateForm = () => {
+    const errors = {};
+  
+    // Check for empty required fields
+    if (!formData.highSchoolName) errors.highSchoolName = 'High School Name is required.';
+    if (!formData.email) errors.email = 'Email is required.';
+    if (!formData.phoneNumber) errors.phoneNumber = 'Phone Number is required.';
+    if (!formData.city) errors.city = 'City is required.';
+    if (!formData.date) errors.date = 'Date is required.';
+    if (!formData.timeSlot) errors.timeSlot = 'Time Slot is required.';
+    if (!formData.chaperoneRole) errors.chaperoneRole = 'Chaperone Role is required.';
+    if (!formData.chaperoneName) errors.chaperoneName = 'Chaperone Name is required.';
+    if (formData.numberOfAttendees <= 0) errors.numberOfAttendees = 'Number of attendees must be greater than 0.';
+    if (!formData.termsAccepted) errors.termsAccepted = 'You must accept the terms and conditions.';
+  
+    // Validate specific fields
+    if (formData.email && (!formData.email.includes('@') || !formData.email.includes('.'))) {
+      errors.email = 'Invalid email address.';
+    }
+    if (formData.phoneNumber && !/^\d+$/.test(formData.phoneNumber)) {
+      errors.phoneNumber = 'Phone number must be numeric.';
+    }
+  
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0; // Return true if no errors
+  };
+  
   const handleSubmit = async () => {
-    if (formData.termsAccepted) {
-      setIsSubmitting(true); // Disable the submit button
-      try {
-        // Format the date for submission
-        const formattedData = {
-          ...formData,
-          date: formData.date ? formData.date.format('MM/DD/YYYY') : null, // Format the date here
-        };
+    if (!validateForm()) {
+      alert('Please fill in all required fields correctly.');
+      return; // Stop submission if form is invalid
+    }
   
-        const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formattedData),
+    setIsSubmitting(true); // Disable the submit button
+    try {
+      const formattedData = {
+        ...formData,
+        date: formData.date ? formData.date.format('MM/DD/YYYY') : null, // Format the date here
+      };
+  
+      const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formattedData),
+      });
+  
+      if (response.ok) {
+        console.log('Submitted Data:', formattedData); // Log the submitted data
+        alert('Your application has been successfully submitted.');
+        setActiveStep(0); // Reset the form steps
+        setSubmissionSuccess(true); // Show the success message
+        setFormData({
+          highSchoolName: '',
+          email: '',
+          phoneNumber: '',
+          city: '',
+          date: null,
+          timeSlot: '',
+          chaperoneRole: '',
+          chaperoneName: '',
+          numberOfAttendees: 0,
+          comments: '',
+          termsAccepted: false,
         });
-  
-        if (response.ok) {
-          console.log('Submitted Data:', formattedData); // Log the submitted data
-          alert('Your application has been successfully submitted.');
-          setActiveStep(0); // Reset the form steps
-          setSubmissionSuccess(true); // Show the success message
-          setFormData({
-            highSchoolName: "",
-            email: "",
-            phoneNumber: "",
-            city: "",
-            date: null,
-            timeSlot: "",
-            chaperoneRole: "",
-            chaperoneName: "",
-            numberOfAttendees: 0,
-            comments: "",
-            termsAccepted: false,
-          });
-        } else {
-          alert('Failed to submit the application. Please try again.');
-        }
-      } catch (error) {
-        console.error('Error:', error);
-        alert('An error occurred. Please try again.');
-      } finally {
-        setIsSubmitting(false); // Re-enable the submit button
+        setFormErrors({});
+      } else {
+        alert('Failed to submit the application. Please try again.');
       }
-    } else {
-      alert('You must accept the terms and conditions to proceed.');
+    } catch (error) {
+      console.error('Error:', error);
+      alert('An error occurred. Please try again.');
+    } finally {
+      setIsSubmitting(false); // Re-enable the submit button
     }
   };
 
@@ -140,12 +185,9 @@ const Form = () => {
     switch (step) {
       case 0:
         return (
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}> {/* Increased gap between rows */}
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 5, marginBottom: 3.5 }}> {/* Increased gap between rows */}
       {/* Textual Information */}
       <Box>
-        <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: '8px' }}>
-          Contact details
-        </Typography>
         <Typography variant="body2" sx={{ color: '#6c757d' }}>
           Please provide your information below so we can assist you with your campus visit. Ensure all fields are filled out accurately to confirm your application.
         </Typography>
@@ -154,22 +196,29 @@ const Form = () => {
       {/* First Row */}
       <Box sx={{ display: 'flex', gap: 2 }}>
         
-        <TextField
-          name="highSchoolName"
-          label="High School Name"
-          required
-          select
-          value={formData.highSchoolName}
-          onChange={handleInputChange}
-          sx={{ width: '48%' }}
-          InputProps={{
-            startAdornment: <InputAdornment position="start"><SchoolIcon sx={{ color: '#6c757d' }} /></InputAdornment>,
-          }}
-        >
-          <MenuItem value="High School A">High School A</MenuItem>
-          <MenuItem value="High School B">High School B</MenuItem>
-        </TextField>
+      <TextField
+        name="highSchoolName"
+        label="High School Name"
+        required
+        select
+        value={formData.highSchoolName}
+        onChange={handleInputChange}
+        error={!!formErrors.highSchoolName}
+        helperText={formErrors.highSchoolName || ''}
+        sx={{ width: '48%' }}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <SchoolIcon sx={{ color: '#6c757d' }} />
+            </InputAdornment>
+          ),
+        }}
+      >
+        <MenuItem value="High School A">High School A</MenuItem>
+        <MenuItem value="High School B">High School B</MenuItem>
+      </TextField>
 
+        <Box sx={{ width: '48%' }}>
         <TextField
           name="email"
           label="Email Address"
@@ -177,33 +226,51 @@ const Form = () => {
           required
           value={formData.email}
           onChange={handleInputChange}
-          sx={{ width: '48%' }}
+          error={!!formErrors.email}
+          helperText={formErrors.email || ''}
           InputProps={{
-            startAdornment: <InputAdornment position="start"><EmailIcon sx={{ color: '#6c757d' }} /></InputAdornment>,
+            startAdornment: (
+              <InputAdornment position="start">
+                <EmailIcon sx={{ color: '#6c757d' }} />
+              </InputAdornment>
+            ),
           }}
+          sx={{ width: '100%' }}
         />
+        </Box>
       </Box>
 
       {/* Second Row */}
       <Box sx={{ display: 'flex', gap: 2 }}>
-        <TextField
-          name="phoneNumber"
-          label="Phone Number"
-          type="tel"
-          required
-          value={formData.phoneNumber}
-          onChange={handleInputChange}
-          sx={{ width: '48%' }}
-          InputProps={{
-            startAdornment: <InputAdornment position="start"><PhoneIcon sx={{ color: '#6c757d' }} /></InputAdornment>,
-          }}
-        />
+        <Box sx={{ width: '48%' }}>
+          <TextField
+            name="phoneNumber"
+            label="Phone Number"
+            type="tel"
+            required
+            sx={{ width: '100%' }}
+            value={formData.phoneNumber}
+            onChange={handleInputChange}
+            error={!!formErrors.phoneNumber} // Highlight if there's an error
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <PhoneIcon sx={{ color: '#6c757d' }} />
+                </InputAdornment>
+              ),
+            }}
+          />
+          {formErrors.phoneNumber && (
+            <FormHelperText error>{formErrors.phoneNumber}</FormHelperText>
+          )}
+          </Box>
         <TextField
           name="city"
           label="City"
           required
           select
           value={formData.city}
+          error={!!formErrors.city}
           onChange={handleInputChange}
           sx={{ width: '48%' }}
           InputProps={{
@@ -218,8 +285,8 @@ const Form = () => {
         );
         case 1:
           return (
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-              <Typography variant="h6" sx={{ fontWeight: 'bold', mb: -2.5 }}>Date</Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, marginBottom: 9 }}>
+              <Typography variant="h6" sx={{ fontWeight: 'bold', mb: -2.5, }}>Date</Typography>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <DemoContainer components={['DatePicker']}>
                 <DatePicker
@@ -228,21 +295,26 @@ const Form = () => {
                   onChange={(newValue) => {
                     setFormData({ ...formData, date: newValue }); // Store the Day.js object directly
                   }}
+                  minDate={dayjs()} // Disable dates before today
                 />
                 </DemoContainer>
               </LocalizationProvider>
-              <TimeSlotPicker onTimeSelect={handleTimeSelection} />
+              <TimeSlotPicker
+                selectedTime={formData.timeSlot} // Controlled by the parent
+                onTimeSelect={(time) => setFormData({ ...formData, timeSlot: time })} // Update parent state
+              />
             </Box>
           );
           case 2:
             return (
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, marginBottom: -0.3 }}>
                 <Box sx={{ display: 'flex', gap: 2 }}>
                   <TextField
                     name="chaperoneRole"
                     label="Chaperone Role"
                     required
                     select
+                    error={!!formErrors.chaperoneRole}
                     value={formData.chaperoneRole}
                     onChange={handleInputChange}
                     sx={{ width: '48%' }}
@@ -258,6 +330,7 @@ const Form = () => {
                     label="Chaperone Name"
                     required
                     value={formData.chaperoneName}
+                    error={!!formErrors.chaperoneName}
                     onChange={handleInputChange}
                     sx={{ width: '48%' }}
                     InputProps={{
@@ -271,6 +344,7 @@ const Form = () => {
                   type="number"
                   required
                   value={formData.numberOfAttendees}
+                  error={!!formErrors.numberOfAttendees}
                   onChange={handleInputChange}
                   sx={{ width: '48%' }}
                   InputProps={{
@@ -281,7 +355,7 @@ const Form = () => {
                   name="comments"
                   label="Additional Comments"
                   multiline
-                  rows={4}
+                  rows={3}
                   value={formData.comments}
                   onChange={handleInputChange}
                   sx={{ width: '100%' }}
@@ -294,10 +368,12 @@ const Form = () => {
                   <img
                     src={require('../../../assets/Tickbox.png')}
                     alt="Tickbox"
-                    style={{ width: '170px', height: '140px', marginBottom: '0px' }}
+                    style={{ width: '170px', height: '140px', marginBottom: 4.5 }}
                   />
-                  <Typography variant="body1" sx={{ textAlign: 'center', color: '#6c757d', marginBottom: 0 }}>
+                  <Typography variant="body1" sx={{ textAlign: 'center', color: '#6c757d', marginBottom: -2, marginTop: 0 }}>
                     Please review all the information you entered and submit your application.
+                    <br />
+                    You will receive an email if your tour application is accepted.
                   </Typography>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 2 }}>
                     <Checkbox
@@ -329,7 +405,7 @@ const Form = () => {
           }
         };
 
-        return (
+        return ( 
           <ThemeProvider theme={customTheme}>
             <div style={{ display: 'flex', flexDirection: 'column', minHeight: '450px', position: 'relative' }}>
               <Box sx={{ width: '100%' }}>
@@ -384,7 +460,7 @@ const Form = () => {
                       variant="contained"
                       onClick={activeStep === steps.length - 1 ? handleSubmit : handleNext}
                       disabled={isSubmitting}
-                      sx={{ backgroundColor: isSubmitting ? '#ccc' : '#8a0303', color: '#ffffff' }}
+                      sx={{ backgroundColor: isSubmitting ? '#ccc' : '#8a0303', color: '#ffffff', minWidth: 70 }}
                     >
                       {activeStep === steps.length - 1 ? 'Submit' : 'Next Step'}
                     </Button>

@@ -1,27 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-const TimeSlotPicker = ({ onTimeSelect }) => {
-  const [selectedTime, setSelectedTime] = useState('');
-
-  const handleTimeSelection = (time) => {
-    setSelectedTime(time); // Update the local state
-    onTimeSelect(time); // Notify the parent about the selected time
-  };
-
+const TimeSlotPicker = ({ selectedTime, onTimeSelect }) => {
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-      <Typography variant="subtitle1" sx={{ fontWeight: 'bold', mb: 1 }}>
-        Time Slot
-      </Typography>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+      <Typography variant="h6" sx={{ fontWeight: 'bold', mb: -2.5 }}>Time Slot</Typography>
+
       <Box sx={{ display: 'flex', gap: 2 }}>
         {['09:00', '11:00', '13:30', '16:00'].map((time) => (
           <Button
             key={time}
             variant={selectedTime === time ? 'contained' : 'outlined'}
-            onClick={() => handleTimeSelection(time)}
+            onClick={() => onTimeSelect(time)} // Notify the parent directly
             sx={{
               flex: '1',
               border: '1px solid #8a0303',
