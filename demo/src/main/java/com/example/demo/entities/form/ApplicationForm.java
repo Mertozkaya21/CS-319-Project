@@ -64,6 +64,7 @@ public class ApplicationForm {
     private int numberOfParticipants;
 
     @OneToMany(mappedBy = "applicationForm", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Column(nullable = false)
     private List<PreferredVisitTime> preferredVisitTimes;
 
     @ManyToOne

@@ -63,7 +63,6 @@ public class Guide extends User{
     )
     private List<Fair> fairs;
 
-    
     private double tourParticipantSurveyRanking;
     
     @ManyToOne

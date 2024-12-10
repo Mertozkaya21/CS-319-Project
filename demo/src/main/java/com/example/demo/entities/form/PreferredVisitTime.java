@@ -38,6 +38,6 @@ public class PreferredVisitTime {
     private TourHours tourHour;
 
     @ManyToOne
-    @JoinColumn(name = "application_form_id", nullable = true)
+    @JoinColumn(name = "application_form_id", nullable = false)
     private ApplicationForm applicationForm;
 }

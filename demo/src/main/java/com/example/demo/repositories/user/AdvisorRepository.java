@@ -11,6 +11,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface  AdvisorRepository extends JpaRepository<Advisor, Long>{
     
     List<Advisor> findByName(String name);
-
     List<Advisor> findByDateAdded(Days dateAdded);
 }

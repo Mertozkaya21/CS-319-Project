@@ -23,7 +23,9 @@ public abstract class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @Column(nullable = false)
-    private String name;
+    private String firstName;
+    @Column(nullable = false)
+    private String lastName;
     @Column(nullable = false)
     private String email;
     @Column(nullable = false)
