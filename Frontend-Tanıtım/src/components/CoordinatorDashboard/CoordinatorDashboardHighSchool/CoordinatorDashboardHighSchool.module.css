@@ -1,8 +1,24 @@
-/* Dashboard Container */
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden; /* Prevent horizontal scrolling */
+  background-color: #ffffff; /* Ensure overall background matches */
+}
 .dashboardContainer {
-  display: flex;
-  height: 100vh;
-  overflow: hidden;
+  display: flex; /* Horizontal layout for main content and sidebar */
+  flex-direction: row; /* Ensure children are arranged horizontally */
+  width: 100vw; /* Full viewport width */
+  height: 100vh; /* Full viewport height */
+  margin: 0;
+  padding: 20px;
+  padding-left: 30px;
+  padding-right: 30px;
+  background-color: #ffffff;
+  padding-top: 20px;
+  box-sizing: border-box; /* Include padding/border in dimensions */
+  overflow: hidden; /* Prevent scrolling issues */
 }
 
 /* Main Content */
@@ -11,7 +27,7 @@
   display: flex;
   flex-direction: column; /* Stack elements vertically */
   margin-left: 250px; /* Offset for the fixed sidebar width */
-  background-color: #f8f9fa;
+  background-color: #ffffff;
   overflow-y: auto;
 }
 
@@ -120,6 +136,8 @@
   align-items: center;
   padding: 0 20px; /* Add horizontal padding to align with the table edges */
   box-sizing: border-box; /* Ensure padding is included in the element's total width */
+  padding-left: 80px;
+  padding-right: 90px;
 }
 
 .searchBar {
@@ -219,8 +237,9 @@
   background: #ffffff;
   border-radius: 12px;
   padding: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   flex: 1;
+  max-width: 1060px;
+  padding-left: 80px;
 }
 
 .highSchoolTable {

@@ -3,7 +3,6 @@ import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 import { FaPhoneAlt, FaEnvelope } from 'react-icons/fa';
 import IconButton from '@mui/material/IconButton';
-import EditIcon from '@mui/icons-material/Edit';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'; // Import Schedule Icon
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -15,12 +14,66 @@ import { NavLink } from 'react-router-dom';
 
 // Data: Adapted from GuidesTable dummy data
 export const guidesRows = [
-  { id: 1, name: 'Samanta William', dateAdded: 'Oct 25, 2023', guideId: '#123456789', tours: 23, phone: '555-123-4561', email: 'samanta.william@example.com' },
-  { id: 2, name: 'Tony Soap', dateAdded: 'Oct 25, 2023', guideId: '#123456789', tours: 23, phone: '555-123-4562', email: 'tony.soap@example.com' },
-  { id: 3, name: 'Karen Hope', dateAdded: 'Oct 25, 2023', guideId: '#123456789', tours: 23, phone: '555-123-4563', email: 'karen.hope@example.com' },
-  { id: 4, name: 'Jordan Nico', dateAdded: 'Oct 26, 2023', guideId: '#987654321', tours: 23, phone: '555-987-6541', email: 'jordan.nico@example.com' },
-  { id: 5, name: 'Nadila Adja', dateAdded: 'Oct 26, 2023', guideId: '#987654321', tours: 23, phone: '555-987-6542', email: 'nadila.adja@example.com' },
-  { id: 6, name: 'Johnny Ahmad',  dateAdded: 'Oct 27, 2023', guideId: '#987654321', tours: 23, phone: '555-654-3211', email: 'johnny.ahmad@example.com' },
+  {
+    id: 1,
+    name: 'Samanta William',
+    dateAdded: 'Oct 25, 2023',
+    guideId: '#123456789',
+    tours: 23,
+    phone: '555-123-4561',
+    email: 'samanta.william@example.com',
+    schedulePic: 'https://via.placeholder.com/150', // Dummy image URL
+  },
+  {
+    id: 2,
+    name: 'Tony Soap',
+    dateAdded: 'Oct 25, 2023',
+    guideId: '#123456789',
+    tours: 23,
+    phone: '555-123-4562',
+    email: 'tony.soap@example.com',
+    schedulePic: 'https://via.placeholder.com/150', // Dummy image URL
+  },
+  {
+    id: 3,
+    name: 'Karen Hope',
+    dateAdded: 'Oct 25, 2023',
+    guideId: '#123456789',
+    tours: 23,
+    phone: '555-123-4563',
+    email: 'karen.hope@example.com',
+    schedulePic: 'https://via.placeholder.com/150', // Dummy image URL
+  },
+  {
+    id: 4,
+    name: 'Jordan Nico',
+    dateAdded: 'Oct 26, 2023',
+    guideId: '#987654321',
+    tours: 23,
+    phone: '555-987-6541',
+    email: 'jordan.nico@example.com',
+    schedulePic: 'https://via.placeholder.com/150', // Dummy image URL
+  },
+  {
+    id: 5,
+    name: 'Nadila Adja',
+    dateAdded: 'Oct 26, 2023',
+    guideId: '#987654321',
+    tours: 23,
+    phone: '555-987-6542',
+    email: 'nadila.adja@example.com',
+    schedulePic: 'https://via.placeholder.com/150', // Dummy image URL
+  },
+  {
+    id: 6,
+    name: 'Johnny Ahmad',
+    dateAdded: 'Oct 27, 2023',
+    guideId: '#987654321',
+    tours: 23,
+    phone: '555-654-3211',
+    email: 'johnny.ahmad@example.com',
+    schedulePic: 'https://via.placeholder.com/150', // Dummy image URL
+  },
 ];
 
 // Table Columns
@@ -54,26 +107,12 @@ const columns = [
       </IconButton>
     ),
   },
-  {
-    field: 'action',
-    headerName: 'Edit',
-    width: 100,
-    renderCell: (params) => (
-      <NavLink
-        to={`/coordinatordashboardeditguider/${params.row.id}`} // Pass the specific guide's ID
-        style={{ textDecoration: 'none' }}
-      >
-        <IconButton aria-label="edit">
-          <EditIcon />
-        </IconButton>
-      </NavLink>
-    ),
-  },
 ];
 
 const GuidesTable = ({ rows }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogContent, setDialogContent] = useState('');
+  const [dialogTitle, setDialogTitle] = useState(''); // State for dynamic dialog title
 
   // Handle contact click (phone/email)
   const handleContactClick = (type, row) => {
@@ -81,31 +120,32 @@ const GuidesTable = ({ rows }) => {
       type === 'phone'
         ? `Phone: ${row.phone}`
         : `Email: ${row.email}`;
+    setDialogTitle(`${row.name}'s Contact Information`);
     setDialogContent(content);
     setOpenDialog(true);
   };
 
-  // Handle View Schedule click
   const handleViewScheduleClick = (row) => {
-    setDialogContent(
-      <img
-        src={row.scheduleImage}
-        alt={`${row.name} Schedule`}
-        style={{ width: '100%', height: 'auto' }}
-      />
-    );
-    setOpenDialog(true);
-  };
+  setDialogContent(
+    <img
+      src={row.schedulePic}
+      alt={`${row.name}'s Schedule`}
+      style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
+    />
+  );
+  setDialogTitle(`${row.name}'s Schedule`); // Set the title dynamically
+  setOpenDialog(true);
+};
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
 
-  // Add `handleContactClick` to each row
+  // Add handlers to each row
   const rowsWithHandlers = rows.map((row) => ({
     ...row,
     handleContactClick,
-    handleViewScheduleClick, // Attach view schedule handler
+    handleViewScheduleClick,
   }));
 
   return (
@@ -122,20 +162,24 @@ const GuidesTable = ({ rows }) => {
         <DataGrid
           rows={rowsWithHandlers} // Rows with handlers
           columns={columns}
-          pageSize={5}
-          rowsPerPageOptions={[5, 10]}
+          pageSize={10}
+          rowsPerPageOptions={[10, 20, 50]}
           checkboxSelection
           disableSelectionOnClick
-          sx={{
+          sx={{ 
             '& .MuiDataGrid-columnHeaders': {
               backgroundColor: '#f7f7f7',
               fontWeight: 'bold',
               color: '#8a0303',
               textAlign: 'center',
             },
+            '& .MuiDataGrid-columnHeader': {
+              justifyContent: 'center', // Center align content
+            },
             '& .MuiDataGrid-columnHeaderTitle': {
-              textAlign: 'center',
+              textAlign: 'center', // Center align text
               display: 'block',
+              width: '100%',
             },
             '& .MuiDataGrid-row:nth-of-type(odd)': {
               backgroundColor: '#fce4e4', // Highlight every other row with light red
@@ -153,9 +197,9 @@ const GuidesTable = ({ rows }) => {
         />
       </Paper>
 
-      {/* Dialog for contact information */}
-      <Dialog open={openDialog} onClose={handleCloseDialog}>
-        <DialogTitle>Contact Information</DialogTitle>
+     {/* Dialog for displaying information */}
+     <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>{dialogTitle}</DialogTitle> {/* Dynamic title */}
         <DialogContent>{dialogContent}</DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog} color="primary">

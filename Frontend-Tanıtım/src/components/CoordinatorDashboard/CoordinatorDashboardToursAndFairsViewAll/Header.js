@@ -34,13 +34,14 @@ const Header = ({ title, onSearchSelection }) => {
           </NavLink>
 
           {/* User Info */}
-          <div className={styles.userAvatar}>
+          <NavLink to="/coordinatordashboardprofile" className={styles.userAvatar}>
             <div className={styles.avatarCircle}></div>
-            <div className={styles.userInfoText}>
+            
+          </NavLink>
+          <div className={styles.userInfoText}>
               <p className={styles.userName}>Nabila A.</p>
               <p className={styles.userRole}>Coordinator</p>
             </div>
-          </div>
         </div>
       </div>
 

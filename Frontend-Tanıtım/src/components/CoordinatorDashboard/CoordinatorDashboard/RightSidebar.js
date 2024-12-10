@@ -12,13 +12,13 @@ const RightSidebar = () => {
         <div className={styles.userInfoWithIcons}>
           {/* User Info */}
           <div className={styles.userInfo}>
-            <div className={styles.userAvatar}>
+          <NavLink to="/coordinatordashboardprofile" className={styles.userAvatar}>
               <img
                 src="https://via.placeholder.com/40" // Placeholder for now
                 alt="User"
                 className={styles.avatarImage}
               />
-            </div>
+            </NavLink>
             <div>
               <p className={styles.userName}>Nabila A.</p>
               <p className={styles.userRole}>Coordinator</p>
@@ -63,7 +63,10 @@ const RightSidebar = () => {
             )
           )}
         </ul>
-        <button className={styles.viewAllButton}>View All</button>
+        {/* Navigate to Chat Page */}
+        <NavLink to="/coordinatordashboardchat" className={styles.viewAllButton}>
+          View All
+        </NavLink>
       </div>
 
       <div className={styles.section}>
@@ -91,7 +94,10 @@ const RightSidebar = () => {
             </li>
           ))}
         </ul>
-        <button className={styles.viewAllButton}>View All</button>
+        {/* Navigate to Chat Page */}
+        <NavLink to="/coordinatordashboardchat" className={styles.viewAllButton}>
+          View All
+        </NavLink>
       </div>
 
       <div className={styles.section}>
@@ -110,7 +116,10 @@ const RightSidebar = () => {
             </li>
           ))}
         </ul>
-        <button className={styles.viewAllButton}>View All</button>
+        {/* Navigate to Tours and Fairs Page */}
+        <NavLink to="/coordinatordashboardtoursandfairs" className={styles.viewAllButtonLast}>
+          View All
+        </NavLink>
       </div>
     </div>
   );

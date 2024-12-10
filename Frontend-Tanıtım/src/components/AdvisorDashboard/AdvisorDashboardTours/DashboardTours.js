@@ -1,39 +1,39 @@
-// import React, { useState } from 'react';
-// import Sidebar from '../AdvisorDashboardCommon/Sidebar';
-// // import Header from './Header';
-// // import TourApplicationsTable from './TourApplicationsTable'; // Correct component import
-// // import { tourApplicationsRows } from './TourApplicationsTable'; // Import data
-// import styles from './AdvisorDashboardTours.module.css';
+import React, { useState } from 'react';
+import Sidebar from '../AdvisorDashboardCommon/Sidebar';
+import Header from './Header';
+import ToursTable from './ToursTable';
+import { eventRows } from './ToursTable'; // Import data
+import styles from './AdvisorDashboardTours.module.css';
 
-// const DashboardTourApplications = () => {
-//   const [filteredRows, setFilteredRows] = useState(tourApplicationsRows); // Manage filtered rows
+const DashboardTours = () => {
+  const [filteredRows, setFilteredRows] = useState(eventRows); // Manage filtered rows
 
-//   const handleSearchSelection = (value) => {
-//     if (value && value.label) {
-//       const filtered = tourApplicationsRows.filter((row) =>
-//         row.name.toLowerCase() === value.label.toLowerCase()
-//       );
-//       setFilteredRows(filtered);
-//     } else {
-//       setFilteredRows(tourApplicationsRows);
-//     }
-//   };
+  const handleSearchSelection = (value) => {
+    if (value) {
+      // Filter rows based on the selected event name
+      const filtered = eventRows.filter((row) => row.name === value.label);
+      setFilteredRows(filtered);
+    } else {
+      // Reset to show all rows when the search is cleared
+      setFilteredRows(eventRows);
+    }
+  };
 
-//   return (
-//     <div className={styles.dashboardContainer}>
-//       {/* Sidebar */}
-//       <Sidebar />
+  return (
+    <div className={styles.dashboardContainer}>
+      {/* Sidebar */}
+      <Sidebar />
 
-//       {/* Main Content */}
-//       <div className={styles.mainContent}>
-//         {/* Header */}
-//         <Header title="Tour Applications" onSearchSelection={handleSearchSelection} />
+      {/* Main Content */}
+      <div className={styles.mainContent}>
+        {/* Header */}
+        <Header title="Tours" onSearchSelection={handleSearchSelection} />
 
-//         {/* Tour Applications Table */}
-//         <TourApplicationsTable rows={filteredRows} /> {/* Capitalized component name */}
-//       </div>
-//     </div>
-//   );
-// };
+        {/* Events Table */}
+        <ToursTable rows={filteredRows} />
+      </div>
+    </div>
+  );
+};
 
-// export default DashboardTourApplications;
+export default DashboardTours;

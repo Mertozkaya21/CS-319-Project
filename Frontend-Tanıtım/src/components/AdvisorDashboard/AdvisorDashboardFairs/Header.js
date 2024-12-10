@@ -2,17 +2,17 @@ import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import styles from './AdvisorDashboardFairs.module.css';
 import { FaBell, FaCog } from 'react-icons/fa';
-import AddIcon from '@mui/icons-material/Add'; // Import plus icon
+import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 import Button from '@mui/material/Button';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
-import { fairApplicationsRows } from './FairApplicationsTable'; // Import application data
+import { eventRows } from './FairsTable'; // Import event data
 
 const Header = ({ title, onSearchSelection }) => {
   const [sortOption, setSortOption] = useState('Date Updated');
 
-  // Transform fairApplicationsRows into a format suitable for Autocomplete
-  const highSchoolOptions = fairApplicationsRows.map((school) => ({
+  // Transform eventRows into a format suitable for Autocomplete
+  const eventOptions = eventRows.map((school) => ({
     label: school.name, // Only the school name will be displayed
   }));
 
@@ -23,24 +23,25 @@ const Header = ({ title, onSearchSelection }) => {
         <h1 className={styles.headerTitle}>{title}</h1>
         <div className={styles.userSection}>
           {/* Notification Button */}
-          <NavLink to="/coordinatordashboardnotifications" className={styles.iconButton}>
+          <NavLink to="/advisordashboardnotifications" className={styles.iconButton}>
             <FaBell className={styles.notificationIcon} />
             <span className={styles.notificationDot}></span>
           </NavLink>
 
           {/* Settings Button */}
-          <NavLink to="/coordinatordashboardsettings" className={styles.iconButton}>
+          <NavLink to="/advisordashboardsettings" className={styles.iconButton}>
             <FaCog />
           </NavLink>
 
           {/* User Info */}
-          <div className={styles.userAvatar}>
+          <NavLink to="/advisordashboardprofile" className={styles.userAvatar}>
             <div className={styles.avatarCircle}></div>
-            <div className={styles.userInfoText}>
+            
+          </NavLink>
+          <div className={styles.userInfoText}>
               <p className={styles.userName}>Nabila A.</p>
-              <p className={styles.userRole}>Coordinator</p>
+              <p className={styles.userRole}>Advisor</p>
             </div>
-          </div>
         </div>
       </div>
 
@@ -49,7 +50,7 @@ const Header = ({ title, onSearchSelection }) => {
         {/* Replace Search Bar with Autocomplete */}
         <Autocomplete
           disablePortal
-          options={highSchoolOptions} // High school name options
+          options={eventOptions} // event name options
           onChange={(event, value) => onSearchSelection(value)} // Handle selection
           sx={{
             width: 300,
@@ -76,26 +77,10 @@ const Header = ({ title, onSearchSelection }) => {
             },
           }}
           renderInput={(params) => (
-            <TextField {...params} label="Search High School" />
+            <TextField {...params} label="Search Name" />
           )}
         />
 
-          <Button
-            component={NavLink}
-            to="/coordinatordashboardaddguide" // Route for Add New Guide
-            variant="contained" // Contained style
-            startIcon={<AddIcon />}
-            sx={{
-              backgroundColor: '#8a0303', // Red background
-              color: '#ffffff', // White text
-              marginLeft: '10px', // Add spacing between buttons
-              '&:hover': {
-                backgroundColor: '#6c0101', // Darker red background on hover
-              },
-            }}
-          >
-            Confirm Changes
-          </Button>
       </div>
     </div>
   );

@@ -1,22 +1,13 @@
 import React from "react";
 import Sidebar from "../AdvisorDashboardCommon/Sidebar";
 import InfoCard from "./InfoCard";
-import Calendar from "./Calendar";
-import PieChart from "./PieChart";
 import Table from "./Table";
-import LineChart from "./LineChart"; // Import the Line Chart
 import RightSidebar from "./RightSidebar";
 import { FaUsers, FaChalkboardTeacher, FaRoute, FaBuilding } from "react-icons/fa";
 import styles from "./AdvisorDashboard.module.css";
 
 const Dashboard = () => {
   const dummyInfoData = [
-    {
-      title: "Advisors",
-      value: 34,
-      icon: <FaUsers style={{ color: "#ffffff" }} />,
-      bgColor: "#e0a800", // Gold circle background
-    },
     {
       title: "Guides",
       value: 53,
@@ -44,7 +35,7 @@ const Dashboard = () => {
 
       {/* Main Content */}
       <div className={styles.mainContent}>
-        <h1 className={styles.dashboardTitle}>Coordinator Dashboard</h1>
+        <h1 className={styles.dashboardTitle}>Advisor Dashboard</h1>
 
         {/* Info Cards */}
         <div className={styles.infoCardsContainer}>
@@ -57,24 +48,6 @@ const Dashboard = () => {
               bgColor={data.bgColor}
             />
           ))}
-        </div>
-
-        {/* Line Chart */}
-        <div className={styles.graphContainer}>
-          <LineChart /> {/* Include the line chart component */}
-        </div>
-
-        {/* Bottom Section */}
-        <div className={styles.bottomSection}>
-          {/* Calendar and Pie Chart */}
-          <div className={styles.calendarAndPieContainer}>
-            <div className={styles.calendarContainer}>
-              <Calendar />
-            </div>
-            <div className={styles.pieChartContainer}>
-              <PieChart />
-            </div>
-          </div>
         </div>
 
         {/* Table Section */}

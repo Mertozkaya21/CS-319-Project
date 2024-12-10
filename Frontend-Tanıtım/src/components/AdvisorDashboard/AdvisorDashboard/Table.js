@@ -11,16 +11,16 @@ import styles from './AdvisorDashboard.module.css';
 
 // Data
 const rows = [
-  { id: 1, school: 'High School A', timeSlot: '9:00 AM', guide: 'John Doe', date: '2024-01-01' },
-  { id: 2, school: 'High School B', timeSlot: '10:00 AM', guide: 'Jane Smith', date: '2024-01-02' },
-  { id: 3, school: 'High School C', timeSlot: '11:00 AM', guide: 'John Doe', date: '2024-01-03' },
-  { id: 4, school: 'High School D', timeSlot: '12:00 PM', guide: 'Jane Smith', date: '2024-01-04' },
-  { id: 5, school: 'High School E', timeSlot: '1:00 PM', guide: 'John Doe', date: '2024-01-05' },
-  { id: 6, school: 'High School F', timeSlot: '2:00 PM', guide: 'Jane Smith', date: '2024-01-06' },
-  { id: 7, school: 'High School G', timeSlot: '3:00 PM', guide: 'John Doe', date: '2024-01-07' },
-  { id: 8, school: 'High School H', timeSlot: '4:00 PM', guide: 'Jane Smith', date: '2024-01-08' },
-  { id: 9, school: 'High School I', timeSlot: '5:00 PM', guide: 'John Doe', date: '2024-01-09' },
-  { id: 10, school: 'High School J', timeSlot: '6:00 PM', guide: 'Jane Smith', date: '2024-01-10' },
+  { id: 1, school: 'High School A', timeSlot: '9:00 AM', guide: 'John Doe', date: '01-12-2024' },
+  { id: 2, school: 'High School B', timeSlot: '10:00 AM', guide: 'Jane Smith', date: '05-12-2024' },
+  { id: 3, school: 'High School C', timeSlot: '11:00 AM', guide: 'John Doe', date: '08-12-2024' },
+  { id: 4, school: 'High School D', timeSlot: '12:00 PM', guide: 'Jane Smith', date: '09-12-2024' },
+  { id: 5, school: 'High School E', timeSlot: '1:00 PM', guide: 'John Doe', date: '10-12-2024' },
+  { id: 6, school: 'High School F', timeSlot: '2:00 PM', guide: 'Jane Smith', date: '11-12-2024' },
+  { id: 7, school: 'High School G', timeSlot: '3:00 PM', guide: 'John Doe', date: '15-12-2024' },
+  { id: 8, school: 'High School H', timeSlot: '4:00 PM', guide: 'Jane Smith', date: '20-12-2024' },
+  { id: 9, school: 'High School I', timeSlot: '5:00 PM', guide: 'John Doe', date: '22-12-2024' },
+  { id: 10, school: 'High School J', timeSlot: '6:00 PM', guide: 'Jane Smith', date: '27-12-2024' },
 ];
 
 export default function CustomTable() {

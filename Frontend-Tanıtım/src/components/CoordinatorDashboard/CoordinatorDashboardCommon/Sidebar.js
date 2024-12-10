@@ -20,7 +20,7 @@ import {
   AttachMoney as AttachMoneyIcon,
   MonetizationOn as MonetizationOnIcon, 
   BarChart as BarChartIcon,
-  AccountCircle as AccountCircleIcon,
+  AccountCircle as AccountCircleIcon, 
   Mail as MailIcon,
   Settings as SettingsIcon,
   ExpandMore as ExpandMoreIcon,

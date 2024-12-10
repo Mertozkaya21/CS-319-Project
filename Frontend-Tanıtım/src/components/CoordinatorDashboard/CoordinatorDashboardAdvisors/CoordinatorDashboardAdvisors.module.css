@@ -1,14 +1,24 @@
 /* Dashboard Container */
 .dashboardContainer {
-  height: 100vh;
-  overflow: hidden;
+  display: flex; /* Horizontal alignment for sidebar and content */
+  width: 100vw; /* Full viewport width */
+  height: 100vh; /* Full viewport height */
+  margin: 0; /* Remove margins */
+  padding: 0; /* Remove padding */
+  box-sizing: border-box; /* Include padding/border in dimensions */
+  background-color: #ffffff; /* White background for the entire container */
+  overflow: hidden; /* Prevent scrolling overflow */
 }
 
 /* Main Content */
 .mainContent {
-  margin-left: 250px; /* Offset for the fixed sidebar width */
-  background-color: #f8f9fa;
-  overflow-y: auto;
+  flex: 1; /* Take the remaining space beside the sidebar */
+  display: flex;
+  flex-direction: column; /* Stack elements vertically */
+  margin-left: 250px; /* Sidebar width offset */
+  background-color: #ffffff; /* White background to match the container */
+  overflow-y: auto; /* Enable vertical scrolling for long content */
+  align-items: center; /* Center-align content horizontally */
 }
 
 /* Header */
@@ -21,7 +31,7 @@
   padding-right: 0%;
   padding-bottom: 0%;
   background-color: #ffffff;
-  width: 100%;
+  width: 100%; /* Ensure the header spans the entire content area */
   box-sizing: border-box;
 }
 
@@ -30,8 +40,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 0px; /* Add horizontal padding to align with the table edges */
+  padding: 0 20px; /* Add horizontal padding to align with the table edges */
+  gap: 50px; /* Add more space between title and user section */
+  padding-left: 5%;
+  padding-right: 5%;
+  padding-top: 1%;
 }
+
 
 .headerTitle {
   font-size: 24px;
@@ -116,6 +131,8 @@
   align-items: center;
   padding: 0 20px; /* Add horizontal padding to align with the table edges */
   box-sizing: border-box; /* Ensure padding is included in the element's total width */
+  padding-left: 13%;
+  padding-right: 13%;
 }
 
 .searchBar {
@@ -215,7 +232,6 @@
   background: #ffffff;
   border-radius: 12px;
   padding: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   flex: 1;
 }
 

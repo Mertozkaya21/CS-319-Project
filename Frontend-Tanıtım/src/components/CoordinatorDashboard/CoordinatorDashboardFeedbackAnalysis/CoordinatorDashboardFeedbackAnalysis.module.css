@@ -43,6 +43,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 0px; /* Add horizontal padding to align with the table edges */
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .headerTitle {
@@ -187,7 +189,7 @@
   background-color: #ffffff; /* White background */
   border-radius: 12px; /* Rounded corners */
   margin: 20px 0; /* Spacing around the graph */
-  width: 97%; /* Shrink to fit the content */
+  width: 100%; /* Shrink to fit the content */
   padding: 20px; /* Adjust padding to provide better spacing inside */
   overflow-x: hidden; /* Prevent horizontal scrolling within graphs */
 }
@@ -245,7 +247,7 @@
   align-items: flex-start; /* Align charts at the top */
   gap: 10px; /* Space between charts */
   margin: 20px 0; /* Add some spacing around the section */
-  width: 97%; /* Shrink to fit the content */
+  width: 100%; /* Shrink to fit the content */
   padding: 20px; /* Inner padding */
   border-radius: 12px; /* Rounded corners */
   background-color: #ffffff; /* White background */
@@ -281,8 +283,7 @@
   padding: 20px;
   background-color: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  width: 97%; /* Shrink to fit the content */
+  width: 100%; /* Shrink to fit the content */
 }
 
 .title {

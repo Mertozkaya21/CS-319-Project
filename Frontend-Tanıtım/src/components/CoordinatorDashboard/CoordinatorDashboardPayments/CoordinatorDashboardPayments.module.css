@@ -132,6 +132,7 @@
   margin: 0 20px; /* Center the container horizontally */
   padding: 20px; /* Consistent padding with other sections */
   box-sizing: border-box; /* Include padding in dimensions */
+  margin-bottom: 20px;
 }
 
 /* Individual InfoCard */
@@ -186,8 +187,7 @@
 .graphContainer {
   background-color: #ffffff; /* White background */
   border-radius: 12px; /* Rounded corners */
-  margin: 20px 0; /* Spacing around the graph */
-  width: 97%; /* Shrink to fit the content */
+  width: 100%; /* Shrink to fit the content */
   padding: 20px; /* Adjust padding to provide better spacing inside */
   overflow-x: hidden; /* Prevent horizontal scrolling within graphs */
 }
@@ -244,6 +244,7 @@
   justify-content: space-between;
   margin-top: 20px;
   flex-wrap: wrap; /* For responsiveness */
+  margin-left: 10px;
 }
 
 .unpaidTable,
@@ -253,7 +254,6 @@
   background: #ffffff;
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
 }
 
 .unpaidTable h3,
@@ -262,18 +262,4 @@
   font-weight: bold;
   margin-bottom: 15px;
   color: #374151;
-}
-
-.infoCardsContainer {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 20px;
-}
-
-.graphContainer {
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 12px;
-  margin-bottom: 20px;
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
 }
