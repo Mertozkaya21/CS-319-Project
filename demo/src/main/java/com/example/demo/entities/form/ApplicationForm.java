@@ -1,14 +1,13 @@
 package com.example.demo.entities.form;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import com.example.demo.entities.highschool.Highschool;
 import com.example.demo.entities.user.Advisor;
 import com.example.demo.entities.user.Coordinator;
 import com.example.demo.enums.ApplicationFormStatus;
+import com.example.demo.enums.TourHours;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
@@ -19,7 +18,6 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -44,29 +42,32 @@ public class ApplicationForm {
 
     @Column(nullable = false)
     @Temporal(TemporalType.DATE)
-    private LocalDate submitTime;
+    private LocalDate date;
+
+    @Enumerated
+    @Column(nullable = false)
+    private TourHours tourHour;
     
     @Column(columnDefinition = "text")
-    private String notes;
+    private String comments;
 
     @Enumerated
     @Column(name = "Status")
     private ApplicationFormStatus status;
 
     @Column(nullable = true)
-    private String applicantName;
+    private String chaperoneName;
     @Column(nullable = true)
-    private String applicantPhone;
+    private String chaperoneRole;
     @Column(nullable = true)
-    private String applicantEmail;
-
+    private String phoneNumber;
+    @Column(nullable = true)
+    private String email;
     @Column(nullable = false)
-    private int numberOfParticipants;
-
-    @OneToMany(mappedBy = "applicationForm", cascade = CascadeType.ALL, orphanRemoval = true)
+    private String city;
     @Column(nullable = false)
-    private List<PreferredVisitTime> preferredVisitTimes;
-
+    private int numberOfAttendees;
+    
     @ManyToOne
     @JoinColumn(name = "highschoolID", nullable = false)
     private Highschool highschool;

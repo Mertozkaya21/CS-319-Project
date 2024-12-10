@@ -7,13 +7,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.example.demo.entities.form.ApplicationForm;
 import com.example.demo.enums.ApplicationFormStatus;
-import com.example.demo.entities.form.PreferredVisitTime;
+import com.example.demo.enums.TourHours;
+
 
 
 
 public interface ApplicationFormRepository extends JpaRepository<ApplicationForm, Long>{
 
-    List<ApplicationForm> findBySubmitTime(LocalDate submitTime);
+    List<ApplicationForm> findByDate(LocalDate date);
+    List<ApplicationForm> findByTourHour(TourHours tourHour);
     List<ApplicationForm> findByStatus(ApplicationFormStatus status);
-    List<ApplicationForm> findByPreferredVisitTimes(List<PreferredVisitTime> preferredVisitTimes);
 }

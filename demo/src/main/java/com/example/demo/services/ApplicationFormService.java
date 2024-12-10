@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.example.demo.entities.form.ApplicationForm;
 import com.example.demo.entities.form.GroupForm;
 import com.example.demo.entities.form.IndividualForm;
-import com.example.demo.entities.form.PreferredVisitTime;
 import com.example.demo.enums.ApplicationFormStatus;
 import com.example.demo.repositories.form.GroupFormRepository;
 import com.example.demo.repositories.form.IndividualFormRepository;
@@ -42,18 +41,18 @@ public class ApplicationFormService {
         return individualFormRepository.findAll();
     }
 
-    public IndividualForm saveIndividualForm(IndividualForm aIndividualForm) {
-        for(PreferredVisitTime pvt : aIndividualForm.getPreferredVisitTimes()){
-            pvt.setApplicationForm(aIndividualForm);
+    public IndividualForm saveIndividualForm(IndividualForm individualForm) {
+        if (individualForm.getDate() == null || individualForm.getTourHour() == null) {
+            throw new IllegalArgumentException("Date and Tour Hour must not be null");
         }
-        return individualFormRepository.save(aIndividualForm);
+        return individualFormRepository.save(individualForm);
     }
-
-    public GroupForm saveGroupForm(GroupForm aGroupForm) {
-        for(PreferredVisitTime pvt : aGroupForm.getPreferredVisitTimes()){
-            pvt.setApplicationForm(aGroupForm);
+    
+    public GroupForm saveGroupForm(GroupForm groupForm) {
+        if (groupForm.getDate() == null || groupForm.getTourHour() == null) {
+            throw new IllegalArgumentException("Date and Tour Hour must not be null");
         }
-        return groupFormRepository.save(aGroupForm);
+        return groupFormRepository.save(groupForm);
     }
 
     public ApplicationForm getOneForm(Long formId) {

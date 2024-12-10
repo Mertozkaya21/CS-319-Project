@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface  AdvisorRepository extends JpaRepository<Advisor, Long>{
     
-    List<Advisor> findByName(String name);
+    List<Advisor> findByFirstName(String firstName);
+    List<Advisor> findByLastName(String lastName);
     List<Advisor> findByDateAdded(Days dateAdded);
 }

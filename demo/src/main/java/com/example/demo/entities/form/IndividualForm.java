@@ -1,8 +1,6 @@
 package com.example.demo.entities.form;
 
-import java.util.List;
-
-import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -18,6 +16,9 @@ import lombok.Setter;
 @Table(name = "IndividualForm")
 public class IndividualForm extends ApplicationForm{
 
-    @ElementCollection 
-    private List<String> departmentNames;
+    @Column(nullable = true) 
+    private String departmentOfInterest;
+
+    @Column(nullable = false)
+    private String individualName;
 }
