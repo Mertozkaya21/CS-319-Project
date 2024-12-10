@@ -124,8 +124,8 @@ const Settings = () => {
               width="100%"
             >
               <TextField
-                label="Your Name"
-                defaultValue="Nabila Azalea"
+                label="First Name"
+                defaultValue="Nabila"
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -135,8 +135,8 @@ const Settings = () => {
                 }}
               />
               <TextField
-                label="User Name"
-                defaultValue="Nabila Azalea"
+                label="Last Name"
+                defaultValue="Azalea"
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -163,17 +163,6 @@ const Settings = () => {
                   startAdornment: (
                     <InputAdornment position="start">
                       <PhoneIcon />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              <TextField
-                label="City"
-                defaultValue="Ankara"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <LocationCityIcon />
                     </InputAdornment>
                   ),
                 }}

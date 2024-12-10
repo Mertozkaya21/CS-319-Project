@@ -3,19 +3,17 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-const TimeSlotPicker = () => {
+const TimeSlotPicker = ({ onTimeSelect }) => {
   const [selectedTime, setSelectedTime] = useState('');
 
   const handleTimeSelection = (time) => {
-    setSelectedTime(time);
+    setSelectedTime(time); // Update the local state
+    onTimeSelect(time); // Notify the parent about the selected time
   };
-  
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0 }}> {/* Reduced gap */}
-      <Typography
-        variant="subtitle1"
-        sx={{ fontWeight: 'bold', mb: 1 }} >
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+      <Typography variant="subtitle1" sx={{ fontWeight: 'bold', mb: 1 }}>
         Time Slot
       </Typography>
       <Box sx={{ display: 'flex', gap: 2 }}>
