@@ -54,7 +54,7 @@ public class Tour extends Event {
     )
     private List<Trainee> trainees;
 
-    @OneToMany(mappedBy = "tour", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "tour", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<TourParticipantSurvey> tourParticipantSurveys;
 
     private int qAroomID;

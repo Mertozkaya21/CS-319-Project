@@ -28,6 +28,6 @@ public class Advisor extends User {
     @JoinColumn(name = "payment_id")
     private Payment payment;
 
-    @OneToMany(mappedBy = "advisor", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ApplicationForm> applicationForms;
+    @OneToMany(mappedBy = "advisor", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<ApplicationForm> applicationForms;   
 }

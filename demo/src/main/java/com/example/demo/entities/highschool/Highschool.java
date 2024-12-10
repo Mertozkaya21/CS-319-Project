@@ -42,12 +42,15 @@ public class Highschool {
     @Column(nullable = false)
     private LocalDate dateUpDated;
 
+    // If a highschool is deleted then all of the counselors also deleted 
     @OneToMany(mappedBy = "highschool", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Counselor> counselors;
 
-    @OneToMany(mappedBy = "highschool", cascade = CascadeType.ALL, orphanRemoval = true)
+    // If a highschool is deleted then the surveys are not deleted
+    @OneToMany(mappedBy = "highschool", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<TourParticipantSurvey> surveys;
     
+    // Also all of the tours also deleted
     @OneToMany(mappedBy = "visitorSchool", cascade = CascadeType.ALL, orphanRemoval = true) 
     private List<Tour> groupTours;
 }

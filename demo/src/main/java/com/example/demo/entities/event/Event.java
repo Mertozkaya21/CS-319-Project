@@ -1,9 +1,6 @@
 package com.example.demo.entities.event;
 
 import java.time.LocalDate;
-import java.util.List;
-
-import com.example.demo.entities.user.Guide;
 import com.example.demo.enums.EventStatus;
 
 import jakarta.persistence.Column;
@@ -11,7 +8,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;

@@ -42,10 +42,12 @@ public class Counselor {
     @Column(nullable = false)
     private String email;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    
+    @ManyToOne
     @JoinColumn(name = "highschoolID", nullable = false)
     private Highschool highschool;
 
-    @OneToMany(mappedBy = "counselor", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    // If a counselor deleted then the groupforms are not deleted
+    @OneToMany(mappedBy = "counselor", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private List<GroupForm> groupForms;
 }
