@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.entities.form.ApplicationForm;
 import com.example.demo.entities.form.GroupForm;
 import com.example.demo.entities.form.IndividualForm;
+import com.example.demo.entities.form.PreferredVisitTime;
 import com.example.demo.enums.ApplicationFormStatus;
 import com.example.demo.repositories.form.GroupFormRepository;
 import com.example.demo.repositories.form.IndividualFormRepository;
@@ -42,10 +43,16 @@ public class ApplicationFormService {
     }
 
     public IndividualForm saveIndividualForm(IndividualForm aIndividualForm) {
+        for(PreferredVisitTime pvt : aIndividualForm.getPreferredVisitTimes()){
+            pvt.setApplicationForm(aIndividualForm);
+        }
         return individualFormRepository.save(aIndividualForm);
     }
 
     public GroupForm saveGroupForm(GroupForm aGroupForm) {
+        for(PreferredVisitTime pvt : aGroupForm.getPreferredVisitTimes()){
+            pvt.setApplicationForm(aGroupForm);
+        }
         return groupFormRepository.save(aGroupForm);
     }
 
