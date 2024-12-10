@@ -72,10 +72,10 @@ public class ApplicationForm {
     private Highschool highschool;
 
     @ManyToOne
-    @JoinColumn(name = "advisor_id") 
+    @JoinColumn(name = "advisor_id", nullable = true) 
     private Advisor advisor;
 
     @ManyToOne
-    @JoinColumn(name = "coordinator_id")
+    @JoinColumn(name = "coordinator_id",nullable = false)
     private Coordinator coordinator;
 }

@@ -57,6 +57,21 @@ public class UserService {
         return traineeRepository.findAll();
     }
 
+    public User saveUser(String role, User newUser) {
+        switch (role.toLowerCase()) {
+            case "guide":
+                return guideRepository.save((Guide) newUser);
+            case "advisor":
+                return advisorRepository.save((Advisor) newUser);
+            case "coordinator":
+                return coordinatorRepository.save((Coordinator) newUser);
+            case "trainee":
+                return traineeRepository.save((Trainee) newUser);
+            default:
+                throw new IllegalArgumentException("Unknown role: " + role);
+        }
+    }
+
     public Coordinator saveCoordinator(Coordinator theCoordinator) {
         return coordinatorRepository.save(theCoordinator);
     }
