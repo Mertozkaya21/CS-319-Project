@@ -44,7 +44,7 @@ public class Highschool {
 
     // If a highschool is deleted then all of the counselors also deleted 
     @OneToMany(mappedBy = "highschool", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Counselor> counselors;
+    private List<Counselor> counselors; //bi  okulun birden fazla counselor olamıyo
 
     // If a highschool is deleted then the surveys are not deleted
     @OneToMany(mappedBy = "highschool", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
