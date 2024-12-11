@@ -50,7 +50,7 @@ public class ApplicationFormController {
 
     @GetMapping("/{id}")
     public ResponseEntity<ApplicationForm> getApplicationForm(@PathVariable Long id) {
-        ApplicationForm form = applicationFormService.getOneForm(id);
+        ApplicationForm form = applicationFormService.getOneFormById(id);
         if (form != null) {
             return ResponseEntity.ok(form);
         }
@@ -78,7 +78,7 @@ public class ApplicationFormController {
 
     @GetMapping("/{id}/status")
     public ResponseEntity<ApplicationFormStatus> getFormStatus(@PathVariable Long id) {
-        ApplicationFormStatus status = applicationFormService.getOneApplicationFormStatus(id);
+        ApplicationFormStatus status = applicationFormService.getOneApplicationFormStatusByID(id);
         if (status != null) {
             return ResponseEntity.ok(status);
         }
