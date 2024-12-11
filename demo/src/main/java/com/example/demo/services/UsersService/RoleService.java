@@ -10,4 +10,6 @@ public interface RoleService {
     Optional<? extends User> findById(Long id);
     List<? extends User> findAll();
     void deleteById(Long id);
+    List<? extends User> findByEmail(String email); 
+    long count();
 }

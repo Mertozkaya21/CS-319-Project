@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.entities.user.Trainee;
 import com.example.demo.entities.user.User;
+import com.example.demo.enums.TraineeStatus;
 import com.example.demo.repositories.user.TraineeRepository;
 
 
@@ -39,4 +40,17 @@ public class TraineeService implements RoleService {
         traineeRepository.deleteById(id);
     }
 
+    @Override
+    public List<? extends User> findByEmail(String email) {
+        return traineeRepository.findByEmail(email);
+    }
+
+    @Override
+    public long count() {
+        return traineeRepository.count();
+    }
+
+    public List<Trainee> findByStatus(TraineeStatus status){
+        return traineeRepository.findByStatus(status);
+    }
 }

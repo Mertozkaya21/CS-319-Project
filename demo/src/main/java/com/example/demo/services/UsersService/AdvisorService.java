@@ -36,4 +36,14 @@ public class AdvisorService implements RoleService {
     public void deleteById(Long id) {
         advisorRepository.deleteById(id);
     }
+
+    @Override
+    public List<Advisor> findByEmail(String email) {
+        return advisorRepository.findByEmail(email);
+    }
+
+    @Override
+    public long count() {
+        return advisorRepository.count();
+    }
 }

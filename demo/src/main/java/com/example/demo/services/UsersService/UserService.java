@@ -30,4 +30,13 @@ public class UserService {
     public void deleteUser(String role, Long id) {
         roleServiceFactory.getRoleService(role).deleteById(id);
     }
+
+    public List<? extends User> findByEmail(String role,String email) {
+        return roleServiceFactory.getRoleService(role).findByEmail(email);
+    }
+
+    public long count(String role){
+        return roleServiceFactory.getRoleService(role).count();
+    }
+
 }

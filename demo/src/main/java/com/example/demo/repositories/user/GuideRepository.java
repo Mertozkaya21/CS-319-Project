@@ -11,4 +11,7 @@ import com.example.demo.enums.Days;
 public interface GuideRepository extends JpaRepository<Guide, Long>{
     
     List<Guide> findByAvailableTimes(HashMap<Days,TourHours> availableTimes);
+    List<Guide> findByEmail(String email);
+    List<Guide> findByPassword(String password);
+    
 }

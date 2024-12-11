@@ -37,4 +37,14 @@ public class CoordinatorService implements RoleService{
     public void deleteById(Long id) {
         coordinatorRepository.deleteById(id);
     }
+
+    @Override
+    public List<Coordinator> findByEmail(String email) {
+        return coordinatorRepository.findByEmail(email);
+    }
+
+    @Override
+    public long count() {
+        return coordinatorRepository.count();
+    }
 }

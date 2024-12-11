@@ -2,9 +2,12 @@ package com.example.demo.services.UsersService;
 
 import com.example.demo.entities.user.Guide;
 import com.example.demo.entities.user.User;
+import com.example.demo.enums.Days;
+import com.example.demo.enums.TourHours;
 import com.example.demo.repositories.user.GuideRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,4 +39,21 @@ public class GuideService implements RoleService {
     public void deleteById(Long id) {
         guideRepository.deleteById(id);
     }
+
+    @Override
+    public List<Guide> findByEmail(String email) {
+        return guideRepository.findByEmail(email);
+    }
+
+    @Override
+    public long count() {
+        return guideRepository.count();
+    }
+
+    // I am not sure about the hashmap data structure of the available times slot but 
+    // we will see
+    public List<Guide> findByAvailableTimes(HashMap<Days,TourHours> availableTimes){
+        return guideRepository.findByAvailableTimes(availableTimes);
+    }
+    
 }
