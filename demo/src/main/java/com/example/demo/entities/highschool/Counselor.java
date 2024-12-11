@@ -14,6 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -42,12 +43,9 @@ public class Counselor {
     @Column(nullable = false)
     private String email;
 
-    
-    @ManyToOne
-    @JoinColumn(name = "highschoolID", nullable = false)
+    @OneToOne(mappedBy = "counselor", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Highschool highschool;
 
-    // If a counselor deleted then the groupforms are not deleted
     @OneToMany(mappedBy = "counselor", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     private List<GroupForm> groupForms;
 }

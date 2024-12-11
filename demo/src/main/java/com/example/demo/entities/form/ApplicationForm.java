@@ -49,7 +49,6 @@ public class ApplicationForm {
     private TourHours tourHour;
 
     @Column(nullable = false)
-    //@Temporal(TemporalType.DATE)
     private LocalDate eventDate;
     
     @Column(columnDefinition = "text")

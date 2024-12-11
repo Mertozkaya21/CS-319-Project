@@ -29,6 +29,7 @@ public class TourParticipantSurveyService {
     }
 
     public void deleteSurveyById(Long id) {
-        tourParticipantSurveyRepository.deleteById(id);
+        if(tourParticipantSurveyRepository.existsById(id))
+            tourParticipantSurveyRepository.deleteById(id);
     }
 }

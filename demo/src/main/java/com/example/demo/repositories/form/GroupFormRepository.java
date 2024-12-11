@@ -12,9 +12,7 @@ import com.example.demo.enums.TourHours;
 public interface GroupFormRepository extends JpaRepository<GroupForm,Long>{
 
     List<GroupForm> findByStatus(ApplicationFormStatus status);
-    List<GroupForm> findByDate(LocalDate date);
+    List<GroupForm> findByEventDate(LocalDate eventDate);
     List<GroupForm> findByTourHour(TourHours tourHour);
-    List<GroupForm> findByTourHourAndDate(TourHours tourHour, LocalDate date);
     List<GroupForm> findByApplicationFormID(long applicationFormID);
-
 }

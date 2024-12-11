@@ -20,5 +20,4 @@ public class DataService {
         this.highschoolRepository = highschoolRepository;
     }
 
-    
 }

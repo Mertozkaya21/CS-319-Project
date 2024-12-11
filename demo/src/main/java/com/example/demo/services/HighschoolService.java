@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dto.HighschoolRequest;
 import com.example.demo.entities.highschool.Highschool;
 import com.example.demo.repositories.highschool.HighschoolRepository;
 
@@ -16,6 +17,8 @@ public class HighschoolService {
     public HighschoolService(HighschoolRepository hRepository) {
         this.highschoolRepository = hRepository;
     }
+
+
 
     public List<Highschool> getAllHighschool() {
         return highschoolRepository.findAll();
@@ -30,6 +33,7 @@ public class HighschoolService {
     }
 
     public void deleteHighschoolByID(Long id) {
-        highschoolRepository.deleteById(id);
+        if(highschoolRepository.existsById(id))
+            highschoolRepository.deleteById(id);
     }
 }

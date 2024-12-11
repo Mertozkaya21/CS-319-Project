@@ -1,11 +1,11 @@
 package com.example.demo.services.UsersService;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Service
+@Component
 public class RoleServiceFactory {
 
     private final Map<String, RoleService> roleServiceMap = new HashMap<>();

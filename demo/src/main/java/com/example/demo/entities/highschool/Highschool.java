@@ -12,7 +12,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -41,11 +43,11 @@ public class Highschool {
 
     @Column(nullable = false)
     private LocalDate dateUpDated;
+    
 
-    // If a highschool is deleted then all of the counselors also deleted 
-    @OneToMany(mappedBy = "highschool", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Counselor> counselors; //bi  okulun birden fazla counselor olamıyo
-
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "counselor_id", nullable = true) // Foreign key column
+    private Counselor counselor;
     // If a highschool is deleted then the surveys are not deleted
     @OneToMany(mappedBy = "highschool", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<TourParticipantSurvey> surveys;

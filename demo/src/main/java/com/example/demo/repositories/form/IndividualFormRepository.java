@@ -12,7 +12,6 @@ import com.example.demo.enums.TourHours;
 public interface IndividualFormRepository extends JpaRepository<IndividualForm, Long>{
 
     List<IndividualForm> findByStatus(ApplicationFormStatus status);
-    List<IndividualForm> findByDate(LocalDate date);
+    List<IndividualForm> findByEventDate(LocalDate eventDate);
     List<IndividualForm> findByTourHour(TourHours tourHour);
-    List<IndividualForm> findByTourHourAndDate(TourHours tourHour, LocalDate date);
 }
