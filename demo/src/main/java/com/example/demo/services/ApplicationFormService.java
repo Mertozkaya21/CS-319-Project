@@ -55,7 +55,7 @@ public class ApplicationFormService {
         return groupFormRepository.save(groupForm);
     }
 
-    public ApplicationForm getOneForm(Long formId) {
+    public ApplicationForm getOneFormById(Long formId) {
         Optional<GroupForm> groupFormOpt = groupFormRepository.findById(formId);
         if (groupFormOpt.isPresent()) return groupFormOpt.get();
 
@@ -85,7 +85,7 @@ public class ApplicationFormService {
         return false;
     }
 
-    public ApplicationFormStatus getOneApplicationFormStatus(Long formId) {
+    public ApplicationFormStatus getOneApplicationFormStatusByID(Long formId) {
         Optional<GroupForm> groupForm = groupFormRepository.findById(formId);
         if(groupForm.isPresent()){
             ApplicationForm foundApplicationForm = groupForm.get();

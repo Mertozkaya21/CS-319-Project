@@ -24,7 +24,8 @@ public class UserService {
     private final TraineeRepository traineeRepository;
 
     public UserService(CoordinatorRepository coordinatorRepo,
-                        AdvisorRepository advisorRepo, GuideRepository guideRepo,
+                        AdvisorRepository advisorRepo, 
+                        GuideRepository guideRepo,
                         TraineeRepository traineeRepo){
         this.coordinatorRepository = coordinatorRepo;
         this.advisorRepository = advisorRepo;

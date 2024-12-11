@@ -18,6 +18,6 @@ public class DataService {
         this.eventService = eventService;
         this.tourParticipantSurveyRepository = tourParticipantSurveyRepo;
         this.highschoolRepository = highschoolRepository;
-        
     }
+    
 }

@@ -30,7 +30,7 @@ public class EventService {
         return events;
     }
 
-    public List<Fair> getFair() {
+    public List<Fair> getAllFairs() {
         return fairRepository.findAll();
     }
 
@@ -46,7 +46,7 @@ public class EventService {
         return fairRepository.save(aFair);
     }
 
-    public Event getOneEvent(Long eventId) {
+    public Event getOneEventById(Long eventId) {
         Optional<Fair> fairOpt = fairRepository.findById(eventId);
         if (fairOpt.isPresent()) return fairOpt.get();
 
