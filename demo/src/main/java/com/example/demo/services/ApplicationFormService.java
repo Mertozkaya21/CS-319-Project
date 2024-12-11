@@ -6,6 +6,8 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dto.GroupFormDTO;
+import com.example.demo.dto.IndividualFormDTO;
 import com.example.demo.entities.form.ApplicationForm;
 import com.example.demo.entities.form.GroupForm;
 import com.example.demo.entities.form.IndividualForm;
@@ -41,14 +43,16 @@ public class ApplicationFormService {
         return individualFormRepository.findAll();
     }
 
-    public IndividualForm saveIndividualForm(IndividualForm individualForm) {
+    public IndividualForm saveIndividualForm(IndividualFormDTO individualFormDto) {
+        IndividualForm individualForm = new IndividualForm(individualFormDto);
         if (individualForm.getEventDate() == null || individualForm.getTourHour() == null) {
             throw new IllegalArgumentException("Date and Tour Hour must not be null");
         }
         return individualFormRepository.save(individualForm);
     }
     
-    public GroupForm saveGroupForm(GroupForm groupForm) {
+    public GroupForm saveGroupForm(GroupFormDTO groupFormDto) {
+        GroupForm groupForm = new GroupForm(groupFormDto);
         if (groupForm.getEventDate() == null || groupForm.getTourHour() == null) {
             throw new IllegalArgumentException("Date and Tour Hour must not be null");
         }

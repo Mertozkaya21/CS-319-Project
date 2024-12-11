@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.GroupFormDTO;
+import com.example.demo.dto.IndividualFormDTO;
 import com.example.demo.entities.form.ApplicationForm;
 import com.example.demo.entities.form.GroupForm;
 import com.example.demo.entities.form.IndividualForm;
@@ -56,12 +58,12 @@ public class ApplicationFormController {
     }
 
     @PostMapping("/individualform")
-    public ResponseEntity<IndividualForm> saveIndividualForm(@RequestBody IndividualForm form) {
+    public ResponseEntity<IndividualForm> saveIndividualForm(@RequestBody IndividualFormDTO form) {
         return ResponseEntity.status(HttpStatus.CREATED).body(applicationFormService.saveIndividualForm(form));
     }
 
     @PostMapping("/groupform")
-    public ResponseEntity<GroupForm> saveGroupForm(@RequestBody GroupForm form) {
+    public ResponseEntity<GroupForm> saveGroupForm(@RequestBody GroupFormDTO form) {
         return ResponseEntity.status(HttpStatus.CREATED).body(applicationFormService.saveGroupForm(form));
     }
 
