@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
 import Sidebar from '../AdvisorDashboardCommon/Sidebar';
 import Header from './Header';
-import FairApplicationsTable from './FairApplicationsTable'; // Correct component import
-import { fairApplicationsRows } from './FairApplicationsTable'; // Import data
+import FairsTable from './FairsTable';
+import { eventRows } from './FairsTable'; // Import data
 import styles from './AdvisorDashboardFairs.module.css';
 
-const DashboardFairApplications = () => {
-  const [filteredRows, setFilteredRows] = useState(fairApplicationsRows); // Manage filtered rows
+const DashboardFairs = () => {
+  const [filteredRows, setFilteredRows] = useState(eventRows); // Manage filtered rows
 
   const handleSearchSelection = (value) => {
-    if (value && value.label) {
-      const filtered = fairApplicationsRows.filter((row) =>
-        row.name.toLowerCase() === value.label.toLowerCase()
-      );
+    if (value) {
+      // Filter rows based on the selected event name
+      const filtered = eventRows.filter((row) => row.name === value.label);
       setFilteredRows(filtered);
     } else {
-      setFilteredRows(fairApplicationsRows);
+      // Reset to show all rows when the search is cleared
+      setFilteredRows(eventRows);
     }
   };
 
@@ -27,13 +27,13 @@ const DashboardFairApplications = () => {
       {/* Main Content */}
       <div className={styles.mainContent}>
         {/* Header */}
-        <Header title="Fair Applications" onSearchSelection={handleSearchSelection} />
+        <Header title="Fairs" onSearchSelection={handleSearchSelection} />
 
-        {/* Fair Applications Table */}
-        <FairApplicationsTable rows={filteredRows} /> {/* Capitalized component name */}
+        {/* Events Table */}
+        <FairsTable rows={filteredRows} />
       </div>
     </div>
   );
 };
 
-export default DashboardFairApplications;
+export default DashboardFairs;

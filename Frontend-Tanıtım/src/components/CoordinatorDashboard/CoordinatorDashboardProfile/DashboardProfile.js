@@ -11,9 +11,7 @@ const DashboardProfile = () => {
       <Sidebar />
       {/* Main Content */}
       <div className={styles.mainContent}>
-        {/* Header */}
-        <Header title="Profile" />
-        {/* Profile*/}
+        {/* Profile */}
         <Profile />
       </div>
     </div>

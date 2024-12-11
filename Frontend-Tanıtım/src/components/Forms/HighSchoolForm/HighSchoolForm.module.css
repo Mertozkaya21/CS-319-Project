@@ -1,0 +1,150 @@
+/* Ensure no background-color issues */
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden; /* Prevent scrollbars from appearing */
+  background-color: transparent; /* Ensure no white background */
+  position: relative; /* Ensure proper stacking context */
+  z-index: 1; /* Ensure content appears above circles */
+}
+/* Header container for Bilkent logo and text */
+.headerContainer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Align content to the left */
+    gap: 15px; /* Space between the logo and the text */
+    position: absolute; /* Position relative to the page */
+    top: 8%; /* Slightly below the top edge */
+    left: 12%; /* Slightly away from the left edge */
+    background-color: transparent;
+    min-width: 500px;
+  }
+
+/* Logo styles */
+.headerLogo {
+    height: 80px; /* Adjust logo size */
+    width: auto; /* Maintain aspect ratio */
+}
+
+/* Text container */
+.headerText {
+    display: flex;
+    flex-direction: column;
+}
+
+.headerTitle {
+    font-size: 2rem; /* Adjusted title size */
+    font-weight: bold;
+    color: #003366; /* Bilkent blue */
+    margin: 0;
+}
+
+.headerLine {
+    width: 100%; /* Full width under title */
+    height: 2px;
+    background-color: #003366; /* Same blue */
+    margin: 4px 0; /* Spacing between title and subtitle */
+}
+
+.headerSubtitle {
+    font-size: 1.5rem; /* Adjusted subtitle size */
+    color: #003366;
+    margin: 0;
+}
+
+
+/* Circles container */
+.circlesContainer {
+  position: fixed; /* Keeps circles fixed to the viewport */
+  top: 0;
+  right: 0; /* Start from the right edge */
+  width: 50%; /* Take 1/3 of the screen width */
+  height: 100%; /* Full height of the viewport */
+  pointer-events: none; /* Prevent interaction */
+  overflow: hidden; /* Ensure circles don’t overflow the container */
+  background-color: transparent; /* Ensure no white background */
+}
+
+/* Large circle */
+.circleLarge {
+  background-color: #8a0303;
+  border-radius: 50%;
+  position: absolute;
+  height: 1000px;
+  width: 1000px;
+  top: -20%;
+  right: -400px;
+  opacity: 0.2;
+}
+
+/* Medium circle */
+.circleMedium {
+  background-color: #8a0303;
+  border-radius: 50%;
+  position: absolute;
+  height: 900px;
+  width: 900px;
+  top: -15%;
+  right: -400px;
+  opacity: 0.4;
+}
+
+/* Small circle */
+.circleSmall {
+  background-color: #8a0303;
+  border-radius: 50%;
+  position: absolute;
+  height: 800px;
+  width: 800px;
+  top: -10%;
+  right: -400px;
+  opacity: 1;
+}
+/* Form container */
+.formContainer {
+  display: flex; /* Enable flexbox for vertical alignment */
+  flex-direction: column; /* Stack children vertically */
+  justify-content: space-between; /* Space out content and buttons */
+  position: absolute;
+  top: 23%;
+  left: 8%;
+  width: 45%;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  z-index: 1;
+  min-height: 500px; /* Ensure consistent height */
+}
+
+/* Stepper styles */
+.stepperContainer {
+  padding: 0 20px;
+  margin-bottom: 20px;
+}
+
+.stepperButtons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.stepButton {
+  background-color: #dc3545; /* Match Bilkent's red */
+  color: #ffffff; /* White text */
+}
+
+.stepButton:disabled {
+  background-color: #f5f5f5; /* Light gray for disabled buttons */
+  color: #ccc; /* Gray text */
+}
+
+/* Form fields */
+.formField {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.textField {
+  margin-bottom: 20px;
+}

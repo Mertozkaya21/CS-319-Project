@@ -10,7 +10,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { Card, CardContent, Typography } from "@mui/material";
-
+ 
 const data = [
   { name: "Jan", scheduled: 40, completed: 24 },
   { name: "Feb", scheduled: 30, completed: 13 },

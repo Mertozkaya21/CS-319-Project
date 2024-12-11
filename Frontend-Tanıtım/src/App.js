@@ -1,19 +1,31 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
 import Home from './components/Home';
 import Login from './components/Login'; // Login.js dosyasını içe aktar
 import ForgotPassword from './components/ForgotPassword'; // ForgotPassword.js dosyasını içe aktar
-import HighSchoolForm from './components/HighSchoolForm';
+import HighSchoolForm from './components/Forms/HighSchoolForm/HighSchoolFormDashboard';
+import IndividualForm from './components/Forms/IndividualForm/IndividualFormDashboard';
+import Survey from './components/Forms/Survey/SurveyDashboard';
+
 import CoordinatorDashboard from './components/CoordinatorDashboard/CoordinatorDashboard/Dashboard';
 import CoordinatorDashboardHighSchool from './components/CoordinatorDashboard/CoordinatorDashboardHighSchool/DashboardHighSchool';
+import CoordinatorDashboardEditHighSchool from './components/CoordinatorDashboard/CoordinatorDashboardHighSchoolsEditHighSchool/DashboardEditHighSchool';
 import CoordinatorDashboardAdvisors from './components/CoordinatorDashboard/CoordinatorDashboardAdvisors/DashboardAdvisors';
+import CoordinatorDashboardAddAdvisor from './components/CoordinatorDashboard/CoordinatorDashboardAdvisorsAddNewAdvisor/DashboardAddAdvisor';
+import CoordinatorDashboardEditAdvisor from './components/CoordinatorDashboard/CoordinatorDashboardAdvisorsEditAdvisor/DashboardEditAdvisor';
 import CoordinatorDashboardGuides from './components/CoordinatorDashboard/CoordinatorDashboardGuides/DashboardGuides';
+import CoordinatorDashboardAddGuide from './components/CoordinatorDashboard/CoordinatorDashboardGuidesAddNewGuide/DashboardAddGuide';
+import CoordinatorDashboardEditGuide from './components/CoordinatorDashboard/CoordinatorDashboardGuidesEditGuide/DashboardEditGuide';
 import CoordinatorDashboardTrainees from './components/CoordinatorDashboard/CoordinatorDashboardTrainees/DashboardTrainees';
+import CoordinatorDashboardAddTrainee from './components/CoordinatorDashboard/CoordinatorDashboardTraineesAddNewTrainee/DashboardAddTrainee';
+import CoordinatorDashboardEditTrainee from './components/CoordinatorDashboard/CoordinatorDashboardTraineesEditTrainee/DashboardEditTrainee';
 import CoordinatorDashboardTourApplications from './components/CoordinatorDashboard/CoordinatorDashboardTourApplications/DashboardTourApplications';
 import CoordinatorDashboardFairApplications from './components/CoordinatorDashboard/CoordinatorDashboardFairApplications/DashboardFairApplications';
 import CoordinatorDashboardToursAndFairs from './components/CoordinatorDashboard/CoordinatorDashboardToursAndFairs/DashboardToursAndFairs';
 import CoordinatorDashboardToursAndFairsViewAll from './components/CoordinatorDashboard/CoordinatorDashboardToursAndFairsViewAll/DashboardToursAndFairsViewAll';
 import CoordinatorDashboardFeedbackAnalysis from './components/CoordinatorDashboard/CoordinatorDashboardFeedbackAnalysis/DashboardFeedbackAnalysis';
+import CoordinatorDashboardPayments from './components/CoordinatorDashboard/CoordinatorDashboardPayments/DashboardPayments';
 import CoordinatorDashboardProfile from './components/CoordinatorDashboard/CoordinatorDashboardProfile/DashboardProfile';
 import CoordinatorDashboardChat from './components/CoordinatorDashboard/CoordinatorDashboardChat/DashboardChat';
 import CoordinatorDashboardSettings from './components/CoordinatorDashboard/CoordinatorDashboardSettings/DashboardSettings';
@@ -56,17 +68,28 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} /> {/* Login sayfası */}
         <Route path="/forgot-password" element={<ForgotPassword />} /> {/* ForgotPassword sayfası */}
-        <Route path="/highschool" element={<HighSchoolForm />} />
+        <Route path="/highschoolform" element={<HighSchoolForm />} />
+        <Route path="/individualform" element={<IndividualForm />} />
+        <Route path="/survey" element={<Survey />} />
+        
         <Route path="/coordinatordashboard" element={<CoordinatorDashboard />} />
         <Route path="/coordinatordashboardhighschool" element={<CoordinatorDashboardHighSchool />} />
+        <Route path="/coordinatordashboardedithighschool" element={<CoordinatorDashboardEditHighSchool />} />
         <Route path="/coordinatordashboardadvisors" element={<CoordinatorDashboardAdvisors />} />
+        <Route path="/coordinatordashboardaddadvisor" element={<CoordinatorDashboardAddAdvisor />} />
+        <Route path="/coordinatordashboardeditadvisor" element={<CoordinatorDashboardEditAdvisor />} />
         <Route path="/coordinatordashboardguides" element={<CoordinatorDashboardGuides />} />
+        <Route path="/coordinatordashboardaddguide" element={<CoordinatorDashboardAddGuide />} /> 
+        <Route path="/coordinatordashboardeditguide" element={<CoordinatorDashboardEditGuide />} />
         <Route path="/coordinatordashboardtrainees" element={<CoordinatorDashboardTrainees />} />
+        <Route path="/coordinatordashboardaddtrainee" element={<CoordinatorDashboardAddTrainee />} />
+        <Route path="/coordinatordashboardedittrainee" element={<CoordinatorDashboardEditTrainee />} />
         <Route path="/coordinatordashboardtourapplications" element={<CoordinatorDashboardTourApplications />} />
         <Route path="/coordinatordashboardfairapplications" element={<CoordinatorDashboardFairApplications />} />
         <Route path="/coordinatordashboardtoursandfairs" element={<CoordinatorDashboardToursAndFairs />} />
         <Route path="/coordinatordashboardtoursandfairsviewall" element={<CoordinatorDashboardToursAndFairsViewAll />} />
         <Route path="/coordinatordashboardfeedbackanalysis" element={<CoordinatorDashboardFeedbackAnalysis />} />
+        <Route path="/coordinatordashboardpayments" element={<CoordinatorDashboardPayments />} />
         <Route path="/coordinatordashboardprofile" element={<CoordinatorDashboardProfile />} />
         <Route path="/coordinatordashboardchat" element={<CoordinatorDashboardChat />} />
         <Route path="/coordinatordashboardsettings" element={<CoordinatorDashboardSettings />} />

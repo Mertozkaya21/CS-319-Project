@@ -1,5 +1,4 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import {
   LineChart,
   Line,
@@ -12,27 +11,21 @@ import {
 import { Card, CardContent, Typography } from "@mui/material";
 
 const data = [
-  { name: "Jan", scheduled: 40, completed: 24 },
-  { name: "Feb", scheduled: 30, completed: 13 },
-  { name: "Mar", scheduled: 20, completed: 9 },
-  { name: "Apr", scheduled: 27, completed: 18 },
-  { name: "May", scheduled: 50, completed: 30 },
-  { name: "Jun", scheduled: 80, completed: 40 },
-  { name: "Jul", scheduled: 100, completed: 60 },
-  { name: "Aug", scheduled: 90, completed: 50 },
-  { name: "Sep", scheduled: 80, completed: 40 },
-  { name: "Oct", scheduled: 70, completed: 30 },
-  { name: "Nov", scheduled: 60, completed: 20 },
-  { name: "Dec", scheduled: 50, completed: 10 },
+  { name: "Jan", expense: 20, income: 40 },
+  { name: "Feb", expense: 30, income: 60 },
+  { name: "Mar", expense: 50, income: 90 },
+  { name: "Apr", expense: 20, income: 30 },
+  { name: "May", expense: 30, income: 50 },
+  { name: "Jun", expense: 40, income: 70 },
+  { name: "Jul", expense: 50, income: 90 },
+  { name: "Aug", expense: 40, income: 60 },
+  { name: "Sep", expense: 30, income: 50 },
+  { name: "Oct", expense: 40, income: 70 },
+  { name: "Nov", expense: 60, income: 80 },
+  { name: "Dec", expense: 30, income: 50 },
 ];
 
 const LineChartComponent = () => {
-  const navigate = useNavigate();
-
-  const handleClick = () => {
-    navigate("/coordinatordashboardfeedbackanalysis");
-  };
-
   return (
     <Card
       sx={{
@@ -45,8 +38,8 @@ const LineChartComponent = () => {
           cursor: "pointer",
         },
       }}
-      onClick={handleClick}
     >
+      {/* Header Section */}
       <div
         style={{
           display: "flex",
@@ -55,47 +48,61 @@ const LineChartComponent = () => {
           marginBottom: "20px",
         }}
       >
+        {/* Title */}
         <Typography
           variant="h6"
           sx={{ fontWeight: "bold", color: "#374151", margin: 0 }}
         >
-          Number of Tours
+          Balance Analytics
         </Typography>
-        <div style={{ display: "flex", gap: "16px" }}>
+
+        {/* Summary Dots */}
+        <div
+          style={{
+            display: "flex",
+            gap: "16px",
+            alignItems: "center",
+          }}
+        >
+          {/* Expense Dot */}
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
             <span
               style={{
                 width: "12px",
                 height: "12px",
                 borderRadius: "50%",
-                backgroundColor: "#f59e0b",
+                backgroundColor: "#ff4d4f",
               }}
             ></span>
             <Typography
               variant="body2"
               sx={{ color: "#6b7280", fontWeight: "bold" }}
             >
-              Scheduled Tours: <span style={{ color: "#f59e0b" }}>1,245</span>
+              Expense: <span style={{ color: "#ff4d4f" }}>$1,245</span>
             </Typography>
           </div>
+
+          {/* Income Dot */}
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
             <span
               style={{
                 width: "12px",
                 height: "12px",
                 borderRadius: "50%",
-                backgroundColor: "#ef4444",
+                backgroundColor: "#52c41a",
               }}
             ></span>
             <Typography
               variant="body2"
               sx={{ color: "#6b7280", fontWeight: "bold" }}
             >
-              Completed Tours: <span style={{ color: "#ef4444" }}>1,356</span>
+              Income: <span style={{ color: "#52c41a" }}>$1,356</span>
             </Typography>
           </div>
         </div>
       </div>
+
+      {/* Chart Section */}
       <CardContent>
         <ResponsiveContainer width="100%" height={300}>
           <LineChart
@@ -123,23 +130,36 @@ const LineChartComponent = () => {
               }}
               labelStyle={{ color: "#374151", fontWeight: "bold" }}
               itemStyle={{ color: "#6b7280" }}
+              formatter={(value, name) => [`$${value}`, name]}
             />
             <Line
               type="monotone"
-              dataKey="scheduled"
-              stroke="#f59e0b"
+              dataKey="expense"
+              stroke="#ff4d4f"
               strokeWidth={2}
+              fill="url(#colorExpense)"
               dot={{ r: 4 }}
-              activeDot={{ r: 6, strokeWidth: 2, stroke: "#f59e0b" }}
+              activeDot={{ r: 6, strokeWidth: 2, stroke: "#ff4d4f" }}
             />
             <Line
               type="monotone"
-              dataKey="completed"
-              stroke="#ef4444"
+              dataKey="income"
+              stroke="#52c41a"
               strokeWidth={2}
+              fill="url(#colorIncome)"
               dot={{ r: 4 }}
-              activeDot={{ r: 6, strokeWidth: 2, stroke: "#ef4444" }}
+              activeDot={{ r: 6, strokeWidth: 2, stroke: "#52c41a" }}
             />
+            <defs>
+              <linearGradient id="colorExpense" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#ff4d4f" stopOpacity={0.3} />
+                <stop offset="100%" stopColor="#ff4d4f" stopOpacity={0} />
+              </linearGradient>
+              <linearGradient id="colorIncome" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#52c41a" stopOpacity={0.3} />
+                <stop offset="100%" stopColor="#52c41a" stopOpacity={0} />
+              </linearGradient>
+            </defs>
           </LineChart>
         </ResponsiveContainer>
       </CardContent>

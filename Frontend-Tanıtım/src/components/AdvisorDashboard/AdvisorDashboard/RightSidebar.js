@@ -12,29 +12,29 @@ const RightSidebar = () => {
         <div className={styles.userInfoWithIcons}>
           {/* User Info */}
           <div className={styles.userInfo}>
-            <div className={styles.userAvatar}>
+          <NavLink to="/advisordashboardprofile" className={styles.userAvatar}>
               <img
                 src="https://via.placeholder.com/40" // Placeholder for now
                 alt="User"
                 className={styles.avatarImage}
               />
-            </div>
+            </NavLink>
             <div>
               <p className={styles.userName}>Nabila A.</p>
-              <p className={styles.userRole}>Coordinator</p>
+              <p className={styles.userRole}>Advisor</p>
             </div>
           </div>
 
           {/* Notification and Settings Icons */}
           <div className={styles.topIcons}>
             {/* Notification Button */}
-          <NavLink to="/coordinatordashboardnotifications" className={styles.iconButton}>
+          <NavLink to="/advisordashboardnotifications" className={styles.iconButton}>
             <FaBell className={styles.notificationIcon} />
             <span className={styles.notificationDot}></span>
           </NavLink>
 
           {/* Settings Button */}
-          <NavLink to="/coordinatordashboardsettings" className={styles.iconButton}>
+          <NavLink to="/advisordashboardsettings" className={styles.iconButton}>
             <FaCog />
           </NavLink>
           </div>
@@ -63,7 +63,10 @@ const RightSidebar = () => {
             )
           )}
         </ul>
-        <button className={styles.viewAllButton}>View All</button>
+        {/* Navigate to Chat Page */}
+        <NavLink to="/advisordashboardchat" className={styles.viewAllButton}>
+          View All
+        </NavLink>
       </div>
 
       <div className={styles.section}>
@@ -91,7 +94,10 @@ const RightSidebar = () => {
             </li>
           ))}
         </ul>
-        <button className={styles.viewAllButton}>View All</button>
+        {/* Navigate to Chat Page */}
+        <NavLink to="/advisordashboardchat" className={styles.viewAllButton}>
+          View All
+        </NavLink>
       </div>
 
       <div className={styles.section}>
@@ -110,7 +116,10 @@ const RightSidebar = () => {
             </li>
           ))}
         </ul>
-        <button className={styles.viewAllButton}>View All</button>
+        {/* Navigate to Tours and Fairs Page */}
+        <NavLink to="/advisordashboardtoursandfairs" className={styles.viewAllButtonLast}>
+          View All
+        </NavLink>
       </div>
     </div>
   );

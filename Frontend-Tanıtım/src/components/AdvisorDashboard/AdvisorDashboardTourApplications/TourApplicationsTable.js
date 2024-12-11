@@ -10,10 +10,10 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import RestartAltIcon from '@mui/icons-material/RestartAlt'; // Reset icon
-import styles from './AdvisorDashboardFairs.module.css';
+import styles from './AdvisorDashboardTourApplications.module.css';
 
 // Data
-export const fairApplicationsRows = [
+export const tourApplicationsRows = [
   { id: 1, name: 'High School A', priority: 1, date: 'Dec 20, 2023', time: '10:00 AM', city: 'Ankara', phone: '555-123-4561', email: 'jane.doe1@example.com' },
   { id: 2, name: 'High School B', priority: 2, date: 'Dec 21, 2023', time: '11:00 AM', city: 'Ankara', phone: '555-123-4562', email: 'jane.doe2@example.com' },
   { id: 3, name: 'High School C', priority: 3, date: 'Dec 22, 2023', time: '12:00 PM', city: 'Istanbul', phone: '555-123-4563', email: 'jane.doe3@example.com' },
@@ -24,8 +24,8 @@ export const fairApplicationsRows = [
 const columns = [
   { field: 'name', headerName: 'High School Name', width: 150 },
   { field: 'priority', headerName: 'Priority', width: 80 },
-  { field: 'date', headerName: 'Fair Date', width: 100 },
-  { field: 'time', headerName: 'Fair Time', width: 100 },
+  { field: 'date', headerName: 'Tour Date', width: 100 },
+  { field: 'time', headerName: 'Tour Time', width: 100 },
   { field: 'city', headerName: 'City', width: 100 },
   {
     field: 'contact',
@@ -97,12 +97,10 @@ const columns = [
   },
 ];
 
-const FairApplicationsTable = () => {
+const TourApplicationsTable = ({ rows }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogContent, setDialogContent] = useState('');
-  const [filteredRows, setFilteredRows] = useState(fairApplicationsRows);
   const [decisions, setDecisions] = useState({}); // Store decisions for each row
-  const [selectedRows, setSelectedRows] = useState([]); // Store selected rows
 
   const handleContactClick = (type, row) => {
     const content =
@@ -131,18 +129,16 @@ const FairApplicationsTable = () => {
     }));
   };
 
-  const handleRowSelection = (ids) => {
-    setSelectedRows(ids); // Update selected rows
-  };
-
-  const rowsWithHandlers = filteredRows.map((row) => ({
+  // Map rows and add handlers to each row
+  const rowsWithHandlers = rows.map((row) => ({
     ...row,
-    handleContactClick,
-    handleDecisionChange,
-    handleResetDecision,
-    decision: decisions[row.id] || null, // Get decision state or default to null
+    handleContactClick, // Add the handler for contact
+    handleDecisionChange, // Add the handler for decision change
+    handleResetDecision, // Add the handler for reset
+    decision: decisions[row.id] || null, // Attach decision state
   }));
 
+  
   return (
     <div className={styles.tableContainer}>
       <Paper
@@ -155,13 +151,12 @@ const FairApplicationsTable = () => {
         }}
       >
         <DataGrid
-          rows={rowsWithHandlers} // Rows with handlers
+          rows={rowsWithHandlers} // Pass rows with handlers
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5, 10]}
           checkboxSelection
           disableSelectionOnClick
-          onSelectionModelChange={(ids) => handleRowSelection(ids)}
           sx={{
             '& .MuiDataGrid-columnHeaders': {
               backgroundColor: '#f7f7f7',
@@ -203,4 +198,4 @@ const FairApplicationsTable = () => {
   );
 };
 
-export default FairApplicationsTable;
+export default TourApplicationsTable;

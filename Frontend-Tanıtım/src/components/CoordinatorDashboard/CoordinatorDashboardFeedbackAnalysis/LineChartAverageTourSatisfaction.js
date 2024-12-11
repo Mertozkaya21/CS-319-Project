@@ -1,5 +1,4 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import {
   LineChart,
   Line,
@@ -52,7 +51,7 @@ const LineChartSatisfaction = () => {
           variant="h6"
           sx={{ fontWeight: "bold", color: "#374151", margin: 0 }}
         >
-           Average Tour Satisfaction
+          Average Tour Satisfaction
         </Typography>
         <div style={{ display: "flex", gap: "16px" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
@@ -68,7 +67,7 @@ const LineChartSatisfaction = () => {
               variant="body2"
               sx={{ color: "#6b7280", fontWeight: "bold" }}
             >
-              Last Year: <span style={{ color: "#f59e0b" }}>1,245</span>
+              Last Year
             </Typography>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
@@ -84,7 +83,7 @@ const LineChartSatisfaction = () => {
               variant="body2"
               sx={{ color: "#6b7280", fontWeight: "bold" }}
             >
-              This Year: <span style={{ color: "#ef4444" }}>1,356</span>
+              This Year
             </Typography>
           </div>
         </div>
@@ -119,7 +118,7 @@ const LineChartSatisfaction = () => {
             />
             <Line
               type="monotone"
-              dataKey="scheduled"
+              dataKey="lastyear" /* Corrected to match data */
               stroke="#f59e0b"
               strokeWidth={2}
               dot={{ r: 4 }}
@@ -127,7 +126,7 @@ const LineChartSatisfaction = () => {
             />
             <Line
               type="monotone"
-              dataKey="completed"
+              dataKey="thisyear" /* Corrected to match data */
               stroke="#ef4444"
               strokeWidth={2}
               dot={{ r: 4 }}

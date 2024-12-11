@@ -15,12 +15,12 @@ import { NavLink } from 'react-router-dom';
 
 // Data: Adapted from TraineesTable dummy data
 export const traineesRows = [
-  { id: 1, name: 'Samanta William', dateAdded: 'Oct 25, 2023', traineeId: '#123456789', tours: 23, phone: '555-123-4561', email: 'samanta.william@example.com' },
-  { id: 2, name: 'Tony Soap', dateAdded: 'Oct 25, 2023', traineeId: '#123456789', tours: 23, phone: '555-123-4562', email: 'tony.soap@example.com' },
-  { id: 3, name: 'Karen Hope', dateAdded: 'Oct 25, 2023', traineeId: '#123456789', tours: 23, phone: '555-123-4563', email: 'karen.hope@example.com' },
-  { id: 4, name: 'Jordan Nico', dateAdded: 'Oct 26, 2023', traineeId: '#987654321', tours: 23, phone: '555-987-6541', email: 'jordan.nico@example.com' },
-  { id: 5, name: 'Nadila Adja', dateAdded: 'Oct 26, 2023', traineeId: '#987654321', tours: 23, phone: '555-987-6542', email: 'nadila.adja@example.com' },
-  { id: 6, name: 'Johnny Ahmad',  dateAdded: 'Oct 27, 2023', traineeId: '#987654321', tours: 23, phone: '555-654-3211', email: 'johnny.ahmad@example.com' },
+  { id: 1, name: 'Samanta William', dateAdded: 'Oct 25, 2023', traineeId: '#123456789', tours: 23, phone: '555-123-4561', email: 'samanta.william@example.com', schedulePic: 'https://via.placeholder.com/150'},
+  { id: 2, name: 'Tony Soap', dateAdded: 'Oct 25, 2023', traineeId: '#123456789', tours: 23, phone: '555-123-4562', email: 'tony.soap@example.com', schedulePic: 'https://via.placeholder.com/150'},
+  { id: 3, name: 'Karen Hope', dateAdded: 'Oct 25, 2023', traineeId: '#123456789', tours: 23, phone: '555-123-4563', email: 'karen.hope@example.com' , schedulePic: 'https://via.placeholder.com/150'},
+  { id: 4, name: 'Jordan Nico', dateAdded: 'Oct 26, 2023', traineeId: '#987654321', tours: 23, phone: '555-987-6541', email: 'jordan.nico@example.com', schedulePic: 'https://via.placeholder.com/150'},
+  { id: 5, name: 'Nadila Adja', dateAdded: 'Oct 26, 2023', traineeId: '#987654321', tours: 23, phone: '555-987-6542', email: 'nadila.adja@example.com', schedulePic: 'https://via.placeholder.com/150'},
+  { id: 6, name: 'Johnny Ahmad',  dateAdded: 'Oct 27, 2023', traineeId: '#987654321', tours: 23, phone: '555-654-3211', email: 'johnny.ahmad@example.com', schedulePic: 'https://via.placeholder.com/150'},
 ];
 
 // Table Columns
@@ -60,7 +60,7 @@ const columns = [
     width: 100,
     renderCell: (params) => (
       <NavLink
-        to={`/coordinatordashboardedittrainee/${params.row.id}`} // Pass the specific trainee's ID
+        to={`/coordinatordashboardedittrainee`} // Pass the specific trainee's ID
         style={{ textDecoration: 'none' }}
       >
         <IconButton aria-label="edit">
@@ -74,6 +74,7 @@ const columns = [
 const TraineesTable = ({ rows }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogContent, setDialogContent] = useState('');
+  const [dialogTitle, setDialogTitle] = useState(''); // State for dynamic dialog title
 
   // Handle contact click (phone/email)
   const handleContactClick = (type, row) => {
@@ -81,6 +82,7 @@ const TraineesTable = ({ rows }) => {
       type === 'phone'
         ? `Phone: ${row.phone}`
         : `Email: ${row.email}`;
+    setDialogTitle(`${row.name}'s Contact Information`);
     setDialogContent(content);
     setOpenDialog(true);
   };
@@ -89,11 +91,12 @@ const TraineesTable = ({ rows }) => {
   const handleViewScheduleClick = (row) => {
     setDialogContent(
       <img
-        src={row.scheduleImage}
-        alt={`${row.name} Schedule`}
-        style={{ width: '100%', height: 'auto' }}
+        src={row.schedulePic}
+        alt={`${row.name}'s Schedule`}
+        style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
       />
     );
+    setDialogTitle(`${row.name}'s Schedule`); // Set the title dynamically
     setOpenDialog(true);
   };
 
@@ -105,7 +108,7 @@ const TraineesTable = ({ rows }) => {
   const rowsWithHandlers = rows.map((row) => ({
     ...row,
     handleContactClick,
-    handleViewScheduleClick, // Attach view schedule handler
+    handleViewScheduleClick,
   }));
 
   return (
@@ -155,7 +158,7 @@ const TraineesTable = ({ rows }) => {
 
       {/* Dialog for contact information */}
       <Dialog open={openDialog} onClose={handleCloseDialog}>
-        <DialogTitle>Contact Information</DialogTitle>
+        <DialogTitle>{dialogTitle}</DialogTitle> {/* Dynamic title */}
         <DialogContent>{dialogContent}</DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog} color="primary">

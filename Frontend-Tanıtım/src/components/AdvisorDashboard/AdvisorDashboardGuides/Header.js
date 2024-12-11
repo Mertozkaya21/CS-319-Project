@@ -24,13 +24,13 @@ const Header = ({ title, onSearchSelection }) => {
         <h1 className={styles.headerTitle}>{title}</h1>
         <div className={styles.userSection}>
           {/* Notification Button */}
-          <NavLink to="/coordinatordashboardnotifications" className={styles.iconButton}>
+          <NavLink to="/advisordashboardnotifications" className={styles.iconButton}>
             <FaBell className={styles.notificationIcon} />
             <span className={styles.notificationDot}></span>
           </NavLink>
 
           {/* Settings Button */}
-          <NavLink to="/coordinatordashboardsettings" className={styles.iconButton}>
+          <NavLink to="/advisordashboardsettings" className={styles.iconButton}>
             <FaCog />
           </NavLink>
 
@@ -39,7 +39,7 @@ const Header = ({ title, onSearchSelection }) => {
             <div className={styles.avatarCircle}></div>
             <div className={styles.userInfoText}>
               <p className={styles.userName}>Nabila A.</p>
-              <p className={styles.userRole}>Coordinator</p>
+              <p className={styles.userRole}>Advisor</p>
             </div>
           </div>
         </div>
@@ -81,41 +81,6 @@ const Header = ({ title, onSearchSelection }) => {
           )}
         />
 
-        {/* Buttons */}
-        <div className={styles.actionButtons}>
-          <Button
-            variant="outlined"
-            startIcon={<DeleteIcon />}
-            sx={{
-              color: '#8a0303', // Red text
-              borderColor: '#8a0303', // Red border
-              '&:hover': {
-                backgroundColor: '#fbe8e8', // Light red background on hover
-                borderColor: '#6c0101', // Darker red border on hover
-              },
-            }}
-          >
-            Remove Selected
-          </Button>
-
-          {/* Add New Guide Button */}
-          <Button
-            component={NavLink}
-            to="/coordinatordashboardaddguide" // Route for Add New Guide
-            variant="contained" // Contained style
-            startIcon={<AddIcon />}
-            sx={{
-              backgroundColor: '#8a0303', // Red background
-              color: '#ffffff', // White text
-              marginLeft: '10px', // Add spacing between buttons
-              '&:hover': {
-                backgroundColor: '#6c0101', // Darker red background on hover
-              },
-            }}
-          >
-            Add New Guide
-          </Button>
-        </div>
       </div>
     </div>
   );

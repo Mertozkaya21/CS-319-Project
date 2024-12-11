@@ -3,27 +3,17 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { NavLink } from 'react-router-dom';
 import {
   Home as HomeIcon,
-  School as SchoolIcon,
-  Person as PersonIcon,
-  EmojiPeople as EmojiPeopleIcon,
   Group as GroupIcon,
-  Assignment as AssignmentIcon,
-  ContentPasteGo as ContentPasteGoIcon, 
-  Stadium as StadiumIcon,
-  Handshake as HandshakeIcon,
-  Person2 as Person2Icon, 
-  Chat as ChatIcon, 
+  EmojiPeople as EmojiPeopleIcon,
+  ContentPasteGo as ContentPasteGoIcon,
   EventAvailable as EventAvailableIcon,
-  EventNote as EventNoteIcon, 
-  LocationOn as LocationOnIcon,
-  Insights as InsightsIcon,
-  AttachMoney as AttachMoneyIcon,
-  MonetizationOn as MonetizationOnIcon, 
-  BarChart as BarChartIcon,
+  Stadium as StadiumIcon,
   AccountCircle as AccountCircleIcon,
-  Mail as MailIcon,
+  Person2 as Person2Icon,
+  Chat as ChatIcon,
   Settings as SettingsIcon,
   ExpandMore as ExpandMoreIcon,
+  Assignment as AssignmentIcon,
 } from '@mui/icons-material';
 import {
   Accordion,
@@ -150,76 +140,86 @@ const Sidebar = () => {
               `${styles.navItem} ${isActive ? styles.active : ''}`
             }
           >
-            <HomeIcon className={({ isActive }) =>
-              `${styles.icon} ${isActive ? styles.activeIcon : ''}`
-            } />
-              <span>Dashboard</span>
+            <HomeIcon />
+            <span>Dashboard</span>
           </NavLink>
 
+          {/* Tour Applications */}
           <NavLink
-            to="/advisordashboardhighschool"
+            to="/advisordashboardtourapplications"
+            className={({ isActive }) =>
+              `${styles.navItem} ${isActive ? styles.active : ''}`
+            }
+          >
+            <ContentPasteGoIcon />
+            <span>Tour Applications</span>
+          </NavLink>
+
+          {/* Events Dropdown */}
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <EventAvailableIcon />
+              <span>Events</span>
+            </AccordionSummary>
+            <AccordionDetails>
+              <List>
+                <ListItem
+                  component={NavLink}
+                  to="/advisordashboardtours"
                   className={({ isActive }) =>
                     `${styles.navItem} ${isActive ? styles.active : ''}`
                   }
-          >
-            <SchoolIcon 
-                          className={({ isActive }) =>
-                            `${styles.icon} ${isActive ? styles.activeIcon : ''}`
-                          }
-                    />
-              <span>High Schools</span>
-          </NavLink>
+                >
+                  <ListItemIcon>
+                    <EventAvailableIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Tours" />
+                </ListItem>
+                <ListItem
+                  component={NavLink}
+                  to="/advisordashboardfairs"
+                  className={({ isActive }) =>
+                    `${styles.navItem} ${isActive ? styles.active : ''}`
+                  }
+                >
+                  <ListItemIcon>
+                    <StadiumIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Fairs" />
+                </ListItem>
+              </List>
+            </AccordionDetails>
+          </Accordion>
 
           {/* Users Dropdown */}
           <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <GroupIcon className={({ isActive }) =>
-              `${styles.icon} ${isActive ? styles.activeIcon : ''}`
-            }/>
+              <GroupIcon />
               <span>Users</span>
             </AccordionSummary>
             <AccordionDetails>
               <List>
-                
                 <ListItem
                   component={NavLink}
-                  to="/coordinatordashboardadvisors"
+                  to="/advisordashboardguides"
                   className={({ isActive }) =>
                     `${styles.navItem} ${isActive ? styles.active : ''}`
                   }
                 >
                   <ListItemIcon>
-                    <PersonIcon className={({ isActive }) =>
-              `${styles.icon} ${isActive ? styles.activeIcon : ''}`
-            } />
-                  </ListItemIcon>
-                  <ListItemText primary="Advisors" />
-                </ListItem>
-                <ListItem
-                  component={NavLink}
-                  to="/coordinatordashboardguides"
-                  className={({ isActive }) =>
-                    `${styles.navItem} ${isActive ? styles.active : ''}`
-                  }
-                >
-                  <ListItemIcon>
-                    <GroupIcon className={({ isActive }) =>
-              `${styles.icon} ${isActive ? styles.activeIcon : ''}`
-            }/>
+                    <GroupIcon />
                   </ListItemIcon>
                   <ListItemText primary="Guides" />
                 </ListItem>
                 <ListItem
                   component={NavLink}
-                  to="/coordinatordashboardtrainees"
+                  to="/advisordashboardtrainees"
                   className={({ isActive }) =>
                     `${styles.navItem} ${isActive ? styles.active : ''}`
                   }
                 >
                   <ListItemIcon>
-                    <EmojiPeopleIcon className={({ isActive }) =>
-              `${styles.icon} ${isActive ? styles.activeIcon : ''}`
-            }/>
+                    <EmojiPeopleIcon />
                   </ListItemIcon>
                   <ListItemText primary="Trainees" />
                 </ListItem>
@@ -227,137 +227,58 @@ const Sidebar = () => {
             </AccordionDetails>
           </Accordion>
 
-          {/* Applications Dropdown */}
-          <Accordion>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <ContentPasteGoIcon className={({ isActive }) =>
-              `${styles.icon} ${isActive ? styles.activeIcon : ''}`
-            } />
-              <span>Applications</span>
-            </AccordionSummary>
-            <AccordionDetails>
-              <List>
-                <ListItem
-                  component={NavLink}
-                  to="/coordinatordashboardtourapplications"
-                  className={({ isActive }) =>
-                    `${styles.navItem} ${isActive ? styles.active : ''}`
-                  }
-                >
-                  <ListItemIcon>
-                    <EventNoteIcon className={({ isActive }) =>
-              `${styles.icon} ${isActive ? styles.activeIcon : ''}`
-            }/>
-                  </ListItemIcon>
-                  <ListItemText primary="Tour Applications" />
-                </ListItem>
-                <ListItem
-                  component={NavLink}
-                  to="/coordinatordashboardfairapplications"
-                  className={({ isActive }) =>
-                    `${styles.navItem} ${isActive ? styles.active : ''}`
-                  }
-                >
-                  <ListItemIcon>
-                    <StadiumIcon className={({ isActive }) =>
-              `${styles.icon} ${isActive ? styles.activeIcon : ''}`
-            }/>
-                  </ListItemIcon>
-                  <ListItemText primary="Fair Applications" />
-                </ListItem>
-                <ListItem
-                  component={NavLink}
-                  to="/coordinatordashboardtoursandfairs"
-                  className={({ isActive }) =>
-                    `${styles.navItem} ${isActive ? styles.active : ''}`
-                  }
-                >
-                  <ListItemIcon>
-                    <EventAvailableIcon className={({ isActive }) =>
-              `${styles.icon} ${isActive ? styles.activeIcon : ''}`
-            }/>
-                  </ListItemIcon>
-                  <ListItemText primary="Tours & Fairs" />
-                </ListItem>
-              </List>
-            </AccordionDetails>
-          </Accordion>
-
-          {/* Finance */}
+          {/* Puantaj */}
           <NavLink
-            to="/coordinatordashboardpayments"
+            to="/advisordashboardpuantaj"
             className={({ isActive }) =>
               `${styles.navItem} ${isActive ? styles.active : ''}`
             }
           >
-            <MonetizationOnIcon className={({ isActive }) =>
-              `${styles.icon} ${isActive ? styles.activeIcon : ''}`
-            } />
-            <span>Payments</span>
-          </NavLink>
-
-          {/* Reports */}
-          <NavLink
-            to="/coordinatordashboardfeedbackanalysis"
-            className={({ isActive }) =>
-              `${styles.navItem} ${isActive ? styles.active : ''}`
-            }
-          >
-            <InsightsIcon className={({ isActive }) =>
-              `${styles.icon} ${isActive ? styles.activeIcon : ''}`
-            } />
-            <span>Feedback Analysis</span>
+            <AssignmentIcon />
+            <span>Puantaj</span>
           </NavLink>
 
           {/* User Dropdown */}
           <Accordion>
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-              <AccountCircleIcon className={({ isActive }) =>
-              `${styles.icon} ${isActive ? styles.activeIcon : ''}`
-            } />
+              <AccountCircleIcon />
               <span>User</span>
             </AccordionSummary>
             <AccordionDetails>
               <List>
                 <ListItem
                   component={NavLink}
-                  to="/coordinatordashboardprofile"
+                  to="/advisordashboardprofile"
                   className={({ isActive }) =>
                     `${styles.navItem} ${isActive ? styles.active : ''}`
                   }
                 >
                   <ListItemIcon>
-                    <Person2Icon className={({ isActive }) =>
-              `${styles.icon} ${isActive ? styles.activeIcon : ''}`
-            } />
+                    <Person2Icon />
                   </ListItemIcon>
                   <ListItemText primary="Profile" />
                 </ListItem>
                 <ListItem
                   component={NavLink}
-                  to="/coordinatordashboardchat"
+                  to="/advisordashboardchat"
                   className={({ isActive }) =>
                     `${styles.navItem} ${isActive ? styles.active : ''}`
                   }
                 >
                   <ListItemIcon>
-                    <ChatIcon className={({ isActive }) =>
-              `${styles.icon} ${isActive ? styles.activeIcon : ''}`
-            }/>
+                    <ChatIcon />
                   </ListItemIcon>
                   <ListItemText primary="Chat" />
                 </ListItem>
                 <ListItem
                   component={NavLink}
-                  to="/coordinatordashboardsettings"
+                  to="/advisordashboardsettings"
                   className={({ isActive }) =>
                     `${styles.navItem} ${isActive ? styles.active : ''}`
                   }
                 >
                   <ListItemIcon>
-                    <SettingsIcon className={({ isActive }) =>
-              `${styles.icon} ${isActive ? styles.activeIcon : ''}`
-            }/>
+                    <SettingsIcon />
                   </ListItemIcon>
                   <ListItemText primary="Settings" />
                 </ListItem>

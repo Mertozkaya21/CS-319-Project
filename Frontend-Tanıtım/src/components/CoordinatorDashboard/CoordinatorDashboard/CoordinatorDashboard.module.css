@@ -1,12 +1,12 @@
-/* Main Dashboard Container */
 .dashboard {
-  display: flex;
+  display: flex; /* Horizontal layout */
+  flex-direction: row; /* Ensures mainContent and sidebars are aligned horizontally */
   height: 100vh; /* Full viewport height */
-  width: 100%;
+  width: 100vw; /* Ensure full viewport width */
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  overflow: hidden; /* Prevent any overflow outside of the viewport */
+  overflow: hidden; /* Prevent scrollbars from overflowing */
 }
 
 
@@ -14,6 +14,7 @@
 .mainContent {
   margin-left: 250px; /* Offset for the fixed sidebar */
   padding: 20px 40px;
+  width: calc(100% - 250px); /* Adjust for the sidebar */
   flex: 1; /* Take up the remaining width */
   background-color: #f8f9fa;
   overflow-y: auto; /* Enable vertical scrolling for content if needed */
@@ -143,10 +144,13 @@
               }
 
           
-/* Wrapper for Calendar */
 .calendarWrapper {
-  margin-bottom: 20px; /* Add spacing below the calendar block */
-  flex: 1; /* Take equal space */
+  margin-bottom: 20px; /* Spacing below the calendar */
+  flex: none; /* Prevent shrinking */
+  width: 100%; /* Ensure full width */
+  display: flex;
+  flex-direction: column; /* Stack content vertically */
+  align-items: center; /* Center horizontally */
 }
 /* Title for Calendar */
 .calendarTitle {
@@ -174,20 +178,19 @@
 /* Calendar and Pie Chart Containers */
 .calendarContainer,
 .pieChartContainer {
-  flex: 1; /* Equal width */
-  background-color: #ffffff;
-  border-radius: 12px;
-  padding: 15px; /* Adjust padding to reduce height */
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  display: flex; /* Enable flex for centering */
-  flex-direction: column; /* Stack content vertically */
-  justify-content: center; /* Center vertically */
-  align-items: center; /* Center horizontally */
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 100%; /* Make the container take full width */
+  max-width: 500px; /* Add a reasonable max width */
+  background-color: #ffffff; /* White background */
+  border-radius: 12px; /* Rounded corners */
+  padding: 15px; /* Adjust padding */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* Prevent content overflow */
 }
 
 /* Hover Effect */
-.calendarContainer:hover,
 .pieChartContainer:hover {
   box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
   transform: translateY(-5px);
@@ -205,47 +208,96 @@
 /* Calendar and Pie Chart Wrappers */
 .calendarWrapper,
 .pieChartWrapper {
-  width: calc(50% - 10px); /* Make them equal width */
+  width: calc(50% - 10px); /* Ensure equal width for calendar and pie chart */
   display: flex;
-  flex-direction: column; /* Stack title and container vertically */
+  flex-direction: column; /* Stack title and content vertically */
   align-items: center; /* Center content horizontally */
 }
 
-/* Material UI Overrides */
-.MuiDayPicker {
-  padding-top: 0; /* Remove extra padding */
+/* Calendar Header */
+.calendarHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 10px; /* Add spacing below the header */
+  padding: 0 10px; /* Add padding for spacing */
 }
 
-/* Material UI DayPicker Overrides */
-.MuiPickersDay-root {
-  border-radius: 50%; /* Circular day shapes */
+/* Month and Year Label */
+.monthYearLabel {
+  font-size: 16px;
+  font-weight: bold;
+  color: #374151; /* Dark gray */
+  text-align: center;
+}
+
+/* Arrow Buttons */
+.arrowButton {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #343a40;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.arrowButton:hover {
+  color: #8b0000; /* Dark red on hover */
+  transform: scale(1.2); /* Slight zoom effect on hover */
+}
+
+/* Day Labels */
+.dayLabels {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /* 7 columns for the week */
+  gap: 5px;
+  width: 100%;
+  margin-bottom: 10px; /* Add spacing below the labels */
+}
+
+.dayLabel {
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+  color: #6c757d; /* Neutral gray */
+}
+
+/* Calendar Grid */
+.calendarGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /* 7 equal columns for days of the week */
+  gap: 5px;
+  width: 100%; /* Stretch the grid to fit the container width */
+}
+
+.calendarDay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 10px;
+  border: 1px solid #e5e7eb; /* Light border */
+  border-radius: 8px;
+  background-color: #ffffff;
+  cursor: pointer;
+  width: 40px; /* Set fixed width for calendar days */
+  height: 42px; /* Set fixed height for calendar days */
+  box-sizing: border-box;
+}
+
+/* Hover Effect for Calendar Day (Single cohesive hover) */
+.calendarDay:hover {
+  background-color: #f1f5f9; /* Light gray hover */
+  border-color: #d3d3d3; /* Gray border on hover */
+  transform: translateY(-2px); /* Slight lift effect */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
 }
 
 /* Selected Day */
-.MuiPickersDay-root.Mui-selected {
-  background-color: #343a40; /* Dark gray */
-  color: #ffffff;
-}
-
-/* Hover Effect for Non-Selected Days */
-.MuiPickersDay-root:not(.Mui-selected):not(.Mui-disabled):hover {
-  background-color: #e9ecef; /* Light gray hover */
-}
-
-/* Days Outside Current Month */
-.MuiPickersDay-root.MuiDayPicker-dayOutsideMonth {
-  color: #d3d3d3; /* Gray for out-of-month days */
-}
-
-/* Custom Event Colors */
-.MuiPickersDay-root.tour {
-  background-color: #8a0303; /* Red for tours */
-  color: #ffffff;
-}
-
-.MuiPickersDay-root.fair {
-  background-color: #4267B2; /* Blue for fairs */
-  color: #ffffff;
+.calendarDay.selected {
+  background-color: #f8d7da; /* Light red for selected day */
+  border-color: #8b0000; /* Dark red border for selected day */
 }
 
 /* Calendar Day Labels (e.g., Sun, Mon, etc.) */
@@ -254,6 +306,39 @@
   font-weight: bold;
   color: #6c757d;
   text-align: center;
+}
+
+/* Event Indicators (Circles) */
+.eventIndicators {
+  display: flex;
+  gap: 3px; /* Space between event dots */
+  margin-top: 5px;
+  flex-wrap: wrap; /* Wrap dots when there are many events */
+  justify-content: center; /* Center dots */
+}
+
+.eventIndicator {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+}
+
+.eventIndicator.tour {
+  background-color: #ff0000; /* Red for Tours */
+}
+
+.eventIndicator.fair {
+  background-color: #0000ff; /* Blue for Fairs */
+}
+
+.eventIndicator.more {
+  background-color: #6c757d; /* Neutral color for "more" indicator */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 5px;
+  font-weight: bold;
 }
 
 /* Container for the table section */
@@ -297,8 +382,9 @@
 
 /* Right Sidebar */
 .rightSidebar {
-  padding: 20px; /* Padding on all sides */
-  padding-bottom: 0; /* Remove padding at the bottom */
+  padding: 30px; /* General padding for all sides */
+  padding-left: 20px;
+  padding-bottom: 40px; /* Ensure extra space at the bottom */
   background-color: #ffffff;
   border-radius: 12px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -308,6 +394,7 @@
   position: sticky; /* Stay fixed relative to the viewport */
   top: 0; /* Ensure sticky works */
 }
+
 
 .topSection {
   display: flex;
@@ -524,7 +611,23 @@
   text-align: center;
   cursor: pointer;
   margin-top: 10px;
-  margin-bottom: 20px; /* Add spacing at the bottom to prevent overlap */
+  margin-bottom: 20px; /* Extra spacing below the button */
+}
+
+/* View All Button */
+.viewAllButtonLast {
+  display: block;
+  width: 100%;
+  background: #8a0303;
+  color: #ffffff;
+  border: none;
+  padding: 10px;
+  border-radius: 12px;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+  margin-top: auto; /* Push button to the bottom */
+  margin-bottom: 0px; /* Add spacing below the button */
 }
 
 .viewAllButton:hover {
