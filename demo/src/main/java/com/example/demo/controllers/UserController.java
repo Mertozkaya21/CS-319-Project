@@ -92,6 +92,7 @@ public class UserController {
     public User updateOneUser(@PathVariable String role, @PathVariable String id, @RequestBody User newUser) {
         return userService.saveUser(role, newUser);
     }
+    
     /*@PutMapping("/guide/{userId}")
     public User updateOneGuide(@PathVariable Long userId, @RequestBody Guide newUser) {
         return userService.saveGuide(newUser);

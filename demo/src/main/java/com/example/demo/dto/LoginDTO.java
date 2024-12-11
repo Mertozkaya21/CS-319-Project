@@ -1,9 +1,9 @@
-package com.example.demo.requests;
+package com.example.demo.dto;
 
 import lombok.Data;
 
 @Data
-public class LoginRequest {
+public class LoginDTO {
     private String email;
     private String password;
 }
