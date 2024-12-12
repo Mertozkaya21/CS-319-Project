@@ -48,6 +48,7 @@ public class Highschool {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "counselor_id", nullable = true) // Foreign key column
     private Counselor counselor;
+    
     // If a highschool is deleted then the surveys are not deleted
     @OneToMany(mappedBy = "highschool", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<TourParticipantSurvey> surveys;

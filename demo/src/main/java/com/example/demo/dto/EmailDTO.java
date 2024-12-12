@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Email {
+public class EmailDTO {
     private String recipient;
     private String body;
     private String subject;

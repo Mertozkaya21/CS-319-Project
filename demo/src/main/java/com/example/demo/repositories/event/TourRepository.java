@@ -9,6 +9,8 @@ import com.example.demo.entities.user.Guide;
 import com.example.demo.enums.EventStatus;
 import com.example.demo.enums.TourHours;
 import com.example.demo.enums.TourType;
+import com.example.demo.entities.highschool.Highschool;
+
 
 public interface TourRepository extends JpaRepository<Tour, Long>{
     List<Tour> findByDate(LocalDate date);
@@ -16,4 +18,7 @@ public interface TourRepository extends JpaRepository<Tour, Long>{
     List<Tour> findByStatus(EventStatus status);
     List<Tour> findByTourHours(TourHours tourHours);
     List<Tour> findByTourType(TourType tourType);
+    List<Tour> findByVisitorSchool(Highschool visitorSchool);
+    List<Tour> findByDateAndTourHours(LocalDate date, TourHours hours);
+
 }

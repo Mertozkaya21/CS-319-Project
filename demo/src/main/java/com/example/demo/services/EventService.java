@@ -1,72 +1,65 @@
 package com.example.demo.services;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.stereotype.Service;
-
 import com.example.demo.entities.event.Event;
 import com.example.demo.entities.event.Fair;
 import com.example.demo.entities.event.Tour;
-import com.example.demo.repositories.event.FairRepository;
-import com.example.demo.repositories.event.TourRepository;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class EventService {
-    private final FairRepository fairRepository;
-    private final TourRepository tourRepository;
+    private final TourService tourService;
+    private final FairService fairService;
 
-    public EventService(FairRepository fairRepo, TourRepository tourRepo){
-        this.fairRepository = fairRepo;
-        this.tourRepository = tourRepo;
+    public EventService(TourService tourService, FairService fairService) {
+        this.tourService = tourService;
+        this.fairService = fairService;
     }
 
     public List<Event> getAllEvents() {
-        
         List<Event> events = new ArrayList<>();
-        events.addAll(fairRepository.findAll());
-        events.addAll(tourRepository.findAll());
+        events.addAll(fairService.getAllFairs());
+        events.addAll(tourService.getAllTours());
         return events;
     }
 
-    public List<Fair> getAllFairs() {
-        return fairRepository.findAll();
-    }
-
-    public List<Tour> getAllTours() {
-        return tourRepository.findAll();
-    }
-
-    public Tour saveTour(Tour aTour) {
-        return tourRepository.save(aTour);
-    }
-
-    public Fair saveFair(Fair aFair) {
-        return fairRepository.save(aFair);
-    }
-
-    public Event getOneEventById(Long eventId) {
-        Optional<Fair> fairOpt = fairRepository.findById(eventId);
-        if (fairOpt.isPresent()) return fairOpt.get();
-
-        Optional<Tour> tourOpt = tourRepository.findById(eventId);
-        if (tourOpt.isPresent()) return tourOpt.get();
-    
-        return null;
-    }
-
-    public boolean deleteById(Long eventId) {
-        if (fairRepository.existsById(eventId)) {
-            fairRepository.deleteById(eventId);
-            return true;
+    public Event getEventById(Long eventId) {
+        try {
+            return fairService.getFairById(eventId);
+        } catch (Exception e) {
+            return tourService.getTourById(eventId);
         }
+    }
 
-        else if (tourRepository.existsById(eventId)) {
-            tourRepository.deleteById(eventId);
-            return true;
+    public void deleteEventById(Long eventId) {
+        try {
+            fairService.deleteFairById(eventId);
+        } catch (Exception e) {
+            tourService.deleteTourById(eventId);
         }
+    }
 
-        return false;
+    public Event saveEvent(Event event) {
+        if (event instanceof Fair) {
+            return fairService.saveFair((Fair) event);
+        } else if (event instanceof Tour) {
+            return tourService.saveTour((Tour) event);
+        } else {
+            // It can return null as well but if we return null
+            // then we cannot check where is the error
+            throw new IllegalArgumentException("Unsupported event type");
+        }
+    }
+
+    public Event updateEvent(Long eventId, Event updatedEvent) {
+        if (updatedEvent instanceof Fair) {
+            return fairService.updateFair(eventId, (Fair) updatedEvent);
+        } else if (updatedEvent instanceof Tour) {
+            return tourService.updateTour(eventId, (Tour) updatedEvent);
+        } else {
+            throw new IllegalArgumentException("Unsupported event type");
+        }
     }
 }

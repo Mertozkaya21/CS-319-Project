@@ -8,7 +8,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.Email;
+import com.example.demo.dto.EmailDTO;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -25,7 +25,7 @@ public class EmailService {
         this.sender = sender;
     }
     
-    public boolean sendSimpleMail(Email details)
+    public boolean sendSimpleMail(EmailDTO details)
     {
         try {
             SimpleMailMessage mailMessage
@@ -44,7 +44,7 @@ public class EmailService {
         }
     }
 
-    public boolean sendMailWithAttachment(Email details)
+    public boolean sendMailWithAttachment(EmailDTO details)
     {
         MimeMessage mimeMessage
             = javaMailSender.createMimeMessage();
