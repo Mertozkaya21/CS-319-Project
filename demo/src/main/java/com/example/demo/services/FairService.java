@@ -1,18 +1,27 @@
 package com.example.demo.services;
 
 import com.example.demo.entities.event.Fair;
+import com.example.demo.entities.user.Guide;
+import com.example.demo.enums.EventStatus;
 import com.example.demo.exceptions.FairNotFoundException;
+import com.example.demo.exceptions.GuideNotFoundException;
 import com.example.demo.repositories.event.FairRepository;
+import com.example.demo.repositories.user.GuideRepository;
+
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
 public class FairService {
-    private final FairRepository fairRepository;
 
-    public FairService(FairRepository fairRepository) {
+    private final FairRepository fairRepository;
+    private final GuideRepository guideRepository;
+
+    public FairService(FairRepository fairRepository, GuideRepository guideRepository) {
         this.fairRepository = fairRepository;
+        this.guideRepository = guideRepository;
     }
 
     public List<Fair> getAllFairs() {
@@ -21,27 +30,65 @@ public class FairService {
 
     public Fair getFairById(Long id) {
         return fairRepository.findById(id)
-                .orElseThrow(() -> new FairNotFoundException("Fair with ID " + id + " not found"));
+            .orElseThrow(() -> new FairNotFoundException("Fair with ID " + id + " not found"));
+    }
+
+    public List<Fair> getFairByCity(String city) {
+        return fairRepository.findByCity(city);
     }
 
     public Fair saveFair(Fair fair) {
         return fairRepository.save(fair);
     }
 
-    // I do not think that it is logical to update an existing fair 
-    public Fair updateFair(Long id, Fair updatedFair) {
-        Fair existingFair = getFairById(id);
-        updatedFair.setId(existingFair.getId());
-        return fairRepository.save(updatedFair);
-    }
-
-    public void deleteFairById(Long id) {
+    public Fair updateFairStatus(Long id, EventStatus status) {
         Fair fair = getFairById(id);
-        fairRepository.delete(fair);
+        fair.setStatus(status);
+        return fairRepository.save(fair);
     }
 
-    public boolean existsById(Long id) {
-        return fairRepository.existsById(id);
+    public Fair updateFairDate(Long id, LocalDate newDate) {
+        Fair fair = getFairById(id);
+        fair.setDate(newDate);
+        return fairRepository.save(fair);
     }
 
+    public boolean deleteFairById(Long id) {
+        if (fairRepository.existsById(id)) {
+            fairRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+    public Fair assignGuideToFair(Long fairId, Long guideId) throws GuideNotFoundException {
+        Fair fair = getFairById(fairId);
+        Guide guide = getGuideById(guideId);
+
+        if (fair.getGuides().contains(guide)) {
+            throw new GuideNotFoundException("Guide is already assigned to this fair.");
+        }
+
+        fair.getGuides().add(guide);
+        return fairRepository.save(fair);
+    }
+
+    public Fair removeGuideFromFair(Long fairId, Guide guide) throws GuideNotFoundException {
+        Fair fair = getFairById(fairId);
+
+        if (!fair.getGuides().remove(guide)) {
+            throw new GuideNotFoundException("Guide with ID " + guide.getId() + " is not assigned to the fair with ID " + fairId);
+        }
+
+        return fairRepository.save(fair);
+    }
+
+    public Guide getGuideById(Long guideId) throws GuideNotFoundException {
+        return guideRepository.findById(guideId)
+                .orElseThrow(() -> new GuideNotFoundException("Guide with ID " + guideId + " not found"));
+    }
+
+    public List<Fair> getFairsByDate(LocalDate date) {
+        return fairRepository.findByDate(date);
+    }
 }
