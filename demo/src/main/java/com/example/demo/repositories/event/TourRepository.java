@@ -1,6 +1,7 @@
 package com.example.demo.repositories.event;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import com.example.demo.entities.event.Tour;
 import java.util.List;
@@ -12,6 +13,7 @@ import com.example.demo.enums.TourType;
 import com.example.demo.entities.highschool.Highschool;
 
 
+@Repository
 public interface TourRepository extends JpaRepository<Tour, Long>{
     List<Tour> findByDate(LocalDate date);
     List<Tour> findByGuides(List<Guide> guides);
