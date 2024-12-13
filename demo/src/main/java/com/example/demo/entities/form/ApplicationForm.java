@@ -3,8 +3,12 @@ package com.example.demo.entities.form;
 import java.time.LocalDate;
 
 import com.example.demo.entities.highschool.Highschool;
+import com.example.demo.entities.user.Advisor;
+import com.example.demo.entities.user.Coordinator;
 import com.example.demo.enums.ApplicationFormStatus;
 import com.example.demo.enums.TourHours;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -64,20 +68,40 @@ public class ApplicationForm {
     private String phoneNumber;
     @Column(nullable = true)
     private String email;
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String city;
-    @Column(nullable = false)
+    @Column(nullable = true)
     private int numberOfAttendees;
     
-    //@ManyToOne
-    //@JoinColumn(name = "highschoolID", nullable = false)
-    private Long highschoolId;
 
-    //@ManyToOne
-    //@JoinColumn(name = "advisor_id") 
-    private Long advisorId;
+    @ManyToOne
+    @JoinColumn(name = "highschoolID", nullable = true)
+    @JsonIgnore
+    private Highschool highschool;
 
-    //@ManyToOne
-    //@JoinColumn(name = "coordinator_id",nullable = false)
-    private Long coordinatorId;
+    @ManyToOne
+    @JoinColumn(name = "advisor_id") 
+    @JsonIgnore
+    private Advisor advisor;
+
+    @ManyToOne
+    @JoinColumn(name = "coordinator_id",nullable = true)
+    @JsonIgnore
+    private Coordinator coordinator;
+
+    @JsonProperty("highschoolId")
+    public Long getHighschoolIdOnly() {
+        return highschool != null ? highschool.getId() : null;
+    }
+
+    @JsonProperty("advisorId")
+    public Long getAdvisorIdOnly() {
+        return advisor != null ? advisor.getId() : null;
+    }
+
+    @JsonProperty("coordinatorId")
+    public Long getCoordinatorIdOnly() {
+        return coordinator != null ? coordinator.getId() : null;
+    }
+
 }

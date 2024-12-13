@@ -7,6 +7,8 @@ import java.util.List;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.entities.event.Tour;
 import com.example.demo.enums.TraineeStatus;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -38,24 +40,38 @@ public class Trainee extends User{
         this.password = userDTO.getPassword();
         this.phoneNo = userDTO.getPhoneNo();
         this.imagePath = userDTO.getImagePath();
-        this.latestAcitivites = new ArrayList();
-        this.notifications = new ArrayList();
+        this.status = TraineeStatus.UNSUBMITTED;
+        this.latestAcitivites = new ArrayList<Long>();
+        this.notifications = new ArrayList<Long>();
         this.dateAdded = LocalDate.now();
     }
 
     @ManyToMany
     @JoinTable(
-            name = "trainee_tour",
-            joinColumns = @JoinColumn(name = "trainee_id"),
-            inverseJoinColumns = @JoinColumn(name = "tour_id")
+        name = "trainee_tour",
+        joinColumns = @JoinColumn(name = "trainee_id"),
+        inverseJoinColumns = @JoinColumn(name = "tour_id")
     )
+
+    @JsonIgnore 
     private List<Tour> tours;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TraineeStatus status;
-    
+
     @ManyToOne
-    @JoinColumn(name = "coordinator_id") 
+    @JoinColumn(name = "coordinator_id")
+    @JsonIgnore 
     private Coordinator coordinator;
+
+    @JsonGetter("tourIds")
+    public List<Long> getTourIds() {
+        return tours != null ? tours.stream().map(Tour::getId).toList() : null;
+    }
+
+    @JsonGetter("coordinatorId")
+    public Long getCoordinatorId() {
+        return coordinator != null ? coordinator.getId() : null;
+    }
 }

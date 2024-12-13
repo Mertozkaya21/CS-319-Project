@@ -1,6 +1,8 @@
 package com.example.demo.entities.event;
 
 import com.example.demo.entities.highschool.Highschool;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,6 +13,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,27 +24,42 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name ="TourParticipantSurvey")
+@Table(name = "TourParticipantSurvey")
 public class TourParticipantSurvey {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long tourSurveyID;
-    
+
     private String nameOfDepartment;
     private String feedbackMessage;
+
     @Column(nullable = false)
     private double guideRate;
+
     @Column(nullable = false)
     private double tourRate;
+
     @Column(nullable = false)
     private double universityRate;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "highschool_id", referencedColumnName = "ID", nullable = false)
-    private Highschool highschool; 
+    @JsonIgnore // Prevent recursion
+    private Highschool highschool;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "tour_id", referencedColumnName = "ID", nullable = false)
-    private Tour tour; 
+    @JsonIgnore // Prevent recursion
+    private Tour tour;
+
+    @JsonGetter("highschoolId")
+    public Long getHighschoolId() {
+        return highschool != null ? highschool.getId() : null;
+    }
+
+    @JsonGetter("tourId")
+    public Long getTourId() {
+        return tour != null ? tour.getId() : null;
+    }
 }

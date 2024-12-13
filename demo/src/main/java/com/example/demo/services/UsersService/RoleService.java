@@ -11,5 +11,6 @@ public interface RoleService {
     List<? extends User> findAll();
     void deleteById(Long id);
     List<? extends User> findByEmail(String email); 
+    Optional<? extends User> login(String email, String rawPassword);
     long count();
 }

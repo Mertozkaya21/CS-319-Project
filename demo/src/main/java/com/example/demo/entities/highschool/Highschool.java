@@ -1,12 +1,12 @@
 package com.example.demo.entities.highschool;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.example.demo.dto.HighschoolDTO;
 import com.example.demo.entities.event.Tour;
 import com.example.demo.entities.event.TourParticipantSurvey;
+import com.fasterxml.jackson.annotation.JsonGetter;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -65,14 +65,23 @@ public class Highschool {
     
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "counselor_id", nullable = true) // Foreign key column
+    @JoinColumn(name = "counselor_id", nullable = true) 
     private Counselor counselor;
-    
-    // If a highschool is deleted then the surveys are not deleted
+
     @OneToMany(mappedBy = "highschool", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private List<TourParticipantSurvey> surveys;
-    
-    // Also all of the tours also deleted
+
     @OneToMany(mappedBy = "visitorSchool", cascade = CascadeType.ALL, orphanRemoval = true) 
     private List<Tour> groupTours;
+
+    @JsonGetter("counselorId")
+    public Long getCounselorId() {
+        return counselor != null ? counselor.getId() : null;
+    }
+
+    @JsonGetter("groupTourIds")
+    public List<Long> getGroupTourIds() {
+        return groupTours != null ? groupTours.stream().map(Tour::getId).toList() : null;
+    }
+
 }

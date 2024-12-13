@@ -3,8 +3,8 @@ package com.example.demo.entities.user;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.example.demo.dto.UserDTO;
 import com.example.demo.entities.event.Fair;
@@ -46,16 +46,21 @@ public class Guide extends User{
         this.password = userDTO.getPassword();
         this.phoneNo = userDTO.getPhoneNo();
         this.imagePath = userDTO.getImagePath();
-        this.latestAcitivites = new ArrayList();
-        this.notifications = new ArrayList();
+        this.tourParticipantSurveyRanking = 0;
+        this.latestAcitivites = new ArrayList<Long>();
+        this.notifications = new ArrayList<Long>();
         this.dateAdded = LocalDate.now();
+        Payment newPayment = new Payment();
+        newPayment.setAmount(0);
+        newPayment.setReceiptFullName(userDTO.getFirstName() + " " + userDTO.getLastName());
+        this.payment = newPayment;
     }
 
     @ElementCollection
     @CollectionTable(name = "guide_available_times", joinColumns = @JoinColumn(name = "guide_id"))
     @MapKeyEnumerated(EnumType.STRING)
     @Column(name = "tour_hours")
-    private HashMap<DayOfWeek, TourHours> availableTimes;
+    private Map<DayOfWeek, List<TourHours>> availableTimes;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "payment_id")

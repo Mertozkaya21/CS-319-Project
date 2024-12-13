@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import com.example.demo.dto.GroupFormDTO;
 import com.example.demo.entities.highschool.Counselor;
 import com.example.demo.enums.TourHours;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -40,5 +42,11 @@ public class GroupForm extends ApplicationForm{
 
     @ManyToOne
     @JoinColumn(name = "counselorID", nullable = false)
+    @JsonIgnore
     private Counselor counselor;
+
+    @JsonProperty("counselorId")
+    public Long getCounselorId() {
+        return counselor != null ? counselor.getId() : null;
+    }
 }

@@ -3,6 +3,9 @@ package com.example.demo.entities.user;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.entities.form.ApplicationForm;
 import com.example.demo.entities.payment.Payment;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,9 +33,13 @@ public class Advisor extends User {
         this.password = userDTO.getPassword();
         this.phoneNo = userDTO.getPhoneNo();
         this.imagePath = userDTO.getImagePath();
-        this.latestAcitivites = new ArrayList();
-        this.notifications = new ArrayList();
+        this.latestAcitivites = new ArrayList<Long>();
+        this.notifications = new ArrayList<Long>();
         this.dateAdded = LocalDate.now();
+        Payment newPayment = new Payment();
+        newPayment.setAmount(0);
+        newPayment.setReceiptFullName(userDTO.getFirstName() + " " + userDTO.getLastName());
+        this.payment = newPayment;
     }
 
     @ElementCollection
@@ -44,6 +51,12 @@ public class Advisor extends User {
     @JoinColumn(name = "payment_id")
     private Payment payment;
 
-    //@OneToMany(mappedBy = "advisor", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private List<Long> applicationFormIds;   
+    @OneToMany(mappedBy = "advisor", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JsonIgnore
+    private List<ApplicationForm> applicationForms;
+
+    @JsonGetter("applicationFormIds")
+    public List<Long> getApplicationFormIds() {
+        return applicationForms != null ? applicationForms.stream().map(ApplicationForm::getApplicationFormID).toList() : null;
+    }
 }

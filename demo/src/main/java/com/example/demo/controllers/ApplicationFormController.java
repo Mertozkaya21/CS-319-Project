@@ -1,5 +1,7 @@
 package com.example.demo.controllers;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -67,7 +69,21 @@ public class ApplicationFormController {
         return ResponseEntity.status(HttpStatus.CREATED).body(applicationFormService.saveGroupForm(groupFormDTO));
     }
 
-    @PatchMapping("/{id}/status") //to update application form partially
+    @GetMapping("/event-day")
+    public ResponseEntity<List<ApplicationForm>> getApplicationsByEventDay(@RequestParam String eventDay) {
+    try {
+        LocalDate eventDate = LocalDate.parse(eventDay);
+        List<ApplicationForm> forms = applicationFormService.getApplicationFormsByEventDate(eventDate);
+        if (!forms.isEmpty()) {
+            return ResponseEntity.ok(forms);
+        }
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(forms); 
+    } catch (DateTimeParseException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); 
+    }
+}
+
+    @PatchMapping("/{id}/status") 
     public ResponseEntity<Void> updateFormStatus(@PathVariable Long id, @RequestParam ApplicationFormStatus status) {
         boolean updated = applicationFormService.updateOneApplicationFormStatus(id, status);
         if (updated) {

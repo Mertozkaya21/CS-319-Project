@@ -6,6 +6,8 @@ import com.example.demo.entities.user.Guide;
 import com.example.demo.entities.user.Trainee;
 import com.example.demo.enums.TourHours;
 import com.example.demo.enums.TourType;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -33,18 +35,20 @@ public class Tour extends Event {
     @Column(nullable = false)
     private TourHours tourHours;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "advisorID", nullable = false)
+    @JsonIgnore
     private Advisor advisor;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "visitorSchoolID", nullable = true)
-    private Highschool visitorSchool; 
+    @JsonIgnore
+    private Highschool visitorSchool;
 
     @ElementCollection
     @CollectionTable(name = "DepartmentInterest", joinColumns = @JoinColumn(name = "tourID"))
     @Column(name = "departmentID")
-    private List<Integer> idsOfDepartmentsOfInterest; 
+    private List<Integer> idsOfDepartmentsOfInterest;
 
     @ManyToMany
     @JoinTable(
@@ -52,9 +56,11 @@ public class Tour extends Event {
         joinColumns = @JoinColumn(name = "tour_id"),
         inverseJoinColumns = @JoinColumn(name = "trainee_id")
     )
+    @JsonIgnore
     private List<Trainee> trainees;
 
     @OneToMany(mappedBy = "tour", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JsonIgnore
     private List<TourParticipantSurvey> tourParticipantSurveys;
 
     private int qAroomID;
@@ -68,6 +74,32 @@ public class Tour extends Event {
         joinColumns = @JoinColumn(name = "tour_id"),
         inverseJoinColumns = @JoinColumn(name = "guide_id")
     )
+    @JsonIgnore
     private List<Guide> guides;
 
+    // Custom JSON Getters to expose only IDs
+    @JsonGetter("advisorId")
+    public Long getAdvisorId() {
+        return advisor != null ? advisor.getId() : null;
+    }
+
+    @JsonGetter("visitorSchoolId")
+    public Long getVisitorSchoolId() {
+        return visitorSchool != null ? visitorSchool.getId() : null;
+    }
+
+    @JsonGetter("guideIds")
+    public List<Long> getGuideIds() {
+        return guides != null ? guides.stream().map(Guide::getId).toList() : null;
+    }
+
+    @JsonGetter("traineeIds")
+    public List<Long> getTraineeIds() {
+        return trainees != null ? trainees.stream().map(Trainee::getId).toList() : null;
+    }
+
+    @JsonGetter("tourParticipantSurveyIds")
+    public List<Long> getTourParticipantSurveyIds() {
+        return tourParticipantSurveys != null ? tourParticipantSurveys.stream().map(TourParticipantSurvey::getTourSurveyID).toList() : null;
+    }
 }

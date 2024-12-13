@@ -30,4 +30,8 @@ public class RoleServiceFactory {
         }
         return service;
     }
+
+    public RoleService[] getAllRoleServices() {
+        return roleServiceMap.values().toArray(new RoleService[0]);
+    }
 }

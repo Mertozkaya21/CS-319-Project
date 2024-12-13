@@ -1,8 +1,10 @@
 package com.example.demo.services;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -53,12 +55,13 @@ public class ApplicationFormService {
         return individualFormRepository.findAll();
     }
 
+    // Save methods does not work properly
     public IndividualForm saveIndividualForm(IndividualFormDTO individualFormDto) {
         IndividualForm individualForm = new IndividualForm(individualFormDto);
-        individualForm.setAdvisorId(advisorService.getAdvisorIdByUndertakenDay(individualForm.getEventDate().getDayOfWeek()));
+        individualForm.setAdvisor(advisorService.getAdvisorByUndertakenDay(individualForm.getEventDate().getDayOfWeek()));
         Coordinator coordinator = Coordinator.getInstance();
         if(coordinator!=null){
-            individualForm.setCoordinatorId(coordinator.getId());
+            individualForm.setCoordinator(coordinator);
         }
         else{
             throw new IllegalArgumentException("Coordinator could not be found.");
@@ -66,16 +69,17 @@ public class ApplicationFormService {
         return individualFormRepository.save(individualForm);
     }
     
+    // Save methods does not work properly
     public GroupForm saveGroupForm(GroupFormDTO groupFormDto) {
         GroupForm groupForm = new GroupForm(groupFormDto);
         Highschool highschool = highschoolRepository.findById(groupFormDto.getHighSchoolId())
         .orElseThrow(() -> new IllegalArgumentException("HighSchool not found for id: " + groupFormDto.getHighSchoolId()));
-        groupForm.setHighschoolId(highschool.getId());
+        groupForm.setHighschool(highschool);
         groupForm.setCounselor(highschool.getCounselor());
-        groupForm.setAdvisorId(advisorService.getAdvisorIdByUndertakenDay(groupForm.getEventDate().getDayOfWeek()));
+        groupForm.setAdvisor(advisorService.getAdvisorByUndertakenDay(groupForm.getEventDate().getDayOfWeek()));
         Coordinator coordinator = Coordinator.getInstance();
         if(coordinator!=null){
-            groupForm.setCoordinatorId(coordinator.getId());
+            groupForm.setCoordinator(coordinator);
         }
         else{
             throw new IllegalArgumentException("Coordinator could not be found.");
@@ -93,6 +97,13 @@ public class ApplicationFormService {
         return null;
     }
 
+    public List<ApplicationForm> getApplicationFormsByEventDate(LocalDate eventDate) {
+        List<ApplicationForm> allForms = getAllApplicationForms(); 
+        return allForms.stream()
+            .filter(form -> form.getEventDate().equals(eventDate))
+            .sorted((form1, form2) -> form1.getTourHour().compareTo(form2.getTourHour()))
+            .collect(Collectors.toList());
+    }
 
     public boolean updateOneApplicationFormStatus(Long formId, ApplicationFormStatus newStatus) {
         Optional<GroupForm> groupFormOpt = groupFormRepository.findById(formId);
@@ -102,6 +113,7 @@ public class ApplicationFormService {
             groupFormRepository.save(foundForm);
             return true;
         }
+
         Optional<IndividualForm> individualFormOpt = individualFormRepository.findById(formId);
         if (individualFormOpt.isPresent()){
             IndividualForm foundForm = individualFormOpt.get();
@@ -119,11 +131,13 @@ public class ApplicationFormService {
             ApplicationForm foundApplicationForm = groupForm.get();
             return foundApplicationForm.getStatus();
         } 
+
         Optional<IndividualForm> individualForm = individualFormRepository.findById(formId);
         if(individualForm.isPresent()){
             ApplicationForm foundApplicationForm = individualForm.get();
             return foundApplicationForm.getStatus();
         } 
+
         return null;
         
     }

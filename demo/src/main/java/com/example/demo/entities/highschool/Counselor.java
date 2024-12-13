@@ -33,7 +33,4 @@ public class Counselor {
 
     @Column(nullable = false)
     private String email;
-
-    /*@OneToMany(mappedBy = "counselor", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    private List<GroupForm> groupForms;//databasede recursion yaptırıyor*/
 }

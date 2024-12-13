@@ -3,6 +3,9 @@ package com.example.demo.entities.user;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.entities.form.ApplicationForm;
 import com.example.demo.entities.payment.Payment;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,12 +34,16 @@ public class Coordinator extends User {
         this.password = userDTO.getPassword();
         this.phoneNo = userDTO.getPhoneNo();
         this.imagePath = userDTO.getImagePath();
-        this.latestAcitivites = new ArrayList();
-        this.notifications = new ArrayList();
-        this.guides = new ArrayList();
-        this.trainees = new ArrayList();
-        this.applicationFormIds = new ArrayList();
+        this.latestAcitivites = new ArrayList<Long>();
+        this.notifications = new ArrayList<Long>();
+        this.guides = new ArrayList<Guide>();
+        this.trainees = new ArrayList<Trainee>();
+        this.applicationForms = new ArrayList<ApplicationForm>();
         this.dateAdded = LocalDate.now();
+        Payment newPayment = new Payment();
+        newPayment.setAmount(0);
+        newPayment.setReceiptFullName(userDTO.getFirstName() + " " + userDTO.getLastName());
+        this.payment = newPayment;
     }
 
     public static synchronized Coordinator getInstance(UserDTO userDTO) {
@@ -51,15 +58,35 @@ public class Coordinator extends User {
     }
 
     @OneToMany(mappedBy = "coordinator", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JsonIgnore // Prevent recursion
     private List<Guide> guides;
 
     @OneToMany(mappedBy = "coordinator", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JsonIgnore // Prevent recursion
     private List<Trainee> trainees;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "payment_id")
+    @JsonIgnore // Prevent recursion
     private Payment payment;
 
-    //@OneToMany(mappedBy = "coordinator", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private List<Long> applicationFormIds;
+    @OneToMany(mappedBy = "coordinator", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JsonIgnore // Prevent recursion
+    private List<ApplicationForm> applicationForms;
+
+
+    @JsonGetter("guideIds")
+    public List<Long> getGuideIds() {
+        return guides != null ? guides.stream().map(Guide::getId).toList() : null;
+    }
+
+    @JsonGetter("traineeIds")
+    public List<Long> getTraineeIds() {
+        return trainees != null ? trainees.stream().map(Trainee::getId).toList() : null;
+    }
+
+    @JsonGetter("applicationFormIds")
+    public List<Long> getApplicationFormIds() {
+        return applicationForms != null ? applicationForms.stream().map(ApplicationForm::getApplicationFormID).toList() : null;
+    }
 }
