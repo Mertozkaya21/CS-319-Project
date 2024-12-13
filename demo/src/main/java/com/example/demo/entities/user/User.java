@@ -1,7 +1,10 @@
 package com.example.demo.entities.user;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+
+import com.example.demo.dto.UserDTO;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
@@ -17,28 +20,28 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class User {
-    
+public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @Column(nullable = false)
-    private String firstName;
+    protected String firstName;
     @Column(nullable = false)
-    private String lastName;
+    protected String lastName;
     @Column(nullable = false)
-    private String email;
+    protected String email;
     @Column(nullable = false)
-    private String password;
+    protected String password;
     @Column(nullable = false)
-    private String phoneNo;
+    protected String phoneNo;
     
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
-    private LocalDate dateAdded; 
+    protected LocalDate dateAdded; 
 
-    private String imagePath;
+    protected String imagePath;
     
-    private List<Long> latestAcitivites; // Contains ID's of latest Activities
-    private List<Long> notifications;
+    protected List<Long> latestAcitivites; // Contains ID's of latest Activities
+    protected List<Long> notifications;
 }

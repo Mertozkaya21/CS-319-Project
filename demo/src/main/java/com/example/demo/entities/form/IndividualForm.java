@@ -22,6 +22,7 @@ import lombok.Setter;
 public class IndividualForm extends ApplicationForm{
 
     public IndividualForm(IndividualFormDTO individualFormDto){
+        super();
         this.setCity(individualFormDto.getCity());
         this.setComments(individualFormDto.getComments());
         this.setEventDate(LocalDate.parse(individualFormDto.getDate()));
@@ -31,6 +32,7 @@ public class IndividualForm extends ApplicationForm{
         this.setTourHour(TourHours.fromString(individualFormDto.getTimeSlot()));
         this.setDepartmentOfInterest(individualFormDto.getDepartmentOfInterest());
         this.setIndividualName(individualFormDto.getIndividualName());
+        this.setSubmitTimeDate(LocalDate.now());
     }
 
     @Column(nullable = true) 

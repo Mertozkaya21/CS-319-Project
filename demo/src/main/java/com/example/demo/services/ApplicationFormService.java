@@ -11,19 +11,29 @@ import com.example.demo.dto.IndividualFormDTO;
 import com.example.demo.entities.form.ApplicationForm;
 import com.example.demo.entities.form.GroupForm;
 import com.example.demo.entities.form.IndividualForm;
+import com.example.demo.entities.highschool.Highschool;
+import com.example.demo.entities.user.Coordinator;
 import com.example.demo.enums.ApplicationFormStatus;
 import com.example.demo.repositories.form.GroupFormRepository;
 import com.example.demo.repositories.form.IndividualFormRepository;
+import com.example.demo.repositories.highschool.HighschoolRepository;
+import com.example.demo.services.UsersService.AdvisorService;
 
 @Service
 public class ApplicationFormService {
+    private final AdvisorService advisorService;
     private final GroupFormRepository groupFormRepository;
     private final IndividualFormRepository individualFormRepository;
+    private final HighschoolRepository highschoolRepository;
 
     public ApplicationFormService(GroupFormRepository groupFormRepo,
-                                    IndividualFormRepository individualFormRepo){
+                                    IndividualFormRepository individualFormRepo,
+                                    AdvisorService advisorService,
+                                    HighschoolRepository highschoolRepository){
         this.groupFormRepository = groupFormRepo;
         this.individualFormRepository = individualFormRepo;
+        this.advisorService = advisorService;
+        this.highschoolRepository = highschoolRepository;
     }
 
     public List<ApplicationForm> getAllApplicationForms() {
@@ -35,7 +45,7 @@ public class ApplicationFormService {
         return allForms;
     }
 
-    public List<GroupForm> getGroupForm() {
+    public List<GroupForm> getAllGroupForms() {
         return groupFormRepository.findAll();
     }
 
@@ -45,16 +55,30 @@ public class ApplicationFormService {
 
     public IndividualForm saveIndividualForm(IndividualFormDTO individualFormDto) {
         IndividualForm individualForm = new IndividualForm(individualFormDto);
-        if (individualForm.getEventDate() == null || individualForm.getTourHour() == null) {
-            throw new IllegalArgumentException("Date and Tour Hour must not be null");
+        individualForm.setAdvisorId(advisorService.getAdvisorIdByUndertakenDay(individualForm.getEventDate().getDayOfWeek()));
+        Coordinator coordinator = Coordinator.getInstance();
+        if(coordinator!=null){
+            individualForm.setCoordinatorId(coordinator.getId());
+        }
+        else{
+            throw new IllegalArgumentException("Coordinator could not be found.");
         }
         return individualFormRepository.save(individualForm);
     }
     
     public GroupForm saveGroupForm(GroupFormDTO groupFormDto) {
         GroupForm groupForm = new GroupForm(groupFormDto);
-        if (groupForm.getEventDate() == null || groupForm.getTourHour() == null) {
-            throw new IllegalArgumentException("Date and Tour Hour must not be null");
+        Highschool highschool = highschoolRepository.findById(groupFormDto.getHighSchoolId())
+        .orElseThrow(() -> new IllegalArgumentException("HighSchool not found for id: " + groupFormDto.getHighSchoolId()));
+        groupForm.setHighschoolId(highschool.getId());
+        groupForm.setCounselor(highschool.getCounselor());
+        groupForm.setAdvisorId(advisorService.getAdvisorIdByUndertakenDay(groupForm.getEventDate().getDayOfWeek()));
+        Coordinator coordinator = Coordinator.getInstance();
+        if(coordinator!=null){
+            groupForm.setCoordinatorId(coordinator.getId());
+        }
+        else{
+            throw new IllegalArgumentException("Coordinator could not be found.");
         }
         return groupFormRepository.save(groupForm);
     }

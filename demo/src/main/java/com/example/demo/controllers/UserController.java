@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
 
+import com.example.demo.dto.UserDTO;
 import com.example.demo.entities.user.User;
 import com.example.demo.services.UsersService.UserService;
 import org.springframework.http.HttpStatus;
@@ -32,13 +33,12 @@ public class UserController {
     }
 
     @PostMapping("/{role}")
-    public ResponseEntity<User> createUser(@PathVariable String role, @RequestBody User newUser) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser(role, newUser));
+    public ResponseEntity<User> createUser(@PathVariable String role, @RequestBody UserDTO newUserDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser(role, newUserDTO));
     }
 
     @PutMapping("/{role}/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable String role, @PathVariable Long id, @RequestBody User updatedUser) {
-        updatedUser.setId(id);
+    public ResponseEntity<User> updateUser(@PathVariable String role, @PathVariable Long id, @RequestBody UserDTO updatedUser) {
         return ResponseEntity.ok(userService.saveUser(role, updatedUser));
     }
 

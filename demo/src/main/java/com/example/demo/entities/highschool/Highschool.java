@@ -1,8 +1,10 @@
 package com.example.demo.entities.highschool;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
+import com.example.demo.dto.HighschoolDTO;
 import com.example.demo.entities.event.Tour;
 import com.example.demo.entities.event.TourParticipantSurvey;
 
@@ -28,6 +30,23 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Highschool {
+
+    public Highschool(HighschoolDTO highschoolDTO) {
+        this.name = highschoolDTO.getName();
+        this.city = highschoolDTO.getCity();
+        this.dateUpDated = LocalDate.now(); 
+        this.priorityScore = 0.0;
+
+        if (highschoolDTO.getCounselorName() != null) {
+            this.counselor = new Counselor();
+            this.counselor.setName(highschoolDTO.getCounselorName());
+            this.counselor.setEmail(highschoolDTO.getCounselorEmail());
+            this.counselor.setPhone(highschoolDTO.getCounselorPhoneNo());
+            //this.counselor.setHighschool(this);
+            //this.counselor.setGroupForms(new ArrayList<>());
+        }
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

@@ -25,7 +25,8 @@ import lombok.Setter;
 public class GroupForm extends ApplicationForm{
     
     public GroupForm(GroupFormDTO groupFormDTO){
-        this.setTourHour(TourHours.valueOf(groupFormDTO.getTimeSlot()));
+        super();
+        this.setTourHour(TourHours.fromString(groupFormDTO.getTimeSlot()));
         this.setEventDate(LocalDate.parse(groupFormDTO.getDate()));
         this.setComments(groupFormDTO.getComments());
         this.setChaperoneName(groupFormDTO.getChaperoneName());
@@ -34,6 +35,7 @@ public class GroupForm extends ApplicationForm{
         this.setEmail(groupFormDTO.getEmail());
         this.setCity(groupFormDTO.getCity());
         this.setNumberOfAttendees(Integer.parseInt(groupFormDTO.getNumberOfAttendees()));
+        this.setSubmitTimeDate(LocalDate.now());
     }
 
     @ManyToOne
