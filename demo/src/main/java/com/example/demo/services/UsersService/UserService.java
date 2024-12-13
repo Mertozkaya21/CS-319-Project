@@ -49,11 +49,10 @@ public class UserService {
     public User loginUser(String email, String rawPassword) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new LoginException("Invalid email or password."));
-
+                
         if (!passwordEncoder.matches(rawPassword, user.getPassword())) {
             throw new LoginException("Invalid email or password.");
         }
-
         return user;
     }
 
