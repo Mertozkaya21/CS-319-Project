@@ -28,18 +28,16 @@ public class EmailService {
     public boolean sendSimpleMail(EmailDTO details)
     {
         try {
-            SimpleMailMessage mailMessage
-                = new SimpleMailMessage();
-
+            SimpleMailMessage mailMessage = new SimpleMailMessage();
             mailMessage.setFrom(sender);
             mailMessage.setTo(details.getRecipient());
             mailMessage.setText(details.getBody());
             mailMessage.setSubject(details.getSubject());
-
             javaMailSender.send(mailMessage);
             return true;
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
+            System.err.println("Error sending email: " + e.getMessage());
+            e.printStackTrace();
             return false;
         }
     }
