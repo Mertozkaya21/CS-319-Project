@@ -2,11 +2,11 @@ package com.example.demo.services.UsersService;
 
 import com.example.demo.entities.user.Guide;
 import com.example.demo.entities.user.User;
-import com.example.demo.enums.Days;
 import com.example.demo.enums.TourHours;
 import com.example.demo.repositories.user.GuideRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -52,7 +52,7 @@ public class GuideService implements RoleService {
 
     // I am not sure about the hashmap data structure of the available times slot but 
     // we will see
-    public List<Guide> findByAvailableTimes(HashMap<Days,TourHours> availableTimes){
+    public List<Guide> findByAvailableTimes(HashMap<DayOfWeek,TourHours> availableTimes){
         return guideRepository.findByAvailableTimes(availableTimes);
     }
     

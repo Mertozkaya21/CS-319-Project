@@ -1,12 +1,15 @@
 package com.example.demo.entities.user;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.example.demo.dto.UserDTO;
 import com.example.demo.entities.event.Fair;
 import com.example.demo.entities.event.Tour;
 import com.example.demo.entities.payment.Payment;
-import com.example.demo.enums.Days;
 import com.example.demo.enums.TourHours;
 
 import jakarta.persistence.CascadeType;
@@ -35,11 +38,24 @@ import lombok.Setter;
 @Table(name = "Guide")
 public class Guide extends User{
 
+    public Guide(UserDTO userDTO){
+        super();
+        this.firstName = userDTO.getFirstName();
+        this.lastName = userDTO.getLastName();
+        this.email = userDTO.getEmail();
+        this.password = userDTO.getPassword();
+        this.phoneNo = userDTO.getPhoneNo();
+        this.imagePath = userDTO.getImagePath();
+        this.latestAcitivites = new ArrayList();
+        this.notifications = new ArrayList();
+        this.dateAdded = LocalDate.now();
+    }
+
     @ElementCollection
     @CollectionTable(name = "guide_available_times", joinColumns = @JoinColumn(name = "guide_id"))
     @MapKeyEnumerated(EnumType.STRING)
     @Column(name = "tour_hours")
-    private HashMap<Days, TourHours> availableTimes;
+    private HashMap<DayOfWeek, TourHours> availableTimes;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "payment_id")

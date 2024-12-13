@@ -1,14 +1,17 @@
 package com.example.demo.entities.user;
 
+import com.example.demo.dto.UserDTO;
 import com.example.demo.entities.form.ApplicationForm;
 import com.example.demo.entities.payment.Payment;
-import com.example.demo.enums.Days;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,15 +22,28 @@ import java.util.List;
 @NoArgsConstructor
 public class Advisor extends User {
 
+    public Advisor(UserDTO userDTO){
+        super();
+        this.firstName = userDTO.getFirstName();
+        this.lastName = userDTO.getLastName();
+        this.email = userDTO.getEmail();
+        this.password = userDTO.getPassword();
+        this.phoneNo = userDTO.getPhoneNo();
+        this.imagePath = userDTO.getImagePath();
+        this.latestAcitivites = new ArrayList();
+        this.notifications = new ArrayList();
+        this.dateAdded = LocalDate.now();
+    }
+
     @ElementCollection
     @CollectionTable(name = "advisor_undertaken_days", joinColumns = @JoinColumn(name = "advisor_id"))
     @Enumerated(EnumType.STRING)
-    private List<Days> undertakenDays;
+    private List<DayOfWeek> undertakenDays;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "payment_id")
     private Payment payment;
 
-    @OneToMany(mappedBy = "advisor", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private List<ApplicationForm> applicationForms;   
+    //@OneToMany(mappedBy = "advisor", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<Long> applicationFormIds;   
 }

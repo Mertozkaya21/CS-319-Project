@@ -1,7 +1,10 @@
 package com.example.demo.entities.user;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
+import com.example.demo.dto.UserDTO;
 import com.example.demo.entities.event.Tour;
 import com.example.demo.enums.TraineeStatus;
 
@@ -27,6 +30,19 @@ import lombok.Setter;
 @Table(name = "Trainee")
 public class Trainee extends User{
     
+    public Trainee(UserDTO userDTO){
+        super();
+        this.firstName = userDTO.getFirstName();
+        this.lastName = userDTO.getLastName();
+        this.email = userDTO.getEmail();
+        this.password = userDTO.getPassword();
+        this.phoneNo = userDTO.getPhoneNo();
+        this.imagePath = userDTO.getImagePath();
+        this.latestAcitivites = new ArrayList();
+        this.notifications = new ArrayList();
+        this.dateAdded = LocalDate.now();
+    }
+
     @ManyToMany
     @JoinTable(
             name = "trainee_tour",

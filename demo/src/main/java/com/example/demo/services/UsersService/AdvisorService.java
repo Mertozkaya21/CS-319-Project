@@ -5,6 +5,7 @@ import com.example.demo.entities.user.User;
 import com.example.demo.repositories.user.AdvisorRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,5 +46,13 @@ public class AdvisorService implements RoleService {
     @Override
     public long count() {
         return advisorRepository.count();
+    }
+
+    public Long getAdvisorIdByUndertakenDay(DayOfWeek day){
+        Advisor advisor = advisorRepository.findByUndertakenDays(day);
+        if(advisor!=null)
+            return advisor.getId();
+        else
+            return -1L;
     }
 }

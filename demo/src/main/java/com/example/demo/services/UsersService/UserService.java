@@ -1,5 +1,10 @@
 package com.example.demo.services.UsersService;
 
+import com.example.demo.dto.UserDTO;
+import com.example.demo.entities.user.Advisor;
+import com.example.demo.entities.user.Coordinator;
+import com.example.demo.entities.user.Guide;
+import com.example.demo.entities.user.Trainee;
 import com.example.demo.entities.user.User;
 import com.example.demo.exceptions.LoginException;
 import com.example.demo.repositories.user.UserRepository;
@@ -16,13 +21,31 @@ public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    public UserService(RoleServiceFactory roleServiceFactory, UserRepository userRepository, BCryptPasswordEncoder passwordEncoder) {
+    public UserService(RoleServiceFactory roleServiceFactory, UserRepository userRepository , BCryptPasswordEncoder passwordEncoder) {
         this.roleServiceFactory = roleServiceFactory;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User saveUser(String role, User user) {
+    public User saveUser(String role, UserDTO newUserDTO) {
+        User user;
+        switch (role.toLowerCase()) {
+            case "coordinator":
+                user = Coordinator.getInstance(newUserDTO);
+                break;
+            case "guide":
+                user = new Guide(newUserDTO); 
+                break;
+            case "advisor":
+                user = new Advisor(newUserDTO); 
+                break;
+            case "trainee":
+                user = new Trainee(newUserDTO); 
+                break;
+            default:
+                throw new IllegalArgumentException("Invalid role: " + role);
+        }
+
         return roleServiceFactory.getRoleService(role).save(user);
     }
 
@@ -45,7 +68,6 @@ public class UserService {
     public long count(String role){
         return roleServiceFactory.getRoleService(role).count();
     }
-
     public User loginUser(String email, String rawPassword) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new LoginException("Invalid email or password."));
@@ -54,6 +76,5 @@ public class UserService {
             throw new LoginException("Invalid email or password.");
         }
         return user;
-    }
-
+    }  
 }

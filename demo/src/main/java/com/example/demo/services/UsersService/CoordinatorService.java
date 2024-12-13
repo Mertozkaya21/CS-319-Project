@@ -20,7 +20,9 @@ public class CoordinatorService implements RoleService{
 
     @Override
     public Coordinator save(User user) {
-        return coordinatorRepository.save((Coordinator) user);
+        if(Coordinator.getInstance()!=null)
+            return coordinatorRepository.save((Coordinator) user);
+        return null;
     }
 
     @Override

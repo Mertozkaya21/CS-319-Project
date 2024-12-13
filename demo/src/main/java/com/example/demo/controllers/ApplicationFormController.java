@@ -40,7 +40,7 @@ public class ApplicationFormController {
 
     @GetMapping("/groupform")
     public ResponseEntity<List<GroupForm>> getAllGroupForms() {
-        return ResponseEntity.ok(applicationFormService.getGroupForm());
+        return ResponseEntity.ok(applicationFormService.getAllGroupForms());
     }
 
     @GetMapping("/individualform")
@@ -63,8 +63,8 @@ public class ApplicationFormController {
     }
 
     @PostMapping("/groupform")
-    public ResponseEntity<GroupForm> saveGroupForm(@RequestBody GroupFormDTO form) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(applicationFormService.saveGroupForm(form));
+    public ResponseEntity<GroupForm> saveGroupForm(@RequestBody GroupFormDTO groupFormDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(applicationFormService.saveGroupForm(groupFormDTO));
     }
 
     @PatchMapping("/{id}/status") //to update application form partially

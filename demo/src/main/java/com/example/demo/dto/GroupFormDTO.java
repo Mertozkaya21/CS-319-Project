@@ -11,7 +11,7 @@ public class GroupFormDTO {
     private String comments;
     private String date;
     private String email;
-    private String highSchoolName;
+    private Long highSchoolId;
     private String numberOfAttendees;
     private String phoneNumber;
     private boolean termsAccepted;

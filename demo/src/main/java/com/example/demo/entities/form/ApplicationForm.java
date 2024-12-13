@@ -3,8 +3,6 @@ package com.example.demo.entities.form;
 import java.time.LocalDate;
 
 import com.example.demo.entities.highschool.Highschool;
-import com.example.demo.entities.user.Advisor;
-import com.example.demo.entities.user.Coordinator;
 import com.example.demo.enums.ApplicationFormStatus;
 import com.example.demo.enums.TourHours;
 
@@ -56,7 +54,7 @@ public class ApplicationForm {
 
     @Enumerated
     @Column(name = "Status")
-    private ApplicationFormStatus status;
+    private ApplicationFormStatus status = ApplicationFormStatus.PENDING;
 
     @Column(nullable = true)
     private String chaperoneName;
@@ -71,15 +69,15 @@ public class ApplicationForm {
     @Column(nullable = false)
     private int numberOfAttendees;
     
-    @ManyToOne
-    @JoinColumn(name = "highschoolID", nullable = false)
-    private Highschool highschool;
+    //@ManyToOne
+    //@JoinColumn(name = "highschoolID", nullable = false)
+    private Long highschoolId;
 
-    @ManyToOne
-    @JoinColumn(name = "advisor_id", nullable = true) 
-    private Advisor advisor;
+    //@ManyToOne
+    //@JoinColumn(name = "advisor_id") 
+    private Long advisorId;
 
-    @ManyToOne
-    @JoinColumn(name = "coordinator_id",nullable = false)
-    private Coordinator coordinator;
+    //@ManyToOne
+    //@JoinColumn(name = "coordinator_id",nullable = false)
+    private Long coordinatorId;
 }
