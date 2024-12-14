@@ -16,5 +16,6 @@ public interface FairRepository extends JpaRepository<Fair, Long>{
     List<Fair> findByGuides(List<Guide> guides);
     List<Fair> findByStatus(EventStatus status);
     List<Fair> findByCity(String city);
+    List<Fair> findByDateBetween(LocalDate startDate, LocalDate endDate);
     
 }

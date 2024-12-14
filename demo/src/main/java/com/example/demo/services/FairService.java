@@ -83,6 +83,13 @@ public class FairService {
         return fairRepository.save(fair);
     }
 
+    public Fair removeAllGuidesFromFair(Long fairId) {
+        Fair fair = getFairById(fairId);
+        fair.getGuides().clear();
+        return fairRepository.save(fair);
+    }
+    
+
     public Guide getGuideById(Long guideId) throws GuideNotFoundException {
         return guideRepository.findById(guideId)
                 .orElseThrow(() -> new GuideNotFoundException("Guide with ID " + guideId + " not found"));
@@ -91,4 +98,10 @@ public class FairService {
     public List<Fair> getFairsByDate(LocalDate date) {
         return fairRepository.findByDate(date);
     }
+
+
+    public List<Fair> getFairsByDateRange(LocalDate startDate, LocalDate endDate) {
+        return fairRepository.findByDateBetween(startDate, endDate);
+    }
+    
 }

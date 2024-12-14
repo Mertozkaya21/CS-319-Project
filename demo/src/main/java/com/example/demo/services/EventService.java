@@ -9,6 +9,7 @@ import com.example.demo.enums.TourHours;
 import com.example.demo.exceptions.FairNotFoundException;
 import com.example.demo.exceptions.GuideNotFoundException;
 import com.example.demo.exceptions.TourNotFoundException;
+import com.example.demo.services.UsersService.GuideService;
 
 import org.springframework.stereotype.Service;
 
@@ -21,10 +22,12 @@ public class EventService {
 
     private final TourService tourService;
     private final FairService fairService;
+    private final GuideService guideService;
 
-    public EventService(TourService tourService, FairService fairService) {
+    public EventService(TourService tourService, FairService fairService, GuideService guideService) {
         this.tourService = tourService;
         this.fairService = fairService;
+        this.guideService = guideService;
     }
 
     public List<Event> getAllEvents() {
@@ -41,6 +44,8 @@ public class EventService {
             return tourService.getTourById(eventId);
         }
     }
+
+
 
     public boolean deleteEventById(Long eventId) {
         try {
@@ -88,6 +93,14 @@ public class EventService {
         events.addAll(fairService.getFairsByDate(date)); 
         events.addAll(tourService.getToursByDateAndHours(date, hours));
         return events;
+    }
+
+    public Guide getGuideById(Long guideId) throws GuideNotFoundException {
+        try {
+            return tourService.getGuideById(guideId);
+        } catch (GuideNotFoundException e) {
+            return fairService.getGuideById(guideId);
+        } 
     }
 
     public Event assignGuideToEvent(Long eventId, Long guideId) throws GuideNotFoundException {

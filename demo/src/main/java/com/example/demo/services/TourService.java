@@ -56,6 +56,11 @@ public class TourService {
             .orElseThrow(() -> new TourNotFoundException("Tour with ID " + id + " not found"));
     }
 
+    public List<Tour> getToursByGuide(Long guideId) throws GuideNotFoundException {
+        Guide guide = getGuideById(guideId);
+        return tourRepository.findByGuides(guide);
+    }
+
     public Tour saveTour(Tour tour) {
         return tourRepository.save(tour);
     }
@@ -96,6 +101,12 @@ public class TourService {
         }
         return tourRepository.save(tour);
     }
+
+    public Tour removeAllGuidesFromTour(Long tourid) {
+        Tour tour = getTourById(tourid);
+        tour.getGuides().clear();
+        return tourRepository.save(tour);
+    }
     
     public Tour assignGuideToTour(Long tourId, Long guideId) throws GuideNotFoundException {
         Tour tour = getTourById(tourId);
@@ -107,6 +118,14 @@ public class TourService {
         tour.getGuides().add(guide);
         return tourRepository.save(tour);
     }
+
+    public Tour assignGuidesToTour(Long tourId, List<Long> guideIds) {
+        Tour tour = getTourById(tourId);
+        List<Guide> guides = guideRepository.findAllById(guideIds);
+        tour.getGuides().addAll(guides);
+        return tourRepository.save(tour);
+    }
+    
 
     public Guide getGuideById(Long guideId) throws GuideNotFoundException {
         return guideRepository.findById(guideId)
