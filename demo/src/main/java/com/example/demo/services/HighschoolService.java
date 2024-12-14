@@ -63,12 +63,13 @@ public class HighschoolService {
                 .orElseThrow(() -> new HighschoolNotFoundException("Highschool with ID " + highschoolId + " not found"));
     }
 
-    public Highschool updatePriorityScore(Long highschoolId, double newScore) throws HighschoolNotFoundException {
+    //priority score is not used or assigned directly anymore
+    /*public Highschool updatePriorityScore(Long highschoolId, double newScore) throws HighschoolNotFoundException {
         Highschool highschool = highschoolRepository.findById(highschoolId)
                 .orElseThrow(() -> new HighschoolNotFoundException("Highschool with ID " + highschoolId + " not found"));
         highschool.setPriorityScore(newScore);
         return highschoolRepository.save(highschool);
-    }
+    }*/ 
 
     public Highschool saveHighschool(Highschool highschool) {
         return highschoolRepository.save(highschool);

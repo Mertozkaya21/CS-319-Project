@@ -1,4 +1,4 @@
-package com.example.demo.services;
+package com.example.demo.services.applicationformservice;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -20,6 +20,7 @@ import com.example.demo.repositories.form.GroupFormRepository;
 import com.example.demo.repositories.form.IndividualFormRepository;
 import com.example.demo.repositories.highschool.HighschoolRepository;
 import com.example.demo.services.UsersService.AdvisorService;
+import com.example.demo.services.applicationformservice.applicationformsorter.SortStrategy;
 
 @Service
 public class ApplicationFormService {
@@ -27,6 +28,7 @@ public class ApplicationFormService {
     private final GroupFormRepository groupFormRepository;
     private final IndividualFormRepository individualFormRepository;
     private final HighschoolRepository highschoolRepository;
+    private SortStrategy sortStrategy;
 
     public ApplicationFormService(GroupFormRepository groupFormRepo,
                                     IndividualFormRepository individualFormRepo,

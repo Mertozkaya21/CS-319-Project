@@ -72,7 +72,6 @@ public class ApplicationForm {
     private String city;
     @Column(nullable = true)
     private int numberOfAttendees;
-    
 
     @ManyToOne
     @JoinColumn(name = "highschoolID", nullable = true)
@@ -104,4 +103,5 @@ public class ApplicationForm {
         return coordinator != null ? coordinator.getId() : null;
     }
 
+    private double priorityScore; //cannot be used directly
 }

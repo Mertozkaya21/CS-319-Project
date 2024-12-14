@@ -13,4 +13,5 @@ public class HighschoolDTO {
     private String counselorName;
     private String counselorEmail;
     private String counselorPhoneNo;
+    private double lgsPercentile;
 }

@@ -23,7 +23,7 @@ import com.example.demo.entities.form.ApplicationForm;
 import com.example.demo.entities.form.GroupForm;
 import com.example.demo.entities.form.IndividualForm;
 import com.example.demo.enums.ApplicationFormStatus;
-import com.example.demo.services.ApplicationFormService;
+import com.example.demo.services.applicationformservice.ApplicationFormService;
 
 @RestController
 @RequestMapping("/v1/applicationform")

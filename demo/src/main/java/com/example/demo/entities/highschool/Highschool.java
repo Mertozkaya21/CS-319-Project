@@ -6,6 +6,7 @@ import java.util.List;
 import com.example.demo.dto.HighschoolDTO;
 import com.example.demo.entities.event.Tour;
 import com.example.demo.entities.event.TourParticipantSurvey;
+import com.example.demo.enums.City;
 import com.fasterxml.jackson.annotation.JsonGetter;
 
 import jakarta.persistence.CascadeType;
@@ -33,9 +34,9 @@ public class Highschool {
 
     public Highschool(HighschoolDTO highschoolDTO) {
         this.name = highschoolDTO.getName();
-        this.city = highschoolDTO.getCity();
+        this.city = City.valueOf(highschoolDTO.getCity());
         this.dateUpDated = LocalDate.now(); 
-        this.priorityScore = 0.0;
+        this.lgsPercentile = highschoolDTO.getLgsPercentile();
 
         if (highschoolDTO.getCounselorName() != null) {
             this.counselor = new Counselor();
@@ -55,10 +56,10 @@ public class Highschool {
     private String name;
 
     @Column(nullable = false)
-    private String city;
+    private City city;
 
     @Column(nullable = false)
-    private double priorityScore;
+    private double lgsPercentile;
 
     @Column(nullable = false)
     private LocalDate dateUpDated;

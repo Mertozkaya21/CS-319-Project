@@ -22,7 +22,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Coordinator extends User {
+public class Coordinator extends User { //Singleton Pattern
 
     private static Coordinator instance;
 
@@ -49,6 +49,14 @@ public class Coordinator extends User {
     public static synchronized Coordinator getInstance(UserDTO userDTO) {
         if (instance == null) {
             instance = new Coordinator(userDTO);
+        }
+        else{
+            instance.setFirstName(userDTO.getFirstName());
+            instance.setLastName(userDTO.getLastName());
+            instance.setEmail(userDTO.getEmail());
+            instance.setPassword(userDTO.getPassword());
+            instance.setPhoneNo(userDTO.getPhoneNo());
+            instance.setImagePath(userDTO.getImagePath());
         }
         return instance;
     }
