@@ -23,6 +23,8 @@ import com.example.demo.entities.form.ApplicationForm;
 import com.example.demo.entities.form.GroupForm;
 import com.example.demo.entities.form.IndividualForm;
 import com.example.demo.enums.ApplicationFormStatus;
+import com.example.demo.enums.TourHours;
+import com.example.demo.services.EventService;
 import com.example.demo.services.applicationformservice.ApplicationFormService;
 
 @RestController
@@ -30,9 +32,11 @@ import com.example.demo.services.applicationformservice.ApplicationFormService;
 @CrossOrigin(origins = "http://localhost:3000")
 public class ApplicationFormController {
     private final ApplicationFormService applicationFormService;
+    private final EventService eventService;
 
-    public ApplicationFormController(ApplicationFormService applicationFormService){
+    public ApplicationFormController(ApplicationFormService applicationFormService, EventService eventService){
         this.applicationFormService = applicationFormService;
+        this.eventService = eventService;
     }
 
     @GetMapping
@@ -69,22 +73,24 @@ public class ApplicationFormController {
         return ResponseEntity.status(HttpStatus.CREATED).body(applicationFormService.saveGroupForm(groupFormDTO));
     }
 
-    @GetMapping("/event-day")
-    public ResponseEntity<List<ApplicationForm>> getApplicationsByEventDay(@RequestParam String eventDay) {
-    try {
-        LocalDate eventDate = LocalDate.parse(eventDay);
-        List<ApplicationForm> forms = applicationFormService.getApplicationFormsByEventDate(eventDate);
-        if (!forms.isEmpty()) {
+    @GetMapping("/{date}/{tourHour}")
+    public ResponseEntity<List<ApplicationForm>> getApplicationsByDateAndTourHour(@PathVariable LocalDate date, @PathVariable TourHours tourHour) {
+
+        List<ApplicationForm> forms = applicationFormService.getApplicationFormsByTourHour(date, tourHour);
+        if (forms.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(forms); 
+        }
+        else{
             return ResponseEntity.ok(forms);
         }
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(forms); 
-    } catch (DateTimeParseException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); 
-    }
-}
 
-    @PatchMapping("/{id}/status") 
-    public ResponseEntity<Void> updateFormStatus(@PathVariable Long id, @RequestParam ApplicationFormStatus status) {
+    }
+
+    @PatchMapping("/{id}/{status}") 
+    public ResponseEntity<Void> updateFormStatus(@PathVariable Long id, @PathVariable ApplicationFormStatus status) {
+        if(status == ApplicationFormStatus.CONFIRMED){
+            eventService.saveEvent(applicationFormService.getOneFormById(id));
+        }
         boolean updated = applicationFormService.updateOneApplicationFormStatus(id, status);
         if (updated) {
             return ResponseEntity.noContent().build();
