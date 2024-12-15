@@ -8,13 +8,11 @@ import styles from './AdvisorDashboardTourApplications.module.css';
 const DashboardTourApplications = () => {
   const [filteredRows, setFilteredRows] = useState(tourApplicationsRows); // Manage filtered rows
 
-  const handleSearchSelection = (value) => {
-    if (value) {
-      const filtered = tourApplicationsRows.filter((row) => row.name === value.label);
-      setFilteredRows(filtered);
-    } else {
-      setFilteredRows(tourApplicationsRows);
-    }
+  const handleSearchSelection = (selectedValue) => {
+    const filtered = selectedValue
+      ? tourApplicationsRows.filter((row) => row.name === selectedValue)
+      : tourApplicationsRows;
+    setFilteredRows(filtered);
   };
 
   return (

@@ -12,9 +12,7 @@ const Header = ({ title, onSearchSelection }) => {
   const [sortOption, setSortOption] = useState('Date Updated');
 
   // Transform tourApplicationsRows into a format suitable for Autocomplete
-  const highSchoolOptions = tourApplicationsRows.map((school) => ({
-    label: school.name, // Only the school name will be displayed
-  }));
+  const highSchoolOptions = tourApplicationsRows.map((school) => school.name);
 
   return (
     <div className={styles.header}>

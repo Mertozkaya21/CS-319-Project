@@ -3,8 +3,6 @@ import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 import { FaPhoneAlt, FaEnvelope } from 'react-icons/fa';
 import IconButton from '@mui/material/IconButton';
-import EditIcon from '@mui/icons-material/Edit';
-import { NavLink } from 'react-router-dom';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -15,20 +13,21 @@ import Checkbox from '@mui/material/Checkbox';
 
 // Data from provided input
 export const eventRows = [
-  { id: '#123456789', name: 'High School A', guide: 'Jane Doe', date: 'Oct 23, 2024', time: '11:00-13:00', city: 'Ankara', phone: '531-142-1241', email: 'janedoe@gmail.com' },
-  { id: '#123456791', name: 'High School C', guide: 'Emily Davis', date: 'Oct 25, 2024', time: '09:00-11:00', city: 'Izmir', phone: '533-144-3243', email: 'emilydavis@gmail.com' },
-  { id: '#123456792', name: 'High School D', guide: 'Michael Brown', date: 'Oct 26, 2024', time: '13:30-15:30', city: 'Ankara', phone: '534-145-4244', email: 'michaelbrown@gmail.com' },
-  { id: '#123456794', name: 'High School F', guide: 'Robert Johnson', date: 'Oct 28, 2024', time: '10:30-12:30', city: 'Izmir', phone: '536-147-6246', email: 'robertjohnson@gmail.com' },
-  { id: '#123456796', name: 'High School H', guide: 'James Lee', date: 'Oct 30, 2024', time: '09:00-11:00', city: 'Istanbul', phone: '538-149-8248', email: 'jameslee@gmail.com' },
-  { id: '#123456798', name: 'High School J', guide: 'Patricia Taylor', date: 'Nov 2, 2024', time: '14:30-16:30', city: 'Ankara', phone: '540-151-0250', email: 'patriciataylor@gmail.com' },
-  { id: '#123456799', name: 'High School K', guide: 'David White', date: 'Nov 3, 2024', time: '11:00-13:00', city: 'Istanbul', phone: '541-152-1251', email: 'davidwhite@gmail.com' },
-  { id: '#123456801', name: 'High School M', guide: 'Daniel Harris', date: 'Nov 5, 2024', time: '09:30-11:30', city: 'Ankara', phone: '543-154-3253', email: 'danielharris@gmail.com' },
-  { id: '#123456803', name: 'High School O', guide: 'Matthew Lewis', date: 'Nov 7, 2024', time: '10:00-12:00', city: 'Izmir', phone: '545-156-5255', email: 'matthewlewis@gmail.com' },
+  { id: '#123456789', name: 'High School A', guide: 'Jane Doe', date: 'Oct 23, 2024', time: '11:00-13:00', city: 'Ankara', phone: '531-142-1241', email: 'janedoe@gmail.com', trainee: 'Jane Doe' },
+  { id: '#123456791', name: 'High School C', guide: 'Emily Davis', date: 'Oct 25, 2024', time: '09:00-11:00', city: 'Izmir', phone: '533-144-3243', email: 'emilydavis@gmail.com', trainee: 'Jane Doe'},
+  { id: '#123456792', name: 'High School D', guide: 'Michael Brown', date: 'Oct 26, 2024', time: '13:30-15:30', city: 'Ankara', phone: '534-145-4244', email: 'michaelbrown@gmail.com', trainee: 'Jane Doe'},
+  { id: '#123456794', name: 'High School F', guide: 'Robert Johnson', date: 'Oct 28, 2024', time: '10:30-12:30', city: 'Izmir', phone: '536-147-6246', email: 'robertjohnson@gmail.com', trainee: 'Jane Doe'},
+  { id: '#123456796', name: 'High School H', guide: 'James Lee', date: 'Oct 30, 2024', time: '09:00-11:00', city: 'Istanbul', phone: '538-149-8248', email: 'jameslee@gmail.com', trainee: 'Jane Doe' },
+  { id: '#123456798', name: 'High School J', guide: 'Patricia Taylor', date: 'Nov 2, 2024', time: '14:30-16:30', city: 'Ankara', phone: '540-151-0250', email: 'patriciataylor@gmail.com', trainee: 'Jane Doe' },
+  { id: '#123456799', name: 'High School K', guide: 'David White', date: 'Nov 3, 2024', time: '11:00-13:00', city: 'Istanbul', phone: '541-152-1251', email: 'davidwhite@gmail.com', trainee: 'Jane Doe'},
+  { id: '#123456801', name: 'High School M', guide: 'Daniel Harris', date: 'Nov 5, 2024', time: '09:30-11:30', city: 'Ankara', phone: '543-154-3253', email: 'danielharris@gmail.com', trainee: 'Jane Doe'},
+  { id: '#123456803', name: 'High School O', guide: 'Matthew Lewis', date: 'Nov 7, 2024', time: '10:00-12:00', city: 'Izmir', phone: '545-156-5255', email: 'matthewlewis@gmail.com' , trainee: 'Jane Doe'},
 ];
 
 const ToursTable = ({ rows }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogContent, setDialogContent] = useState('');
+  const [data, setData] = useState(rows); // Local state for dynamic updates
 
   const handleContactClick = (type, row) => {
     const content =
@@ -43,21 +42,25 @@ const ToursTable = ({ rows }) => {
     setOpenDialog(false);
   };
 
-  const handleClaimChange = (rowId, checked) => {
-    console.log(`Claim Tour for Row ID: ${rowId} - Checked: ${checked}`);
-    // Add any additional logic here if needed
+  // Toggle Checkbox State
+  const handleApplyChange = (rowId) => {
+    setData((prevData) =>
+      prevData.map((row) =>
+        row.id === rowId ? { ...row, applied: !row.applied } : row
+      )
+    );
   };
-  // Columns definition
+  
   const columns = [
-    { field: 'name', headerName: 'High School Name', width: 180 },
-    { field: 'guide', headerName: 'Guide', width: 150 },
+    { field: 'name', headerName: 'High School Name', width: 150 },
+    { field: 'trainee', headerName: 'Trainee', width: 130 },
     { field: 'date', headerName: 'Event Date', width: 120 },
-    { field: 'time', headerName: 'Event Time', width: 120 },
-    { field: 'city', headerName: 'City', width: 100 },
+    { field: 'time', headerName: 'Event Time', width: 100 },
+    { field: 'city', headerName: 'City', width: 90 },
     {
       field: 'contact',
       headerName: 'Contact',
-      width: 150,
+      width: 100,
       renderCell: (params) => (
         <div className={styles.contactButtons}>
           <IconButton onClick={() => handleContactClick('phone', params.row)}>
@@ -70,15 +73,19 @@ const ToursTable = ({ rows }) => {
       ),
     },
     {
-      field: 'claim',
-      headerName: 'Claim Tour',
-      width: 150,
+      field: 'apply',
+      headerName: 'Apply',
+      width: 90,
       renderCell: (params) => (
         <Checkbox
-          onChange={(event) =>
-            handleClaimChange(params.row.id, event.target.checked)
-          }
-          inputProps={{ 'aria-label': 'Claim Tour Checkbox' }}
+          checked={params.row.applied}
+          onChange={() => handleApplyChange(params.row.id)}
+          sx={{
+            color: '#8a0303',
+            '&.Mui-checked': {
+              color: '#8a0303',
+            },
+          }}
         />
       ),
     },

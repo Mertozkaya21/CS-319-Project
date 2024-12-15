@@ -12,7 +12,7 @@ import WarningIcon from "@mui/icons-material/Warning";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 
-const timelineData = [
+const notifications = [
   { day: "Thursday", date: "Oct 31 2024", message: "Tour Application for High School X has been accepted", type: "success" },
   { day: "Thursday", date: "Oct 31 2024", message: "[REMINDER] Monthly Payment to Jane Doe has not been completed", type: "warning" },
   { day: "Thursday", date: "Oct 31 2024", message: "Tour Application for High School Y has been accepted", type: "success" },
@@ -35,7 +35,6 @@ const timelineData = [
   { day: "Monday", date: "Oct 21 2024", message: "Monthly Payment to Laura Smith has been verified", type: "success" },
 ];
 
-
 const getIcon = (type) => {
   switch (type) {
     case "success":
@@ -53,7 +52,7 @@ const getIcon = (type) => {
 const Notifications = () => {
   return (
     <Timeline position="alternate">
-      {timelineData.map((item, index) => (
+      {notifications.map((item, index) => (
         <TimelineItem key={index}>
           {/* Opposite Content */}
           <TimelineOppositeContent

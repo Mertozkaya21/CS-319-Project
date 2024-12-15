@@ -11,19 +11,19 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import RestartAltIcon from '@mui/icons-material/RestartAlt'; // Reset icon
 import styles from './CoordinatorDashboardTourApplications.module.css';
-
-// Data
+ 
+// Dummy Data. replace with data from database
 export const tourApplicationsRows = [
-  { id: 1, name: 'High School A', priority: 1, date: 'Dec 20, 2023', time: '10:00 AM', city: 'Ankara', phone: '555-123-4561', email: 'jane.doe1@example.com' },
-  { id: 2, name: 'High School B', priority: 2, date: 'Dec 21, 2023', time: '11:00 AM', city: 'Ankara', phone: '555-123-4562', email: 'jane.doe2@example.com' },
-  { id: 3, name: 'High School C', priority: 3, date: 'Dec 22, 2023', time: '12:00 PM', city: 'Istanbul', phone: '555-123-4563', email: 'jane.doe3@example.com' },
-  { id: 4, name: 'High School D', priority: 4, date: 'Dec 23, 2023', time: '01:00 PM', city: 'Izmir', phone: '555-987-6541', email: 'john.doe1@example.com' },
+  { id: 1, name: 'High School A', priority: 1, date: 'Dec 20, 2023', time: '11:00 - 13:00', city: 'Ankara', phone: '555-123-4561', email: 'jane.doe1@example.com' },
+  { id: 2, name: 'High School B', priority: 2, date: 'Dec 21, 2023', time: '09:00 - 11:00', city: 'Ankara', phone: '555-123-4562', email: 'jane.doe2@example.com' },
+  { id: 3, name: 'High School C', priority: 3, date: 'Dec 22, 2023', time: '11:00 - 13:00', city: 'Istanbul', phone: '555-123-4563', email: 'jane.doe3@example.com' },
+  { id: 4, name: 'High School D', priority: 4, date: 'Dec 23, 2023', time: '11:00 - 13:00', city: 'Izmir', phone: '555-987-6541', email: 'john.doe1@example.com' },
 ];
 
 // Columns
 const columns = [
   { field: 'name', headerName: 'High School Name', width: 150 },
-  { field: 'priority', headerName: 'Priority', width: 80 },
+  { field: 'priority', headerName: 'Priority', width: 70 },
   { field: 'date', headerName: 'Tour Date', width: 100 },
   { field: 'time', headerName: 'Tour Time', width: 100 },
   { field: 'city', headerName: 'City', width: 100 },
@@ -45,7 +45,7 @@ const columns = [
   {
     field: 'decision',
     headerName: 'Accept / Reject',
-    width: 160,
+    width: 120,
     renderCell: (params) => (
       <div>
         <Radio
@@ -80,7 +80,7 @@ const columns = [
   {
     field: 'reset',
     headerName: 'Reset',
-    width: 100,
+    width: 60,
     renderCell: (params) => (
       <IconButton
         onClick={() => params.row.handleResetDecision(params.row.id)}
@@ -138,7 +138,6 @@ const TourApplicationsTable = ({ rows }) => {
     decision: decisions[row.id] || null, // Attach decision state
   }));
 
-  
   return (
     <div className={styles.tableContainer}>
       <Paper

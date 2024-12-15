@@ -46,7 +46,7 @@ const columns = [
   {
     field: 'decision',
     headerName: 'Accept / Reject',
-    width: 160,
+    width: 120,
     renderCell: (params) => (
       <div>
         <Radio
@@ -81,7 +81,7 @@ const columns = [
   {
     field: 'reset',
     headerName: 'Reset',
-    width: 100,
+    width: 60,
     renderCell: (params) => (
       <IconButton
         onClick={() => params.row.handleResetDecision(params.row.id)}

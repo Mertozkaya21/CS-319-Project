@@ -19,17 +19,57 @@ import KeyIcon from "@mui/icons-material/Key";
 import styles from "./AdvisorDashboardSettings.module.css";
 import TextField from "@mui/material/TextField"; // Add this
 
+// Dummy Data
+const dummyData = {
+  profile: {
+    name: "Nabila Azalea",
+    email: "nabila@gmail.com",
+    phone: "(123) 456 7890",
+    avatar: "/static/images/avatar/1.jpg", // Replace with a real image URL
+  },
+  preferences: {
+    messages: false,
+    upcomingTours: false,
+    upcomingFairs: true,
+    alerts: true,
+  },
+  security: {
+    twoFactorAuth: true,
+    password: "12345678", // Dummy password (for default placeholder)
+  },
+};
+
 const Settings = () => {
-    const [value, setValue] = React.useState("1");
-    const [currentPassword, setCurrentPassword] = useState("");
-    const [newPassword, setNewPassword] = useState("");
-    const [showCurrentPassword, setShowCurrentPassword] = useState(false);
-    const [showNewPassword, setShowNewPassword] = useState(false);
+  const [value, setValue] = useState("1");
+
+  // Profile Data
+  const [profile, setProfile] = useState(dummyData.profile);
+
+  // Preferences Data
+  const [preferences, setPreferences] = useState(dummyData.preferences);
+
+  // Security Data
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
   
+  // Handle Tab Change
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+  // Handle Profile Input Change
+  const handleProfileChange = (e) => {
+    const { name, value } = e.target;
+    setProfile((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // Handle Preferences Toggle
+  const handlePreferencesToggle = (key) => {
+    setPreferences((prev) => ({ ...prev, [key]: !prev[key] }));
+  };
+  // Handle File Change for Avatar
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -37,14 +77,15 @@ const Settings = () => {
     }
   };
 
+  // Handle Password Visibility Toggle
   const handleToggleCurrentPasswordVisibility = () =>
     setShowCurrentPassword((prev) => !prev);
-
   const handleToggleNewPasswordVisibility = () =>
     setShowNewPassword((prev) => !prev);
 
   const handleMouseDown = (event) => event.preventDefault();
 
+  // Password Strength
   const getPasswordStrength = () => {
     const minLength = 12;
     return Math.min((newPassword.length * 100) / minLength, 100);
@@ -123,8 +164,10 @@ const Settings = () => {
               width="100%"
             >
               <TextField
-                label="First Name"
-                defaultValue="Nabila"
+                label="Name"
+                name="name"
+                value={profile.name}
+                onChange={handleProfileChange}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -134,19 +177,10 @@ const Settings = () => {
                 }}
               />
               <TextField
-                label="Last Name"
-                defaultValue="Azalea"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <AccountCircleIcon />
-                    </InputAdornment>
-                  ),
-                }}
-              />
-              <TextField
                 label="Email Address"
-                defaultValue="nabila@gmail.com"
+                name="email"
+                value={profile.email}
+                onChange={handleProfileChange}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -157,7 +191,9 @@ const Settings = () => {
               />
               <TextField
                 label="Phone Number"
-                defaultValue="(123) 456 7890"
+                name="phone"
+                value={profile.phone}
+                onChange={handleProfileChange}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -186,21 +222,33 @@ const Settings = () => {
           <Box display="flex" flexDirection="column" gap={2}>
             <Box display="flex" alignItems="center" justifyContent="space-between">
               <Typography>Notify me about new messages</Typography>
-              <Switch defaultChecked />
+              <Switch
+                checked={preferences.messages} // Bind to dummy data
+                onChange={() => handlePreferencesToggle("messages")}
+              />
             </Box>
             <Box display="flex" alignItems="center" justifyContent="space-between">
               <Typography>Notify me about upcoming tours</Typography>
-              <Switch />
+              <Switch
+                checked={preferences.upcomingTours} // Bind to dummy data
+                onChange={() => handlePreferencesToggle("upcomingTours")}
+              />
             </Box>
             <Box display="flex" alignItems="center" justifyContent="space-between">
               <Typography>Notify me about upcoming fairs</Typography>
-              <Switch defaultChecked />
+              <Switch
+                checked={preferences.upcomingFairs} // Bind to dummy data
+                onChange={() => handlePreferencesToggle("upcomingFairs")}
+              />
             </Box>
             <Box display="flex" alignItems="center" justifyContent="space-between">
               <Typography>
                 Alert me when a tour is canceled or rescheduled
               </Typography>
-              <Switch defaultChecked />
+              <Switch
+                checked={preferences.alerts} // Bind to dummy data
+                onChange={() => handlePreferencesToggle("alerts")}
+              />
             </Box>
           </Box>
           <Box display="flex" justifyContent="flex-end" mt={4}>
@@ -227,7 +275,10 @@ const Settings = () => {
                     <Typography>
                       Enable or disable two-factor authentication
                     </Typography>
-                    <Switch defaultChecked />
+                    <Switch
+                      checked={preferences.twoFactorAuth} // Bind to dummy data
+                      onChange={() => handlePreferencesToggle("twoFactorAuth")}
+                    />
                   </Box>
                   <Typography variant="h6" gutterBottom>
                     Change Password
@@ -235,9 +286,7 @@ const Settings = () => {
                   <Box display="grid" gridTemplateColumns="1fr" gap={2} width="50%">
                     {/* Current Password */}
                     <FormControl variant="outlined" fullWidth>
-                      <InputLabel htmlFor="current-password">
-                        Current Password
-                      </InputLabel>
+                      <InputLabel htmlFor="current-password">Current Password</InputLabel>
                       <OutlinedInput
                         id="current-password"
                         type={showCurrentPassword ? "text" : "password"}
@@ -254,11 +303,7 @@ const Settings = () => {
                               onClick={handleToggleCurrentPasswordVisibility}
                               onMouseDown={handleMouseDown}
                             >
-                              {showCurrentPassword ? (
-                                <VisibilityOff />
-                              ) : (
-                                <Visibility />
-                              )}
+                              {showCurrentPassword ? <VisibilityOff /> : <Visibility />}
                             </IconButton>
                           </InputAdornment>
                         }
@@ -285,11 +330,7 @@ const Settings = () => {
                               onClick={handleToggleNewPasswordVisibility}
                               onMouseDown={handleMouseDown}
                             >
-                              {showNewPassword ? (
-                                <VisibilityOff />
-                              ) : (
-                                <Visibility />
-                              )}
+                              {showNewPassword ? <VisibilityOff /> : <Visibility />}
                             </IconButton>
                           </InputAdornment>
                         }

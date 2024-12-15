@@ -3,6 +3,55 @@ import styles from './CoordinatorDashboard.module.css';
 import { FaBell, FaCog } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
 
+
+// Dummy Data
+const dummyData = {
+  user: {
+    name: 'Nabila A.',
+    role: 'Coordinator',
+    profilePic: 'https://via.placeholder.com/40',
+  },
+  recentContacts: [
+    { name: 'Samantha William', profilePic: 'https://via.placeholder.com/30' },
+    { name: 'Tony Soap', profilePic: 'https://via.placeholder.com/30' },
+    { name: 'Karen Hope', profilePic: 'https://via.placeholder.com/30' },
+    { name: 'Jordan Nico', profilePic: 'https://via.placeholder.com/30' },
+    { name: 'Nadila Adja', profilePic: 'https://via.placeholder.com/30' },
+  ],
+  messages: [
+    {
+      name: 'Samantha William',
+      time: '12:45 PM',
+      message: 'Lorem ipsum dolor sit amet...',
+      profilePic: 'https://via.placeholder.com/30',
+    },
+    {
+      name: 'Tony Soap',
+      time: '12:45 PM',
+      message: 'Lorem ipsum dolor sit amet...',
+      profilePic: 'https://via.placeholder.com/30',
+    },
+    {
+      name: 'Jordan Nico',
+      time: '12:45 PM',
+      message: 'Lorem ipsum dolor sit amet...',
+      profilePic: 'https://via.placeholder.com/30',
+    },
+    {
+      name: 'Nadila Adja',
+      time: '12:45 PM',
+      message: 'Lorem ipsum dolor sit amet...',
+      profilePic: 'https://via.placeholder.com/30',
+    },
+  ],
+  upcomingFairs: [
+    { image: 'https://via.placeholder.com/50', organizationName: 'Organisation 1' },
+    { image: 'https://via.placeholder.com/50', organizationName: 'Organisation 2' },
+    { image: 'https://via.placeholder.com/50', organizationName: 'Organisation 3' },
+    { image: 'https://via.placeholder.com/50', organizationName: 'Organisation 4' },
+  ],
+};
+
 const RightSidebar = () => {
   return (
     <div className={styles.rightSidebar}>
@@ -14,29 +63,30 @@ const RightSidebar = () => {
           <div className={styles.userInfo}>
           <NavLink to="/coordinatordashboardprofile" className={styles.userAvatar}>
               <img
-                src="https://via.placeholder.com/40" // Placeholder for now
+                src={dummyData.user.profilePic}
                 alt="User"
                 className={styles.avatarImage}
               />
             </NavLink>
             <div>
-              <p className={styles.userName}>Nabila A.</p>
-              <p className={styles.userRole}>Coordinator</p>
+              <p className={styles.userName}>{dummyData.user.name}</p>
+              <p className={styles.userRole}>{dummyData.user.role}</p>
             </div>
           </div>
 
+          
           {/* Notification and Settings Icons */}
           <div className={styles.topIcons}>
             {/* Notification Button */}
-          <NavLink to="/coordinatordashboardnotifications" className={styles.iconButton}>
-            <FaBell className={styles.notificationIcon} />
-            <span className={styles.notificationDot}></span>
-          </NavLink>
+            <NavLink to="/coordinatordashboardnotifications" className={styles.iconButton}>
+              <FaBell className={styles.notificationIcon} />
+              <span className={styles.notificationDot}></span>
+            </NavLink>
 
           {/* Settings Button */}
           <NavLink to="/coordinatordashboardsettings" className={styles.iconButton}>
-            <FaCog />
-          </NavLink>
+              <FaCog />
+            </NavLink>
           </div>
         </div>
       </div>
@@ -45,25 +95,22 @@ const RightSidebar = () => {
       <div className={styles.section}>
         <h3 className={styles.sectionTitle}>Recent Contacts</h3>
         <ul className={styles.contactList}>
-          {['Samantha William', 'Tony Soap', 'Karen Hope', 'Jordan Nico', 'Nadila Adja'].map(
-            (contact, index) => (
-              <li key={index} className={styles.contactItem}>
-                <div className={styles.contactAvatar}>
-                  <img
-                    src="https://via.placeholder.com/30"
-                    alt={contact}
-                    className={styles.avatarImage}
-                  />
-                </div>
-                <span className={styles.contactName}>{contact}</span>
-                <button className={styles.contactButton}>
-                  <i className="fas fa-envelope" />
-                </button>
-              </li>
-            )
-          )}
+          {dummyData.recentContacts.map((contact, index) => (
+            <li key={index} className={styles.contactItem}>
+              <div className={styles.contactAvatar}>
+                <img
+                  src={contact.profilePic}
+                  alt={contact.name}
+                  className={styles.avatarImage}
+                />
+              </div>
+              <span className={styles.contactName}>{contact.name}</span>
+              <button className={styles.contactButton}>
+                <i className="fas fa-envelope" />
+              </button>
+            </li>
+          ))}
         </ul>
-        {/* Navigate to Chat Page */}
         <NavLink to="/coordinatordashboardchat" className={styles.viewAllButton}>
           View All
         </NavLink>
@@ -72,16 +119,11 @@ const RightSidebar = () => {
       <div className={styles.section}>
         <h3 className={styles.sectionTitle}>Messages</h3>
         <ul className={styles.messageList}>
-          {[
-            { name: 'Samantha William', time: '12:45 PM', message: 'Lorem ipsum dolor sit amet...' },
-            { name: 'Tony Soap', time: '12:45 PM', message: 'Lorem ipsum dolor sit amet...' },
-            { name: 'Jordan Nico', time: '12:45 PM', message: 'Lorem ipsum dolor sit amet...' },
-            { name: 'Nadila Adja', time: '12:45 PM', message: 'Lorem ipsum dolor sit amet...' },
-          ].map((message, index) => (
+          {dummyData.messages.map((message, index) => (
             <li key={index} className={styles.messageItem}>
               <div className={styles.messageAvatar}>
                 <img
-                  src="https://via.placeholder.com/30"
+                  src={message.profilePic}
                   alt={message.name}
                   className={styles.avatarImage}
                 />
@@ -94,7 +136,6 @@ const RightSidebar = () => {
             </li>
           ))}
         </ul>
-        {/* Navigate to Chat Page */}
         <NavLink to="/coordinatordashboardchat" className={styles.viewAllButton}>
           View All
         </NavLink>
@@ -103,20 +144,19 @@ const RightSidebar = () => {
       <div className={styles.section}>
         <h3 className={styles.sectionTitle}>Upcoming Fairs</h3>
         <ul className={styles.fairList}>
-          {[1, 2, 3, 4].map((fair, index) => (
+          {dummyData.upcomingFairs.map((fair, index) => (
             <li key={index} className={styles.fairItem}>
               <div className={styles.fairImage}>
                 <img
-                  src="https://via.placeholder.com/50"
+                  src={fair.image}
                   alt="Fair"
                   className={styles.fairImageContent}
                 />
               </div>
-              <p className={styles.fairTitle}>Lorem ipsum dolor sit amet...</p>
+              <p className={styles.fairTitle}>{fair.organizationName}</p>
             </li>
           ))}
         </ul>
-        {/* Navigate to Tours and Fairs Page */}
         <NavLink to="/coordinatordashboardtoursandfairs" className={styles.viewAllButtonLast}>
           View All
         </NavLink>

@@ -82,7 +82,6 @@ const Header = ({ title, onSearchSelection }) => {
           )}
         />
 
-
           <Button
             variant="contained" // Contained style
             startIcon={<AddIcon />}

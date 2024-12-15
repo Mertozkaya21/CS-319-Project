@@ -12,22 +12,22 @@ import styles from "./CoordinatorDashboard.module.css";
 
 // Dummy data for events
 const events = [
-  { date: '2024-12-10', type: 'tour', time: '09:00 - 11:00' },
-  { date: '2024-12-10', type: 'fair', time: '10:00 - 12:00' },
-  { date: '2024-12-10', type: 'fair', time: '10:00 - 12:00' },
-  { date: '2024-12-10', type: 'fair', time: '10:00 - 12:00' },
-  { date: '2024-12-10', type: 'fair', time: '10:00 - 12:00' },
-  { date: '2024-12-10', type: 'fair', time: '10:00 - 12:00' },
-  { date: '2024-12-15', type: 'tour', time: '13:30 - 16:00' },
-  { date: '2024-12-15', type: 'tour', time: '13:30 - 16:00' },
-  { date: '2024-12-15', type: 'tour', time: '13:30 - 16:00' },
-  { date: '2024-12-15', type: 'tour', time: '13:30 - 16:00' },
-  { date: '2024-12-18', type: 'fair', time: '14:00 - 16:00' },
-  { date: '2024-12-20', type: 'tour', time: '11:00 - 13:00' },
-  { date: '2024-12-20', type: 'tour', time: '11:00 - 13:00' },
-  { date: '2024-12-20', type: 'tour', time: '11:00 - 13:00' },
-  { date: '2024-12-20', type: 'tour', time: '11:00 - 13:00' },
-  { date: '2024-12-29', type: 'tour', time: '09:00 - 11:00' },
+  { date: '2024-12-10', eventType: 'tour', time: '09:00 - 11:00' },
+  { date: '2024-12-10', eventType: 'fair', time: '10:00 - 12:00' },
+  { date: '2024-12-10', eventType: 'fair', time: '10:00 - 12:00' },
+  { date: '2024-12-10', eventType: 'fair', time: '10:00 - 12:00' },
+  { date: '2024-12-10', eventType: 'fair', time: '10:00 - 12:00' },
+  { date: '2024-12-10', eventType: 'fair', time: '10:00 - 12:00' },
+  { date: '2024-12-15', eventType: 'tour', time: '13:30 - 16:00' },
+  { date: '2024-12-15', eventType: 'tour', time: '13:30 - 16:00' },
+  { date: '2024-12-15', eventType: 'tour', time: '13:30 - 16:00' },
+  { date: '2024-12-15', eventType: 'tour', time: '13:30 - 16:00' },
+  { date: '2024-12-18', eventType: 'fair', time: '14:00 - 16:00' },
+  { date: '2024-12-20', eventType: 'tour', time: '11:00 - 13:00' },
+  { date: '2024-12-20', eventType: 'tour', time: '11:00 - 13:00' },
+  { date: '2024-12-20', eventType: 'tour', time: '11:00 - 13:00' },
+  { date: '2024-12-20', eventType: 'tour', time: '11:00 - 13:00' },
+  { date: '2024-12-29', eventType: 'tour', time: '09:00 - 11:00' },
 ];
 
 const CustomCalendar = () => {
@@ -67,7 +67,7 @@ const CustomCalendar = () => {
                 <div
                   key={idx}
                   className={`${styles.eventIndicator} ${
-                    event.type === "tour" ? styles.tour : styles.fair
+                    event.eventType === "tour" ? styles.tour : styles.fair
                   }`}
                 ></div>
               ))}

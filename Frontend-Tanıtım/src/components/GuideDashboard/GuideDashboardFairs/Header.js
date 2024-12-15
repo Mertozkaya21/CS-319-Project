@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import { eventRows } from './FairsTable'; // Import event data
+import AddIcon from '@mui/icons-material/Add'; // Import plus icon
 
 const Header = ({ title, onSearchSelection }) => {
   const [sortOption, setSortOption] = useState('Date Updated');
@@ -80,6 +81,20 @@ const Header = ({ title, onSearchSelection }) => {
             <TextField {...params} label="Search Name" />
           )}
         />
+        <Button
+            variant="contained" // Contained style
+            startIcon={<AddIcon />}
+            sx={{
+              backgroundColor: '#8a0303', // Red background
+              color: '#ffffff', // White text
+              marginLeft: '10px', // Add spacing between buttons
+              '&:hover': {
+                backgroundColor: '#6c0101', // Darker red background on hover
+              },
+            }}
+          >
+            Confirm Changes
+          </Button>
       </div>
     </div>
   );
