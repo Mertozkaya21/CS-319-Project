@@ -1,47 +1,110 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useParams, NavLink } from "react-router-dom";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import FormControl from "@mui/material/FormControl";
+import MenuItem from "@mui/material/MenuItem";
 import InputAdornment from "@mui/material/InputAdornment";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputLabel from "@mui/material/InputLabel";
-import IconButton from "@mui/material/IconButton";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import EmailIcon from "@mui/icons-material/Email";
 import PhoneIcon from "@mui/icons-material/Phone";
-import { styled } from "@mui/material/styles";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-});
-
-// Dummy guide data
-const guide = [
+const guidesRows = [
   {
     id: 1,
-    firstName: "John",
-    lastName: "Doe",
-    email: "john.doe@example.com",
-    phone: "(123) 456-7890",
-    profilePicture: "https://via.placeholder.com/150", // Placeholder image URL
+    name: 'Samanta William',
+    dateAdded: 'Oct 25, 2023',
+    tours: 23,
+    phone: '555-123-4561',
+    email: 'samanta.william@example.com',
+    schedulePic: 'https://via.placeholder.com/150', // Dummy image URL
+  },
+  {
+    id: 2,
+    name: 'Tony Soap',
+    dateAdded: 'Oct 25, 2023',
+    tours: 23,
+    phone: '555-123-4562',
+    email: 'tony.soap@example.com',
+    schedulePic: 'https://via.placeholder.com/150', // Dummy image URL
+  },
+  {
+    id: 3,
+    name: 'Karen Hope',
+    dateAdded: 'Oct 25, 2023',
+    tours: 23,
+    phone: '555-123-4563',
+    email: 'karen.hope@example.com',
+    schedulePic: 'https://via.placeholder.com/150', // Dummy image URL
+  },
+  {
+    id: 4,
+    name: 'Jordan Nico',
+    dateAdded: 'Oct 26, 2023',
+    tours: 23,
+    phone: '555-987-6541',
+    email: 'jordan.nico@example.com',
+    schedulePic: 'https://via.placeholder.com/150', // Dummy image URL
+  },
+  {
+    id: 5,
+    name: 'Nadila Adja',
+    dateAdded: 'Oct 26, 2023',
+    tours: 23,
+    phone: '555-987-6542',
+    email: 'nadila.adja@example.com',
+    schedulePic: 'https://via.placeholder.com/150', // Dummy image URL
+  },
+  {
+    id: 6,
+    name: 'Johnny Ahmad',
+    dateAdded: 'Oct 27, 2023',
+    tours: 23,
+    phone: '555-654-3211',
+    email: 'johnny.ahmad@example.com',
+    schedulePic: 'https://via.placeholder.com/150', // Dummy image URL
   },
 ];
 
 const Table = () => {
-  // Extract the first guide
-  const currentGuide = guide[0];
+  const { id } = useParams(); // Extract the ID from the URL
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+  });
+  const [loading, setLoading] = useState(true);
+
+
+  // Fetch Guide Data
+  useEffect(() => {
+    const fetchGuideData = () => {
+      const guide = guidesRows.find((row) => row.id === parseInt(id));
+      if (guide) {
+        setFormData(guide);
+      }
+      setLoading(false);
+    };
+
+    fetchGuideData();
+  }, [id]);
+
+  // Handle Input Changes
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  // Handle Form Submit
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Updated Guide Data:", formData);
+    alert("Guide details updated successfully!");
+    // Add backend PUT/POST API call here
+  };
+
+  if (loading) return <div>Loading...</div>;
 
   return (
     <Box
@@ -79,27 +142,13 @@ const Table = () => {
         noValidate
         autoComplete="off"
       >
-        {/* First Name */}
+        {/* Name */}
         <TextField
           required
-          id="first-name"
-          label="First Name"
-          defaultValue={currentGuide.firstName}
-          fullWidth
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <AccountCircleIcon sx={{ color: "#8a0303" }} />
-              </InputAdornment>
-            ),
-          }}
-        />
-        {/* Last Name */}
-        <TextField
-          required
-          id="last-name"
-          label="Last Name"
-          defaultValue={currentGuide.lastName}
+          name="name"
+          label="Guide Name"
+          value={formData.name}
+          onChange={handleInputChange}
           fullWidth
           InputProps={{
             startAdornment: (
@@ -112,9 +161,10 @@ const Table = () => {
         {/* Email Address */}
         <TextField
           required
-          id="email-address"
+          name="email"
           label="Email Address"
-          defaultValue={currentGuide.email}
+          value={formData.email}
+          onChange={handleInputChange}
           fullWidth
           InputProps={{
             startAdornment: (
@@ -127,9 +177,10 @@ const Table = () => {
         {/* Phone Number */}
         <TextField
           required
-          id="phone-number"
+          name="phone"
           label="Phone Number"
-          defaultValue={currentGuide.phone}
+          value={formData.phone}
+          onChange={handleInputChange}
           fullWidth
           InputProps={{
             startAdornment: (
@@ -140,40 +191,6 @@ const Table = () => {
           }}
         />
 
-        {/* Profile Picture and Password Side by Side */}
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
-            gap: 3,
-            gridColumn: "span 2",
-          }}
-        >
-          
-          {/* File Upload */}
-          <Box
-            sx={{
-              border: "2px dashed #8a0303",
-              borderRadius: "8px",
-              padding: "20px",
-              textAlign: "center",
-              color: "#8a0303",
-            }}
-          >
-            <Button
-              component="label"
-              variant="contained"
-              startIcon={<CloudUploadIcon />}
-            >
-              Upload Profile Picture
-              <VisuallyHiddenInput
-                type="file"
-                onChange={(event) => console.log(event.target.files)}
-                multiple={false} // Only one file can be uploaded
-              />
-            </Button>
-          </Box>
-        </Box>
       </Box>
 
       {/* Action Buttons */}
@@ -186,6 +203,8 @@ const Table = () => {
         }}
       >
         <Button
+          component={NavLink}
+          to="/coordinatordashboardguides" // Redirect to Guides Dashboard
           variant="outlined"
           sx={{
             color: "#8a0303",
@@ -199,6 +218,8 @@ const Table = () => {
           Cancel
         </Button>
         <Button
+          component={NavLink}
+          to="/coordinatordashboardguides" // Redirect to Guides Dashboard
           variant="contained"
           sx={{
             backgroundColor: "#8a0303",

@@ -5,6 +5,7 @@ import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import InputAdornment from "@mui/material/InputAdornment";
 import PersonIcon from "@mui/icons-material/Person";
+import { NavLink } from 'react-router-dom';
 
 const trainees = [
   { id: 1, name: "John Doe" },
@@ -84,6 +85,8 @@ const AddGuide = () => {
         }}
       >
         <Button
+          component={NavLink}
+          to="/coordinatordashboardguides" // Redirect to guides Dashboard
           variant="outlined"
           sx={{
             color: "#8a0303",
@@ -97,6 +100,8 @@ const AddGuide = () => {
           Cancel
         </Button>
         <Button
+          component={NavLink}
+          to="/coordinatordashboardguides" // Redirect to guides Dashboard
           variant="contained"
           sx={{
             backgroundColor: "#8a0303",

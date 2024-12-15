@@ -19,7 +19,7 @@ const advisorRows = [
   { id: 5, name: 'Nadila Adja', dateAdded: 'Oct 26, 2023', advisorId: '#987654321', tours: 23, phone: '555-987-6542', email: 'nadila.adja@example.com', responsibleDay: 'Friday' },
   { id: 6, name: 'Johnny Ahmad', dateAdded: 'Oct 27, 2023', advisorId: '#987654321', tours: 23, phone: '555-654-3211', email: 'johnny.ahmad@example.com', responsibleDay: 'Saturday' },
 ];
-
+ 
 const Table = () => {
   const { id } = useParams(); // Extract the ID from the URL
   const [formData, setFormData] = useState({
@@ -190,9 +190,11 @@ const Table = () => {
             },
           }}
         >
-          Cancel
+          Cancel 
         </Button>
         <Button
+        component={NavLink}
+        to="/coordinatordashboardadvisors" // Redirect to Advisors Dashboard
           variant="contained"
           sx={{
             backgroundColor: "#8a0303",

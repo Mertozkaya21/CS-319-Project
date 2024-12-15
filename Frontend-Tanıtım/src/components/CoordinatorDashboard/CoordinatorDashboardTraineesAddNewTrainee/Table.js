@@ -15,6 +15,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import EmailIcon from "@mui/icons-material/Email";
 import PhoneIcon from "@mui/icons-material/Phone";
+import { NavLink } from 'react-router-dom';
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -82,24 +83,9 @@ const Table = () => {
         {/* First Name */}
         <TextField
           required
-          id="first-name"
-          label="First Name"
-          placeholder="Enter First Name"
-          fullWidth
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <AccountCircleIcon sx={{ color: "#8a0303" }} />
-              </InputAdornment>
-            ),
-          }}
-        />
-        {/* Last Name */}
-        <TextField
-          required
-          id="last-name"
-          label="Last Name"
-          placeholder="Enter Last Name"
+          id="name"
+          label="Name"
+          placeholder="Enter Full Name"
           fullWidth
           InputProps={{
             startAdornment: (
@@ -112,7 +98,7 @@ const Table = () => {
         {/* Email Address */}
         <TextField
           required
-          id="email-address"
+          id="email"
           label="Email Address"
           placeholder="Enter Email"
           fullWidth
@@ -127,7 +113,7 @@ const Table = () => {
         {/* Phone Number */}
         <TextField
           required
-          id="phone-number"
+          id="phone"
           label="Phone Number"
           placeholder="(123) 456-7890"
           fullWidth
@@ -144,7 +130,7 @@ const Table = () => {
         <TextField
           select
           required
-          id="advisor-responsible"
+          id="advisorResponsible"
           label="Advisor Responsible"
           placeholder="Choose Advisor"
           fullWidth
@@ -166,7 +152,7 @@ const Table = () => {
         <FormControl sx={{ width: "100%" }} variant="outlined">
             <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
             <OutlinedInput
-              id="outlined-adornment-password"
+              id="password"
               type={showPassword ? "text" : "password"}
               endAdornment={
                 <InputAdornment position="end">
@@ -186,43 +172,6 @@ const Table = () => {
               label="Password"
             />
           </FormControl>
-        {/* Profile Picture and Password Side by Side */}
-        <Box
-          sx={{
-            display: "grid",
-            gridTemplateColumns: { xs: "1fr", sm: "1fr 1fr" },
-            gap: 3,
-            gridColumn: "span 2",
-          }}
-        >
-          
-          {/* File Upload */}
-          <Box
-            sx={{
-              border: "2px dashed #8a0303",
-              borderRadius: "8px",
-              padding: "20px",
-              textAlign: "center",
-              color: "#8a0303",
-            }}
-          >
-            <Button
-              component="label"
-              role={undefined}
-              variant="contained"
-              tabIndex={-1}
-              startIcon={<CloudUploadIcon />}
-            >
-              Upload Profile Picture
-              <VisuallyHiddenInput
-                type="file"
-                onChange={(event) => console.log(event.target.files)}
-                multiple={false} // Only one file can be uploaded
-              />
-            </Button>
-          </Box>
-          
-        </Box>
       </Box>
 
       {/* Action Buttons */}
@@ -235,6 +184,8 @@ const Table = () => {
         }}
       >
         <Button
+          component={NavLink}
+          to="/coordinatordashboardtrainees" // Redirect to trainees Dashboard
           variant="outlined"
           sx={{
             color: "#8a0303",
@@ -248,6 +199,8 @@ const Table = () => {
           Cancel
         </Button>
         <Button
+          component={NavLink}
+          to="/coordinatordashboardtrainees" // Redirect to trainees Dashboard
           variant="contained"
           sx={{
             backgroundColor: "#8a0303",

@@ -1,54 +1,76 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useParams, NavLink } from "react-router-dom";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
-import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import { styled } from "@mui/material/styles";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import PersonIcon from "@mui/icons-material/Person";
 import EmailIcon from "@mui/icons-material/Email";
 import PhoneIcon from "@mui/icons-material/Phone";
 import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
+import FlagIcon from "@mui/icons-material/Flag"; // Import FlagIcon
 
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-});
+// Trainees Data
+const traineesRows = [
+  { id: 1, name: "Samanta William", phone: "555-123-4561", email: "samanta.william@example.com", status: "Observing", advisorResponsible: "Tony Soap" },
+  { id: 2, name: "Tony Soap", phone: "555-123-4562", email: "tony.soap@example.com", status: "Practicing", advisorResponsible: "Jordan Nico" },
+  { id: 3, name: "Karen Hope", phone: "555-123-4563", email: "karen.hope@example.com", status: "On Trial", advisorResponsible: "Samanta William" },
+  { id: 4, name: "Jordan Nico", phone: "555-987-6541", email: "jordan.nico@example.com", status: "Practicing", advisorResponsible: "Nadila Adja" },
+  { id: 5, name: "Nadila Adja", phone: "555-987-6542", email: "nadila.adja@example.com", status: "On Trial", advisorResponsible: "Johnny Ahmad" },
+  { id: 6, name: "Johnny Ahmad", phone: "555-654-3211", email: "johnny.ahmad@example.com", status: "Observing", advisorResponsible: "Karen Hope" },
+];
 
-const trainee = {
-  id: 1,
-  firstName: "Maria",
-  lastName: "Historia",
-  email: "maria.historia@example.com",
-  phone: "+1234567890",
-  advisorResponsible: "John Doe",
-  profilePicture: "https://via.placeholder.com/150", // Placeholder image
-};
-
-// Dummy data for advisors
+// Advisors Data
 const advisors = [
-  { id: 1, name: "John Doe" },
-  { id: 2, name: "Jane Smith" },
-  { id: 3, name: "Emily Johnson" },
-  { id: 4, name: "Michael Brown" },
-  { id: 5, name: "Sarah Davis" },
+  { id: 1, name: "Samanta William" },
+  { id: 2, name: "Tony Soap" },
+  { id: 3, name: "Karen Hope" },
+  { id: 4, name: "Jordan Nico" },
+  { id: 5, name: "Nadila Adja" },
+  { id: 6, name: "Johnny Ahmad" },
 ];
 
 const Table = () => {
+  const { id } = useParams(); // Extract the ID from the URL
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    status: "",
+    advisorResponsible: "",
+  });
+  const [loading, setLoading] = useState(true);
+
+  // Fetch Trainee Data
+  useEffect(() => {
+    const fetchTraineeData = () => {
+      const trainee = traineesRows.find((row) => row.id === parseInt(id));
+      if (trainee) {
+        setFormData(trainee);
+      }
+      setLoading(false);
+    };
+
+    fetchTraineeData();
+  }, [id]);
+
+  // Handle Input Changes
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  // Handle Form Submit
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Updated Trainee Data:", formData);
+    alert("Trainee details updated successfully!");
+    // Add backend PUT/POST API call here
+  };
+
+  if (loading) return <div>Loading...</div>;
+
   return (
     <Box
       sx={{
@@ -85,13 +107,13 @@ const Table = () => {
         noValidate
         autoComplete="off"
       >
-        {/* First Name */}
+        {/* Name */}
         <TextField
           required
-          id="first-name"
-          label="First Name"
-          defaultValue={trainee.firstName}
-          helperText="Enter the first name of the trainee"
+          name="name"
+          label="Trainee Name"
+          value={formData.name}
+          onChange={handleInputChange}
           fullWidth
           InputProps={{
             startAdornment: (
@@ -101,29 +123,13 @@ const Table = () => {
             ),
           }}
         />
-        {/* Last Name */}
+        {/* Email */}
         <TextField
           required
-          id="last-name"
-          label="Last Name"
-          defaultValue={trainee.lastName}
-          helperText="Enter the last name of the trainee"
-          fullWidth
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <PersonIcon sx={{ color: "#8a0303" }} />
-              </InputAdornment>
-            ),
-          }}
-        />
-        {/* Email Address */}
-        <TextField
-          required
-          id="email-address"
+          name="email"
           label="Email Address"
-          defaultValue={trainee.email}
-          helperText="Enter the email address of the trainee"
+          value={formData.email}
+          onChange={handleInputChange}
           fullWidth
           InputProps={{
             startAdornment: (
@@ -136,10 +142,10 @@ const Table = () => {
         {/* Phone Number */}
         <TextField
           required
-          id="phone-number"
+          name="phone"
           label="Phone Number"
-          defaultValue={trainee.phone}
-          helperText="Enter the phone number of the trainee (e.g., +1234567890)"
+          value={formData.phone}
+          onChange={handleInputChange}
           fullWidth
           InputProps={{
             startAdornment: (
@@ -152,11 +158,10 @@ const Table = () => {
         {/* Dropdown for Responsible Advisor */}
         <TextField
           select
-          required
-          id="responsible-advisor"
-          label="Responsible Advisor"
-          helperText="Select the advisor responsible for the trainee"
-          defaultValue={advisors.find((adv) => adv.name === trainee.advisorResponsible)?.id || ""}
+          name="advisorResponsible"
+          label="Advisor Responsible"
+          value={formData.advisorResponsible}
+          onChange={handleInputChange}
           fullWidth
           InputProps={{
             startAdornment: (
@@ -167,36 +172,32 @@ const Table = () => {
           }}
         >
           {advisors.map((advisor) => (
-            <MenuItem key={advisor.id} value={advisor.id}>
+            <MenuItem key={advisor.id} value={advisor.name}>
               {advisor.name}
             </MenuItem>
           ))}
         </TextField>
-        {/* Password Field */}
-        
-        {/* Profile Picture Upload */}
-        <Box
-          sx={{
-            border: "2px dashed #8a0303",
-            borderRadius: "8px",
-            padding: "20px",
-            textAlign: "center",
-            color: "#8a0303",
+        {/* Status Dropdown */}
+        <TextField
+          select
+          name="status"
+          label="Status"
+          value={formData.status}
+          onChange={handleInputChange}
+          fullWidth
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SupervisorAccountIcon sx={{ color: "#8a0303" }} />
+              </InputAdornment>
+            ),
           }}
         >
-          <Button
-            component="label"
-            variant="contained"
-            startIcon={<CloudUploadIcon />}
-          >
-            Upload Profile Picture
-            <VisuallyHiddenInput
-              type="file"
-              onChange={(event) => console.log(event.target.files)}
-              multiple={false} // Only one file can be uploaded
-            />
-          </Button>
-        </Box>
+          <MenuItem value="Observing">Observing</MenuItem>
+          <MenuItem value="Practicing">Practicing</MenuItem>
+          <MenuItem value="On Trial">On Trial</MenuItem>
+        </TextField>
+        
       </Box>
 
       {/* Action Buttons */}
@@ -209,6 +210,8 @@ const Table = () => {
         }}
       >
         <Button
+        component={NavLink}
+        to="/coordinatordashboardtrainees" // Redirect to trainees Dashboard
           variant="outlined"
           sx={{
             color: "#8a0303",
@@ -222,6 +225,8 @@ const Table = () => {
           Cancel
         </Button>
         <Button
+          component={NavLink}
+          to="/coordinatordashboardtrainees" // Redirect to trainees Dashboard
           variant="contained"
           sx={{
             backgroundColor: "#8a0303",

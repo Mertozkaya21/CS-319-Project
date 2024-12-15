@@ -15,24 +15,34 @@ import { NavLink } from 'react-router-dom';
 
 // Data: Adapted from TraineesTable dummy data
 export const traineesRows = [
-  { id: 1, name: 'Samanta William', dateAdded: 'Oct 25, 2023', traineeId: '#123456789', tours: 23, phone: '555-123-4561', email: 'samanta.william@example.com', schedulePic: 'https://via.placeholder.com/150'},
-  { id: 2, name: 'Tony Soap', dateAdded: 'Oct 25, 2023', traineeId: '#123456789', tours: 23, phone: '555-123-4562', email: 'tony.soap@example.com', schedulePic: 'https://via.placeholder.com/150'},
-  { id: 3, name: 'Karen Hope', dateAdded: 'Oct 25, 2023', traineeId: '#123456789', tours: 23, phone: '555-123-4563', email: 'karen.hope@example.com' , schedulePic: 'https://via.placeholder.com/150'},
-  { id: 4, name: 'Jordan Nico', dateAdded: 'Oct 26, 2023', traineeId: '#987654321', tours: 23, phone: '555-987-6541', email: 'jordan.nico@example.com', schedulePic: 'https://via.placeholder.com/150'},
-  { id: 5, name: 'Nadila Adja', dateAdded: 'Oct 26, 2023', traineeId: '#987654321', tours: 23, phone: '555-987-6542', email: 'nadila.adja@example.com', schedulePic: 'https://via.placeholder.com/150'},
-  { id: 6, name: 'Johnny Ahmad',  dateAdded: 'Oct 27, 2023', traineeId: '#987654321', tours: 23, phone: '555-654-3211', email: 'johnny.ahmad@example.com', schedulePic: 'https://via.placeholder.com/150'},
+  { id: 1, name: "Samanta William", dateAdded: "Oct 25, 2023", phone: "555-123-4561", email: "samanta.william@example.com", status: "Observing", advisorResponsible: "Tony Soap", schedulePic: 'https://via.placeholder.com/150' },
+  { id: 2, name: "Tony Soap",dateAdded: "Oct 25, 2023",phone: "555-123-4562", email: "tony.soap@example.com", status: "Practicing", advisorResponsible: "Jordan Nico", schedulePic: 'https://via.placeholder.com/150' },
+  { id: 3, name: "Karen Hope",dateAdded: "Oct 25, 2023", phone: "555-123-4563", email: "karen.hope@example.com", status: "On Trial", advisorResponsible: "Samanta William", schedulePic: 'https://via.placeholder.com/150' },
+  { id: 4, name: "Jordan Nico",dateAdded: "Oct 25, 2023", phone: "555-987-6541", email: "jordan.nico@example.com", status: "Practicing", advisorResponsible: "Nadila Adja" , schedulePic: 'https://via.placeholder.com/150'},
+  { id: 5, name: "Nadila Adja", dateAdded: "Oct 25, 2023",phone: "555-987-6542", email: "nadila.adja@example.com", status: "On Trial", advisorResponsible: "Johnny Ahmad" , schedulePic: 'https://via.placeholder.com/150'},
+  { id: 6, name: "Johnny Ahmad", dateAdded: "Oct 25, 2023",phone: "555-654-3211", email: "johnny.ahmad@example.com", status: "Observing", advisorResponsible: "Karen Hope", schedulePic: 'https://via.placeholder.com/150' },
 ];
 
 // Table Columns
 const columns = [
-  { field: 'name', headerName: 'Trainee Name', width: 160 },
-  { field: 'traineeId', headerName: 'Trainee ID', width: 120 },
+  { field: 'name', headerName: 'Trainee Name', width: 130 },
+  { field: 'id', headerName: 'Trainee ID', width: 90 },
   { field: 'dateAdded', headerName: 'Date Added', width: 120 },
-  { field: 'tours', headerName: 'Tours Conducted', width: 130 },
+  { field: 'status', headerName: 'Status', width: 100 },
+  { 
+    field: 'advisorResponsible', 
+    headerName: 'Responsible Advisor', 
+    width: 160,
+    renderCell: (params) => (
+      <span className={styles.responsibleAdvisor}>
+        {params.row.advisorResponsible}
+      </span>
+    ),
+  },
   {
     field: 'contact',
     headerName: 'Contact',
-    width: 120,
+    width: 110,
     renderCell: (params) => (
       <div className={styles.contactButtons}>
         <IconButton onClick={() => params.row.handleContactClick('phone', params.row)}>
@@ -47,7 +57,7 @@ const columns = [
   {
     field: 'schedule',
     headerName: 'Schedule',
-    width: 80,
+    width: 90,
     renderCell: (params) => (
       <IconButton onClick={() => params.row.handleViewScheduleClick(params.row)}>
         <CalendarMonthIcon className={styles.calendarIcon} />
@@ -57,7 +67,7 @@ const columns = [
   {
     field: 'action',
     headerName: 'Edit',
-    width: 100,
+    width: 50,
     renderCell: (params) => {
       console.log("Row ID:", params.row.id); // Debug to check if ID is valid
       return (

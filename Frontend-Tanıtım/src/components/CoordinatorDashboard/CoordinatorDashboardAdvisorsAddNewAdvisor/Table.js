@@ -72,27 +72,12 @@ const Table = () => {
         noValidate
         autoComplete="off"
       >
-        {/* First Name */}
+        {/* Name  */}
         <TextField
           required
-          id="first-name"
-          label="First Name"
-          placeholder="Enter First Name"
-          fullWidth
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <AccountCircle sx={{ color: "#8a0303" }} />
-              </InputAdornment>
-            ),
-          }}
-        />
-        {/* Last Name */}
-        <TextField
-          required
-          id="last-name"
-          label="Last Name"
-          placeholder="Enter Last Name"
+          id="name"
+          label="Name"
+          placeholder="Enter Full Name"
           fullWidth
           InputProps={{
             startAdornment: (
@@ -105,7 +90,7 @@ const Table = () => {
         {/* Email Address */}
         <TextField
           required
-          id="email-address"
+          id="email"
           label="Email Address"
           placeholder="Enter Email"
           fullWidth
@@ -120,7 +105,7 @@ const Table = () => {
         {/* Phone Number */}
         <TextField
           required
-          id="phone-number"
+          id="phone"
           label="Phone Number"
           placeholder="(123) 456 7890"
           fullWidth
@@ -136,7 +121,7 @@ const Table = () => {
         <TextField
           select
           required
-          id="responsible-day"
+          id="responsibleDay"
           label="Choose the day the Advisor is responsible for"
           placeholder="Choose Day"
           fullWidth
@@ -161,7 +146,7 @@ const Table = () => {
         <FormControl sx={{ width: "100%" }} variant="outlined">
           <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
           <OutlinedInput
-            id="outlined-adornment-password"
+            id="password"
             type={showPassword ? "text" : "password"}
             endAdornment={
               <InputAdornment position="end">
@@ -181,31 +166,6 @@ const Table = () => {
             label="Password"
           />
         </FormControl>
-        {/* Profile Picture */}
-        <Box
-          sx={{
-            border: "2px dashed #8a0303",
-            borderRadius: "8px",
-            padding: "20px",
-            textAlign: "center",
-            color: "#8a0303",
-          }}
-        >
-          <Button
-            component="label"
-            role={undefined}
-            variant="contained"
-            tabIndex={-1}
-            startIcon={<CloudUploadIcon />}
-          >
-            Upload Profile Picture
-            <VisuallyHiddenInput
-              type="file"
-              onChange={(event) => console.log(event.target.files)}
-              multiple={false} // Only one file can be uploaded
-            />
-          </Button>
-        </Box>
       </Box>
 
       {/* Action Buttons */}
