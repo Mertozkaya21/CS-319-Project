@@ -2,7 +2,12 @@ package com.example.demo.entities.user;
 
 import java.time.LocalDate;
 import java.util.List;
+
+import com.example.demo.enums.UserRole;
+
 import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -21,7 +26,7 @@ public abstract class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    
+
     @Column(nullable = false)
     protected String firstName;
 
@@ -40,6 +45,10 @@ public abstract class User {
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
     protected LocalDate dateAdded;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    protected UserRole role;
 
     protected String imagePath;
     

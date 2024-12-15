@@ -11,6 +11,7 @@ import com.example.demo.entities.event.Fair;
 import com.example.demo.entities.event.Tour;
 import com.example.demo.entities.payment.Payment;
 import com.example.demo.enums.TourHours;
+import com.example.demo.enums.UserRole;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
@@ -46,6 +47,7 @@ public class Guide extends User{
         this.password = userDTO.getPassword();
         this.phoneNo = userDTO.getPhoneNo();
         this.imagePath = userDTO.getImagePath();
+        this.role = UserRole.GUIDE;
         this.tourParticipantSurveyRanking = 0;
         this.latestAcitivites = new ArrayList<Long>();
         this.notifications = new ArrayList<Long>();

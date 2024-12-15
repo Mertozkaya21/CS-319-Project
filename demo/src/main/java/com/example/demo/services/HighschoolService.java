@@ -1,13 +1,14 @@
 package com.example.demo.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.example.demo.dto.HighschoolDTO;
 import com.example.demo.entities.event.Tour;
 import com.example.demo.entities.highschool.Counselor;
 import com.example.demo.entities.highschool.Highschool;
+import com.example.demo.enums.City;
 import com.example.demo.exceptions.HighschoolNotFoundException;
 import com.example.demo.repositories.highschool.HighschoolRepository;
 
@@ -24,9 +25,18 @@ public class HighschoolService {
         return highschoolRepository.findAll();
     }
 
-    public Optional<Highschool> getHighschoolByID(long id){
-        return highschoolRepository.findById(id);
+    public Highschool getHighschoolByID(long id) throws HighschoolNotFoundException{
+        return highschoolRepository.findById(id).
+                orElseThrow(() -> new HighschoolNotFoundException("Highschool with ID " + id + " not found"));
     }
+
+    public List<String> getAllHighschoolNames() {
+        return highschoolRepository.findAll()
+                                   .stream()
+                                   .map(Highschool::getName)
+                                   .toList();
+    }
+
 
     public Highschool assignCounselorToHighschool(Long highschoolId, Counselor counselor) throws HighschoolNotFoundException {
         Highschool highschool = highschoolRepository.findById(highschoolId)
@@ -48,6 +58,56 @@ public class HighschoolService {
         }
         return highschoolRepository.save(highschool);
     }
+
+    public Highschool updateHighschoolName(Long id, String newName) throws HighschoolNotFoundException {
+        Highschool highschool = getHighschoolByID(id);
+
+        if (!highschool.getName().equals(newName)) {
+            highschool.setName(newName);
+            return highschoolRepository.save(highschool);
+        }
+        return highschool; 
+    }
+
+    public Highschool updateHighschoolCity(Long id, City newCity) throws HighschoolNotFoundException {
+        Highschool highschool = getHighschoolByID(id);
+
+        if (!highschool.getCity().equals(newCity)) {
+            highschool.setCity(newCity);
+            return highschoolRepository.save(highschool);
+        }
+        return highschool; 
+    }
+
+    public Highschool updateHighschoolCounselorName(Long id, String newCounselorName) throws HighschoolNotFoundException {
+        Highschool highschool = getHighschoolByID(id);
+
+        if (!highschool.getCounselor().getName().equals(newCounselorName)) {
+            highschool.getCounselor().setName(newCounselorName);
+            return highschoolRepository.save(highschool);
+        }
+        return highschool; 
+    }
+
+    public Highschool updateHighschoolContactPhone(Long id, String newContactPhone) throws HighschoolNotFoundException {
+        Highschool highschool = getHighschoolByID(id);
+
+        if (!highschool.getCounselor().getPhone().equals(newContactPhone)) {
+            highschool.getCounselor().setPhone(newContactPhone);
+            return highschoolRepository.save(highschool);
+        }
+        return highschool; 
+    }
+
+    public Highschool updateHighschoolEmailAddress(Long id, String newEmailAddress) throws HighschoolNotFoundException {
+        Highschool highschool = getHighschoolByID(id);
+
+        if (!highschool.getCounselor().getEmail().equals(newEmailAddress)) {
+            highschool.getCounselor().setEmail(newEmailAddress);
+            return highschoolRepository.save(highschool);
+        }
+        return highschool; 
+    }
     
     public Highschool removeCounselorFromHighschool(Long highschoolId) throws HighschoolNotFoundException {
         Highschool highschool = highschoolRepository.findById(highschoolId)
@@ -63,20 +123,20 @@ public class HighschoolService {
                 .orElseThrow(() -> new HighschoolNotFoundException("Highschool with ID " + highschoolId + " not found"));
     }
 
-    //priority score is not used or assigned directly anymore
-    /*public Highschool updatePriorityScore(Long highschoolId, double newScore) throws HighschoolNotFoundException {
-        Highschool highschool = highschoolRepository.findById(highschoolId)
-                .orElseThrow(() -> new HighschoolNotFoundException("Highschool with ID " + highschoolId + " not found"));
-        highschool.setPriorityScore(newScore);
-        return highschoolRepository.save(highschool);
-    }*/ 
-
     public Highschool saveHighschool(Highschool highschool) {
         return highschoolRepository.save(highschool);
     }
 
-    public void deleteHighschoolByID(Long id) {
-        if(highschoolRepository.existsById(id))
+    public Highschool saveHighschool(HighschoolDTO highschoolDTO) {
+        Highschool highschool = new Highschool(highschoolDTO);
+        return highschoolRepository.save(highschool);
+    }
+
+    public boolean deleteHighschoolByID(Long id) {
+        if (highschoolRepository.existsById(id)) {
             highschoolRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }

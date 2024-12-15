@@ -30,7 +30,7 @@ import com.example.demo.services.EventService;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/api/events")
+@RequestMapping("/v1/events")
 public class EventController {
 
     private final EventService eventService;

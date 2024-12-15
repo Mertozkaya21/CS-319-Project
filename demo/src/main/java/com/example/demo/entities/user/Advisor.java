@@ -3,6 +3,7 @@ package com.example.demo.entities.user;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.entities.form.ApplicationForm;
 import com.example.demo.entities.payment.Payment;
+import com.example.demo.enums.UserRole;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -34,6 +35,7 @@ public class Advisor extends User {
         this.phoneNo = userDTO.getPhoneNo();
         this.imagePath = userDTO.getImagePath();
         this.latestAcitivites = new ArrayList<Long>();
+        this.role = UserRole.ADVISOR;
         this.notifications = new ArrayList<Long>();
         this.dateAdded = LocalDate.now();
         Payment newPayment = new Payment();

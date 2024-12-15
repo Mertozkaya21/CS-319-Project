@@ -17,7 +17,7 @@ import com.example.demo.exceptions.LoginException;
 import com.example.demo.services.UsersService.UserService;
 
 @RestController
-@RequestMapping("/api/auth") //consistency olması için api yi v1 yapabiliriz
+@RequestMapping("/v1/auth") 
 public class AuthController {
 
     private final UserService userService;

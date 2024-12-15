@@ -7,6 +7,7 @@ import java.util.List;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.entities.event.Tour;
 import com.example.demo.enums.TraineeStatus;
+import com.example.demo.enums.UserRole;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -40,6 +41,7 @@ public class Trainee extends User{
         this.password = userDTO.getPassword();
         this.phoneNo = userDTO.getPhoneNo();
         this.imagePath = userDTO.getImagePath();
+        this.role = UserRole.TRAINEE;
         this.status = TraineeStatus.UNSUBMITTED;
         this.latestAcitivites = new ArrayList<Long>();
         this.notifications = new ArrayList<Long>();
