@@ -15,6 +15,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import EmailIcon from "@mui/icons-material/Email";
 import PhoneIcon from "@mui/icons-material/Phone";
+import { NavLink } from "react-router-dom";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -217,6 +218,8 @@ const Table = () => {
         }}
       >
         <Button
+          component={NavLink}
+          to="/coordinatordashboardadvisors" // Redirect to Advisors Dashboard
           variant="outlined"
           sx={{
             color: "#8a0303",
@@ -230,6 +233,8 @@ const Table = () => {
           Cancel
         </Button>
         <Button
+          component={NavLink}
+          to="/coordinatordashboardadvisors" // Redirect to Advisors Dashboard
           variant="contained"
           sx={{
             backgroundColor: "#8a0303",

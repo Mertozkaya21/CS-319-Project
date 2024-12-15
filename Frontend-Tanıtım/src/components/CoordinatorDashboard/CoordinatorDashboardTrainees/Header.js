@@ -6,16 +6,30 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Button from '@mui/material/Button';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
-import { traineesRows } from './TraineesTable'; // Import trainees data
-import AddIcon from '@mui/icons-material/Add'; // Import plus icon
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import AddIcon from '@mui/icons-material/Add';
+import { traineesRows } from './TraineesTable'; // Import trainee data
 
 const Header = ({ title, onSearchSelection }) => {
-  const [sortOption, setSortOption] = useState('Date Updated');
+  const [isPopupOpen, setPopupOpen] = useState(false);
 
-  // Transform traineesRows into a format suitable for Autocomplete
-  const traineesOptions = traineesRows.map((school) => ({
-    label: school.name, // Only the school name will be displayed
+  // Transform traineesRows into options for Autocomplete
+  const traineesOptions = traineesRows.map((trainee) => ({
+    label: trainee.name,
   }));
+
+  // Open Confirmation Popup
+  const handleRemoveClick = () => {
+    setPopupOpen(true);
+  };
+
+  // Close Confirmation Popup
+  const handleClosePopup = () => {
+    setPopupOpen(false);
+  };
 
   return (
     <div className={styles.header}>
@@ -86,12 +100,13 @@ const Header = ({ title, onSearchSelection }) => {
           <Button
             variant="outlined"
             startIcon={<DeleteIcon />}
+            onClick={handleRemoveClick} // Open confirmation dialog
             sx={{
-              color: '#8a0303', // Red text
-              borderColor: '#8a0303', // Red border
+              color: '#8a0303',
+              borderColor: '#8a0303',
               '&:hover': {
-                backgroundColor: '#fbe8e8', // Light red background on hover
-                borderColor: '#6c0101', // Darker red border on hover
+                backgroundColor: '#fbe8e8',
+                borderColor: '#6c0101',
               },
             }}
           >
@@ -117,6 +132,43 @@ const Header = ({ title, onSearchSelection }) => {
           </Button>
         </div>
       </div>
+    {/* Confirmation Popup */}
+    <Dialog open={isPopupOpen} onClose={handleClosePopup}>
+        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogContent>
+          Are you sure you want to delete the selected trainee(s)? You will not be able to access their data if you proceed.
+        </DialogContent>
+        <DialogActions>
+          {/* No Button */}
+          <Button
+            onClick={handleClosePopup}
+            variant="outlined"
+            sx={{
+              color: '#8a0303',
+              borderColor: '#8a0303',
+              '&:hover': {
+                backgroundColor: '#fdeaea',
+                borderColor: '#8a0303',
+              },
+            }}
+          >
+            No
+          </Button>
+
+          {/* Yes Button */}
+          <Button
+            onClick={handleClosePopup} // Replace this with deletion logic
+            variant="contained"
+            sx={{
+              backgroundColor: '#8a0303',
+              color: '#ffffff',
+              '&:hover': { backgroundColor: '#b10505' },
+            }}
+          >
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

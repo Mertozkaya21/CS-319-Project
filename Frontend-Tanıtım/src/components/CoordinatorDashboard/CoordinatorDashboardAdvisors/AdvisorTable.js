@@ -11,27 +11,28 @@ import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import { NavLink } from 'react-router-dom'; // Added for navigation
 import styles from './CoordinatorDashboardAdvisors.module.css';
-
+ 
 // Data: Adapted from AdvisorTable dummy data
 export const advisorRows = [
-  { id: 1, name: 'Samanta William', dateAdded: 'Oct 25, 2023', advisorId: '#123456789', tours: 23, phone: '555-123-4561', email: 'samanta.william@example.com' },
-  { id: 2, name: 'Tony Soap', dateAdded: 'Oct 25, 2023', advisorId: '#123456789', tours: 23, phone: '555-123-4562', email: 'tony.soap@example.com' },
-  { id: 3, name: 'Karen Hope', dateAdded: 'Oct 25, 2023', advisorId: '#123456789', tours: 23, phone: '555-123-4563', email: 'karen.hope@example.com' },
-  { id: 4, name: 'Jordan Nico', dateAdded: 'Oct 26, 2023', advisorId: '#987654321', tours: 23, phone: '555-987-6541', email: 'jordan.nico@example.com' },
-  { id: 5, name: 'Nadila Adja', dateAdded: 'Oct 26, 2023', advisorId: '#987654321', tours: 23, phone: '555-987-6542', email: 'nadila.adja@example.com' },
-  { id: 6, name: 'Johnny Ahmad', dateAdded: 'Oct 27, 2023', advisorId: '#987654321', tours: 23, phone: '555-654-3211', email: 'johnny.ahmad@example.com' },
+  { id: 1, name: 'Samanta William', dateAdded: 'Oct 25, 2023', tours: 23, phone: '555-123-4561', email: 'samanta.william@example.com', responsibleDay: 'Monday', profilePic: 'https://via.placeholder.com/40' },
+  { id: 2, name: 'Tony Soap', dateAdded: 'Oct 25, 2023', tours: 23, phone: '555-123-4562', email: 'tony.soap@example.com', responsibleDay: 'Tuesday', profilePic: 'https://via.placeholder.com/40'  },
+  { id: 3, name: 'Karen Hope', dateAdded: 'Oct 25, 2023', tours: 23, phone: '555-123-4563', email: 'karen.hope@example.com', responsibleDay: 'Wednesday', profilePic: 'https://via.placeholder.com/40'  },
+  { id: 4, name: 'Jordan Nico', dateAdded: 'Oct 26, 2023', tours: 23, phone: '555-987-6541', email: 'jordan.nico@example.com', responsibleDay: 'Thursday', profilePic: 'https://via.placeholder.com/40'  },
+  { id: 5, name: 'Nadila Adja', dateAdded: 'Oct 26, 2023', tours: 23, phone: '555-987-6542', email: 'nadila.adja@example.com', responsibleDay: 'Friday', profilePic: 'https://via.placeholder.com/40'  },
+  { id: 6, name: 'Johnny Ahmad', dateAdded: 'Oct 27, 2023', tours: 23, phone: '555-654-3211', email: 'johnny.ahmad@example.com', responsibleDay: 'Saturday', profilePic: 'https://via.placeholder.com/40'  },
 ];
 
 // Table Columns
 const columns = [
   { field: 'name', headerName: 'Advisor Name', width: 160 },
-  { field: 'advisorId', headerName: 'Advisor ID', width: 120 },
-  { field: 'dateAdded', headerName: 'Date Added', width: 150 },
-  { field: 'tours', headerName: 'Tours Conducted', width: 150 },
+  { field: 'id', headerName: 'Advisor ID', width: 90 },
+  { field: 'dateAdded', headerName: 'Date Added', width: 100 },
+  { field: 'tours', headerName: 'Tours Conducted', width: 130 },
+  { field: 'responsibleDay', headerName: 'Responsible Day', width: 130 }, // New column for Responsible Day
   {
     field: 'contact',
     headerName: 'Contact',
-    width: 160,
+    width: 100,
     renderCell: (params) => (
       <div className={styles.contactButtons}>
         <IconButton onClick={() => params.row.handleContactClick('phone', params.row)}>
@@ -46,14 +47,22 @@ const columns = [
   {
     field: 'action',
     headerName: 'Edit',
-    width: 100,
-    renderCell: () => (
-      <NavLink to="/coordinatordashboardeditadvisor">
-        <IconButton aria-label="edit">
-          <EditIcon />
-        </IconButton>
-      </NavLink>
-    ),
+    width: 70,
+    renderCell: (params) => {
+      console.log("Row ID:", params.row.id); // Debug to check if ID is valid
+      return (
+        <NavLink
+          to={`/coordinatordashboardeditadvisor/${params.row.id}`} // Dynamically pass ID
+          className={({ isActive }) =>
+            `${styles.navItem} ${isActive ? styles.active : ''}`
+          }
+        >
+          <IconButton aria-label="edit">
+            <EditIcon />
+          </IconButton>
+        </NavLink>
+      );
+    },
   },
 ];
 

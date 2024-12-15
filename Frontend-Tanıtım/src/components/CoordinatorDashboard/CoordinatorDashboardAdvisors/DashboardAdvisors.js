@@ -7,7 +7,7 @@ import styles from './CoordinatorDashboardAdvisors.module.css';
 
 const DashboardAdvisors = () => {
   const [filteredRows, setFilteredRows] = useState(advisorRows); // Manage filtered rows
-
+ 
   const handleSearchSelection = (value) => {
     if (value) {
       // Filter rows based on the selected advisor name

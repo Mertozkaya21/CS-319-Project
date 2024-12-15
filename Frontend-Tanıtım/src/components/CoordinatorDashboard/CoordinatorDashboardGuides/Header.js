@@ -3,19 +3,33 @@ import { NavLink } from 'react-router-dom';
 import styles from './CoordinatorDashboardGuides.module.css';
 import { FaBell, FaCog } from 'react-icons/fa';
 import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
 import { guidesRows } from './GuidesTable'; // Import guide data
-import AddIcon from '@mui/icons-material/Add'; // Import plus icon
 
 const Header = ({ title, onSearchSelection }) => {
-  const [sortOption, setSortOption] = useState('Date Updated');
+  const [isPopupOpen, setPopupOpen] = useState(false); // State to control the popup visibility
 
-  // Transform guidesrows into a format suitable for Autocomplete
-  const guidesOptions = guidesRows.map((school) => ({
-    label: school.name, // Only the school name will be displayed
+  // Transform guidesRows into a format suitable for Autocomplete
+  const guidesOptions = guidesRows.map((guide) => ({
+    label: guide.name, // Display guide name
   }));
+
+  // Open Confirmation Dialog
+  const handleRemoveClick = () => {
+    setPopupOpen(true);
+  };
+
+  // Close Confirmation Dialog
+  const handleClosePopup = () => {
+    setPopupOpen(false);
+  };
 
   return (
     <div className={styles.header}>
@@ -83,15 +97,16 @@ const Header = ({ title, onSearchSelection }) => {
 
         {/* Buttons */}
         <div className={styles.actionButtons}>
-          <Button
+        <Button
             variant="outlined"
             startIcon={<DeleteIcon />}
+            onClick={handleRemoveClick}
             sx={{
-              color: '#8a0303', // Red text
-              borderColor: '#8a0303', // Red border
+              color: '#8a0303',
+              borderColor: '#8a0303',
               '&:hover': {
-                backgroundColor: '#fbe8e8', // Light red background on hover
-                borderColor: '#6c0101', // Darker red border on hover
+                backgroundColor: '#fbe8e8',
+                borderColor: '#6c0101',
               },
             }}
           >
@@ -117,6 +132,43 @@ const Header = ({ title, onSearchSelection }) => {
           </Button>
         </div>
       </div>
+    {/* Confirmation Popup */}
+      <Dialog open={isPopupOpen} onClose={handleClosePopup}>
+        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogContent>
+          Are you sure you want to delete the selected guide(s)? You will not be able to access their data if you proceed.
+        </DialogContent>
+        <DialogActions>
+          {/* No Button */}
+          <Button
+            onClick={handleClosePopup}
+            variant="outlined"
+            sx={{
+              color: '#8a0303',
+              borderColor: '#8a0303',
+              '&:hover': {
+                backgroundColor: '#fdeaea',
+                borderColor: '#8a0303',
+              },
+            }}
+          >
+            No
+          </Button>
+
+          {/* Yes Button */}
+          <Button
+            onClick={handleClosePopup} // Replace with deletion logic if needed
+            variant="contained"
+            sx={{
+              backgroundColor: '#8a0303',
+              color: '#ffffff',
+              '&:hover': { backgroundColor: '#b10505' },
+            }}
+          >
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
