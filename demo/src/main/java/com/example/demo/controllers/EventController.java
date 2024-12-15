@@ -49,6 +49,11 @@ public class EventController {
         return ResponseEntity.ok(eventService.getEventById(id));
     }
 
+    @GetMapping("/accepted")
+    public ResponseEntity<List<Event>> getAllAcceptedEvents() {
+        return ResponseEntity.ok(eventService.getAllAcceptedEvents());
+    }
+
     @PostMapping("/fairs")
     public ResponseEntity<Fair> createFair(@RequestBody Fair fair) {
         return ResponseEntity.status(HttpStatus.CREATED).body((Fair) eventService.saveEvent(fair));

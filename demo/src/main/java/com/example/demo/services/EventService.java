@@ -122,4 +122,11 @@ public class EventService {
             return tourService.removeGuideFromTour(eventId, guide);
         }
     }
+
+    public List<Event> getAllAcceptedEvents() {
+        List<Event> acceptedEvents = new ArrayList<>();
+        acceptedEvents.addAll(fairService.getAllFairs());
+        acceptedEvents.addAll(tourService.getAllTours());
+        return acceptedEvents;
+    }
 }

@@ -2,6 +2,7 @@ package com.example.demo.services.UsersService;
 
 import org.springframework.stereotype.Component;
 
+import com.example.demo.entities.user.Coordinator;
 import com.example.demo.enums.UserRole;
 
 import java.util.HashMap;
@@ -35,5 +36,9 @@ public class RoleServiceFactory {
 
     public RoleService[] getAllRoleServices() {
         return roleServiceMap.values().toArray(new RoleService[0]);
+    }
+
+    public CoordinatorService getCoordinatorService() {
+        return (CoordinatorService) getRoleService(UserRole.COORDINATOR);
     }
 }

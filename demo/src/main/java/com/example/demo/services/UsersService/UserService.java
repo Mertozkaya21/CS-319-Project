@@ -2,6 +2,7 @@ package com.example.demo.services.UsersService;
 
 import com.example.demo.dto.EmailDTO;
 import com.example.demo.dto.UserDTO;
+import com.example.demo.dto.UserUpdateDTO;
 import com.example.demo.entities.Auth.PasswordResetToken;
 import com.example.demo.entities.user.Advisor;
 import com.example.demo.entities.user.Coordinator;
@@ -10,6 +11,7 @@ import com.example.demo.entities.user.Trainee;
 import com.example.demo.entities.user.User;
 import com.example.demo.enums.UserRole;
 import com.example.demo.exceptions.LoginException;
+import com.example.demo.exceptions.UserNotFoundException;
 import com.example.demo.repositories.Auth.PasswordResetTokenRepository;
 import com.example.demo.services.EmailService;
 
@@ -153,6 +155,41 @@ public class UserService {
     
         passwordResetTokenRepository.delete(resetToken);
     }
+
+    public User updateUser(UserRole role, Long id, UserUpdateDTO userUpdateDTO) throws UserNotFoundException {
+        RoleService roleService = roleServiceFactory.getRoleService(role);
+        
+        User user = roleService.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User with ID " + id + " not found."));
+        
+        if (userUpdateDTO.getFirstName() != null) {
+            user.setFirstName(userUpdateDTO.getFirstName());
+        }
+        if (userUpdateDTO.getLastName() != null) {
+            user.setLastName(userUpdateDTO.getLastName());
+        }
+        if (userUpdateDTO.getEmail() != null) {
+            user.setEmail(userUpdateDTO.getEmail());
+        }
+        if (userUpdateDTO.getPhoneNo() != null) {
+            user.setPhoneNo(userUpdateDTO.getPhoneNo());
+        }
+
+        return roleService.save(user);
+    }
     
     
+    
+    public void cancelEvent(Long userId, Long eventId, String eventType) {
+        CoordinatorService roleService = roleServiceFactory.getCoordinatorService();
+    
+        User user = roleService.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("Coordinator not found."));
+        
+        if (user.getRole() != UserRole.COORDINATOR) {
+            throw new IllegalStateException("Only coordinators can cancel events.");
+        }
+    
+        roleService.cancelEvent(userId, eventId, eventType);
+    }
 }

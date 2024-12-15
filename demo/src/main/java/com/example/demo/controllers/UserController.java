@@ -1,7 +1,10 @@
 package com.example.demo.controllers;
 
 import com.example.demo.dto.UserDTO;
+import com.example.demo.dto.UserUpdateDTO;
 import com.example.demo.entities.user.User;
+import com.example.demo.enums.UserRole;
+import com.example.demo.exceptions.UserNotFoundException;
 import com.example.demo.services.UsersService.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +45,17 @@ public class UserController {
         return ResponseEntity.ok(userService.saveUser(role, updatedUser));
     }
 
+    @PatchMapping("/{role}/{id}")
+    public ResponseEntity<User> updateUser(
+        @PathVariable String role, 
+        @PathVariable Long id, 
+        @RequestBody UserUpdateDTO userUpdateDTO) throws UserNotFoundException {
+    
+    User updatedUser = userService.updateUser(UserRole.fromString(role), id, userUpdateDTO);
+    return ResponseEntity.ok(updatedUser);
+}
+
+
     @DeleteMapping("/{role}/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable String role, @PathVariable Long id) {
         userService.deleteUser(role, id);
@@ -57,4 +71,19 @@ public class UserController {
     public ResponseEntity<Long> countUsers(@PathVariable String role) {
         return ResponseEntity.ok(userService.count(role));
     }
+
+    @DeleteMapping("/coordinator/{userId}/cancel-event/{eventId}")
+    public ResponseEntity<?> cancelEvent(
+        @PathVariable Long userId,
+        @PathVariable Long eventId,
+        @RequestParam String eventType) {
+    try {
+        userService.cancelEvent(userId, eventId, eventType);
+        return ResponseEntity.ok("Event has been successfully canceled.");
+    } catch (IllegalArgumentException | IllegalStateException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+}
+
+
 }
