@@ -3,19 +3,34 @@ import { NavLink } from 'react-router-dom';
 import styles from './CoordinatorDashboardAdvisors.module.css';
 import { FaBell, FaCog } from 'react-icons/fa';
 import DeleteIcon from '@mui/icons-material/Delete';
-import AddIcon from '@mui/icons-material/Add'; // Import plus icon
+import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
 import { advisorRows } from './AdvisorTable'; // Import advisor data
 
 const Header = ({ title, onSearchSelection }) => {
   const [sortOption, setSortOption] = useState('Date Updated');
+  const [isPopupOpen, setPopupOpen] = useState(false); // State to control popup visibility
 
   // Transform advisorRows into a format suitable for Autocomplete
   const advisorOptions = advisorRows.map((advisor) => ({
     label: advisor.name, // Only the advisor name will be displayed
   }));
+
+  // Open Confirmation Dialog
+  const handleRemoveClick = () => {
+    setPopupOpen(true);
+  };
+
+  // Close Confirmation Dialog
+  const handleClosePopup = () => {
+    setPopupOpen(false);
+  };
 
   return (
     <div className={styles.header}>
@@ -86,12 +101,13 @@ const Header = ({ title, onSearchSelection }) => {
           <Button
             variant="outlined"
             startIcon={<DeleteIcon />}
+            onClick={handleRemoveClick}
             sx={{
-              color: '#8a0303', // Red text
-              borderColor: '#8a0303', // Red border
+              color: '#8a0303',
+              borderColor: '#8a0303',
               '&:hover': {
-                backgroundColor: '#fbe8e8', // Light red background on hover
-                borderColor: '#6c0101', // Darker red border on hover
+                backgroundColor: '#fbe8e8',
+                borderColor: '#6c0101',
               },
             }}
           >
@@ -117,6 +133,40 @@ const Header = ({ title, onSearchSelection }) => {
           </Button>
         </div>
       </div>
+    {/* Confirmation Popup */}
+    <Dialog open={isPopupOpen} onClose={handleClosePopup}>
+        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogContent>
+          Are you sure you want to delete the selected advisor(s)? You will not be able to access their data if you proceed.
+        </DialogContent>
+        <DialogActions>
+          {/* No Button */}
+          <Button
+            onClick={handleClosePopup}
+            variant="outlined"
+            sx={{
+              color: '#8a0303',
+              borderColor: '#8a0303',
+              '&:hover': { backgroundColor: '#fdeaea', borderColor: '#8a0303' },
+            }} 
+          >
+            No
+          </Button>
+
+          {/* Yes Button */}
+          <Button
+            onClick={handleClosePopup} // Replace with deletion logic if needed
+            variant="contained"
+            sx={{
+              backgroundColor: '#8a0303',
+              color: '#ffffff',
+              '&:hover': { backgroundColor: '#b10505' },
+            }}
+          >
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

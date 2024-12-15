@@ -112,16 +112,21 @@ const columns = [
     field: 'action',
     headerName: 'Edit',
     width: 100,
-    renderCell: (params) => (
-      <NavLink
-        to={`/coordinatordashboardeditguide`} // Pass the specific guide's ID
-        style={{ textDecoration: 'none' }}
-      >
-        <IconButton aria-label="edit">
-          <EditIcon />
-        </IconButton>
-      </NavLink>
-    ),
+    renderCell: (params) => {
+      console.log("Row ID:", params.row.id); // Debug to check if ID is valid
+      return (
+        <NavLink
+          to={`/coordinatordashboardeditguide/${params.row.id}`} // Dynamically pass ID
+          className={({ isActive }) =>
+            `${styles.navItem} ${isActive ? styles.active : ''}`
+          }
+        >
+          <IconButton aria-label="edit">
+            <EditIcon />
+          </IconButton>
+        </NavLink>
+      );
+    },
   },
 ];
 

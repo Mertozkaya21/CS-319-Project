@@ -1,53 +1,63 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useParams, NavLink } from "react-router-dom";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
-import { styled } from "@mui/material/styles";
-import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
-import OutlinedInput from "@mui/material/OutlinedInput";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import EmailIcon from "@mui/icons-material/Email";
 import PhoneIcon from "@mui/icons-material/Phone";
 import EventIcon from "@mui/icons-material/Event";
 
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
-  height: 1,
-  overflow: "hidden",
-  position: "absolute",
-  bottom: 0,
-  left: 0,
-  whiteSpace: "nowrap",
-  width: 1,
-});
-
-const advisors = [
-  {
-    id: 1,
-    firstName: "John",
-    lastName: "Doe",
-    email: "john.doe@example.com",
-    phone: "(123) 456-7890",
-    responsibleDay: "Monday",
-    profilePicture: "https://via.placeholder.com/150", // Placeholder image URL
-  },
+// Mock Data (Replace this with a real API call)
+const advisorRows = [
+  { id: 1, name: 'Samanta William', dateAdded: 'Oct 25, 2023', advisorId: '#123456789', tours: 23, phone: '555-123-4561', email: 'samanta.william@example.com', responsibleDay: 'Monday' },
+  { id: 2, name: 'Tony Soap', dateAdded: 'Oct 25, 2023', advisorId: '#123456789', tours: 23, phone: '555-123-4562', email: 'tony.soap@example.com', responsibleDay: 'Tuesday' },
+  { id: 3, name: 'Karen Hope', dateAdded: 'Oct 25, 2023', advisorId: '#123456789', tours: 23, phone: '555-123-4563', email: 'karen.hope@example.com', responsibleDay: 'Wednesday' },
+  { id: 4, name: 'Jordan Nico', dateAdded: 'Oct 26, 2023', advisorId: '#987654321', tours: 23, phone: '555-987-6541', email: 'jordan.nico@example.com', responsibleDay: 'Thursday' },
+  { id: 5, name: 'Nadila Adja', dateAdded: 'Oct 26, 2023', advisorId: '#987654321', tours: 23, phone: '555-987-6542', email: 'nadila.adja@example.com', responsibleDay: 'Friday' },
+  { id: 6, name: 'Johnny Ahmad', dateAdded: 'Oct 27, 2023', advisorId: '#987654321', tours: 23, phone: '555-654-3211', email: 'johnny.ahmad@example.com', responsibleDay: 'Saturday' },
 ];
 
 const Table = () => {
-  const [showPassword, setShowPassword] = React.useState(false);
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleMouseDownPassword = (event) => event.preventDefault();
-  const handleMouseUpPassword = (event) => event.preventDefault();
+  const { id } = useParams(); // Extract the ID from the URL
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    responsibleDay: "",
+  });
+  const [loading, setLoading] = useState(true);
 
-  const advisor = advisors[0]; // Use the first advisor as default data
+  // Fetch Advisor Data
+  useEffect(() => {
+    const fetchAdvisorData = () => {
+      const advisor = advisorRows.find((row) => row.id === parseInt(id));
+      if (advisor) {
+        setFormData(advisor);
+      }
+      setLoading(false);
+    };
+
+    fetchAdvisorData();
+  }, [id]);
+
+  // Handle Input Changes
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  // Handle Form Submit
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Updated Advisor Data:", formData);
+    alert("Advisor details updated successfully!");
+    // Add backend PUT/POST API call here
+  };
+
+  if (loading) return <div>Loading...</div>;
 
   return (
     <Box
@@ -70,7 +80,7 @@ const Table = () => {
           textAlign: "center",
         }}
       >
-        Personal Details
+        Advisor Details
       </Box>
 
       {/* Form Fields */}
@@ -82,30 +92,15 @@ const Table = () => {
           gap: 3,
           padding: "20px",
         }}
-        noValidate
-        autoComplete="off"
+        onSubmit={handleSubmit}
       >
-        {/* First Name */}
+        {/* Name */}
         <TextField
           required
-          id="first-name"
-          label="First Name"
-          defaultValue={advisor.firstName}
-          fullWidth
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <AccountCircleIcon sx={{ color: "#8a0303" }} />
-              </InputAdornment>
-            ),
-          }}
-        />
-        {/* Last Name */}
-        <TextField
-          required
-          id="last-name"
-          label="Last Name"
-          defaultValue={advisor.lastName}
+          name="name"
+          label="Advisor Name"
+          value={formData.name}
+          onChange={handleInputChange}
           fullWidth
           InputProps={{
             startAdornment: (
@@ -118,9 +113,10 @@ const Table = () => {
         {/* Email Address */}
         <TextField
           required
-          id="email-address"
+          name="email"
           label="Email Address"
-          defaultValue={advisor.email}
+          value={formData.email}
+          onChange={handleInputChange}
           fullWidth
           InputProps={{
             startAdornment: (
@@ -133,9 +129,10 @@ const Table = () => {
         {/* Phone Number */}
         <TextField
           required
-          id="phone-number"
+          name="phone"
           label="Phone Number"
-          defaultValue={advisor.phone}
+          value={formData.phone}
+          onChange={handleInputChange}
           fullWidth
           InputProps={{
             startAdornment: (
@@ -148,10 +145,10 @@ const Table = () => {
         {/* Dropdown for Responsible Day */}
         <TextField
           select
-          required
-          id="responsible-day"
+          name="responsibleDay"
           label="Responsible Day"
-          defaultValue={advisor.responsibleDay}
+          value={formData.responsibleDay}
+          onChange={handleInputChange}
           fullWidth
           InputProps={{
             startAdornment: (
@@ -181,6 +178,8 @@ const Table = () => {
         }}
       >
         <Button
+          component={NavLink}
+          to="/coordinatordashboardadvisors" // Redirect to Advisors Dashboard
           variant="outlined"
           sx={{
             color: "#8a0303",

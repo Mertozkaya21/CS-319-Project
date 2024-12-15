@@ -3,6 +3,7 @@ package com.example.demo.services;
 import com.example.demo.entities.event.Event;
 import com.example.demo.entities.event.Fair;
 import com.example.demo.entities.event.Tour;
+import com.example.demo.entities.form.ApplicationForm;
 import com.example.demo.entities.user.Guide;
 import com.example.demo.enums.EventStatus;
 import com.example.demo.enums.TourHours;
@@ -61,6 +62,11 @@ public class EventService {
         } else {
             throw new IllegalArgumentException("Unsupported event type.");
         }
+    }
+
+    public Event saveEvent(ApplicationForm applicationForm) {
+        //to be implemented
+        throw new IllegalArgumentException("Implement the saveEvent method.");
     }
 
     public Event updateEventStatus(Long eventId, EventStatus status) throws FairNotFoundException, TourNotFoundException {

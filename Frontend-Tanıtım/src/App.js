@@ -77,13 +77,13 @@ const App = () => {
         <Route path="/coordinatordashboardedithighschool/:id" element={<CoordinatorDashboardEditHighSchool />} />
         <Route path="/coordinatordashboardadvisors" element={<CoordinatorDashboardAdvisors />} />
         <Route path="/coordinatordashboardaddadvisor" element={<CoordinatorDashboardAddAdvisor />} />
-        <Route path="/coordinatordashboardeditadvisor" element={<CoordinatorDashboardEditAdvisor />} />
+        <Route path="/coordinatordashboardeditadvisor/:id" element={<CoordinatorDashboardEditAdvisor />} />
         <Route path="/coordinatordashboardguides" element={<CoordinatorDashboardGuides />} />
         <Route path="/coordinatordashboardaddguide" element={<CoordinatorDashboardAddGuide />} /> 
-        <Route path="/coordinatordashboardeditguide" element={<CoordinatorDashboardEditGuide />} />
+        <Route path="/coordinatordashboardeditguide/:id" element={<CoordinatorDashboardEditGuide />} />
         <Route path="/coordinatordashboardtrainees" element={<CoordinatorDashboardTrainees />} />
         <Route path="/coordinatordashboardaddtrainee" element={<CoordinatorDashboardAddTrainee />} />
-        <Route path="/coordinatordashboardedittrainee" element={<CoordinatorDashboardEditTrainee />} />
+        <Route path="/coordinatordashboardedittrainee/:id" element={<CoordinatorDashboardEditTrainee />} />
         <Route path="/coordinatordashboardtourapplications" element={<CoordinatorDashboardTourApplications />} />
         <Route path="/coordinatordashboardfairapplications" element={<CoordinatorDashboardFairApplications />} />
         <Route path="/coordinatordashboardtoursandfairs" element={<CoordinatorDashboardToursAndFairs />} />

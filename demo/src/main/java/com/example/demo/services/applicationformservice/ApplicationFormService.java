@@ -16,37 +16,54 @@ import com.example.demo.entities.form.IndividualForm;
 import com.example.demo.entities.highschool.Highschool;
 import com.example.demo.entities.user.Coordinator;
 import com.example.demo.enums.ApplicationFormStatus;
+import com.example.demo.enums.TourHours;
+import com.example.demo.repositories.form.ApplicationFormRepository;
 import com.example.demo.repositories.form.GroupFormRepository;
 import com.example.demo.repositories.form.IndividualFormRepository;
 import com.example.demo.repositories.highschool.HighschoolRepository;
 import com.example.demo.services.UsersService.AdvisorService;
+import com.example.demo.services.applicationformservice.applicationformsorter.ApplicationFormSorter;
+import com.example.demo.services.applicationformservice.applicationformsorter.SortByLgsPercentile;
 import com.example.demo.services.applicationformservice.applicationformsorter.SortStrategy;
 
 @Service
 public class ApplicationFormService {
     private final AdvisorService advisorService;
+    private final ApplicationFormRepository applicationFormRepository;
     private final GroupFormRepository groupFormRepository;
     private final IndividualFormRepository individualFormRepository;
     private final HighschoolRepository highschoolRepository;
-    private SortStrategy sortStrategy;
+    private ApplicationFormSorter applicationFormSorter;
 
     public ApplicationFormService(GroupFormRepository groupFormRepo,
+                                    ApplicationFormRepository applicationFormRepo,
                                     IndividualFormRepository individualFormRepo,
                                     AdvisorService advisorService,
                                     HighschoolRepository highschoolRepository){
+        this.applicationFormRepository = applicationFormRepo;
         this.groupFormRepository = groupFormRepo;
         this.individualFormRepository = individualFormRepo;
         this.advisorService = advisorService;
         this.highschoolRepository = highschoolRepository;
+        this.applicationFormSorter = new ApplicationFormSorter(new SortByLgsPercentile()); //default sorting strategy is lgsPercentile
+    }
+
+    public void setSortingStrategy(SortStrategy strategy){
+        this.applicationFormSorter.setSortStrategy(strategy); 
+    }
+
+    public List<ApplicationForm> getApplicationFormsByTourHour(LocalDate date, TourHours tourHour){
+        List<ApplicationForm> forms = applicationFormRepository.findByEventDateAndTourHour(date,tourHour);
+        return applicationFormSorter.sortApplicationForms(forms);
     }
 
     public List<ApplicationForm> getAllApplicationForms() {
     
-        List<ApplicationForm> allForms = new ArrayList<>();
+        /*List<ApplicationForm> allForms = new ArrayList<>();
         allForms.addAll(groupFormRepository.findAll());
-        allForms.addAll(individualFormRepository.findAll());
+        allForms.addAll(individualFormRepository.findAll());*/
 
-        return allForms;
+        return applicationFormRepository.findAll();
     }
 
     public List<GroupForm> getAllGroupForms() {
