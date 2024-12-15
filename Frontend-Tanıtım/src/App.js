@@ -74,7 +74,7 @@ const App = () => {
         
         <Route path="/coordinatordashboard" element={<CoordinatorDashboard />} />
         <Route path="/coordinatordashboardhighschool" element={<CoordinatorDashboardHighSchool />} />
-        <Route path="/coordinatordashboardedithighschool" element={<CoordinatorDashboardEditHighSchool />} />
+        <Route path="/coordinatordashboardedithighschool/:id" element={<CoordinatorDashboardEditHighSchool />} />
         <Route path="/coordinatordashboardadvisors" element={<CoordinatorDashboardAdvisors />} />
         <Route path="/coordinatordashboardaddadvisor" element={<CoordinatorDashboardAddAdvisor />} />
         <Route path="/coordinatordashboardeditadvisor" element={<CoordinatorDashboardEditAdvisor />} />

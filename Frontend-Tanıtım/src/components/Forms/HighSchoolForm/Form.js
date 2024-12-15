@@ -364,18 +364,18 @@ const Form = () => {
             );
             case 3:
               return (
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, alignItems: 'center' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, alignItems: 'center', marginBottom:0}}>
                   <img
                     src={require('../../../assets/Tickbox.png')}
                     alt="Tickbox"
-                    style={{ width: '170px', height: '140px', marginBottom: 4.5 }}
+                    style={{ width: '170px', height: '140px', marginBottom: 0 }}
                   />
                   <Typography variant="body1" sx={{ textAlign: 'center', color: '#6c757d', marginBottom: -2, marginTop: 0 }}>
                     Please review all the information you entered and submit your application.
                     <br />
                     You will receive an email if your tour application is accepted.
                   </Typography>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: 2 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, marginBottom: -0.5 }}>
                     <Checkbox
                       checked={formData.termsAccepted}
                       onChange={handleCheckboxChange}
