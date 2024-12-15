@@ -23,7 +23,9 @@ import com.example.demo.entities.event.Tour;
 import com.example.demo.entities.user.Guide;
 import com.example.demo.enums.EventStatus;
 import com.example.demo.enums.TourHours;
+import com.example.demo.exceptions.FairNotFoundException;
 import com.example.demo.exceptions.GuideNotFoundException;
+import com.example.demo.exceptions.TourNotFoundException;
 import com.example.demo.services.EventService;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -68,7 +70,7 @@ public class EventController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteEventById(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteEventById(@PathVariable Long id) throws FairNotFoundException, TourNotFoundException, GuideNotFoundException{
         if (eventService.deleteEventById(id)) {
             return ResponseEntity.noContent().build();
         }

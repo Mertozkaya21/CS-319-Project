@@ -21,20 +21,25 @@ public abstract class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    
     @Column(nullable = false)
     protected String firstName;
+
     @Column(nullable = false)
     protected String lastName;
+
     @Column(nullable = false)
     protected String email;
+
     @Column(nullable = false)
     protected String password;
+
     @Column(nullable = false)
     protected String phoneNo;
-    
+
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
-    protected LocalDate dateAdded; 
+    protected LocalDate dateAdded;
 
     protected String imagePath;
     

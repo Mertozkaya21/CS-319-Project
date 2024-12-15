@@ -14,7 +14,6 @@ import com.example.demo.services.EmailService;
 
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -131,6 +130,23 @@ public class UserService {
         }
     
         return token;
+    }
+
+    public void resetPassword(String token, String newPassword) {
+        // PasswordResetToken resetToken = passwordResetTokenRepository.findByToken(token)
+        //         .orElseThrow(() -> new IllegalArgumentException("Invalid or expired reset token."));
+
+        // if (resetToken.getExpiryDate().isBefore(LocalDateTime.now())) {
+        //     throw new IllegalArgumentException("Reset token has expired.");
+        // }
+
+        // User user = roleServiceFactory.findByEmail(resetToken.getEmail())
+        //         .orElseThrow(() -> new IllegalArgumentException("User not found."));
+
+        // user.setPassword(newPassword); 
+        // roleServiceFactory.sabe
+
+        // passwordResetTokenRepository.delete(resetToken);
     }
     
 }

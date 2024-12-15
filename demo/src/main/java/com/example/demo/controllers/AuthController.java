@@ -42,5 +42,18 @@ public class AuthController {
         String token = userService.generateResetToken(email);
         return ResponseEntity.ok("Password reset link sent to your email.");
     }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> request) {
+        String token = request.get("token");
+        String newPassword = request.get("newPassword");
+
+        try {
+            userService.resetPassword(token, newPassword);
+            return ResponseEntity.ok("Password has been reset successfully.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(e.getMessage()));
+        }
+    }
 }
 

@@ -45,9 +45,7 @@ public class EventService {
         }
     }
 
-
-
-    public boolean deleteEventById(Long eventId) {
+    public boolean deleteEventById(Long eventId) throws FairNotFoundException, TourNotFoundException, GuideNotFoundException{
         try {
             return fairService.deleteFairById(eventId);
         } catch (FairNotFoundException e) {

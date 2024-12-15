@@ -92,7 +92,7 @@ public class ApplicationFormController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    @GetMapping("/{id}/status")
+    @GetMapping("/{id}/status") 
     public ResponseEntity<ApplicationFormStatus> getFormStatus(@PathVariable Long id) {
         ApplicationFormStatus status = applicationFormService.getOneApplicationFormStatusByID(id);
         if (status != null) {
@@ -101,7 +101,7 @@ public class ApplicationFormController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}") 
     public ResponseEntity<Void> deleteApplicationForm(@PathVariable Long id) {
         boolean deleted = applicationFormService.deleteById(id);
         if (deleted) {

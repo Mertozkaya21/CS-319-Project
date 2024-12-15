@@ -6,5 +6,4 @@ import com.example.demo.entities.form.ApplicationForm;
 
 public interface SortStrategy {
     List<ApplicationForm> sort(List<ApplicationForm> applicationForms);
-
 }
