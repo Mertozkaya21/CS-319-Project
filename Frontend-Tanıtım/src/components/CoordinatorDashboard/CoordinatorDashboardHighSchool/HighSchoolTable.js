@@ -11,7 +11,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import styles from './CoordinatorDashboardHighSchool.module.css';
-
+ 
 // Data
 export const highSchoolRows = [
   { id: 1, name: 'High School A', city: 'Ankara', counselorName: 'Jane Doe', dateUpdated: 'Oct 25, 2023', highSchoolId: '#123456789', priority: 1, phone: '555-123-4561', email: 'jane.doe1@example.com' },
@@ -63,19 +63,22 @@ const columns = [
     field: 'action',
     headerName: 'Edit',
     width: 60,
-    renderCell: () => (
-      <NavLink
-        to="/coordinatordashboardedithighschool/${params.highSchoolId}"
-        className={({ isActive }) =>
-          `${styles.navItem} ${isActive ? styles.active : ''}`
-        }
-      >
-        <IconButton aria-label="edit">
-          <EditIcon />
-        </IconButton>
-      </NavLink>
-    ),
-  },
+    renderCell: (params) => {
+      console.log("Row ID:", params.row.id); // Debug to check if ID is valid
+      return (
+        <NavLink
+          to={`/coordinatordashboardedithighschool/${params.row.id}`} // Dynamically pass ID
+          className={({ isActive }) =>
+            `${styles.navItem} ${isActive ? styles.active : ''}`
+          }
+        >
+          <IconButton aria-label="edit">
+            <EditIcon />
+          </IconButton>
+        </NavLink>
+      );
+    },
+  }
 ];
 
 const HighSchoolTable = ({ rows }) => {
@@ -128,19 +131,22 @@ const HighSchoolTable = ({ rows }) => {
       field: 'action',
       headerName: 'Edit',
       width: 60,
-      renderCell: () => (
-        <NavLink
-          to="/coordinatordashboardedithighschool"
-          className={({ isActive }) =>
-            `${styles.navItem} ${isActive ? styles.active : ''}`
-          }
-        >
-          <IconButton aria-label="edit">
-            <EditIcon />
-          </IconButton>
-        </NavLink>
-      ),
-    },
+      renderCell: (params) => {
+        console.log("Row ID:", params.row.id); // Debug to check if ID is valid
+        return (
+          <NavLink
+            to={`/coordinatordashboardedithighschool/${params.row.id}`} // Dynamically pass ID
+            className={({ isActive }) =>
+              `${styles.navItem} ${isActive ? styles.active : ''}`
+            }
+          >
+            <IconButton aria-label="edit">
+              <EditIcon />
+            </IconButton>
+          </NavLink>
+        );
+      },
+    }
   ];
 
   return (

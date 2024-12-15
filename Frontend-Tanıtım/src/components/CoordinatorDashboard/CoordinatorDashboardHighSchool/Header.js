@@ -6,15 +6,28 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Button from '@mui/material/Button';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
 import { highSchoolRows } from './HighSchoolTable'; // Import high school data
 
 const Header = ({ title, onSearchSelection }) => {
+  const [isPopupOpen, setPopupOpen] = useState(false); // State to control the popup
   const [sortOption, setSortOption] = useState('Date Updated');
 
   // Transform highSchoolRows into a format suitable for Autocomplete
   const highSchoolOptions = highSchoolRows.map((school) => ({
     label: school.name, // Only the school name will be displayed
   }));
+
+  const handleRemoveClick = () => {
+    setPopupOpen(true); // Open the popup
+  };
+
+  const handleClosePopup = () => {
+    setPopupOpen(false); // Close the popup
+  };
 
   return (
     <div className={styles.header}>
@@ -83,6 +96,7 @@ const Header = ({ title, onSearchSelection }) => {
         <Button
           variant="outlined"
           startIcon={<DeleteIcon />}
+          onClick={handleRemoveClick} // Open confirmation popup
           sx={{
             color: '#8a0303', // Red text
             borderColor: '#8a0303', // Red border
@@ -95,6 +109,39 @@ const Header = ({ title, onSearchSelection }) => {
           Remove Selected
         </Button>
       </div>
+      {/* Confirmation Popup */}
+      <Dialog open={isPopupOpen} onClose={handleClosePopup}>
+        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogContent>
+          Are you sure you want to delete the selected high school(s)? You will not be able to access their data if you proceed.
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleClosePopup}
+            variant="outlined"
+            sx={{
+              color: '#8a0303',
+              borderColor: '#8a0303',
+              '&:hover': {
+                backgroundColor: '#fdeaea',
+                borderColor: '#8a0303',
+              },
+            }}
+          >
+            No
+          </Button>
+          <Button
+            onClick={handleClosePopup}
+            variant="contained"
+            sx={{
+              backgroundColor: '#8a0303',
+              '&:hover': { backgroundColor: '#b10505' },
+            }}
+          >
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

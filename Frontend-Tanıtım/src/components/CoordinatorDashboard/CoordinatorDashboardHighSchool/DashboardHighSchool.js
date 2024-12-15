@@ -7,7 +7,7 @@ import styles from './CoordinatorDashboardHighSchool.module.css';
 
 const DashboardHighSchool = () => {
   const [filteredRows, setFilteredRows] = useState(highSchoolRows); // Manage filtered rows
-
+ 
   const handleSearchSelection = (value) => {
     if (value) {
       // Filter rows based on the selected high school name
@@ -21,15 +21,9 @@ const DashboardHighSchool = () => {
 
   return (
     <div className={styles.dashboardContainer}>
-      {/* Sidebar */}
       <Sidebar />
-
-      {/* Main Content */}
       <div className={styles.mainContent}>
-        {/* Header */}
         <Header title="High Schools" onSearchSelection={handleSearchSelection} />
-
-        {/* High School Table */}
         <HighSchoolTable rows={filteredRows} />
       </div>
     </div>
