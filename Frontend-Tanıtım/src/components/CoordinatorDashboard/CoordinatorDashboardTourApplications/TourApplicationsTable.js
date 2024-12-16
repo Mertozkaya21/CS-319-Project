@@ -11,19 +11,82 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import RestartAltIcon from '@mui/icons-material/RestartAlt'; // Reset icon
 import styles from './CoordinatorDashboardTourApplications.module.css';
- 
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+
 // Dummy Data. replace with data from database
 export const tourApplicationsRows = [
-  { id: 1, name: 'High School A', priority: 1, date: 'Dec 20, 2023', time: '11:00 - 13:00', city: 'Ankara', phone: '555-123-4561', email: 'jane.doe1@example.com' },
-  { id: 2, name: 'High School B', priority: 2, date: 'Dec 21, 2023', time: '09:00 - 11:00', city: 'Ankara', phone: '555-123-4562', email: 'jane.doe2@example.com' },
-  { id: 3, name: 'High School C', priority: 3, date: 'Dec 22, 2023', time: '11:00 - 13:00', city: 'Istanbul', phone: '555-123-4563', email: 'jane.doe3@example.com' },
-  { id: 4, name: 'High School D', priority: 4, date: 'Dec 23, 2023', time: '11:00 - 13:00', city: 'Izmir', phone: '555-987-6541', email: 'john.doe1@example.com' },
+  { id: 1, name: 'High School A', priority: 1, date: 'Dec 20, 2023', time: '11:00 - 13:00', city: 'Ankara', phone: '555-123-4561', email: 'jane.doe1@example.com', distance: '5 km', lgsPercentile: 85 },
+  { id: 2, name: 'High School B', priority: 2, date: 'Dec 21, 2023', time: '09:00 - 11:00', city: 'Ankara', phone: '555-123-4562', email: 'jane.doe2@example.com', distance: '8 km', lgsPercentile: 88 },
+  { id: 3, name: 'High School C', priority: 3, date: 'Dec 22, 2023', time: '11:00 - 13:00', city: 'Istanbul', phone: '555-123-4563', email: 'jane.doe3@example.com', distance: '15 km', lgsPercentile: 90 },
+  { id: 4, name: 'High School D', priority: 4, date: 'Dec 23, 2023', time: '11:00 - 13:00', city: 'Izmir', phone: '555-987-6541', email: 'john.doe1@example.com', distance: '20 km', lgsPercentile: 92 },
 ];
+
+const TourApplicationsTable = ({ rows }) => {
+  const [openDialog, setOpenDialog] = useState(false);
+  const [dialogContent, setDialogContent] = useState('');
+  const [decisions, setDecisions] = useState({}); // Store decisions for each row
+  
+  const [selectedColumn, setSelectedColumn] = useState('priority'); // State for dropdown selection
+
+  const handleColumnChange = (event) => {
+    setSelectedColumn(event.target.value); // Update selected column type
+  };
+
+  const handleContactClick = (type, row) => {
+    const content =
+      type === 'phone'
+        ? `Phone: ${row.phone}`
+        : `Email: ${row.email}`;
+    setDialogContent(content);
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
+  const handleDecisionChange = (decision, id) => {
+    setDecisions((prevDecisions) => ({
+      ...prevDecisions,
+      [id]: decision,
+    }));
+  };
+
+  const handleResetDecision = (id) => {
+    setDecisions((prevDecisions) => ({
+      ...prevDecisions,
+      [id]: null, // Reset the decision for the specified row
+    }));
+  };
+
 
 // Columns
 const columns = [
   { field: 'name', headerName: 'High School Name', width: 150 },
-  { field: 'priority', headerName: 'Priority', width: 70 },
+  {
+    field: 'priority',
+    headerName: (
+      <div>
+        <Select
+          value={selectedColumn}
+          onChange={handleColumnChange}
+          displayEmpty
+          sx={{
+            fontSize: '14px',
+            color: '#8a0303',
+            fontWeight: 'bold',
+          }}
+        >
+          <MenuItem value="priority">Priority</MenuItem>
+          <MenuItem value="distance">Distance</MenuItem>
+          <MenuItem value="lgsPercentile">LGS Percentile</MenuItem>
+        </Select>
+      </div>
+    ),
+    width: 200,
+    renderCell: (params) => <div>{params.row[selectedColumn]}</div>, // Render the selected column value dynamically
+  },
   { field: 'date', headerName: 'Tour Date', width: 100 },
   { field: 'time', headerName: 'Tour Time', width: 100 },
   { field: 'city', headerName: 'City', width: 100 },
@@ -96,38 +159,6 @@ const columns = [
     ),
   },
 ];
-
-const TourApplicationsTable = ({ rows }) => {
-  const [openDialog, setOpenDialog] = useState(false);
-  const [dialogContent, setDialogContent] = useState('');
-  const [decisions, setDecisions] = useState({}); // Store decisions for each row
-
-  const handleContactClick = (type, row) => {
-    const content =
-      type === 'phone'
-        ? `Phone: ${row.phone}`
-        : `Email: ${row.email}`;
-    setDialogContent(content);
-    setOpenDialog(true);
-  };
-
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-  };
-
-  const handleDecisionChange = (decision, id) => {
-    setDecisions((prevDecisions) => ({
-      ...prevDecisions,
-      [id]: decision,
-    }));
-  };
-
-  const handleResetDecision = (id) => {
-    setDecisions((prevDecisions) => ({
-      ...prevDecisions,
-      [id]: null, // Reset the decision for the specified row
-    }));
-  };
 
   // Map rows and add handlers to each row
   const rowsWithHandlers = rows.map((row) => ({
