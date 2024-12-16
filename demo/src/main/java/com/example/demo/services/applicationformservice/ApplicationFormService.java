@@ -3,6 +3,7 @@ package com.example.demo.services.applicationformservice;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -21,6 +22,7 @@ import com.example.demo.repositories.form.ApplicationFormRepository;
 import com.example.demo.repositories.form.GroupFormRepository;
 import com.example.demo.repositories.form.IndividualFormRepository;
 import com.example.demo.repositories.highschool.HighschoolRepository;
+import com.example.demo.repositories.user.CoordinatorRepository;
 import com.example.demo.services.UsersService.AdvisorService;
 import com.example.demo.services.applicationformservice.applicationformsorter.ApplicationFormSorter;
 import com.example.demo.services.applicationformservice.applicationformsorter.SortByLgsPercentile;
@@ -34,17 +36,20 @@ public class ApplicationFormService {
     private final IndividualFormRepository individualFormRepository;
     private final HighschoolRepository highschoolRepository;
     private ApplicationFormSorter applicationFormSorter;
+    private CoordinatorRepository coordinatorRepository;
 
     public ApplicationFormService(GroupFormRepository groupFormRepo,
                                     ApplicationFormRepository applicationFormRepo,
                                     IndividualFormRepository individualFormRepo,
                                     AdvisorService advisorService,
-                                    HighschoolRepository highschoolRepository){
+                                    HighschoolRepository highschoolRepository,
+                                    CoordinatorRepository coordinatorRepository){
         this.applicationFormRepository = applicationFormRepo;
         this.groupFormRepository = groupFormRepo;
         this.individualFormRepository = individualFormRepo;
         this.advisorService = advisorService;
         this.highschoolRepository = highschoolRepository;
+        this.coordinatorRepository = coordinatorRepository;
         this.applicationFormSorter = new ApplicationFormSorter(new SortByLgsPercentile()); //default sorting strategy is lgsPercentile
     }
 
@@ -52,8 +57,8 @@ public class ApplicationFormService {
         this.applicationFormSorter.setSortStrategy(strategy); 
     }
 
-    public List<ApplicationForm> getApplicationFormsByTourHour(LocalDate date, TourHours tourHour){
-        List<ApplicationForm> forms = applicationFormRepository.findByEventDateAndTourHour(date,tourHour);
+    public List<GroupForm> getApplicationFormsByTourHour(LocalDate date, TourHours tourHour){
+        List<GroupForm> forms = groupFormRepository.findByEventDateAndTourHour(date,tourHour);
         return applicationFormSorter.sortApplicationForms(forms);
     }
 
@@ -67,7 +72,18 @@ public class ApplicationFormService {
     }
 
     public List<GroupForm> getAllGroupForms() {
-        return groupFormRepository.findAll();
+        List<GroupForm> groupForms = groupFormRepository.findAll();
+        List<GroupForm> sortedForms = new ArrayList<>();
+
+        // Grupları aynı tarih ve tur saatine göre ayır ve sıralı listeye ekle
+        groupForms.stream()
+            .collect(Collectors.groupingBy(form -> new FormDateHourKey(form.getEventDate(), form.getTourHour())))
+            .forEach((key, forms) -> {
+                List<GroupForm> sortedGroup = getApplicationFormsByTourHour(key.date, key.tourHour);
+                sortedForms.addAll(sortedGroup);
+            });
+
+        return sortedForms;
     }
 
     public List<IndividualForm> getAllIndividualForms() {
@@ -78,9 +94,9 @@ public class ApplicationFormService {
     public IndividualForm saveIndividualForm(IndividualFormDTO individualFormDto) {
         IndividualForm individualForm = new IndividualForm(individualFormDto);
         individualForm.setAdvisor(advisorService.getAdvisorByUndertakenDay(individualForm.getEventDate().getDayOfWeek()));
-        Coordinator coordinator = Coordinator.getInstance();
-        if(coordinator!=null){
-            individualForm.setCoordinator(coordinator);
+        List<Coordinator> coordinators = coordinatorRepository.findAll();
+        if(!coordinators.isEmpty()){
+            individualForm.setCoordinator(coordinators.get(0));
         }
         else{
             throw new IllegalArgumentException("Coordinator could not be found.");
@@ -95,9 +111,9 @@ public class ApplicationFormService {
         groupForm.setHighschool(highschool);
         groupForm.setCounselor(highschool.getCounselor());
         groupForm.setAdvisor(advisorService.getAdvisorByUndertakenDay(groupForm.getEventDate().getDayOfWeek()));
-        Coordinator coordinator = Coordinator.getInstance();
-        if(coordinator!=null){
-            groupForm.setCoordinator(coordinator);
+        List<Coordinator> coordinators = coordinatorRepository.findAll();
+        if(!coordinators.isEmpty()){
+            groupForm.setCoordinator(coordinators.get(0));
         }
         else{
             throw new IllegalArgumentException("Coordinator could not be found.");
@@ -123,7 +139,7 @@ public class ApplicationFormService {
             .collect(Collectors.toList());
     }
 
-    public boolean updateOneApplicationFormStatus(Long formId, ApplicationFormStatus newStatus) {
+    public boolean updateOneApplicationFormStatus(Long formId, ApplicationFormStatus newStatus) { //BTO_APPROVED or BTO_DENIED
         Optional<GroupForm> groupFormOpt = groupFormRepository.findById(formId);
         if (groupFormOpt.isPresent()) {
             GroupForm foundForm = groupFormOpt.get();
@@ -172,5 +188,27 @@ public class ApplicationFormService {
         }
 
         return false;
+    }
+}
+class FormDateHourKey {
+    LocalDate date;
+    TourHours tourHour;
+
+    public FormDateHourKey(LocalDate date, TourHours tourHour) {
+        this.date = date;
+        this.tourHour = tourHour;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FormDateHourKey that = (FormDateHourKey) o;
+        return date.equals(that.date) && tourHour == that.tourHour;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(date, tourHour);
     }
 }

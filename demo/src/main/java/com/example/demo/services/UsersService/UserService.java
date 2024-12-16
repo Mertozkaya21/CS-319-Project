@@ -41,7 +41,7 @@ public class UserService {
         validateEmailAndPassword(newUserDTO);
 
         User user = switch (userRole) {
-            case COORDINATOR -> Coordinator.getInstance(newUserDTO);
+            case COORDINATOR -> new Coordinator(newUserDTO);
             case GUIDE -> new Guide(newUserDTO);
             case ADVISOR -> new Advisor(newUserDTO);
             case TRAINEE -> new Trainee(newUserDTO);

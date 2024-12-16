@@ -33,7 +33,7 @@ public class HighshcoolController {
         this.highschoolService = highschoolService;
     }
 
-    @GetMapping("/highschool")
+    @GetMapping
     public ResponseEntity<List<Highschool>> getAllHighschools() {
         return ResponseEntity.ok(highschoolService.getAllHighschool());
     }
@@ -61,7 +61,7 @@ public class HighshcoolController {
     }
 
 
-    @GetMapping("/highschool/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Highschool> getHighschoolByID(@PathVariable Long id) throws HighschoolNotFoundException {
         Highschool highschool = highschoolService.getHighschoolByID(id);
         if (highschool != null) {
@@ -70,7 +70,7 @@ public class HighshcoolController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 
-    @PostMapping("/highschool")
+    @PostMapping
     public ResponseEntity<Highschool> saveHighschool(@RequestBody HighschoolDTO highschoolDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(highschoolService.saveHighschool(highschoolDTO));
     }
@@ -111,7 +111,7 @@ public class HighshcoolController {
         return ResponseEntity.ok(updatedHighschool);
     }
     
-    @DeleteMapping("/highschool/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteHighschool(@PathVariable Long id) {
         boolean deleted = highschoolService.deleteHighschoolByID(id);
         if (deleted) {

@@ -9,6 +9,7 @@ import com.example.demo.dto.EmailDTO;
 import com.example.demo.entities.event.Fair;
 import com.example.demo.entities.event.Tour;
 import com.example.demo.entities.user.Coordinator;
+import com.example.demo.entities.user.Guide;
 import com.example.demo.entities.user.User;
 import com.example.demo.repositories.event.FairRepository;
 import com.example.demo.repositories.event.TourRepository;
@@ -32,9 +33,7 @@ public class CoordinatorService implements RoleService{
 
     @Override
     public Coordinator save(User user) {
-        if(Coordinator.getInstance()!=null)
-            return coordinatorRepository.save((Coordinator) user);
-        return null;
+        return coordinatorRepository.save((Coordinator) user);
     }
 
     @Override

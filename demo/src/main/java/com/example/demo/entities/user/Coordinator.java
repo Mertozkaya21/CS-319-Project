@@ -23,11 +23,9 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Coordinator extends User { //Singleton Pattern
+public class Coordinator extends User { 
 
-    private static Coordinator instance;
-
-    private Coordinator(UserDTO userDTO){
+    public Coordinator(UserDTO userDTO){
         super();
         this.firstName = userDTO.getFirstName();
         this.lastName = userDTO.getLastName();
@@ -46,25 +44,6 @@ public class Coordinator extends User { //Singleton Pattern
         newPayment.setAmount(0);
         newPayment.setReceiptFullName(userDTO.getFirstName() + " " + userDTO.getLastName());
         this.payment = newPayment;
-    }
-
-    public static synchronized Coordinator getInstance(UserDTO userDTO) {
-        if (instance == null) {
-            instance = new Coordinator(userDTO);
-        }
-        else{
-            instance.setFirstName(userDTO.getFirstName());
-            instance.setLastName(userDTO.getLastName());
-            instance.setEmail(userDTO.getEmail());
-            instance.setPassword(userDTO.getPassword());
-            instance.setPhoneNo(userDTO.getPhoneNo());
-            instance.setImagePath(userDTO.getImagePath());
-        }
-        return instance;
-    }
-
-    public static synchronized Coordinator getInstance() {
-        return instance;
     }
 
     @OneToMany(mappedBy = "coordinator", cascade = {CascadeType.PERSIST, CascadeType.MERGE})

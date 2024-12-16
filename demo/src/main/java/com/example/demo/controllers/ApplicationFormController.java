@@ -26,6 +26,11 @@ import com.example.demo.enums.ApplicationFormStatus;
 import com.example.demo.enums.TourHours;
 import com.example.demo.services.EventService;
 import com.example.demo.services.applicationformservice.ApplicationFormService;
+import com.example.demo.services.applicationformservice.applicationformsorter.SortByDistance;
+import com.example.demo.services.applicationformservice.applicationformsorter.SortByLgsPercentile;
+import com.example.demo.services.applicationformservice.applicationformsorter.SortByPriorityScore;
+import com.example.demo.services.applicationformservice.applicationformsorter.SortBySubmissionTime;
+import com.example.demo.services.applicationformservice.applicationformsorter.SortStrategy;
 
 @RestController
 @RequestMapping("/v1/applicationform")
@@ -47,6 +52,29 @@ public class ApplicationFormController {
     @GetMapping("/groupform")
     public ResponseEntity<List<GroupForm>> getAllGroupForms() {
         return ResponseEntity.ok(applicationFormService.getAllGroupForms());
+    }
+
+    @PostMapping("/groupform/changeparameter")
+    public ResponseEntity<Void> changeSortingParameter(@RequestBody String newParameter) {
+        if("byDistance".equals(newParameter)){
+            applicationFormService.setSortingStrategy(new SortByDistance());
+            return ResponseEntity.noContent().build();
+        }
+        else if("byLgsPercentile".equals(newParameter)){
+            applicationFormService.setSortingStrategy(new SortByLgsPercentile());
+            return ResponseEntity.noContent().build();
+        }
+        else if("bySubmitTime".equals(newParameter)){
+            applicationFormService.setSortingStrategy(new SortBySubmissionTime());
+            return ResponseEntity.noContent().build();
+        }
+        else if("byPriorityScore".equals(newParameter)){
+            applicationFormService.setSortingStrategy(new SortByPriorityScore());
+            return ResponseEntity.noContent().build();
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     @GetMapping("/individualform")
@@ -74,9 +102,9 @@ public class ApplicationFormController {
     }
 
     @GetMapping("/{date}/{tourHour}")
-    public ResponseEntity<List<ApplicationForm>> getApplicationsByDateAndTourHour(@PathVariable LocalDate date, @PathVariable TourHours tourHour) {
+    public ResponseEntity<List<GroupForm>> getApplicationsByDateAndTourHour(@PathVariable LocalDate date, @PathVariable TourHours tourHour) {
 
-        List<ApplicationForm> forms = applicationFormService.getApplicationFormsByTourHour(date, tourHour);
+        List<GroupForm> forms = applicationFormService.getApplicationFormsByTourHour(date, tourHour);
         if (forms.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(forms); 
         }

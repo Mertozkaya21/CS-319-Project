@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface CoordinatorRepository extends JpaRepository<Coordinator, Long>{
     
-    List<Coordinator> findById(long id);
+    Coordinator findById(long id);
     List<Coordinator> findByEmail(String email);
     List<Coordinator> findByPassword(String password);
 }
