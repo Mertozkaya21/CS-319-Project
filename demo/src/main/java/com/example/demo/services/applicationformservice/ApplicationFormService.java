@@ -91,8 +91,7 @@ public class ApplicationFormService {
     // Save methods does not work properly
     public GroupForm saveGroupForm(GroupFormDTO groupFormDto) {
         GroupForm groupForm = new GroupForm(groupFormDto);
-        Highschool highschool = highschoolRepository.findById(groupFormDto.getHighSchoolId())
-        .orElseThrow(() -> new IllegalArgumentException("HighSchool not found for id: " + groupFormDto.getHighSchoolId()));
+        Highschool highschool = highschoolRepository.findByName(groupFormDto.getHighSchoolName());
         groupForm.setHighschool(highschool);
         groupForm.setCounselor(highschool.getCounselor());
         groupForm.setAdvisor(advisorService.getAdvisorByUndertakenDay(groupForm.getEventDate().getDayOfWeek()));
