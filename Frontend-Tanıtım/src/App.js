@@ -21,6 +21,7 @@ import CoordinatorDashboardTrainees from './components/CoordinatorDashboard/Coor
 import CoordinatorDashboardAddTrainee from './components/CoordinatorDashboard/CoordinatorDashboardTraineesAddNewTrainee/DashboardAddTrainee';
 import CoordinatorDashboardEditTrainee from './components/CoordinatorDashboard/CoordinatorDashboardTraineesEditTrainee/DashboardEditTrainee';
 import CoordinatorDashboardTourApplications from './components/CoordinatorDashboard/CoordinatorDashboardTourApplications/DashboardTourApplications';
+import CoordinatorDashboardIndividualTourApplications from './components/CoordinatorDashboard/CoordinatorDashboardIndividualTourApplications/DashboardTourApplications';
 import CoordinatorDashboardFairApplications from './components/CoordinatorDashboard/CoordinatorDashboardFairApplications/DashboardFairApplications';
 import CoordinatorDashboardToursAndFairs from './components/CoordinatorDashboard/CoordinatorDashboardToursAndFairs/DashboardToursAndFairs';
 import CoordinatorDashboardToursAndFairsViewAll from './components/CoordinatorDashboard/CoordinatorDashboardToursAndFairsViewAll/DashboardToursAndFairsViewAll';
@@ -33,6 +34,7 @@ import CoordinatorDashboardNotifications from './components/CoordinatorDashboard
 
 import AdvisorDashboard from './components/AdvisorDashboard/AdvisorDashboard/Dashboard';
 import AdvisorDashboardTourApplications from './components/AdvisorDashboard/AdvisorDashboardTourApplications/DashboardTourApplications';
+import AdvisorDashboardIndividualTourApplications from './components/AdvisorDashboard/AdvisorDashboardIndividualTourApplications/DashboardTourApplications';
 import AdvisorDashboardTours from './components/AdvisorDashboard/AdvisorDashboardTours/DashboardTours';
 import AdvisorDashboardFairs from './components/AdvisorDashboard/AdvisorDashboardFairs/DashboardFairs';
 import AdvisorDashboardGuides from './components/AdvisorDashboard/AdvisorDashboardGuides/DashboardGuides';
@@ -85,6 +87,7 @@ const App = () => {
         <Route path="/coordinatordashboardaddtrainee" element={<CoordinatorDashboardAddTrainee />} />
         <Route path="/coordinatordashboardedittrainee/:id" element={<CoordinatorDashboardEditTrainee />} />
         <Route path="/coordinatordashboardtourapplications" element={<CoordinatorDashboardTourApplications />} />
+        <Route path="/coordinatordashboardindividualtourapplications" element={<CoordinatorDashboardIndividualTourApplications />} />
         <Route path="/coordinatordashboardfairapplications" element={<CoordinatorDashboardFairApplications />} />
         <Route path="/coordinatordashboardtoursandfairs" element={<CoordinatorDashboardToursAndFairs />} />
         <Route path="/coordinatordashboardtoursandfairsviewall" element={<CoordinatorDashboardToursAndFairsViewAll />} />
@@ -97,6 +100,7 @@ const App = () => {
 
         <Route path="/advisordashboard" element={<AdvisorDashboard />} />
         <Route path="/advisordashboardtourapplications" element={<AdvisorDashboardTourApplications />} />
+        <Route path="/advisordashboardindividualtourapplications" element={<AdvisorDashboardIndividualTourApplications />} />
         <Route path="/advisordashboardtours" element={<AdvisorDashboardTours />} />
         <Route path="/advisordashboardfairs" element={<AdvisorDashboardFairs />} />
         <Route path="/advisordashboardguides" element={<AdvisorDashboardGuides />} />

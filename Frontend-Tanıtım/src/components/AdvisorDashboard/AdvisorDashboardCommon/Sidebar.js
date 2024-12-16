@@ -11,6 +11,7 @@ import {
   AccountCircle as AccountCircleIcon,
   Person2 as Person2Icon,
   Chat as ChatIcon,
+  EventNote as EventNoteIcon, 
   Settings as SettingsIcon,
   ExpandMore as ExpandMoreIcon,
   Assignment as AssignmentIcon,
@@ -144,16 +145,49 @@ const Sidebar = () => {
             <span>Dashboard</span>
           </NavLink>
 
-          {/* Tour Applications */}
-          <NavLink
-            to="/advisordashboardtourapplications"
-            className={({ isActive }) =>
-              `${styles.navItem} ${isActive ? styles.active : ''}`
-            }
-          >
-            <ContentPasteGoIcon />
-            <span>Tour Applications</span>
-          </NavLink>
+          {/* Applications Dropdown */}
+          <Accordion>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <ContentPasteGoIcon className={({ isActive }) =>
+              `${styles.icon} ${isActive ? styles.activeIcon : ''}`
+            } />
+              <span>Applications</span>
+            </AccordionSummary>
+            <AccordionDetails>
+              <List>
+                <ListItem
+                  component={NavLink}
+                  to="/advisordashboardtourapplications"
+                  className={({ isActive }) =>
+                    `${styles.navItem} ${isActive ? styles.active : ''}`
+                  }
+                >
+                  <ListItemIcon>
+                    <EventNoteIcon className={({ isActive }) =>
+              `${styles.icon} ${isActive ? styles.activeIcon : ''}`
+            }/>
+                  </ListItemIcon>
+                  <ListItemText primary="Tour Applications" />
+                </ListItem>
+                <ListItem
+                  component={NavLink}
+                  to="/advisordashboardindividualtourapplications"
+                  className={({ isActive }) =>
+                    `${styles.navItem} ${isActive ? styles.active : ''}`
+                  }
+                >
+                  <ListItemIcon>
+                    <StadiumIcon className={({ isActive }) =>
+              `${styles.icon} ${isActive ? styles.activeIcon : ''}`
+            }/>
+                  </ListItemIcon>
+                  <ListItemText primary="Individual Applications" />
+                </ListItem>
+                
+              </List>
+            </AccordionDetails>
+          </Accordion>
+
 
           {/* Events Dropdown */}
           <Accordion>

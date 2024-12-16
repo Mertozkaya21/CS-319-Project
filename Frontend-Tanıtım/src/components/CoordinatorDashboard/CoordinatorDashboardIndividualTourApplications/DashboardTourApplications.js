@@ -24,7 +24,7 @@ const DashboardTourApplications = () => {
       <div className={styles.mainContent}>
         {/* Header */}
         <Header
-          title="Tour Applications"
+          title="Individual Tour Applications"
           onSearchSelection={handleSearchSelection}
         />
 

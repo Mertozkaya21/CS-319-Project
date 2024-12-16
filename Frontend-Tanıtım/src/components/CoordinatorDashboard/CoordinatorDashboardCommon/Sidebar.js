@@ -253,6 +253,20 @@ const Sidebar = () => {
                 </ListItem>
                 <ListItem
                   component={NavLink}
+                  to="/coordinatordashboardindividualtourapplications"
+                  className={({ isActive }) =>
+                    `${styles.navItem} ${isActive ? styles.active : ''}`
+                  }
+                >
+                  <ListItemIcon>
+                    <StadiumIcon className={({ isActive }) =>
+              `${styles.icon} ${isActive ? styles.activeIcon : ''}`
+            }/>
+                  </ListItemIcon>
+                  <ListItemText primary="Individual Applications" />
+                </ListItem>
+                <ListItem
+                  component={NavLink}
                   to="/coordinatordashboardfairapplications"
                   className={({ isActive }) =>
                     `${styles.navItem} ${isActive ? styles.active : ''}`

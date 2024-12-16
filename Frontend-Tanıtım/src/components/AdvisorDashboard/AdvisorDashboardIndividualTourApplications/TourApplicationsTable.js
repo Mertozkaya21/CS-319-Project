@@ -1,32 +1,22 @@
 import React, { useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
-import { FaPhoneAlt, FaEnvelope } from 'react-icons/fa';
+import { FaPhoneAlt, FaEnvelope, FaChevronDown, FaChevronUp } from 'react-icons/fa';
 import IconButton from '@mui/material/IconButton';
 import Radio from '@mui/material/Radio';
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-import DialogActions from '@mui/material/DialogActions';
 import RestartAltIcon from '@mui/icons-material/RestartAlt'; // Reset icon
 import styles from './AdvisorDashboardTourApplications.module.css';
-import Select from '@mui/material/Select';
-import MenuItem from '@mui/material/MenuItem';
+import Collapse from '@mui/material/Collapse';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
 // Dummy Data. replace with data from database
 export const tourApplicationsRows = [
-  { id: 1, name: 'High School A', priority: 1, date: 'Dec 20, 2023', time: '11:00 - 13:00', city: 'Ankara', phone: '555-123-4561', email: 'jane.doe1@example.com', distance: '5 km', lgsPercentile: 85 },
-  { id: 2, name: 'High School B', priority: 2, date: 'Dec 21, 2023', time: '09:00 - 11:00', city: 'Ankara', phone: '555-123-4562', email: 'jane.doe2@example.com', distance: '8 km', lgsPercentile: 88 },
-  { id: 3, name: 'High School C', priority: 3, date: 'Dec 22, 2023', time: '11:00 - 13:00', city: 'Istanbul', phone: '555-123-4563', email: 'jane.doe3@example.com', distance: '15 km', lgsPercentile: 90 },
-  { id: 4, name: 'High School D', priority: 4, date: 'Dec 23, 2023', time: '11:00 - 13:00', city: 'Izmir', phone: '555-987-6541', email: 'john.doe1@example.com', distance: '20 km', lgsPercentile: 92 },
-];
-
-export const individualTourApplicationRows = [
   {
-    individualName: 'John Smith',
+    id: 1,
+    name: 'John Smith',
     email: 'john.smith@example.com',
-    phoneNumber: '555-123-4561',
+    phone: '555-123-4561',
     city: 'New York',
     date: '2024-01-15',
     timeSlot: '10:00 - 12:00',
@@ -35,9 +25,10 @@ export const individualTourApplicationRows = [
     comments: 'Looking forward to the tour.',
   },
   {
-    individualName: 'Emily Johnson',
+    id: 2,
+    name: 'Emily Johnson',
     email: 'emily.johnson@example.com',
-    phoneNumber: '555-123-4562',
+    phone: '555-123-4562',
     city: 'Los Angeles',
     date: '2024-01-20',
     timeSlot: '14:00 - 16:00',
@@ -46,9 +37,10 @@ export const individualTourApplicationRows = [
     comments: 'Please provide parking information.',
   },
   {
-    individualName: 'Michael Williams',
+    id: 3,
+    name: 'Michael Williams',
     email: 'michael.williams@example.com',
-    phoneNumber: '555-123-4563',
+    phone: '555-123-4563',
     city: 'Chicago',
     date: '2024-01-25',
     timeSlot: '09:00 - 11:00',
@@ -57,9 +49,10 @@ export const individualTourApplicationRows = [
     comments: 'Interested in meeting faculty.',
   },
   {
-    individualName: 'Sophia Brown',
+    id: 4,
+    name: 'Sophia Brown',
     email: 'sophia.brown@example.com',
-    phoneNumber: '555-123-4564',
+    phone: '555-123-4564',
     city: 'Houston',
     date: '2024-02-01',
     timeSlot: '11:00 - 13:00',
@@ -68,9 +61,10 @@ export const individualTourApplicationRows = [
     comments: 'Please confirm availability.',
   },
   {
-    individualName: 'James Davis',
+    id: 5,
+    name: 'James Davis',
     email: 'james.davis@example.com',
-    phoneNumber: '555-123-4565',
+    phone: '555-123-4565',
     city: 'Phoenix',
     date: '2024-02-05',
     timeSlot: '15:00 - 17:00',
@@ -79,9 +73,10 @@ export const individualTourApplicationRows = [
     comments: 'Will the library be open?',
   },
   {
-    individualName: 'Olivia Miller',
+    id: 6,
+    name: 'Olivia Miller',
     email: 'olivia.miller@example.com',
-    phoneNumber: '555-123-4566',
+    phone: '555-123-4566',
     city: 'Philadelphia',
     date: '2024-02-10',
     timeSlot: '13:00 - 15:00',
@@ -90,9 +85,10 @@ export const individualTourApplicationRows = [
     comments: 'Are refreshments provided?',
   },
   {
-    individualName: 'William Garcia',
+    id: 7,
+    name: 'William Garcia',
     email: 'william.garcia@example.com',
-    phoneNumber: '555-123-4567',
+    phone: '555-123-4567',
     city: 'San Antonio',
     date: '2024-02-15',
     timeSlot: '08:00 - 10:00',
@@ -101,9 +97,10 @@ export const individualTourApplicationRows = [
     comments: 'Do we need prior registration?',
   },
   {
-    individualName: 'Mia Martinez',
+    id: 8,
+    name: 'Mia Martinez',
     email: 'mia.martinez@example.com',
-    phoneNumber: '555-123-4568',
+    phone: '555-123-4568',
     city: 'San Diego',
     date: '2024-02-20',
     timeSlot: '12:00 - 14:00',
@@ -112,9 +109,10 @@ export const individualTourApplicationRows = [
     comments: 'Excited to visit!',
   },
   {
-    individualName: 'Alexander Wilson',
+    id: 9,
+    name: 'Alexander Wilson',
     email: 'alexander.wilson@example.com',
-    phoneNumber: '555-123-4569',
+    phone: '555-123-4569',
     city: 'Dallas',
     date: '2024-02-25',
     timeSlot: '10:00 - 12:00',
@@ -123,9 +121,10 @@ export const individualTourApplicationRows = [
     comments: 'Are there group discounts?',
   },
   {
-    individualName: 'Charlotte Anderson',
+    id: 10,
+    name: 'Charlotte Anderson',
     email: 'charlotte.anderson@example.com',
-    phoneNumber: '555-123-4570',
+    phone: '555-123-4570',
     city: 'San Jose',
     date: '2024-03-01',
     timeSlot: '16:00 - 18:00',
@@ -139,11 +138,12 @@ const TourApplicationsTable = ({ rows }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogContent, setDialogContent] = useState('');
   const [decisions, setDecisions] = useState({}); // Store decisions for each row
-  
-  const [selectedColumn, setSelectedColumn] = useState('priority'); // State for dropdown selection
+  const [expandedRows, setExpandedRows] = useState([]); // State for expanded rows
 
-  const handleColumnChange = (event) => {
-    setSelectedColumn(event.target.value); // Update selected column type
+  const toggleRowExpansion = (id) => {
+    setExpandedRows((prev) =>
+      prev.includes(id) ? prev.filter((rowId) => rowId !== id) : [...prev, id]
+    );
   };
 
   const handleContactClick = (type, row) => {
@@ -176,33 +176,12 @@ const TourApplicationsTable = ({ rows }) => {
 
 // Columns
 const columns = [
-  { field: 'name', headerName: 'High School Name', width: 150 },
-  {
-    field: 'priority',
-    headerName: (
-      <div>
-        <Select
-          value={selectedColumn}
-          onChange={handleColumnChange}
-          displayEmpty
-          sx={{
-            fontSize: '14px',
-            color: '#8a0303',
-            fontWeight: 'bold',
-          }}
-        >
-          <MenuItem value="priority">Priority</MenuItem>
-          <MenuItem value="distance">Distance</MenuItem>
-          <MenuItem value="lgsPercentile">LGS Percentile</MenuItem>
-        </Select>
-      </div>
-    ),
-    width: 200,
-    renderCell: (params) => <div>{params.row[selectedColumn]}</div>, // Render the selected column value dynamically
-  },
+  { field: 'name', headerName: 'Student Name', width: 150 },
   { field: 'date', headerName: 'Tour Date', width: 100 },
-  { field: 'time', headerName: 'Tour Time', width: 100 },
+  { field: 'timeSlot', headerName: 'Tour Time', width: 100 },
   { field: 'city', headerName: 'City', width: 100 },
+  { field: 'departmentOfInterest', headerName: 'Department of Interest', width: 160 },
+  { field: 'numberOfAttendees', headerName: 'Attendees', width: 100 },
   {
     field: 'contact',
     headerName: 'Contact',
@@ -271,6 +250,42 @@ const columns = [
       </IconButton>
     ),
   },
+  {
+    field: 'expand',
+    headerName: '',
+    width: 50,
+    renderCell: (params) => (
+      <Box sx={{ width: '100%' }}>
+        <IconButton onClick={() => toggleRowExpansion(params.row.id)}>
+          {expandedRows.includes(params.row.id) ? <FaChevronUp /> : <FaChevronDown />}
+        </IconButton>
+        <Collapse in={expandedRows.includes(params.row.id)} timeout="auto" unmountOnExit>
+          <Box
+            sx={{
+              padding: '10px',
+              backgroundColor: '#f9f9f9',
+              border: '1px solid #ddd',
+              borderRadius: '5px',
+              marginTop: '5px',
+            }}
+          >
+            <Typography variant="body2">
+              <strong>Comments:</strong> {params.row.comments}
+            </Typography>
+            <Typography variant="body2">
+              <strong>City:</strong> {params.row.city}
+            </Typography>
+            <Typography variant="body2">
+              <strong>Phone:</strong> {params.row.phone}
+            </Typography>
+            <Typography variant="body2">
+              <strong>Email:</strong> {params.row.email}
+            </Typography>
+          </Box>
+        </Collapse>
+      </Box>
+    ),
+  },
 ];
 
   // Map rows and add handlers to each row
@@ -325,18 +340,37 @@ const columns = [
             },
           }}
         />
+{expandedRows.map((rowId) => {
+          const row = rows.find((r) => r.id === rowId);
+          return (
+            <Collapse key={rowId} in={true} timeout="auto" unmountOnExit>
+              <Box
+                sx={{
+                  margin: '10px 20px',
+                  padding: '10px',
+                  border: '1px solid #ddd',
+                  borderRadius: '5px',
+                  backgroundColor: '#f9f9f9',
+                }}
+              >
+                <Typography variant="h6">Additional Information</Typography>
+                <Typography>
+                  <strong>Comments:</strong> {row.comments}
+                </Typography>
+                <Typography>
+                  <strong>City:</strong> {row.city}
+                </Typography>
+                <Typography>
+                  <strong>Phone:</strong> {row.phone}
+                </Typography>
+                <Typography>
+                  <strong>Email:</strong> {row.email}
+                </Typography>
+              </Box>
+            </Collapse>
+          );
+        })}
       </Paper>
-
-      {/* Popup Dialog */}
-      <Dialog open={openDialog} onClose={handleCloseDialog}>
-        <DialogTitle>Contact Information</DialogTitle>
-        <DialogContent>{dialogContent}</DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDialog} color="primary">
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
     </div>
   );
 };
