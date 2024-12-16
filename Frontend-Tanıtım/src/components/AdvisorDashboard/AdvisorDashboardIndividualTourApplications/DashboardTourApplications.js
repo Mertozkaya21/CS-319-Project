@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import Sidebar from '../CoordinatorDashboardCommon/Sidebar';
+import Sidebar from '../AdvisorDashboardCommon/Sidebar';
 import Header from './Header';
 import TourApplicationsTable from './TourApplicationsTable'; // Correct component import
 import { tourApplicationsRows } from './TourApplicationsTable'; // Import dataset
-import styles from './CoordinatorDashboardTourApplications.module.css';
+import styles from './AdvisorDashboardTourApplications.module.css';
 
 const DashboardTourApplications = () => {
   const [filteredRows, setFilteredRows] = useState(tourApplicationsRows); // Manage filtered rows
@@ -24,7 +24,7 @@ const DashboardTourApplications = () => {
       <div className={styles.mainContent}>
         {/* Header */}
         <Header
-          title="Tour Applications"
+          title="Individual Tour Applications"
           onSearchSelection={handleSearchSelection}
         />
 
