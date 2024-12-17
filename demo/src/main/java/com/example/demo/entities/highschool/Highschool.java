@@ -42,7 +42,7 @@ public class Highschool {
 
         if (highschoolDTO.getCounselorName() != null) {
             this.counselor = new Counselor();
-            this.counselor.setName(highschoolDTO.getCounselorName());
+            this.counselor.setCounselorName(highschoolDTO.getCounselorName());
             this.counselor.setEmail(highschoolDTO.getCounselorEmail());
             this.counselor.setPhone(highschoolDTO.getCounselorPhoneNo());
             //this.counselor.setHighschool(this);
@@ -81,6 +81,11 @@ public class Highschool {
     @JsonGetter("counselorId")
     public Long getCounselorId() {
         return counselor != null ? counselor.getId() : null;
+    }
+
+    @JsonGetter("counselorName")
+    public String getCounselorName() {
+        return counselor != null ? counselor.getCounselorName() : null;
     }
 
     @JsonGetter("groupTourIds")

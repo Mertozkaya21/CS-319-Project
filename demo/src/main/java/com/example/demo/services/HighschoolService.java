@@ -43,14 +43,14 @@ public class HighschoolService {
                 .orElseThrow(() -> new HighschoolNotFoundException("Highschool with ID " + highschoolId + " not found"));
         highschool.setCounselor(counselor);
         return highschoolRepository.save(highschool);
-    }
+    } 
 
     public Highschool updateCounselor(Long highschoolId, Counselor updatedCounselor) throws HighschoolNotFoundException {
         Highschool highschool = highschoolRepository.findById(highschoolId)
                 .orElseThrow(() -> new HighschoolNotFoundException("Highschool with ID " + highschoolId + " not found"));
         Counselor currentCounselor = highschool.getCounselor();
         if (currentCounselor != null) {
-            currentCounselor.setName(updatedCounselor.getName());
+            currentCounselor.setCounselorName(updatedCounselor.getCounselorName());
             currentCounselor.setEmail(updatedCounselor.getEmail());
             currentCounselor.setPhone(updatedCounselor.getPhone());
         } else {
@@ -82,8 +82,8 @@ public class HighschoolService {
     public Highschool updateHighschoolCounselorName(Long id, String newCounselorName) throws HighschoolNotFoundException {
         Highschool highschool = getHighschoolByID(id);
 
-        if (!highschool.getCounselor().getName().equals(newCounselorName)) {
-            highschool.getCounselor().setName(newCounselorName);
+        if (!highschool.getCounselor().getCounselorName().equals(newCounselorName)) {
+            highschool.getCounselor().setCounselorName(newCounselorName);
             return highschoolRepository.save(highschool);
         }
         return highschool; 

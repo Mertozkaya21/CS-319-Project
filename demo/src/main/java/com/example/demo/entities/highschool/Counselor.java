@@ -26,7 +26,7 @@ public class Counselor {
     private long id;
 
     @Column(nullable = false)
-    private String name;
+    private String counselorName;
 
     @Column(nullable = false)
     private String phone;

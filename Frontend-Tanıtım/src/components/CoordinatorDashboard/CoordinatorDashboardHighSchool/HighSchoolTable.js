@@ -28,7 +28,7 @@ export const highSchoolRows = [
   { id: 12, name: 'High School L', city: 'Izmir', counselorName: 'Jane Doe', dateUpdated: 'Oct 27, 2023',  priority: 12, phone: '555-654-3212', email: 'jane.doe8@example.com' },
 ];
 
-const HighSchoolTable = ({ rows }) => {
+const HighSchoolTable = ({ rows, setSelectedRows }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogContent, setDialogContent] = useState('');
 
@@ -45,34 +45,34 @@ const HighSchoolTable = ({ rows }) => {
     setOpenDialog(false);
   };
 
+  const handleSelectionChange = (selectionModel) => {
+    // Update the selected rows in the parent component
+    setSelectedRows(selectionModel);
+  };
+
   const columns = [
     { field: 'name', headerName: 'High School Name', width: 200 },
     { field: 'id', headerName: 'School ID', width: 80 },
-    { field: 'dateUpdated', headerName: 'Date Updated', width: 110 },
+    { field: 'dateUpDated', headerName: 'Date Updated', width: 110 },
     { field: 'city', headerName: 'City', width: 80 },
-    { field: 'counselorName', headerName: 'Counselor Name', width: 130 },
+    { field: 'counselorName', headerName: 'Counselor Name', width: 130},
     {
       field: 'counselorContact',
       headerName: 'Counselor Contact',
       width: 140,
-      renderCell: (params) => (
-        <div className={styles.contactButtons}>
-          <IconButton onClick={() => handleContactClick('phone', params.row)}>
-            <FaPhoneAlt className={styles.contactIcon} />
-          </IconButton>
-          <IconButton onClick={() => handleContactClick('email', params.row)}>
-            <FaEnvelope className={styles.contactIcon} />
-          </IconButton>
-        </div>
-      ),
-    },
-    {
-      field: 'priority',
-      headerName: 'Priority Score',
-      width: 110,
-      renderCell: (params) => (
-        <div className={styles.priorityScore}>{params.value}</div>
-      ),
+      renderCell: (params) => {
+        const counselor = params.row.counselor || {};
+        return (
+          <div className={styles.contactButtons}>
+            <IconButton onClick={() => handleContactClick('phone', counselor)}>
+              <FaPhoneAlt className={styles.contactIcon} />
+            </IconButton>
+            <IconButton onClick={() => handleContactClick('email', counselor)}>
+              <FaEnvelope className={styles.contactIcon} />
+            </IconButton>
+          </div>
+        );
+      },
     },
     {
       field: 'action',
@@ -114,6 +114,7 @@ const HighSchoolTable = ({ rows }) => {
           rowsPerPageOptions={[5, 10]}
           checkboxSelection
           disableSelectionOnClick
+          onSelectionModelChange={(newSelection) => handleSelectionChange(newSelection)}
           sx={{
             '& .MuiDataGrid-columnHeaders': {
               backgroundColor: '#f7f7f7',

@@ -12,7 +12,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import { highSchoolRows } from './HighSchoolTable'; // Import high school data
 
-const Header = ({ title, onSearchSelection }) => {
+const Header = ({ title, onSearchSelection , onConfirmDelete}) => {
   const [isPopupOpen, setPopupOpen] = useState(false); // State to control the popup
   const [sortOption, setSortOption] = useState('Date Updated');
 
@@ -131,7 +131,10 @@ const Header = ({ title, onSearchSelection }) => {
             No
           </Button>
           <Button
-            onClick={handleClosePopup}
+            onClick={() => {
+              onConfirmDelete(); // Call the onConfirmDelete function passed from Dashboard
+              handleClosePopup(); // Close the popup after confirming
+            }}
             variant="contained"
             sx={{
               backgroundColor: '#8a0303',
