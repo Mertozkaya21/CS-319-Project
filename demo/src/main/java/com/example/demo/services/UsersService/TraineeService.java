@@ -21,7 +21,6 @@ public class TraineeService implements RoleService {
         this.traineeRepository = repo;
     }
 
-
     public boolean isEligibleForPromotion(Long traineeId) throws UserNotFoundException {
         Trainee trainee = traineeRepository.findById(traineeId)
                 .orElseThrow(() -> new UserNotFoundException("Trainee not found with ID: " + traineeId));
