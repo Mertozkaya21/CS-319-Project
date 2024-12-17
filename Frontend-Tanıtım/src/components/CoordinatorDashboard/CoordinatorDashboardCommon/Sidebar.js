@@ -132,6 +132,7 @@ const theme = createTheme({
 });
 
 const Sidebar = () => {
+  
   return (
     <ThemeProvider theme={theme}>
       <div className={styles.sidebar}>

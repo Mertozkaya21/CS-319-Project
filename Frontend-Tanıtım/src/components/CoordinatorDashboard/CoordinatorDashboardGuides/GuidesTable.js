@@ -74,13 +74,13 @@ export const guidesRows = [
 // Table Columns
 const columns = [
   { field: 'name', headerName: 'Guide Name', width: 160 },
-  { field: 'id', headerName: 'Guide ID', width: 120 },
-  { field: 'dateAdded', headerName: 'Date Added', width: 120 },
+  { field: 'id', headerName: 'Guide ID', width: 80 },
+  { field: 'dateAdded', headerName: 'Date Added', width: 100 },
   { field: 'tours', headerName: 'Tours Conducted', width: 130 },
   {
     field: 'contact',
     headerName: 'Contact',
-    width: 120,
+    width: 100,
     renderCell: (params) => (
       <div className={styles.contactButtons}>
         <IconButton onClick={() => params.row.handleContactClick('phone', params.row)}>
@@ -105,7 +105,7 @@ const columns = [
   {
     field: 'action',
     headerName: 'Edit',
-    width: 100,
+    width: 50,
     renderCell: (params) => {
       console.log("Row ID:", params.row.id); // Debug to check if ID is valid
       return (

@@ -14,71 +14,18 @@ import styles from './CoordinatorDashboardHighSchool.module.css';
  
 // Data
 export const highSchoolRows = [
-  { id: 1, name: 'High School A', city: 'Ankara', counselorName: 'Jane Doe', dateUpdated: 'Oct 25, 2023', highSchoolId: '#123456789', priority: 1, phone: '555-123-4561', email: 'jane.doe1@example.com' },
-  { id: 2, name: 'High School B', city: 'Ankara', counselorName: 'Jane Doe', dateUpdated: 'Oct 25, 2023', highSchoolId: '#123456789', priority: 2, phone: '555-123-4562', email: 'jane.doe2@example.com' },
-  { id: 3, name: 'High School C', city: 'Ankara', counselorName: 'Jane Doe', dateUpdated: 'Oct 25, 2023', highSchoolId: '#123456789', priority: 3, phone: '555-123-4563', email: 'jane.doe3@example.com' },
-  { id: 4, name: 'High School D', city: 'Istanbul', counselorName: 'John Doe', dateUpdated: 'Oct 26, 2023', highSchoolId: '#987654321', priority: 4, phone: '555-987-6541', email: 'john.doe1@example.com' },
-  { id: 5, name: 'High School E', city: 'Istanbul', counselorName: 'John Doe', dateUpdated: 'Oct 26, 2023', highSchoolId: '#987654321', priority: 5, phone: '555-987-6542', email: 'john.doe2@example.com' },
-  { id: 6, name: 'High School F', city: 'Izmir', counselorName: 'Jane Doe', dateUpdated: 'Oct 27, 2023', highSchoolId: '#987654321', priority: 6, phone: '555-654-3211', email: 'jane.doe4@example.com' },
-  { id: 7, name: 'High School G', city: 'Ankara', counselorName: 'Jane Doe', dateUpdated: 'Oct 25, 2023', highSchoolId: '#123456789', priority: 7, phone: '555-123-4567', email: 'jane.doe5@example.com' },
-  { id: 8, name: 'High School H', city: 'Ankara', counselorName: 'Jane Doe', dateUpdated: 'Oct 25, 2023', highSchoolId: '#123456789', priority: 8, phone: '555-123-4568', email: 'jane.doe6@example.com' },
-  { id: 9, name: 'High School I', city: 'Ankara', counselorName: 'Jane Doe', dateUpdated: 'Oct 25, 2023', highSchoolId: '#123456789', priority: 9, phone: '555-123-4569', email: 'jane.doe7@example.com' },
-  { id: 10, name: 'High School J', city: 'Istanbul', counselorName: 'John Doe', dateUpdated: 'Oct 26, 2023', highSchoolId: '#987654321', priority: 10, phone: '555-987-6543', email: 'john.doe3@example.com' },
-  { id: 11, name: 'High School K', city: 'Istanbul', counselorName: 'John Doe', dateUpdated: 'Oct 26, 2023', highSchoolId: '#987654321', priority: 11, phone: '555-987-6544', email: 'john.doe4@example.com' },
-  { id: 12, name: 'High School L', city: 'Izmir', counselorName: 'Jane Doe', dateUpdated: 'Oct 27, 2023', highSchoolId: '#987654321', priority: 12, phone: '555-654-3212', email: 'jane.doe8@example.com' },
-];
-// Columns with Reduced Widths
-const columns = [
-  { field: 'name', headerName: 'High School Name', width: 140 }, // Reduced from 200
-  { field: 'highSchoolId', headerName: 'School ID', width: 100 }, // Reduced from 150
-  { field: 'dateUpdated', headerName: 'Date Updated', width: 120 }, // Reduced from 150
-  { field: 'city', headerName: 'City', width: 80 }, // Reduced from 130
-  { field: 'counselorName', headerName: 'Counselor Name', width: 150 }, // Reduced from 200
-  {
-    field: 'counselorContact',
-    headerName: 'Counselor Contact',
-    width: 150,
-    renderCell: (params) => (
-      <div className={styles.contactButtons}>
-        <IconButton onClick={() => params.row.handleContactClick('phone', params.row)}>
-          <FaPhoneAlt className={styles.contactIcon} />
-        </IconButton>
-        <IconButton onClick={() => params.row.handleContactClick('email', params.row)}>
-          <FaEnvelope className={styles.contactIcon} />
-        </IconButton>
-      </div>
-    ),
-  },
-  {
-    field: 'priority',
-    headerName: 'Priority Score',
-    width: 110, // Reduced from 150
-    renderCell: (params) => (
-      <div className={styles.priorityScore}>
-        {params.value}
-      </div>
-    ),
-  },
-  {
-    field: 'action',
-    headerName: 'Edit',
-    width: 60,
-    renderCell: (params) => {
-      console.log("Row ID:", params.row.id); // Debug to check if ID is valid
-      return (
-        <NavLink
-          to={`/coordinatordashboardedithighschool/${params.row.id}`} // Dynamically pass ID
-          className={({ isActive }) =>
-            `${styles.navItem} ${isActive ? styles.active : ''}`
-          }
-        >
-          <IconButton aria-label="edit">
-            <EditIcon />
-          </IconButton>
-        </NavLink>
-      );
-    },
-  }
+  { id: 1, name: 'High School A', city: 'Ankara', counselorName: 'Jane Doe', dateUpdated: 'Oct 25, 2023', priority: 1, phone: '555-123-4561', email: 'jane.doe1@example.com' },
+  { id: 2, name: 'High School B', city: 'Ankara', counselorName: 'Jane Doe', dateUpdated: 'Oct 25, 2023',  priority: 2, phone: '555-123-4562', email: 'jane.doe2@example.com' },
+  { id: 3, name: 'High School C', city: 'Ankara', counselorName: 'Jane Doe', dateUpdated: 'Oct 25, 2023', priority: 3, phone: '555-123-4563', email: 'jane.doe3@example.com' },
+  { id: 4, name: 'High School D', city: 'Istanbul', counselorName: 'John Doe', dateUpdated: 'Oct 26, 2023',  priority: 4, phone: '555-987-6541', email: 'john.doe1@example.com' },
+  { id: 5, name: 'High School E', city: 'Istanbul', counselorName: 'John Doe', dateUpdated: 'Oct 26, 2023',  priority: 5, phone: '555-987-6542', email: 'john.doe2@example.com' },
+  { id: 6, name: 'High School F', city: 'Izmir', counselorName: 'Jane Doe', dateUpdated: 'Oct 27, 2023',  priority: 6, phone: '555-654-3211', email: 'jane.doe4@example.com' },
+  { id: 7, name: 'High School G', city: 'Ankara', counselorName: 'Jane Doe', dateUpdated: 'Oct 25, 2023', priority: 7, phone: '555-123-4567', email: 'jane.doe5@example.com' },
+  { id: 8, name: 'High School H', city: 'Ankara', counselorName: 'Jane Doe', dateUpdated: 'Oct 25, 2023', priority: 8, phone: '555-123-4568', email: 'jane.doe6@example.com' },
+  { id: 9, name: 'High School I', city: 'Ankara', counselorName: 'Jane Doe', dateUpdated: 'Oct 25, 2023', priority: 9, phone: '555-123-4569', email: 'jane.doe7@example.com' },
+  { id: 10, name: 'High School J', city: 'Istanbul', counselorName: 'John Doe', dateUpdated: 'Oct 26, 2023',  priority: 10, phone: '555-987-6543', email: 'john.doe3@example.com' },
+  { id: 11, name: 'High School K', city: 'Istanbul', counselorName: 'John Doe', dateUpdated: 'Oct 26, 2023', priority: 11, phone: '555-987-6544', email: 'john.doe4@example.com' },
+  { id: 12, name: 'High School L', city: 'Izmir', counselorName: 'Jane Doe', dateUpdated: 'Oct 27, 2023',  priority: 12, phone: '555-654-3212', email: 'jane.doe8@example.com' },
 ];
 
 const HighSchoolTable = ({ rows }) => {
@@ -99,15 +46,15 @@ const HighSchoolTable = ({ rows }) => {
   };
 
   const columns = [
-    { field: 'name', headerName: 'High School Name', width: 140 },
-    { field: 'highSchoolId', headerName: 'School ID', width: 100 },
-    { field: 'dateUpdated', headerName: 'Date Updated', width: 120 },
+    { field: 'name', headerName: 'High School Name', width: 200 },
+    { field: 'id', headerName: 'School ID', width: 80 },
+    { field: 'dateUpdated', headerName: 'Date Updated', width: 110 },
     { field: 'city', headerName: 'City', width: 80 },
-    { field: 'counselorName', headerName: 'Counselor Name', width: 150 },
+    { field: 'counselorName', headerName: 'Counselor Name', width: 130 },
     {
       field: 'counselorContact',
       headerName: 'Counselor Contact',
-      width: 150,
+      width: 140,
       renderCell: (params) => (
         <div className={styles.contactButtons}>
           <IconButton onClick={() => handleContactClick('phone', params.row)}>
@@ -172,11 +119,15 @@ const HighSchoolTable = ({ rows }) => {
               backgroundColor: '#f7f7f7',
               fontWeight: 'bold',
               color: '#8a0303',
-              textAlign: 'center',
             },
             '& .MuiDataGrid-columnHeaderTitle': {
-              textAlign: 'center',
-              display: 'block',
+              textAlign: 'center', // Centers text within column headers
+              width: '100%',       // Ensures full width for alignment
+            },
+            '& .MuiDataGrid-columnHeader': {
+              display: 'flex',
+              justifyContent: 'center', // Centers content horizontally
+              alignItems: 'center',     // Centers content vertically
             },
             '& .MuiDataGrid-row:nth-of-type(odd)': {
               backgroundColor: '#fce4e4', // Highlight every other row with light red

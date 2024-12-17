@@ -9,6 +9,13 @@ import styles from './AdvisorDashboardTourApplications.module.css';
 import Collapse from '@mui/material/Collapse';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 
 // Dummy Data. replace with data from database
 export const tourApplicationsRows = [
@@ -138,12 +145,11 @@ const TourApplicationsTable = ({ rows }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogContent, setDialogContent] = useState('');
   const [decisions, setDecisions] = useState({}); // Store decisions for each row
-  const [expandedRows, setExpandedRows] = useState([]); // State for expanded rows
+  const [expandedRow, setExpandedRow] = useState(null);
 
+  // Toggle row expansion
   const toggleRowExpansion = (id) => {
-    setExpandedRows((prev) =>
-      prev.includes(id) ? prev.filter((rowId) => rowId !== id) : [...prev, id]
-    );
+    setExpandedRow((prev) => (prev === id ? null : id));
   };
 
   const handleContactClick = (type, row) => {
@@ -173,19 +179,18 @@ const TourApplicationsTable = ({ rows }) => {
     }));
   };
 
-
 // Columns
 const columns = [
-  { field: 'name', headerName: 'Student Name', width: 150 },
-  { field: 'date', headerName: 'Tour Date', width: 100 },
+  { field: 'name', headerName: 'Student Name', width: 130 },
+  { field: 'date', headerName: 'Tour Date', width: 90 },
   { field: 'timeSlot', headerName: 'Tour Time', width: 100 },
   { field: 'city', headerName: 'City', width: 100 },
   { field: 'departmentOfInterest', headerName: 'Department of Interest', width: 160 },
-  { field: 'numberOfAttendees', headerName: 'Attendees', width: 100 },
+  { field: 'numberOfAttendees', headerName: 'Attendees', width: 85 },
   {
     field: 'contact',
     headerName: 'Contact',
-    width: 100,
+    width: 70,
     renderCell: (params) => (
       <div className={styles.contactButtons}>
         <IconButton onClick={() => params.row.handleContactClick('phone', params.row)}>
@@ -251,43 +256,18 @@ const columns = [
     ),
   },
   {
-    field: 'expand',
-    headerName: '',
-    width: 50,
+    field: 'comments',
+    headerName: 'Comments',
+    width: 90,
     renderCell: (params) => (
-      <Box sx={{ width: '100%' }}>
-        <IconButton onClick={() => toggleRowExpansion(params.row.id)}>
-          {expandedRows.includes(params.row.id) ? <FaChevronUp /> : <FaChevronDown />}
-        </IconButton>
-        <Collapse in={expandedRows.includes(params.row.id)} timeout="auto" unmountOnExit>
-          <Box
-            sx={{
-              padding: '10px',
-              backgroundColor: '#f9f9f9',
-              border: '1px solid #ddd',
-              borderRadius: '5px',
-              marginTop: '5px',
-            }}
-          >
-            <Typography variant="body2">
-              <strong>Comments:</strong> {params.row.comments}
-            </Typography>
-            <Typography variant="body2">
-              <strong>City:</strong> {params.row.city}
-            </Typography>
-            <Typography variant="body2">
-              <strong>Phone:</strong> {params.row.phone}
-            </Typography>
-            <Typography variant="body2">
-              <strong>Email:</strong> {params.row.email}
-            </Typography>
-          </Box>
-        </Collapse>
-      </Box>
+      params.row.comments && (
+        <Tooltip title={params.row.comments} arrow>
+          <ChatBubbleOutlineIcon sx={{ color: '#8a0303' }} />
+        </Tooltip>
+      )
     ),
   },
 ];
-
   // Map rows and add handlers to each row
   const rowsWithHandlers = rows.map((row) => ({
     ...row,
@@ -309,7 +289,7 @@ const columns = [
         }}
       >
         <DataGrid
-          rows={rowsWithHandlers} // Pass rows with handlers
+          rows={rowsWithHandlers}
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5, 10]}
@@ -340,37 +320,18 @@ const columns = [
             },
           }}
         />
-{expandedRows.map((rowId) => {
-          const row = rows.find((r) => r.id === rowId);
-          return (
-            <Collapse key={rowId} in={true} timeout="auto" unmountOnExit>
-              <Box
-                sx={{
-                  margin: '10px 20px',
-                  padding: '10px',
-                  border: '1px solid #ddd',
-                  borderRadius: '5px',
-                  backgroundColor: '#f9f9f9',
-                }}
-              >
-                <Typography variant="h6">Additional Information</Typography>
-                <Typography>
-                  <strong>Comments:</strong> {row.comments}
-                </Typography>
-                <Typography>
-                  <strong>City:</strong> {row.city}
-                </Typography>
-                <Typography>
-                  <strong>Phone:</strong> {row.phone}
-                </Typography>
-                <Typography>
-                  <strong>Email:</strong> {row.email}
-                </Typography>
-              </Box>
-            </Collapse>
-          );
-        })}
       </Paper>
+
+      {/* Popup Dialog */}
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Contact Information</DialogTitle>
+        <DialogContent>{dialogContent}</DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

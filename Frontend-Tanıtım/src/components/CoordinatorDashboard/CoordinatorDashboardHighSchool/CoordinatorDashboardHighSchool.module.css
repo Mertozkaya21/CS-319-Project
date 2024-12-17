@@ -50,7 +50,7 @@ body, html {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 0px; /* Add horizontal padding to align with the table edges */
+  padding: 0 20px; /* Add horizontal padding to align with the table edges */
 }
 
 .headerTitle {

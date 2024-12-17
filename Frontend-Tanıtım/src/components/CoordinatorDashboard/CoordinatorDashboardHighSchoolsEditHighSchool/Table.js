@@ -213,6 +213,8 @@ const Table = () => {
           Delete Changes
         </Button>
         <Button
+          component={NavLink}
+          to="/coordinatordashboardhighschool" // Redirect to this page
           variant="contained"
           sx={{
             backgroundColor: "#8a0303",

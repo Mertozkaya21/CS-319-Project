@@ -9,6 +9,17 @@ import styles from './CoordinatorDashboardTourApplications.module.css';
 import Collapse from '@mui/material/Collapse';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import Button from '@mui/material/Button';
+import Tooltip from '@mui/material/Tooltip';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import EditIcon from '@mui/icons-material/Edit';
+import { NavLink } from 'react-router-dom';
 
 // Dummy Data. replace with data from database
 export const tourApplicationsRows = [
@@ -138,12 +149,11 @@ const TourApplicationsTable = ({ rows }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogContent, setDialogContent] = useState('');
   const [decisions, setDecisions] = useState({}); // Store decisions for each row
-  const [expandedRows, setExpandedRows] = useState([]); // State for expanded rows
+  const [expandedRow, setExpandedRow] = useState(null);
 
+  // Toggle row expansion
   const toggleRowExpansion = (id) => {
-    setExpandedRows((prev) =>
-      prev.includes(id) ? prev.filter((rowId) => rowId !== id) : [...prev, id]
-    );
+    setExpandedRow((prev) => (prev === id ? null : id));
   };
 
   const handleContactClick = (type, row) => {
@@ -173,19 +183,18 @@ const TourApplicationsTable = ({ rows }) => {
     }));
   };
 
-
 // Columns
 const columns = [
-  { field: 'name', headerName: 'Student Name', width: 150 },
-  { field: 'date', headerName: 'Tour Date', width: 100 },
+  { field: 'name', headerName: 'Student Name', width: 130 },
+  { field: 'date', headerName: 'Tour Date', width: 90 },
   { field: 'timeSlot', headerName: 'Tour Time', width: 100 },
   { field: 'city', headerName: 'City', width: 100 },
   { field: 'departmentOfInterest', headerName: 'Department of Interest', width: 160 },
-  { field: 'numberOfAttendees', headerName: 'Attendees', width: 100 },
+  { field: 'numberOfAttendees', headerName: 'Attendees', width: 85 },
   {
     field: 'contact',
     headerName: 'Contact',
-    width: 100,
+    width: 70,
     renderCell: (params) => (
       <div className={styles.contactButtons}>
         <IconButton onClick={() => params.row.handleContactClick('phone', params.row)}>
@@ -198,38 +207,81 @@ const columns = [
     ),
   },
   {
-    field: 'decision',
-    headerName: 'Accept / Reject',
-    width: 120,
+    field: 'comments',
+    headerName: 'Comments',
+    width: 90,
     renderCell: (params) => (
-      <div>
-        <Radio
-          checked={params.row.decision === 'accept'}
-          onChange={() => params.row.handleDecisionChange('accept', params.row.id)}
+      params.row.comments && (
+        <Tooltip title={params.row.comments} arrow>
+          <ChatBubbleOutlineIcon sx={{ color: '#8a0303' }} />
+        </Tooltip>
+      )
+    ),
+  },
+  {
+    field: 'decision',
+    headerName: 'Decision',
+    width: 130,
+    renderCell: (params) => (
+      <ToggleButtonGroup
+        value={params.row.decision}
+        exclusive
+        onChange={(e, value) => handleDecisionChange(value, params.row.id)}
+        size="small"
+        sx={{
+          '& .MuiToggleButton-root': {
+            padding: '2px 6px', // Smaller padding
+            fontSize: '12px',   // Smaller font size
+            minHeight: '28px',  // Reduce the minimum height
+            minWidth: '60px',   // Reduce the minimum width
+          },
+        }}
+      >
+        <ToggleButton
           value="accept"
-          name={`decision-${params.row.id}`}
-          inputProps={{ 'aria-label': 'Accept' }}
           sx={{
-            color: '#8a0303',
-            '&.Mui-checked': {
-              color: '#6c0101',
+            color: params.row.decision === 'accept' ? '#fff' : 'grey', // White when selected
+            backgroundColor: params.row.decision === 'accept' ? 'green' : '#e0e0e0', // Green when selected
+            '&:hover': {
+              backgroundColor: params.row.decision === 'accept' ? 'rgba(0, 128, 0, 0.8)' : '#d5d5d5',
+              color: params.row.decision === 'accept' ? '#fff' : 'grey',
             },
-          }}
-        />
-        <Radio
-          checked={params.row.decision === 'reject'}
-          onChange={() => params.row.handleDecisionChange('reject', params.row.id)}
-          value="reject"
-          name={`decision-${params.row.id}`}
-          inputProps={{ 'aria-label': 'Reject' }}
-          sx={{
-            color: '#8a0303',
-            '&.Mui-checked': {
-              color: '#6c0101',
+            '&.Mui-selected': {
+              backgroundColor: 'green', // Force green when clicked
+              color: '#fff',
+              '&:hover': {
+                backgroundColor: 'rgba(0, 128, 0, 0.8)',
+              },
             },
+            fontWeight: 'bold',
+            borderRadius: '8px',
           }}
-        />
-      </div>
+        >
+          Accept
+        </ToggleButton>
+        <ToggleButton
+        value="reject"
+        sx={{
+          color: params.row.decision === 'reject' ? '#fff' : 'grey', // White when selected
+          backgroundColor: params.row.decision === 'reject' ? 'red' : '#e0e0e0', // Red when selected
+          '&:hover': {
+            backgroundColor: params.row.decision === 'reject' ? 'rgba(255, 0, 0, 0.8)' : '#d5d5d5',
+            color: params.row.decision === 'reject' ? '#fff' : 'grey',
+          },
+          '&.Mui-selected': {
+            backgroundColor: 'red', // Force red when clicked
+            color: '#fff',
+            '&:hover': {
+              backgroundColor: 'rgba(255, 0, 0, 0.8)',
+            },
+          },
+          fontWeight: 'bold',
+          borderRadius: '8px',
+        }}
+      >
+        Reject
+      </ToggleButton>
+      </ToggleButtonGroup>
     ),
   },
   {
@@ -251,43 +303,26 @@ const columns = [
     ),
   },
   {
-    field: 'expand',
-    headerName: '',
-    width: 50,
-    renderCell: (params) => (
-      <Box sx={{ width: '100%' }}>
-        <IconButton onClick={() => toggleRowExpansion(params.row.id)}>
-          {expandedRows.includes(params.row.id) ? <FaChevronUp /> : <FaChevronDown />}
-        </IconButton>
-        <Collapse in={expandedRows.includes(params.row.id)} timeout="auto" unmountOnExit>
-          <Box
-            sx={{
-              padding: '10px',
-              backgroundColor: '#f9f9f9',
-              border: '1px solid #ddd',
-              borderRadius: '5px',
-              marginTop: '5px',
-            }}
-          >
-            <Typography variant="body2">
-              <strong>Comments:</strong> {params.row.comments}
-            </Typography>
-            <Typography variant="body2">
-              <strong>City:</strong> {params.row.city}
-            </Typography>
-            <Typography variant="body2">
-              <strong>Phone:</strong> {params.row.phone}
-            </Typography>
-            <Typography variant="body2">
-              <strong>Email:</strong> {params.row.email}
-            </Typography>
-          </Box>
-        </Collapse>
-      </Box>
-    ),
-  },
+    field: 'action',
+    headerName: 'Edit',
+    width: 60,
+    renderCell: (params) => {
+      console.log("Row ID:", params.row.id); // Debug to check if ID is valid
+      return (
+        <NavLink
+          to={`/coordinatordashboardeditindividualapplication/${params.row.id}`} // Dynamically pass ID
+          className={({ isActive }) =>
+            `${styles.navItem} ${isActive ? styles.active : ''}`
+          }
+        >
+          <IconButton aria-label="edit">
+            <EditIcon />
+          </IconButton>
+        </NavLink>
+      );
+    },
+  }
 ];
-
   // Map rows and add handlers to each row
   const rowsWithHandlers = rows.map((row) => ({
     ...row,
@@ -309,7 +344,7 @@ const columns = [
         }}
       >
         <DataGrid
-          rows={rowsWithHandlers} // Pass rows with handlers
+          rows={rowsWithHandlers}
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5, 10]}
@@ -340,37 +375,18 @@ const columns = [
             },
           }}
         />
-{expandedRows.map((rowId) => {
-          const row = rows.find((r) => r.id === rowId);
-          return (
-            <Collapse key={rowId} in={true} timeout="auto" unmountOnExit>
-              <Box
-                sx={{
-                  margin: '10px 20px',
-                  padding: '10px',
-                  border: '1px solid #ddd',
-                  borderRadius: '5px',
-                  backgroundColor: '#f9f9f9',
-                }}
-              >
-                <Typography variant="h6">Additional Information</Typography>
-                <Typography>
-                  <strong>Comments:</strong> {row.comments}
-                </Typography>
-                <Typography>
-                  <strong>City:</strong> {row.city}
-                </Typography>
-                <Typography>
-                  <strong>Phone:</strong> {row.phone}
-                </Typography>
-                <Typography>
-                  <strong>Email:</strong> {row.email}
-                </Typography>
-              </Box>
-            </Collapse>
-          );
-        })}
       </Paper>
+
+      {/* Popup Dialog */}
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Contact Information</DialogTitle>
+        <DialogContent>{dialogContent}</DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
