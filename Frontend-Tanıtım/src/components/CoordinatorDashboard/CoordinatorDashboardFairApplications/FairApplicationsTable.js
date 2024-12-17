@@ -11,91 +11,19 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import RestartAltIcon from '@mui/icons-material/RestartAlt'; // Reset icon
 import styles from './CoordinatorDashboardFairApplications.module.css';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import Tooltip from '@mui/material/Tooltip';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 
 // Data
 export const fairApplicationsRows = [
-  { id: 1, name: 'Organization A', date: 'Oct 30, 2024', time: '09:00-11:00', city: 'Ankara', phone: '555-123-4561', email: 'jane.doe1@example.com' },
-  { id: 2, name: 'Organization B', date: 'Oct 30, 2024', time: '09:00-11:00', city: 'Antalya', phone: '555-123-4562', email: 'jane.doe2@example.com' },
-  { id: 3, name: 'Organization C', date: 'Oct 30, 2024', time: '09:00-11:00', city: 'Konya', phone: '555-123-4562', email: 'jane.doe2@example.com' },
-  { id: 4, name: 'Organization D', date: 'Oct 30, 2024', time: '09:00-11:00', city: 'Istanbul', phone: '555-123-4562', email: 'jane.doe2@example.com' },
-  { id: 5, name: 'Organization E', date: 'Oct 30, 2024', time: '09:00-11:00', city: 'Konya', phone: '555-123-4562', email: 'jane.doe2@example.com' },
-  { id: 6, name: 'Organization F', date: 'Oct 30, 2024', time: '09:00-11:00', city: 'Ankara', phone: '555-123-4562', email: 'jane.doe2@example.com' },
-];
-
-// Columns
-const columns = [
-  { field: 'name', headerName: 'Organisation Name', width: 150 },
-  { field: 'date', headerName: 'Fair Date', width: 100 },
-  { field: 'time', headerName: 'Fair Time', width: 100 },
-  { field: 'city', headerName: 'City', width: 100 },
-  {
-    field: 'contact',
-    headerName: 'Contact',
-    width: 100,
-    renderCell: (params) => (
-      <div className={styles.contactButtons}>
-        <IconButton onClick={() => params.row.handleContactClick('phone', params.row)}>
-          <FaPhoneAlt className={styles.contactIcon} />
-        </IconButton>
-        <IconButton onClick={() => params.row.handleContactClick('email', params.row)}>
-          <FaEnvelope className={styles.contactIcon} />
-        </IconButton>
-      </div>
-    ),
-  },
-  {
-    field: 'decision',
-    headerName: 'Accept / Reject',
-    width: 120,
-    renderCell: (params) => (
-      <div>
-        <Radio
-          checked={params.row.decision === 'accept'}
-          onChange={() => params.row.handleDecisionChange('accept', params.row.id)}
-          value="accept"
-          name={`decision-${params.row.id}`}
-          inputProps={{ 'aria-label': 'Accept' }}
-          sx={{
-            color: '#8a0303',
-            '&.Mui-checked': {
-              color: '#6c0101',
-            },
-          }}
-        />
-        <Radio
-          checked={params.row.decision === 'reject'}
-          onChange={() => params.row.handleDecisionChange('reject', params.row.id)}
-          value="reject"
-          name={`decision-${params.row.id}`}
-          inputProps={{ 'aria-label': 'Reject' }}
-          sx={{
-            color: '#8a0303',
-            '&.Mui-checked': {
-              color: '#6c0101',
-            },
-          }}
-        />
-      </div>
-    ),
-  },
-  {
-    field: 'reset',
-    headerName: 'Reset',
-    width: 60,
-    renderCell: (params) => (
-      <IconButton
-        onClick={() => params.row.handleResetDecision(params.row.id)}
-        sx={{
-          color: '#8a0303',
-          '&:hover': {
-            color: '#6c0101',
-          },
-        }}
-      >
-        <RestartAltIcon />
-      </IconButton>
-    ),
-  },
+  { id: 1, name: 'Organization A', date: 'Oct 30, 2024', time: '09:00-11:00', city: 'Ankara', phone: '555-123-4561', email: 'jane.doe1@example.com', comments: 'Looking forward to the fair and meeting you.' },
+  { id: 2, name: 'Organization B', date: 'Oct 30, 2024', time: '09:00-11:00', city: 'Antalya', phone: '555-123-4562', email: 'jane.doe2@example.com', comments: 'Looking forward to the fair and meeting you.' },
+  { id: 3, name: 'Organization C', date: 'Oct 30, 2024', time: '09:00-11:00', city: 'Konya', phone: '555-123-4562', email: 'jane.doe2@example.com' , comments: 'Looking forward to the fair and meeting you.' },
+  { id: 4, name: 'Organization D', date: 'Oct 30, 2024', time: '09:00-11:00', city: 'Istanbul', phone: '555-123-4562', email: 'jane.doe2@example.com', comments: 'Looking forward to the fair and meeting you.'  },
+  { id: 5, name: 'Organization E', date: 'Oct 30, 2024', time: '09:00-11:00', city: 'Konya', phone: '555-123-4562', email: 'jane.doe2@example.com', comments: 'Looking forward to the fair and meeting you.'  },
+  { id: 6, name: 'Organization F', date: 'Oct 30, 2024', time: '09:00-11:00', city: 'Ankara', phone: '555-123-4562', email: 'jane.doe2@example.com', comments: 'Looking forward to the fair and meeting you.'  },
 ];
 
 const FairApplicationsTable = ({ rows }) => {
@@ -139,6 +67,124 @@ const FairApplicationsTable = ({ rows }) => {
     decision: decisions[row.id] || null, // Attach decision state
   }));
 
+// Columns
+const columns = [
+  { field: 'name', headerName: 'Organisation Name', width: 150 },
+  { field: 'date', headerName: 'Fair Date', width: 100 },
+  { field: 'time', headerName: 'Fair Time', width: 100 },
+  { field: 'city', headerName: 'City', width: 100 },
+  {
+    field: 'contact',
+    headerName: 'Contact',
+    width: 100,
+    renderCell: (params) => (
+      <div className={styles.contactButtons}>
+        <IconButton onClick={() => params.row.handleContactClick('phone', params.row)}>
+          <FaPhoneAlt className={styles.contactIcon} />
+        </IconButton>
+        <IconButton onClick={() => params.row.handleContactClick('email', params.row)}>
+          <FaEnvelope className={styles.contactIcon} />
+        </IconButton>
+      </div>
+    ),
+  },
+  {
+    field: 'comments',
+    headerName: 'Comments',
+    width: 90,
+    renderCell: (params) => (
+      params.row.comments && (
+        <Tooltip title={params.row.comments} arrow>
+          <ChatBubbleOutlineIcon sx={{ color: '#8a0303' }} />
+        </Tooltip>
+      )
+    ),
+  },
+  {
+    field: 'decision',
+    headerName: 'Decision',
+    width: 130,
+    renderCell: (params) => (
+      <ToggleButtonGroup
+        value={params.row.decision}
+        exclusive
+        onChange={(e, value) => handleDecisionChange(value, params.row.id)}
+        size="small"
+        sx={{
+          '& .MuiToggleButton-root': {
+            padding: '2px 6px', // Smaller padding
+            fontSize: '12px',   // Smaller font size
+            minHeight: '28px',  // Reduce the minimum height
+            minWidth: '60px',   // Reduce the minimum width
+          },
+        }}
+      >
+        <ToggleButton
+          value="accept"
+          sx={{
+            color: params.row.decision === 'accept' ? '#fff' : 'grey', // White when selected
+            backgroundColor: params.row.decision === 'accept' ? 'green' : '#e0e0e0', // Green when selected
+            '&:hover': {
+              backgroundColor: params.row.decision === 'accept' ? 'rgba(0, 128, 0, 0.8)' : '#d5d5d5',
+              color: params.row.decision === 'accept' ? '#fff' : 'grey',
+            },
+            '&.Mui-selected': {
+              backgroundColor: 'green', // Force green when clicked
+              color: '#fff',
+              '&:hover': {
+                backgroundColor: 'rgba(0, 128, 0, 0.8)',
+              },
+            },
+            fontWeight: 'bold',
+            borderRadius: '8px',
+          }}
+        >
+          Accept
+        </ToggleButton>
+        <ToggleButton
+        value="reject"
+        sx={{
+          color: params.row.decision === 'reject' ? '#fff' : 'grey', // White when selected
+          backgroundColor: params.row.decision === 'reject' ? 'red' : '#e0e0e0', // Red when selected
+          '&:hover': {
+            backgroundColor: params.row.decision === 'reject' ? 'rgba(255, 0, 0, 0.8)' : '#d5d5d5',
+            color: params.row.decision === 'reject' ? '#fff' : 'grey',
+          },
+          '&.Mui-selected': {
+            backgroundColor: 'red', // Force red when clicked
+            color: '#fff',
+            '&:hover': {
+              backgroundColor: 'rgba(255, 0, 0, 0.8)',
+            },
+          },
+          fontWeight: 'bold',
+          borderRadius: '8px',
+        }}
+      >
+        Reject
+      </ToggleButton>
+      </ToggleButtonGroup>
+    ),
+  },
+  {
+    field: 'reset',
+    headerName: 'Reset',
+    width: 60,
+    renderCell: (params) => (
+      <IconButton
+        onClick={() => params.row.handleResetDecision(params.row.id)}
+        sx={{
+          color: '#8a0303',
+          '&:hover': {
+            color: '#6c0101',
+          },
+        }}
+      >
+        <RestartAltIcon />
+      </IconButton>
+    ),
+  },
+];
   
   return (
     <div className={styles.tableContainer}>

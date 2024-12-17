@@ -27,7 +27,7 @@ export const traineesRows = [
 const columns = [
   { field: 'name', headerName: 'Trainee Name', width: 130 },
   { field: 'id', headerName: 'Trainee ID', width: 90 },
-  { field: 'dateAdded', headerName: 'Date Added', width: 120 },
+  { field: 'dateAdded', headerName: 'Date Added', width: 100 },
   { field: 'status', headerName: 'Status', width: 100 },
   { 
     field: 'advisorResponsible', 
@@ -42,7 +42,7 @@ const columns = [
   {
     field: 'contact',
     headerName: 'Contact',
-    width: 110,
+    width: 100,
     renderCell: (params) => (
       <div className={styles.contactButtons}>
         <IconButton onClick={() => params.row.handleContactClick('phone', params.row)}>

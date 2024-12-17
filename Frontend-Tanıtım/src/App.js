@@ -25,6 +25,8 @@ import CoordinatorDashboardIndividualTourApplications from './components/Coordin
 import CoordinatorDashboardFairApplications from './components/CoordinatorDashboard/CoordinatorDashboardFairApplications/DashboardFairApplications';
 import CoordinatorDashboardToursAndFairs from './components/CoordinatorDashboard/CoordinatorDashboardToursAndFairs/DashboardToursAndFairs';
 import CoordinatorDashboardToursAndFairsViewAll from './components/CoordinatorDashboard/CoordinatorDashboardToursAndFairsViewAll/DashboardToursAndFairsViewAll';
+import CoordinatorDashboardEditHighSchoolApplication from './components/CoordinatorDashboard/CoordinatorDashboardEditHighSchoolApplication/DashboardEditHighSchoolApplication';
+import CoordinatorDashboardEditIndividualApplication from './components/CoordinatorDashboard/CoordinatorDashboardEditIndividualApplication/DashboardEditIndividualApplication';
 import CoordinatorDashboardFeedbackAnalysis from './components/CoordinatorDashboard/CoordinatorDashboardFeedbackAnalysis/DashboardFeedbackAnalysis';
 import CoordinatorDashboardPayments from './components/CoordinatorDashboard/CoordinatorDashboardPayments/DashboardPayments';
 import CoordinatorDashboardProfile from './components/CoordinatorDashboard/CoordinatorDashboardProfile/DashboardProfile';
@@ -88,6 +90,8 @@ const App = () => {
         <Route path="/coordinatordashboardedittrainee/:id" element={<CoordinatorDashboardEditTrainee />} />
         <Route path="/coordinatordashboardtourapplications" element={<CoordinatorDashboardTourApplications />} />
         <Route path="/coordinatordashboardindividualtourapplications" element={<CoordinatorDashboardIndividualTourApplications />} />
+        <Route path="/coordinatordashboardedithighschoolapplication/:id" element={<CoordinatorDashboardEditHighSchoolApplication />} />
+        <Route path="/coordinatordashboardeditindividualapplication/:id" element={<CoordinatorDashboardEditIndividualApplication />} />
         <Route path="/coordinatordashboardfairapplications" element={<CoordinatorDashboardFairApplications />} />
         <Route path="/coordinatordashboardtoursandfairs" element={<CoordinatorDashboardToursAndFairs />} />
         <Route path="/coordinatordashboardtoursandfairsviewall" element={<CoordinatorDashboardToursAndFairsViewAll />} />
