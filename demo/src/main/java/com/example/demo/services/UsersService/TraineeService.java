@@ -21,7 +21,6 @@ public class TraineeService implements RoleService {
         this.traineeRepository = repo;
     }
 
-
     public boolean isEligibleForPromotion(Long traineeId) throws UserNotFoundException {
         Trainee trainee = traineeRepository.findById(traineeId)
                 .orElseThrow(() -> new UserNotFoundException("Trainee not found with ID: " + traineeId));
@@ -74,8 +73,13 @@ public class TraineeService implements RoleService {
     }
 
     @Override
-    public void deleteById(Long id) {
-        traineeRepository.deleteById(id);
+    public boolean deleteById(Long id) {
+        Optional<Trainee> advisor = traineeRepository.findById(id);
+        if (advisor.isPresent()) {
+            traineeRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
     @Override

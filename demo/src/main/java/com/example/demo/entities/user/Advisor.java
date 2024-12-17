@@ -50,6 +50,9 @@ public class Advisor extends User {
     @Column(name = "undertaken_day", nullable = false)
     private DayOfWeek undertakenDay;
     
+    @OneToMany(mappedBy = "advisor", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Trainee> trainees = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "payment_id")

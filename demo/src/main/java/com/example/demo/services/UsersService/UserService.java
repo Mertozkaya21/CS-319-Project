@@ -53,6 +53,21 @@ public class UserService {
         return roleServiceFactory.getRoleService(userRole).save(user);
     }
 
+    public User saveTraineeWithAdvisor(UserDTO userDTO, Long advisorId) throws EmailAlreadyExistsException {
+        validateEmailAndPassword(userDTO);
+        checkIfEmailExists(userDTO.getEmail());
+    
+        Advisor advisor = (Advisor) roleServiceFactory.getRoleService(UserRole.ADVISOR)
+                .findById(advisorId)
+                .orElseThrow(() -> new IllegalArgumentException("Advisor not found"));
+    
+        Trainee trainee = new Trainee(userDTO);
+        trainee.setAdvisor(advisor);
+        trainee.setPassword(userDTO.getPassword()); 
+        return roleServiceFactory.getRoleService(UserRole.TRAINEE).save(trainee);
+    }
+    
+
     public User saveAdvisor(UserDTO newUserDTO, String day) throws EmailAlreadyExistsException {
         validateEmailAndPassword(newUserDTO);
         checkIfEmailExists(newUserDTO.getEmail());
@@ -70,13 +85,12 @@ public class UserService {
 
     public User promoteTraineeToGuide(Long traineeId) throws UserNotFoundException {
         TraineeService traineeService = (TraineeService) roleServiceFactory.getRoleService(UserRole.TRAINEE);
-    
+        Trainee trainee = traineeService.findById(traineeId)
+                        .orElseThrow(() -> new IllegalArgumentException("Trainee not found with ID: " + traineeId));
+
         if (!traineeService.isEligibleForPromotion(traineeId)) {
             throw new IllegalStateException("Trainee has not completed all required tours.");
         }
-    
-        Trainee trainee = traineeService.findById(traineeId)
-                .orElseThrow(() -> new IllegalArgumentException("Trainee not found with ID: " + traineeId));
     
         Guide newGuide = new Guide();
         newGuide.setFirstName(trainee.getFirstName());
@@ -117,7 +131,6 @@ public class UserService {
         }
     }
     private boolean isValidEmail(String email) {
-        // This one checks if there is any bilkent after the @ 
         return email != null && email.matches("^[A-Za-z0-9._%+-]+@.*bilkent.*\\.[A-Za-z]{2,}$");
     }
 
@@ -235,7 +248,6 @@ public class UserService {
     }
     
     
-    
     public void cancelEvent(Long userId, Long eventId, String eventType) {
         CoordinatorService roleService = roleServiceFactory.getCoordinatorService();
     
@@ -248,4 +260,26 @@ public class UserService {
     
         roleService.cancelEvent(userId, eventId, eventType);
     }
+
+    public void deleteAdvisorsByIds(List<Long> advisorIds) {
+        RoleService advisorService = roleServiceFactory.getRoleService(UserRole.ADVISOR);
+        for (Long id : advisorIds) {
+            advisorService.deleteById(id);
+        }
+    }
+
+    public void deleteGuidesByIds(List<Long> guideIds) {
+        RoleService guidService = roleServiceFactory.getRoleService(UserRole.GUIDE);
+        for (Long id : guideIds) {
+            guidService.deleteById(id);
+        }
+    }
+
+    public void deleteTraineeByIds(List<Long> traineeIds) {
+        RoleService traineeService = roleServiceFactory.getRoleService(UserRole.TRAINEE);
+        for(Long id: traineeIds) {
+            traineeService.deleteById(id);
+        }
+    }
+
 }

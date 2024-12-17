@@ -69,9 +69,19 @@ public class Trainee extends User{
     @JsonIgnore 
     private Coordinator coordinator;
 
+    @ManyToOne
+    @JoinColumn(name = "advisor_id") 
+    @JsonIgnore
+    private Advisor advisor; 
+
     @JsonGetter("tourIds")
     public List<Long> getTourIds() {
         return tours != null ? tours.stream().map(Tour::getId).toList() : null;
+    }
+
+    @JsonGetter("tourIds")
+    public Long getAdvisorId() {
+        return advisor != null ? advisor.getId() : null;
     }
 
     @JsonGetter("coordinatorId")

@@ -37,8 +37,13 @@ public class GuideService implements RoleService {
     }
 
     @Override
-    public void deleteById(Long id) {
-        guideRepository.deleteById(id);
+    public boolean deleteById(Long id) {
+        Optional<Guide> advisor = guideRepository.findById(id);
+        if (advisor.isPresent()) {
+            guideRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
     @Override

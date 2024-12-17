@@ -63,11 +63,6 @@ public class ApplicationFormService {
     }
 
     public List<ApplicationForm> getAllApplicationForms() {
-    
-        /*List<ApplicationForm> allForms = new ArrayList<>();
-        allForms.addAll(groupFormRepository.findAll());
-        allForms.addAll(individualFormRepository.findAll());*/
-
         return applicationFormRepository.findAll();
     }
 
@@ -137,6 +132,7 @@ public class ApplicationFormService {
             .collect(Collectors.toList());
     }
 
+
     public boolean updateOneApplicationFormStatus(Long formId, ApplicationFormStatus newStatus) { //BTO_APPROVED or BTO_DENIED
         Optional<GroupForm> groupFormOpt = groupFormRepository.findById(formId);
         if (groupFormOpt.isPresent()) {
@@ -188,6 +184,8 @@ public class ApplicationFormService {
         return false;
     }
 }
+
+
 class FormDateHourKey {
     LocalDate date;
     TourHours tourHour;

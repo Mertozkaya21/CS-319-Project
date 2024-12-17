@@ -70,6 +70,7 @@ public class HighshcoolController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
 
+
     @PostMapping
     public ResponseEntity<Highschool> saveHighschool(@RequestBody HighschoolDTO highschoolDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(highschoolService.saveHighschool(highschoolDTO));
