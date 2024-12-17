@@ -50,7 +50,7 @@ public class AdvisorService implements RoleService {
     }
 
     public Advisor getAdvisorByUndertakenDay(DayOfWeek day){
-        Advisor advisor = advisorRepository.findByUndertakenDays(day);
+        Advisor advisor = advisorRepository.findByUndertakenDay(day);
         if(advisor!=null)
             return advisor;
         else

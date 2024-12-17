@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,8 +18,11 @@ import com.example.demo.entities.user.User;
 import com.example.demo.exceptions.LoginException;
 import com.example.demo.services.UsersService.UserService;
 
+
+
 @RestController
 @RequestMapping("/v1/auth") 
+@CrossOrigin(origins = "http://localhost:3000")
 public class AuthController {
 
     private final UserService userService;
