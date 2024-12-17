@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TimeSlotPicker from './TimeSlotPicker'; // Adjust path based on your file structure
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
@@ -74,6 +74,31 @@ const Form = () => {
   const [activeStep, setActiveStep] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionSuccess, setSubmissionSuccess] = useState(false);
+  const [highSchools, setHighSchools] = useState([]);
+  const [cities, setCities] = useState([]);
+
+  useEffect(() => {
+    const fetchHighSchools = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/v1/highschool/dropdown/highschools'); 
+        const data = await response.json();
+        setHighSchools(data); 
+      } catch (error) {
+        console.error("Error fetching high schools:", error);
+      }
+    };
+    const fetchCities = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/v1/highschool/dropdown/cities'); // City'leri çeken API endpoint
+        const data = await response.json();
+        setCities(data); // City'leri state'e kaydedin
+      } catch (error) {
+        console.error('Error fetching cities:', error);
+      }
+    };
+    fetchHighSchools();
+    fetchCities();
+  }, []);
 
   const steps = ['Contact Details', 'Date & Time', 'Attendee Details', 'Submit Request'];
 
@@ -142,13 +167,14 @@ const Form = () => {
     try {
       const formattedData = {
         ...formData,
-        date: formData.date ? formData.date.format('MM/DD/YYYY') : null, // Format the date here
+        date: formData.date ? formData.date.format('YYYY-MM-DD') : null, // Format the date here
       };
-  
-      const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+      console.log(formattedData);
+      const response = await fetch('http://localhost:8080/v1/applicationform/groupform', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formattedData),
+
       });
   
       if (response.ok) {
@@ -214,8 +240,15 @@ const Form = () => {
           ),
         }}
       >
-        <MenuItem value="High School A">High School A</MenuItem>
-        <MenuItem value="High School B">High School B</MenuItem>
+        {highSchools.length > 0 ? (
+          highSchools.map((school) => (
+            <MenuItem key={school} value={school}>
+              {school}
+            </MenuItem>
+          ))
+        ) : (
+          <MenuItem disabled>No high schools available</MenuItem>
+        )}
       </TextField>
 
         <Box sx={{ width: '48%' }}>
@@ -277,8 +310,15 @@ const Form = () => {
             startAdornment: <InputAdornment position="start"><LocationCityIcon sx={{ color: '#6c757d' }} /></InputAdornment>,
           }}
         >
-          <MenuItem value="City A">City A</MenuItem>
-          <MenuItem value="City B">City B</MenuItem>
+          {cities.length > 0 ? (
+          cities.map((city) => (
+            <MenuItem key={city} value={city}>
+              {city}
+            </MenuItem>
+          ))
+        ) : (
+          <MenuItem disabled>No cities available</MenuItem>
+        )}
         </TextField>
       </Box>
     </Box>
