@@ -67,7 +67,34 @@ public class UserService {
         Advisor advisor = new Advisor(newUserDTO, undertakenDay);
         return roleServiceFactory.getRoleService(UserRole.ADVISOR).save(advisor);
     }
+
+    public User promoteTraineeToGuide(Long traineeId) throws UserNotFoundException {
+        TraineeService traineeService = (TraineeService) roleServiceFactory.getRoleService(UserRole.TRAINEE);
     
+        if (!traineeService.isEligibleForPromotion(traineeId)) {
+            throw new IllegalStateException("Trainee has not completed all required tours.");
+        }
+    
+        Trainee trainee = traineeService.findById(traineeId)
+                .orElseThrow(() -> new IllegalArgumentException("Trainee not found with ID: " + traineeId));
+    
+        Guide newGuide = new Guide();
+        newGuide.setFirstName(trainee.getFirstName());
+        newGuide.setLastName(trainee.getLastName());
+        newGuide.setEmail(trainee.getEmail());
+        newGuide.setPassword(trainee.getPassword());
+        newGuide.setPhoneNo(trainee.getPhoneNo());
+        newGuide.setDateAdded(trainee.getDateAdded());
+        newGuide.setRole(UserRole.GUIDE);
+
+        roleServiceFactory.getRoleService(UserRole.TRAINEE).deleteById(traineeId);
+        return roleServiceFactory.getRoleService(UserRole.GUIDE).save(newGuide);
+    }
+    
+    public Trainee updateTraineeStatus(Long traineeId) throws UserNotFoundException {
+        TraineeService service = (TraineeService) roleServiceFactory.getRoleService(UserRole.TRAINEE);
+        return service.updateTraineeStatus(traineeId);
+    }
     
 
     private void checkIfEmailExists(String email) throws EmailAlreadyExistsException {

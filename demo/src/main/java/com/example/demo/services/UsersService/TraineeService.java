@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.entities.user.Trainee;
 import com.example.demo.entities.user.User;
 import com.example.demo.enums.TraineeStatus;
+import com.example.demo.exceptions.UserNotFoundException;
 import com.example.demo.repositories.user.TraineeRepository;
 
 
@@ -18,6 +19,43 @@ public class TraineeService implements RoleService {
 
     public TraineeService(TraineeRepository repo){
         this.traineeRepository = repo;
+    }
+
+
+    public boolean isEligibleForPromotion(Long traineeId) throws UserNotFoundException {
+        Trainee trainee = traineeRepository.findById(traineeId)
+                .orElseThrow(() -> new UserNotFoundException("Trainee not found with ID: " + traineeId));
+                
+        return trainee.isEligibleForPromotion();
+    }
+    
+    public Trainee updateTraineeStatus(Long traineeId) throws UserNotFoundException {
+        Trainee trainee = traineeRepository.findById(traineeId)
+                .orElseThrow(() -> new UserNotFoundException("Trainee not found with ID: " + traineeId));
+
+        int completedTours = trainee.getTours() != null ? trainee.getTours().size() : 0;
+
+        switch (trainee.getStatus()) {
+            case OBSERVATION_TOURS:
+                if (completedTours >= 2) {
+                    trainee.setStatus(TraineeStatus.PRACTICE_TOURS);
+                }
+                break;
+
+            case PRACTICE_TOURS:
+                if (completedTours >= 4) {
+                    trainee.setStatus(TraineeStatus.TRIAL_TOURS);
+                }
+                break;
+
+            case TRIAL_TOURS:
+                if (completedTours >= 6) {
+                    trainee.setEligibleForPromotion(true);
+                }
+                break;
+        }
+
+        return traineeRepository.save(trainee);
     }
 
     @Override

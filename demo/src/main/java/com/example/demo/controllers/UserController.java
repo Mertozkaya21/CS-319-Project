@@ -39,6 +39,16 @@ public class UserController {
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
+    @GetMapping("/{role}/email/{email}")
+    public ResponseEntity<List<? extends User>> findUsersByEmail(@PathVariable String role, @PathVariable String email) {
+        return ResponseEntity.ok(userService.findByEmail(role, email));
+    }
+
+    @GetMapping("/{role}/count")
+    public ResponseEntity<Long> countUsers(@PathVariable String role) {
+        return ResponseEntity.ok(userService.count(role));
+    }
+
     @PostMapping("/coordinator")
     public ResponseEntity<User> createCoordinator(@RequestBody UserDTO newUserDTO) throws EmailAlreadyExistsException {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser("COORDINATOR", newUserDTO));
@@ -72,6 +82,16 @@ public class UserController {
         }
     }
 
+    @PostMapping("/trainee/{traineeId}/promote")
+    public ResponseEntity<?> promoteTraineeToGuide(@PathVariable Long traineeId) throws UserNotFoundException {
+        try {
+            User newGuide = userService.promoteTraineeToGuide(traineeId);
+            return ResponseEntity.ok(newGuide);
+        } catch (IllegalStateException | IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
     @PutMapping("/{role}/{id}")
     public ResponseEntity<User> updateUser(@PathVariable String role, @PathVariable Long id, @RequestBody UserDTO updatedUser) throws EmailAlreadyExistsException {
         return ResponseEntity.ok(userService.saveUser(role, updatedUser));
@@ -91,16 +111,6 @@ public class UserController {
     public ResponseEntity<Void> deleteUser(@PathVariable String role, @PathVariable Long id) {
         userService.deleteUser(role, id);
         return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping("/{role}/email/{email}")
-    public ResponseEntity<List<? extends User>> findUsersByEmail(@PathVariable String role, @PathVariable String email) {
-        return ResponseEntity.ok(userService.findByEmail(role, email));
-    }
-
-    @GetMapping("/{role}/count")
-    public ResponseEntity<Long> countUsers(@PathVariable String role) {
-        return ResponseEntity.ok(userService.count(role));
     }
 
     @DeleteMapping("/coordinator/{userId}/cancel-event/{eventId}")

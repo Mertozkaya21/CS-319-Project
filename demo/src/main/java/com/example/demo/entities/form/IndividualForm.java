@@ -3,7 +3,6 @@ package com.example.demo.entities.form;
 import java.time.LocalDate;
 
 import com.example.demo.dto.IndividualFormDTO;
-import com.example.demo.enums.City;
 import com.example.demo.enums.Department;
 import com.example.demo.enums.TourHours;
 

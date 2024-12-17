@@ -68,7 +68,6 @@ public class Guide extends User{
     @JoinColumn(name = "payment_id")
     private Payment payment;
     
-    // Relationship with Tour
     @ManyToMany
     @JoinTable(
         name = "guide_tour",
@@ -77,7 +76,6 @@ public class Guide extends User{
     )
     private List<Tour> tours;
 
-    // Relationship with Fair
     @ManyToMany
     @JoinTable(
         name = "guide_fair",

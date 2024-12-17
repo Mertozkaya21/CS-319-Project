@@ -42,7 +42,7 @@ public class Trainee extends User{
         this.phoneNo = userDTO.getPhoneNo();
         this.imagePath = userDTO.getImagePath();
         this.role = UserRole.TRAINEE;
-        this.status = TraineeStatus.UNSUBMITTED;
+        this.eligibleForPromotion = false;
         this.latestAcitivites = new ArrayList<Long>();
         this.notifications = new ArrayList<Long>();
         this.dateAdded = LocalDate.now();
@@ -54,9 +54,11 @@ public class Trainee extends User{
         joinColumns = @JoinColumn(name = "trainee_id"),
         inverseJoinColumns = @JoinColumn(name = "tour_id")
     )
-
     @JsonIgnore 
     private List<Tour> tours;
+
+    @Column(nullable = false)
+    private boolean eligibleForPromotion;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
