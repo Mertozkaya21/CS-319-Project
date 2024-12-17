@@ -73,8 +73,13 @@ public class TraineeService implements RoleService {
     }
 
     @Override
-    public void deleteById(Long id) {
-        traineeRepository.deleteById(id);
+    public boolean deleteById(Long id) {
+        Optional<Trainee> advisor = traineeRepository.findById(id);
+        if (advisor.isPresent()) {
+            traineeRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
     @Override

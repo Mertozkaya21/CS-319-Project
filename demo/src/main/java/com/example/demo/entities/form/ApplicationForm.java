@@ -108,5 +108,24 @@ public class ApplicationForm {
         return coordinator != null ? coordinator.getId() : null;
     }
 
-    private double priorityScore; //cannot be used directly
+    private double priorityScore;
+
+
+    public double calculatePriorityScore(double lgsPercentile, City city, LocalDate submitTimeDate, LocalDate earliestSubmissionDate) {
+        final double W_DISTANCE = 0.4; 
+        final double W_LGS = 0.4;      
+        final double W_TIME = 0.2;     
+        double distance = city.getDistanceFromAnkara();
+
+        double lgsScore = lgsPercentile;
+
+        long daysDifference = earliestSubmissionDate.until(submitTimeDate).getDays();
+        double timeScore = Math.max(30 - daysDifference, 0); 
+
+        double priorityScore = (W_DISTANCE * distance) 
+                            + (W_LGS * lgsScore) 
+                            + (W_TIME * timeScore);
+
+        return priorityScore;
+    }
 }

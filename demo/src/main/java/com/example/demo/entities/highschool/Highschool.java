@@ -8,6 +8,7 @@ import com.example.demo.entities.event.Tour;
 import com.example.demo.entities.event.TourParticipantSurvey;
 import com.example.demo.enums.City;
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -45,8 +46,6 @@ public class Highschool {
             this.counselor.setName(highschoolDTO.getCounselorName());
             this.counselor.setEmail(highschoolDTO.getCounselorEmail());
             this.counselor.setPhone(highschoolDTO.getCounselorPhoneNo());
-            //this.counselor.setHighschool(this);
-            //this.counselor.setGroupForms(new ArrayList<>());
         }
     }
 
@@ -66,16 +65,18 @@ public class Highschool {
 
     @Column(nullable = false)
     private LocalDate dateUpDated;
-    
 
+    
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "counselor_id", nullable = true) 
     private Counselor counselor;
 
     @OneToMany(mappedBy = "highschool", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JsonIgnore
     private List<TourParticipantSurvey> surveys;
 
     @OneToMany(mappedBy = "visitorSchool", cascade = CascadeType.ALL, orphanRemoval = true) 
+    @JsonIgnore
     private List<Tour> groupTours;
 
     @JsonGetter("counselorId")
@@ -87,5 +88,4 @@ public class Highschool {
     public List<Long> getGroupTourIds() {
         return groupTours != null ? groupTours.stream().map(Tour::getId).toList() : null;
     }
-
 }

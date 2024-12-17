@@ -46,8 +46,13 @@ public class CoordinatorService implements RoleService{
     }
 
     @Override
-    public void deleteById(Long id) {
-        coordinatorRepository.deleteById(id);
+    public boolean deleteById(Long id) {
+        Optional<Coordinator> advisor = coordinatorRepository.findById(id);
+        if (advisor.isPresent()) {
+            coordinatorRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
     @Override

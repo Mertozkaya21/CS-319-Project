@@ -55,10 +55,14 @@ public class UserController {
     }
 
     @PostMapping("/trainee")
-    public ResponseEntity<User> createTrainee(@RequestBody UserDTO newUserDTO) throws EmailAlreadyExistsException {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser("TRAINEE", newUserDTO));
+    public ResponseEntity<User> createTrainee(@RequestBody UserDTO userDTO, @RequestParam Long advisorId) {
+        try {
+            User savedTrainee = userService.saveTraineeWithAdvisor(userDTO, advisorId);
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedTrainee);
+        } catch (EmailAlreadyExistsException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
-
     @PostMapping("/guide")
     public ResponseEntity<User> createGuide(@RequestBody UserDTO newUserDTO) throws EmailAlreadyExistsException {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser("GUIDE", newUserDTO));
@@ -126,4 +130,21 @@ public class UserController {
         }
     }
 
+    @DeleteMapping("/advisor/remove")
+    public ResponseEntity<?> deleteSelectedAdvisors(@RequestBody List<Long> advisorIds) {
+        userService.deleteAdvisorsByIds(advisorIds);
+        return ResponseEntity.ok("Selected advisors have been removed successfully.");
+    }
+
+    @DeleteMapping("/guide/remove")
+    public ResponseEntity<String> deleteSelectedGuides(@RequestBody List<Long> guideIds) {
+        userService.deleteGuidesByIds(guideIds);
+        return ResponseEntity.ok("Selected guides have been removed successfully.");
+    }
+
+    @DeleteMapping("/trainee/remove")
+    public ResponseEntity<String> deleteSelectedTrainees(@RequestBody List<Long> traineeIds) {
+        userService.deleteTraineeByIds(traineeIds);
+        return ResponseEntity.ok("Selected trainees have been removed successfully.");
+    }
 }

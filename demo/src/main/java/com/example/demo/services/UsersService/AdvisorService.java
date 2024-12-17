@@ -35,8 +35,13 @@ public class AdvisorService implements RoleService {
     }
 
     @Override
-    public void deleteById(Long id) {
-        advisorRepository.deleteById(id);
+    public boolean deleteById(Long id) {
+        Optional<Advisor> advisor = advisorRepository.findById(id);
+        if (advisor.isPresent()) {
+            advisorRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
     @Override
