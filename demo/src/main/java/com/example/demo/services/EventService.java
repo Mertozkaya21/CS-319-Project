@@ -10,8 +10,6 @@ import com.example.demo.enums.TourHours;
 import com.example.demo.exceptions.FairNotFoundException;
 import com.example.demo.exceptions.GuideNotFoundException;
 import com.example.demo.exceptions.TourNotFoundException;
-import com.example.demo.services.UsersService.GuideService;
-
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -23,12 +21,10 @@ public class EventService {
 
     private final TourService tourService;
     private final FairService fairService;
-    private final GuideService guideService;
 
-    public EventService(TourService tourService, FairService fairService, GuideService guideService) {
+    public EventService(TourService tourService, FairService fairService) {
         this.tourService = tourService;
         this.fairService = fairService;
-        this.guideService = guideService;
     }
 
     public List<Event> getAllEvents() {

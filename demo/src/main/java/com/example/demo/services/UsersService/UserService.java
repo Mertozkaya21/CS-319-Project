@@ -10,6 +10,7 @@ import com.example.demo.entities.user.Guide;
 import com.example.demo.entities.user.Trainee;
 import com.example.demo.entities.user.User;
 import com.example.demo.enums.UserRole;
+import com.example.demo.exceptions.EmailAlreadyExistsException;
 import com.example.demo.exceptions.LoginException;
 import com.example.demo.exceptions.UserNotFoundException;
 import com.example.demo.repositories.Auth.PasswordResetTokenRepository;
@@ -17,6 +18,7 @@ import com.example.demo.services.EmailService;
 
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -35,19 +37,48 @@ public class UserService {
         this.emailService = service;
     }
 
-    public User saveUser(String role, UserDTO newUserDTO) {
+    public User saveUser(String role, UserDTO newUserDTO) throws EmailAlreadyExistsException {
         UserRole userRole = UserRole.fromString(role);
 
         validateEmailAndPassword(newUserDTO);
+        checkIfEmailExists(newUserDTO.getEmail());
 
         User user = switch (userRole) {
-            case COORDINATOR -> Coordinator.getInstance(newUserDTO);
+            case COORDINATOR -> new Coordinator(newUserDTO);
             case GUIDE -> new Guide(newUserDTO);
-            case ADVISOR -> new Advisor(newUserDTO);
+            case ADVISOR -> throw new IllegalArgumentException("Advisor must be saved with a day.");
             case TRAINEE -> new Trainee(newUserDTO);
         };
 
         return roleServiceFactory.getRoleService(userRole).save(user);
+    }
+
+    public User saveAdvisor(UserDTO newUserDTO, String day) throws EmailAlreadyExistsException {
+        validateEmailAndPassword(newUserDTO);
+        checkIfEmailExists(newUserDTO.getEmail());
+    
+        DayOfWeek undertakenDay;
+        try {
+            undertakenDay = DayOfWeek.valueOf(day.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid day of the week: " + day);
+        }
+    
+        Advisor advisor = new Advisor(newUserDTO, undertakenDay);
+        return roleServiceFactory.getRoleService(UserRole.ADVISOR).save(advisor);
+    }
+    
+    
+
+    private void checkIfEmailExists(String email) throws EmailAlreadyExistsException {
+        boolean emailExists = Arrays.stream(roleServiceFactory.getAllRoleServices())
+                .flatMap(roleService -> roleService.findByEmail(email).stream())
+                .findFirst()
+                .isPresent();
+    
+        if (emailExists) {
+            throw new EmailAlreadyExistsException("Email already exists: " + email);
+        }
     }
 
     private void validateEmailAndPassword(UserDTO userDTO) {
@@ -106,7 +137,6 @@ public class UserService {
     }
 
     public String generateResetToken(String email) {
-        // Verify email exists in the system
         Optional<? extends User> user = Arrays.stream(roleServiceFactory.getAllRoleServices()) // Convert array to Stream
                                             .flatMap(roleService -> roleService.findByEmail(email).stream()) // Flatten results of findByEmail
                                             .findFirst(); // Get the first matching user
@@ -152,7 +182,6 @@ public class UserService {
         User updatedUser = user.get();
         updatedUser.setPassword(newPassword); 
         roleServiceFactory.getRoleService(updatedUser.getRole()).save(updatedUser);
-    
         passwordResetTokenRepository.delete(resetToken);
     }
 

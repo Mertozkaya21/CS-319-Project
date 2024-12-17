@@ -5,10 +5,11 @@ import java.util.Comparator;
 import java.util.List;
 
 import com.example.demo.entities.form.ApplicationForm;
+import com.example.demo.entities.form.GroupForm;
 
 public class SortByPriorityScore implements SortStrategy{
 
-        public static double calculatePriorityScore(ApplicationForm form, 
+        public static double calculatePriorityScore(GroupForm form, 
                                                 double w1, double w2, double w3, 
                                                 double minLGS, double maxLGS, 
                                                 LocalDate earliestSubmissionDate, LocalDate latestSubmissionDate, 
@@ -30,7 +31,7 @@ public class SortByPriorityScore implements SortStrategy{
     }
 
     @Override
-    public List<ApplicationForm> sort(List<ApplicationForm> applicationForms) {
+    public List<GroupForm> sort(List<GroupForm> applicationForms) {
         double w1 = 0.5; // Weight for LgsPercentile
         double w2 = 0.3; // Weight for SubmissionTime
         double w3 = 0.2; // Weight for Distance
@@ -42,7 +43,7 @@ public class SortByPriorityScore implements SortStrategy{
         int minDistance = Integer.MAX_VALUE;
         int maxDistance = Integer.MIN_VALUE;
 
-        for (ApplicationForm form : applicationForms) {
+        for (GroupForm form : applicationForms) {
             // LGS Percentile
             double lgsPercentile = form.getHighschool().getLgsPercentile();
             if (lgsPercentile < minLGS) minLGS = lgsPercentile;
@@ -58,7 +59,7 @@ public class SortByPriorityScore implements SortStrategy{
             if (distance < minDistance) minDistance = distance;
             if (distance > maxDistance) maxDistance = distance;
         }
-        for (ApplicationForm form : applicationForms) {
+        for (GroupForm form : applicationForms) {
             form.setPriorityScore(calculatePriorityScore(form, w1, w2, w3, minLGS, maxLGS, earliestDate, latestDate, minDistance, maxDistance));
         }
         applicationForms.sort(Comparator.comparingDouble(ApplicationForm::getPriorityScore).reversed());

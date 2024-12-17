@@ -14,4 +14,5 @@ public class UserDTO {
     private String password;
     private String phoneNo;
     private String imagePath;
+    private String day;
 }

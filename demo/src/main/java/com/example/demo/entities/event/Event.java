@@ -30,7 +30,7 @@ public abstract class Event {
     @Enumerated
     private EventStatus status;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "DATE")
     @Temporal(TemporalType.DATE)
     private LocalDate date;
 }

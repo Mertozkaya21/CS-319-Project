@@ -1,7 +1,7 @@
 package com.example.demo.controllers;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.GroupFormDTO;
@@ -23,9 +22,14 @@ import com.example.demo.entities.form.ApplicationForm;
 import com.example.demo.entities.form.GroupForm;
 import com.example.demo.entities.form.IndividualForm;
 import com.example.demo.enums.ApplicationFormStatus;
+import com.example.demo.enums.Department;
 import com.example.demo.enums.TourHours;
 import com.example.demo.services.EventService;
 import com.example.demo.services.applicationformservice.ApplicationFormService;
+import com.example.demo.services.applicationformservice.applicationformsorter.SortByDistance;
+import com.example.demo.services.applicationformservice.applicationformsorter.SortByLgsPercentile;
+import com.example.demo.services.applicationformservice.applicationformsorter.SortByPriorityScore;
+import com.example.demo.services.applicationformservice.applicationformsorter.SortBySubmissionTime;
 
 @RestController
 @RequestMapping("/v1/applicationform")
@@ -39,6 +43,14 @@ public class ApplicationFormController {
         this.eventService = eventService;
     }
 
+    @GetMapping("/departments")
+    public ResponseEntity<List<String>> getAllDepartments() {
+        List<String> departments = Arrays.stream(Department.values())
+                                     .map(Department::getDisplayName) 
+                                     .toList();
+        return ResponseEntity.ok(departments);
+    }
+
     @GetMapping
     public ResponseEntity<List<ApplicationForm>> getAllApplicationForms() {
         return ResponseEntity.ok(applicationFormService.getAllApplicationForms());
@@ -47,6 +59,29 @@ public class ApplicationFormController {
     @GetMapping("/groupform")
     public ResponseEntity<List<GroupForm>> getAllGroupForms() {
         return ResponseEntity.ok(applicationFormService.getAllGroupForms());
+    }
+
+    @PostMapping("/groupform/changeparameter")
+    public ResponseEntity<Void> changeSortingParameter(@RequestBody String newParameter) {
+        if("byDistance".equals(newParameter)){
+            applicationFormService.setSortingStrategy(new SortByDistance());
+            return ResponseEntity.noContent().build();
+        }
+        else if("byLgsPercentile".equals(newParameter)){
+            applicationFormService.setSortingStrategy(new SortByLgsPercentile());
+            return ResponseEntity.noContent().build();
+        }
+        else if("bySubmitTime".equals(newParameter)){
+            applicationFormService.setSortingStrategy(new SortBySubmissionTime());
+            return ResponseEntity.noContent().build();
+        }
+        else if("byPriorityScore".equals(newParameter)){
+            applicationFormService.setSortingStrategy(new SortByPriorityScore());
+            return ResponseEntity.noContent().build();
+        }
+        else{
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
 
     @GetMapping("/individualform")
@@ -65,8 +100,17 @@ public class ApplicationFormController {
 
     @PostMapping("/individualform")
     public ResponseEntity<IndividualForm> saveIndividualForm(@RequestBody IndividualFormDTO form) {
+        if (!isValidDepartment(form.getDepartmentOfInterest())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body(applicationFormService.saveIndividualForm(form));
     }
+    
+    private boolean isValidDepartment(String department) {
+        return Arrays.stream(Department.values())
+                     .anyMatch(d -> d.name().equalsIgnoreCase(department) || d.getDisplayName().equalsIgnoreCase(department));
+    }
+    
 
     @PostMapping("/groupform")
     public ResponseEntity<GroupForm> saveGroupForm(@RequestBody GroupFormDTO groupFormDTO) {
@@ -74,9 +118,9 @@ public class ApplicationFormController {
     }
 
     @GetMapping("/{date}/{tourHour}")
-    public ResponseEntity<List<ApplicationForm>> getApplicationsByDateAndTourHour(@PathVariable LocalDate date, @PathVariable TourHours tourHour) {
+    public ResponseEntity<List<GroupForm>> getApplicationsByDateAndTourHour(@PathVariable LocalDate date, @PathVariable TourHours tourHour) {
 
-        List<ApplicationForm> forms = applicationFormService.getApplicationFormsByTourHour(date, tourHour);
+        List<GroupForm> forms = applicationFormService.getApplicationFormsByTourHour(date, tourHour);
         if (forms.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(forms); 
         }

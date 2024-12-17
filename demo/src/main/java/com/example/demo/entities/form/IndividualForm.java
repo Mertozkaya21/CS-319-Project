@@ -3,6 +3,8 @@ package com.example.demo.entities.form;
 import java.time.LocalDate;
 
 import com.example.demo.dto.IndividualFormDTO;
+import com.example.demo.enums.City;
+import com.example.demo.enums.Department;
 import com.example.demo.enums.TourHours;
 
 import jakarta.persistence.Column;
@@ -23,20 +25,20 @@ public class IndividualForm extends ApplicationForm{
 
     public IndividualForm(IndividualFormDTO individualFormDto){
         super();
-        this.setCity(individualFormDto.getCity());
+        this.setCity((individualFormDto.getCity()));
         this.setComments(individualFormDto.getComments());
         this.setEventDate(LocalDate.parse(individualFormDto.getDate()));
         this.setEmail(individualFormDto.getEmail());
         this.setPhoneNumber(individualFormDto.getPhoneNumber());
         this.setNumberOfAttendees(Integer.parseInt(individualFormDto.getNumberOfAttendees()));
         this.setTourHour(TourHours.fromString(individualFormDto.getTimeSlot()));
-        this.setDepartmentOfInterest(individualFormDto.getDepartmentOfInterest());
+        this.setDepartmentOfInterest(Department.fromString(individualFormDto.getDepartmentOfInterest()));
         this.setIndividualName(individualFormDto.getIndividualName());
         this.setSubmitTimeDate(LocalDate.now());
     }
 
     @Column(nullable = true) 
-    private String departmentOfInterest;
+    private Department departmentOfInterest;
 
     @Column(nullable = true)
     private String individualName;

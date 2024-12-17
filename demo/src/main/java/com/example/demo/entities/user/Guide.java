@@ -64,7 +64,7 @@ public class Guide extends User{
     @Column(name = "tour_hours")
     private Map<DayOfWeek, List<TourHours>> availableTimes;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "payment_id")
     private Payment payment;
     

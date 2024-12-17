@@ -2,7 +2,7 @@ package com.example.demo.entities.Auth;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 
 import jakarta.persistence.Column;
@@ -12,12 +12,16 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class PasswordResetToken {
 
     @Id
@@ -30,13 +34,16 @@ public class PasswordResetToken {
     private String email; 
 
     @Temporal(TemporalType.DATE)
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "DATE")
     private LocalDate expiryDate;
 
     public PasswordResetToken(String token, String email) {
         this.token = token;
         this.email = email;
-        this.expiryDate = LocalDate.from(Instant.now().plus(15, ChronoUnit.MINUTES));
+        this.expiryDate = Instant.now()
+                             .plus(15, ChronoUnit.MINUTES)
+                             .atZone(ZoneId.systemDefault()) 
+                             .toLocalDate();
     }
 
     public boolean isExpired() {

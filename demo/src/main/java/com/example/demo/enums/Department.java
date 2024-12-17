@@ -31,4 +31,13 @@ public enum Department {
     public String getDisplayName() {
         return displayName;
     }
+
+    public static Department fromString(String value) {
+        for (Department department : Department.values()) {
+            if (department.name().equalsIgnoreCase(value) || department.displayName.equalsIgnoreCase(value)) {
+                return department;
+            }
+        }
+        throw new IllegalArgumentException("Invalid Department: " + value);
+    }
 }

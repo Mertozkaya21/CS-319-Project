@@ -8,5 +8,6 @@ import com.example.demo.entities.highschool.Highschool;
 
 @Repository
 public interface HighschoolRepository extends JpaRepository<Highschool, Long>{
+    Highschool findByName(String name);
     
 }

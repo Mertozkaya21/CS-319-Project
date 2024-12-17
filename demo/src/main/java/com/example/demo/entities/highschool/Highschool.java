@@ -12,6 +12,8 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -34,7 +36,7 @@ public class Highschool {
 
     public Highschool(HighschoolDTO highschoolDTO) {
         this.name = highschoolDTO.getName();
-        this.city = City.valueOf(highschoolDTO.getCity());
+        this.city = highschoolDTO.getCity();
         this.dateUpDated = LocalDate.now(); 
         this.lgsPercentile = highschoolDTO.getLgsPercentile();
 
@@ -56,6 +58,7 @@ public class Highschool {
     private String name;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private City city;
 
     @Column(nullable = false)

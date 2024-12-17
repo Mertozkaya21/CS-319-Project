@@ -18,6 +18,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+
 @Entity
 @Table(name = "Advisor")
 @Getter
@@ -26,7 +27,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Advisor extends User {
 
-    public Advisor(UserDTO userDTO){
+    public Advisor(UserDTO userDTO, DayOfWeek undertakenDay){
         super();
         this.firstName = userDTO.getFirstName();
         this.lastName = userDTO.getLastName();
@@ -35,6 +36,7 @@ public class Advisor extends User {
         this.phoneNo = userDTO.getPhoneNo();
         this.imagePath = userDTO.getImagePath();
         this.latestAcitivites = new ArrayList<Long>();
+        this.undertakenDay = undertakenDay;
         this.role = UserRole.ADVISOR;
         this.notifications = new ArrayList<Long>();
         this.dateAdded = LocalDate.now();
@@ -44,12 +46,12 @@ public class Advisor extends User {
         this.payment = newPayment;
     }
 
-    @ElementCollection
-    @CollectionTable(name = "advisor_undertaken_days", joinColumns = @JoinColumn(name = "advisor_id"))
     @Enumerated(EnumType.STRING)
-    private List<DayOfWeek> undertakenDays;
+    @Column(name = "undertaken_day", nullable = false)
+    private DayOfWeek undertakenDay;
+    
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "payment_id")
     private Payment payment;
 

@@ -23,11 +23,9 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Coordinator extends User { //Singleton Pattern
+public class Coordinator extends User { 
 
-    private static Coordinator instance;
-
-    private Coordinator(UserDTO userDTO){
+    public Coordinator(UserDTO userDTO){
         super();
         this.firstName = userDTO.getFirstName();
         this.lastName = userDTO.getLastName();
@@ -48,25 +46,6 @@ public class Coordinator extends User { //Singleton Pattern
         this.payment = newPayment;
     }
 
-    public static synchronized Coordinator getInstance(UserDTO userDTO) {
-        if (instance == null) {
-            instance = new Coordinator(userDTO);
-        }
-        else{
-            instance.setFirstName(userDTO.getFirstName());
-            instance.setLastName(userDTO.getLastName());
-            instance.setEmail(userDTO.getEmail());
-            instance.setPassword(userDTO.getPassword());
-            instance.setPhoneNo(userDTO.getPhoneNo());
-            instance.setImagePath(userDTO.getImagePath());
-        }
-        return instance;
-    }
-
-    public static synchronized Coordinator getInstance() {
-        return instance;
-    }
-
     @OneToMany(mappedBy = "coordinator", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JsonIgnore // Prevent recursion
     private List<Guide> guides;
@@ -75,7 +54,7 @@ public class Coordinator extends User { //Singleton Pattern
     @JsonIgnore // Prevent recursion
     private List<Trainee> trainees;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "payment_id")
     @JsonIgnore // Prevent recursion
     private Payment payment;
