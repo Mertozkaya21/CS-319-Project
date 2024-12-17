@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TimeSlotPicker from './TimeSlotPicker'; // Adjust path based on your file structure
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
@@ -79,6 +79,32 @@ const Form = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionSuccess, setSubmissionSuccess] = useState(false);
 
+    const [departments, setDepartments] = useState([]);
+    const [cities, setCities] = useState([]);
+  
+    useEffect(() => {
+      const fetchDepartments = async () => {
+        try {
+          const response = await fetch('http://localhost:8080/v1/highschool/dropdown/departments'); 
+          const data = await response.json();
+          setDepartments(data); 
+        } catch (error) {
+          console.error("Error fetching departments:", error);
+        }
+      };
+      const fetchCities = async () => {
+        try {
+          const response = await fetch('http://localhost:8080/v1/highschool/dropdown/cities'); // City'leri çeken API endpoint
+          const data = await response.json();
+          setCities(data); // City'leri state'e kaydedin
+        } catch (error) {
+          console.error('Error fetching cities:', error);
+        }
+      };
+      fetchDepartments();
+      fetchCities();
+    }, []);
+
   const handleNext = () => setActiveStep((prevStep) => prevStep + 1);
   const handleBack = () => setActiveStep((prevStep) => prevStep - 1);
 
@@ -144,10 +170,10 @@ const Form = () => {
         // Format the date for submission
         const formattedData = {
           ...formData,
-          date: formData.date ? formData.date.format('MM/DD/YYYY') : null,
+          date: formData.date ? formData.date.format('YYYY-MM-DD') : null,
         };
 
-        const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+        const response = await fetch('http://localhost:8080/v1/applicationform/individualform', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formattedData),
@@ -265,8 +291,15 @@ const Form = () => {
                     startAdornment: <InputAdornment position="start"><LocationCityIcon sx={{ color: '#6c757d' }} /></InputAdornment>,
                   }}
                 >
-                  <MenuItem value="City A">City A</MenuItem>
-                  <MenuItem value="City B">City B</MenuItem>
+                   {cities.length > 0 ? (
+                      cities.map((city) => (
+                        <MenuItem key={city} value={city}>
+                          {city}
+                        </MenuItem>
+                      ))
+                    ) : (
+                      <MenuItem disabled>No cities available</MenuItem>
+                    )}
                 </TextField>
             </Box>
           </Box>
@@ -310,8 +343,15 @@ const Form = () => {
                   startAdornment: <InputAdornment position="start"><SchoolIcon sx={{ color: '#6c757d' }} /></InputAdornment>,
                 }}
               >
-                <MenuItem value="Computer Engineering">Computer Engineering</MenuItem>
-                <MenuItem value="Electrical Engineering">Electrical Engineering</MenuItem>
+              {departments.length > 0 ? (
+                    departments.map((department) => (
+                      <MenuItem key={department} value={department}>
+                        {department}
+                      </MenuItem>
+                    ))
+                  ) : (
+                    <MenuItem disabled>No departments available</MenuItem>
+                  )}
               </TextField>
               <TextField
                 name="numberOfAttendees"
