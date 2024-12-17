@@ -6,6 +6,7 @@ import java.time.DayOfWeek;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -16,5 +17,5 @@ public interface  AdvisorRepository extends JpaRepository<Advisor, Long>{
     List<Advisor> findByEmail(String email);
     List<Advisor> findByDateAdded(DayOfWeek dateAdded);
     List<Advisor> findByPassword(String password);
-    Advisor findByUndertakenDays(DayOfWeek day);
+    Advisor findByUndertakenDay(DayOfWeek day);
 }

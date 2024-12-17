@@ -3,7 +3,6 @@ package com.example.demo.services.applicationformservice.applicationformsorter;
 import java.util.Collections;
 import java.util.List;
 
-import com.example.demo.entities.form.ApplicationForm;
 import com.example.demo.entities.form.GroupForm;
 import com.example.demo.enums.City;
 

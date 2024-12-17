@@ -6,12 +6,14 @@ import com.example.demo.entities.highschool.Highschool;
 import com.example.demo.entities.user.Advisor;
 import com.example.demo.entities.user.Coordinator;
 import com.example.demo.enums.ApplicationFormStatus;
+import com.example.demo.enums.City;
 import com.example.demo.enums.TourHours;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -46,7 +48,7 @@ public class ApplicationForm {
     @Temporal(TemporalType.DATE)
     private LocalDate submitTimeDate;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TourHours tourHour;
 
@@ -56,7 +58,7 @@ public class ApplicationForm {
     @Column(columnDefinition = "text")
     private String comments;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     @Column(name = "Status")
     private ApplicationFormStatus status = ApplicationFormStatus.PENDING;
 
@@ -68,8 +70,11 @@ public class ApplicationForm {
     private String phoneNumber;
     @Column(nullable = true)
     private String email;
+
     @Column(nullable = true)
-    private String city;
+    @Enumerated(EnumType.STRING)
+    private City city;
+
     @Column(nullable = true)
     private int numberOfAttendees;
 

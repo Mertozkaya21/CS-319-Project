@@ -43,7 +43,7 @@ public abstract class User {
     protected String phoneNo;
 
     @Temporal(TemporalType.DATE)
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "DATE")
     protected LocalDate dateAdded;
 
     @Enumerated(EnumType.STRING)

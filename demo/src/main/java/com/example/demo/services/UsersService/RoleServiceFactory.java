@@ -2,7 +2,6 @@ package com.example.demo.services.UsersService;
 
 import org.springframework.stereotype.Component;
 
-import com.example.demo.entities.user.Coordinator;
 import com.example.demo.enums.UserRole;
 
 import java.util.HashMap;

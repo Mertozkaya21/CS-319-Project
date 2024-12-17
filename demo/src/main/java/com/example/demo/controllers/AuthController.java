@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.dto.ErrorResponse;
 import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.LoginResponse;
+import com.example.demo.dto.ResetPasswordDTO;
 import com.example.demo.entities.user.User;
 import com.example.demo.exceptions.LoginException;
 import com.example.demo.services.UsersService.UserService;
@@ -39,17 +40,14 @@ public class AuthController {
     @PostMapping("/forgot-password")
     public ResponseEntity<?> forgotPassword(@RequestBody Map<String, String> request) {
         String email = request.get("email");
-        String token = userService.generateResetToken(email);
+        userService.generateResetToken(email);
         return ResponseEntity.ok("Password reset link sent to your email.");
     }
 
     @PostMapping("/reset-password")
-    public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> request) {
-        String token = request.get("token");
-        String newPassword = request.get("newPassword");
-
+    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordDTO resetPasswordRequest) {
         try {
-            userService.resetPassword(token, newPassword);
+            userService.resetPassword(resetPasswordRequest.getToken(), resetPasswordRequest.getNewPassword());
             return ResponseEntity.ok("Password has been reset successfully.");
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(e.getMessage()));

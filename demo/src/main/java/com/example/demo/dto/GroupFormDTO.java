@@ -1,5 +1,7 @@
 package com.example.demo.dto;
 
+import com.example.demo.enums.City;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 @Data
@@ -7,7 +9,7 @@ import lombok.Data;
 public class GroupFormDTO {
     private String chaperoneName;
     private String chaperoneRole;
-    private String city;
+    private City city;
     private String comments;
     private String date;
     private String email;

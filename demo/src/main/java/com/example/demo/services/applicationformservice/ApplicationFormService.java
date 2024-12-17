@@ -90,7 +90,6 @@ public class ApplicationFormService {
         return individualFormRepository.findAll();
     }
 
-    // Save methods does not work properly
     public IndividualForm saveIndividualForm(IndividualFormDTO individualFormDto) {
         IndividualForm individualForm = new IndividualForm(individualFormDto);
         individualForm.setAdvisor(advisorService.getAdvisorByUndertakenDay(individualForm.getEventDate().getDayOfWeek()));
@@ -104,7 +103,6 @@ public class ApplicationFormService {
         return individualFormRepository.save(individualForm);
     }
     
-    // Save methods does not work properly
     public GroupForm saveGroupForm(GroupFormDTO groupFormDto) {
         GroupForm groupForm = new GroupForm(groupFormDto);
         Highschool highschool = highschoolRepository.findByName(groupFormDto.getHighSchoolName());

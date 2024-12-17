@@ -54,7 +54,7 @@ public class Coordinator extends User {
     @JsonIgnore // Prevent recursion
     private List<Trainee> trainees;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "payment_id")
     @JsonIgnore // Prevent recursion
     private Payment payment;

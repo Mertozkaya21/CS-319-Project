@@ -73,7 +73,7 @@ public class TourService {
         tour.setTourHours(updatedTour.getTourHours());
         tour.setAdvisor(updatedTour.getAdvisor());
         tour.setVisitorSchool(updatedTour.getVisitorSchool());
-        tour.setIdsOfDepartmentsOfInterest(updatedTour.getIdsOfDepartmentsOfInterest());
+        tour.setDepartmentsOfInterest(updatedTour.getDepartmentsOfInterest());
         tour.setTrainees(updatedTour.getTrainees());
         tour.setTourParticipantSurveys(updatedTour.getTourParticipantSurveys());
         tour.setGuides(updatedTour.getGuides());

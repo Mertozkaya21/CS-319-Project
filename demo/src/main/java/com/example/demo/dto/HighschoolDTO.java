@@ -2,6 +2,8 @@ package com.example.demo.dto;
 
 import java.time.LocalDate;
 
+import com.example.demo.enums.City;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class HighschoolDTO {
     private Long id; 
     private String name; 
-    private String city; 
+    private City city; 
     private String counselorName; 
     private String counselorEmail; 
     private String counselorPhoneNo; 

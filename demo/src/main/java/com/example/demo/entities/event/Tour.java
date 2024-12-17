@@ -4,6 +4,7 @@ import com.example.demo.entities.highschool.Highschool;
 import com.example.demo.entities.user.Advisor;
 import com.example.demo.entities.user.Guide;
 import com.example.demo.entities.user.Trainee;
+import com.example.demo.enums.Department;
 import com.example.demo.enums.TourHours;
 import com.example.demo.enums.TourType;
 import com.fasterxml.jackson.annotation.JsonGetter;
@@ -45,10 +46,11 @@ public class Tour extends Event {
     @JsonIgnore
     private Highschool visitorSchool;
 
-    @ElementCollection
+    @ElementCollection(targetClass = Department.class)
+    @Enumerated(EnumType.STRING)
     @CollectionTable(name = "DepartmentInterest", joinColumns = @JoinColumn(name = "tourID"))
-    @Column(name = "departmentID")
-    private List<Integer> idsOfDepartmentsOfInterest;
+    @Column(name = "departmentName")
+    private List<Department> departmentsOfInterest;
 
     @ManyToMany
     @JoinTable(
@@ -101,5 +103,21 @@ public class Tour extends Event {
     @JsonGetter("tourParticipantSurveyIds")
     public List<Long> getTourParticipantSurveyIds() {
         return tourParticipantSurveys != null ? tourParticipantSurveys.stream().map(TourParticipantSurvey::getTourSurveyID).toList() : null;
+    }
+
+    @JsonGetter("departmentsOfInterest")
+    public List<String> getDepartmentsOfInterest() {
+        return departmentsOfInterest != null ? departmentsOfInterest.stream().map(Enum::name).toList() : null;
+    }
+
+    public void setDepartmentsOfInterest(List<String> departmentNames) {
+        if (departmentNames != null) {
+            this.departmentsOfInterest = departmentNames.stream()
+                    .map(String::toUpperCase)
+                    .map(Department::valueOf)
+                    .toList();
+        } else {
+            this.departmentsOfInterest = null;
+        }
     }
 }

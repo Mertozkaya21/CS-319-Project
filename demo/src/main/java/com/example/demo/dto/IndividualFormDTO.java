@@ -1,11 +1,13 @@
 package com.example.demo.dto;
 
+import com.example.demo.enums.City;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 @Data
 @AllArgsConstructor
 public class IndividualFormDTO {
-    private String city;
+    private City city;
     private String comments;
     private String date;
     private String departmentOfInterest;
