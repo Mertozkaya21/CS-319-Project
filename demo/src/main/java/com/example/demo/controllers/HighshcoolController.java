@@ -120,4 +120,10 @@ public class HighshcoolController {
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
+
+    @DeleteMapping("/remove") 
+    public ResponseEntity<?> deleteSelectedHighschools(@RequestBody List<Long> highschoolIds) {
+        highschoolService.deleteHighschoolsByIds(highschoolIds);
+        return ResponseEntity.ok("Selected highschools have been removed successfully.");
+    }
 }

@@ -130,7 +130,7 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/advisor/remove")
+    @DeleteMapping("/advisor/remove") 
     public ResponseEntity<?> deleteSelectedAdvisors(@RequestBody List<Long> advisorIds) {
         userService.deleteAdvisorsByIds(advisorIds);
         return ResponseEntity.ok("Selected advisors have been removed successfully.");

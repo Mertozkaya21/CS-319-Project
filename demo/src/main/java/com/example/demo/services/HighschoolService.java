@@ -9,8 +9,10 @@ import com.example.demo.entities.event.Tour;
 import com.example.demo.entities.highschool.Counselor;
 import com.example.demo.entities.highschool.Highschool;
 import com.example.demo.enums.City;
+import com.example.demo.enums.UserRole;
 import com.example.demo.exceptions.HighschoolNotFoundException;
 import com.example.demo.repositories.highschool.HighschoolRepository;
+import com.example.demo.services.UsersService.RoleService;
 
 @Service
 public class HighschoolService {
@@ -138,5 +140,11 @@ public class HighschoolService {
             return true;
         }
         return false;
+    }
+
+    public void deleteHighschoolsByIds(List<Long> highschoolIds) {
+        for (Long id : highschoolIds) {
+            highschoolRepository.deleteById(id);
+        }
     }
 }

@@ -29,25 +29,23 @@ const DashboardHighSchool = () => {
     }
 
     try {
-      // Loop through selected high schools and send DELETE request for each
-      const remainingRows = [...highSchoolRows];
-      for (let id of selectedRows) {
-      const response = await fetch(`http://localhost:8080/v1/highschool/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+      // Send the selected school IDs as a JSON array in a single DELETE request
+    const response = await fetch('http://localhost:8080/v1/highschool/batch-delete', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(selectedRows), // Send selected school IDs
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to delete high school with ID: ${id}`);
+        throw new Error(`Failed to delete high schools`);
       }
 
-      // Optional: If you want to refresh the high schools after each successful deletion
-      const updatedRows = highSchoolRows.filter((row) => row.id !== id);
+      const updatedRows = highSchoolRows.filter((row) => !selectedRows.includes(row.id));
       setHighSchoolRows(updatedRows);
       setFilteredRows(updatedRows);
-    }
+
       setSelectedRows([]); // Reset selected rows
       alert('Selected high schools have been removed.');
     } catch (error) {
