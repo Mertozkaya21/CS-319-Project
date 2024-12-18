@@ -147,4 +147,8 @@ public class TourService {
         return tourRepository.save(tour);
     }
 
+    public List<Object[]> countEventsByMonthAndStatus(EventStatus status) {
+        return tourRepository.countEventsByMonthAndStatus(status);
+    }
+    
 }

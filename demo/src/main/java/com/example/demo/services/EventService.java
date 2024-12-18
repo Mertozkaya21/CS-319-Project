@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class EventService {
@@ -124,5 +126,35 @@ public class EventService {
         acceptedEvents.addAll(fairService.getAllFairs());
         acceptedEvents.addAll(tourService.getAllTours());
         return acceptedEvents;
+    }
+
+    public Map<String, Object> getMonthlyEventStats() {
+        Map<Integer, Long> scheduledEvents = new HashMap<>();
+        Map<Integer, Long> completedEvents = new HashMap<>();
+
+        tourService.countEventsByMonthAndStatus(EventStatus.SCHEDULED)
+            .forEach(result -> scheduledEvents.merge((Integer) result[0], (Long) result[1], Long::sum));
+        
+        tourService.countEventsByMonthAndStatus(EventStatus.COMPLETED)
+            .forEach(result -> completedEvents.merge((Integer) result[0], (Long) result[1], Long::sum));
+
+        fairService.countEventsByMonthAndStatus(EventStatus.SCHEDULED)
+            .forEach(result -> scheduledEvents.merge((Integer) result[0], (Long) result[1], Long::sum));
+        
+        fairService.countEventsByMonthAndStatus(EventStatus.COMPLETED)
+            .forEach(result -> completedEvents.merge((Integer) result[0], (Long) result[1], Long::sum));
+
+        Map<String, Object> monthlyStats = new HashMap<>();
+        String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", 
+                           "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+
+        for (int i = 1; i <= 12; i++) {
+            Map<String, Long> monthData = new HashMap<>();
+            monthData.put("scheduled", scheduledEvents.getOrDefault(i, 0L));
+            monthData.put("completed", completedEvents.getOrDefault(i, 0L));
+            monthlyStats.put(months[i - 1], monthData);
+        }
+
+        return monthlyStats;
     }
 }

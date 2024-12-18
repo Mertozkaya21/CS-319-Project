@@ -52,6 +52,10 @@ public class Tour extends Event {
     @Column(name = "departmentName")
     private List<Department> departmentsOfInterest;
 
+
+    @Column(nullable = false)
+    private int numberOfGuidesNeeded;
+
     @ManyToMany
     @JoinTable(
         name = "trainee_tour",
@@ -119,5 +123,15 @@ public class Tour extends Event {
         } else {
             this.departmentsOfInterest = null;
         }
+    }
+
+    public void setNoOfGuests(int noOfGuests) {
+        this.noOfGuests = noOfGuests;
+        this.numberOfGuidesNeeded = (int) Math.ceil(noOfGuests / 60.0);
+    }
+
+    @JsonGetter("numberOfGuidesAssigned")
+    public int getNumberOfGuidesAssigned() {
+        return guides != null ? guides.size() : 0;
     }
 }

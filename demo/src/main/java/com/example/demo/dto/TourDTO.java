@@ -16,7 +16,6 @@ import com.example.demo.enums.TourType;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TourDTO {
-    private long id;
     private EventStatus status;
     private LocalDate date;
     private TourType tourType;

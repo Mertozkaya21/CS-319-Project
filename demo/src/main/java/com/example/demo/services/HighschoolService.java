@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -9,18 +10,19 @@ import com.example.demo.entities.event.Tour;
 import com.example.demo.entities.highschool.Counselor;
 import com.example.demo.entities.highschool.Highschool;
 import com.example.demo.enums.City;
-import com.example.demo.enums.UserRole;
 import com.example.demo.exceptions.HighschoolNotFoundException;
+import com.example.demo.repositories.highschool.CounselorRepository;
 import com.example.demo.repositories.highschool.HighschoolRepository;
-import com.example.demo.services.UsersService.RoleService;
 
 @Service
 public class HighschoolService {
     
     private HighschoolRepository highschoolRepository;
+    private final CounselorRepository counselorRepository;
 
-    public HighschoolService(HighschoolRepository hRepository) {
+    public HighschoolService(HighschoolRepository hRepository, CounselorRepository counselorRepository) {
         this.highschoolRepository = hRepository;
+        this.counselorRepository = counselorRepository;
     }
 
     public List<Highschool> getAllHighschool() {
@@ -112,8 +114,7 @@ public class HighschoolService {
     }
     
     public Highschool removeCounselorFromHighschool(Long highschoolId) throws HighschoolNotFoundException {
-        Highschool highschool = highschoolRepository.findById(highschoolId)
-                .orElseThrow(() -> new HighschoolNotFoundException("Highschool with ID " + highschoolId + " not found"));
+        Highschool highschool = getHighschoolByID(highschoolId);
         highschool.setCounselor(null);
         return highschoolRepository.save(highschool);
     }
@@ -130,9 +131,23 @@ public class HighschoolService {
     }
 
     public Highschool saveHighschool(HighschoolDTO highschoolDTO) {
-        Highschool highschool = new Highschool(highschoolDTO);
+        Counselor counselor = new Counselor();
+        counselor.setCounselorName(highschoolDTO.getCounselorName());
+        counselor.setEmail(highschoolDTO.getCounselorEmail());
+        counselor.setPhone(highschoolDTO.getCounselorPhoneNo());
+    
+        counselorRepository.save(counselor); 
+    
+        Highschool highschool = new Highschool();
+        highschool.setName(highschoolDTO.getName());
+        highschool.setCity(highschoolDTO.getCity());
+        highschool.setLgsPercentile(highschoolDTO.getLgsPercentile());
+        highschool.setDateUpDated(LocalDate.now());
+        highschool.setCounselor(counselor);
+    
         return highschoolRepository.save(highschool);
     }
+    
 
     public boolean deleteHighschoolByID(Long id) {
         if (highschoolRepository.existsById(id)) {
@@ -144,7 +159,8 @@ public class HighschoolService {
 
     public void deleteHighschoolsByIds(List<Long> highschoolIds) {
         for (Long id : highschoolIds) {
-            highschoolRepository.deleteById(id);
+            if(highschoolRepository.existsById(id))
+                highschoolRepository.deleteById(id);
         }
     }
 }

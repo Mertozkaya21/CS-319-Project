@@ -2,6 +2,7 @@ package com.example.demo.controllers;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -54,6 +55,24 @@ public class EventController {
         return ResponseEntity.ok(eventService.getAllAcceptedEvents());
     }
 
+    @GetMapping("/date/{date}")
+    public ResponseEntity<List<Event>> getEventsByDate(@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        return ResponseEntity.ok(eventService.getEventsByDate(date));
+    }
+
+    @GetMapping("/date/{date}/hours/{hours}")
+    public ResponseEntity<List<Event>> getEventsByDateAndHours(
+        @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+        @PathVariable TourHours hours
+    ) {
+        return ResponseEntity.ok(eventService.getEventsByDateAndHours(date, hours));
+    }
+
+    @GetMapping("/stats/monthly")
+    public ResponseEntity<Map<String, Object>> getMonthlyEventStats() {
+        return ResponseEntity.ok(eventService.getMonthlyEventStats());
+    }
+
     @PostMapping("/fairs")
     public ResponseEntity<Fair> createFair(@RequestBody Fair fair) {
         return ResponseEntity.status(HttpStatus.CREATED).body((Fair) eventService.saveEvent(fair));
@@ -91,18 +110,5 @@ public class EventController {
     public ResponseEntity<Event> removeGuideFromEvent(@PathVariable Long id, @PathVariable Long guideId) throws GuideNotFoundException {
         Guide guide = eventService.getGuideById(guideId);
         return ResponseEntity.ok(eventService.removeGuideFromEvent(id, guide));
-    }
-
-    @GetMapping("/date/{date}")
-    public ResponseEntity<List<Event>> getEventsByDate(@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        return ResponseEntity.ok(eventService.getEventsByDate(date));
-    }
-
-    @GetMapping("/date/{date}/hours/{hours}")
-    public ResponseEntity<List<Event>> getEventsByDateAndHours(
-        @PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
-        @PathVariable TourHours hours
-    ) {
-        return ResponseEntity.ok(eventService.getEventsByDateAndHours(date, hours));
     }
 }

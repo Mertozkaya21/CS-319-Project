@@ -22,6 +22,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,10 +44,11 @@ public class Highschool {
         this.lgsPercentile = highschoolDTO.getLgsPercentile();
 
         if (highschoolDTO.getCounselorName() != null) {
-            this.counselor = new Counselor();
-            this.counselor.setCounselorName(highschoolDTO.getCounselorName());
-            this.counselor.setEmail(highschoolDTO.getCounselorEmail());
-            this.counselor.setPhone(highschoolDTO.getCounselorPhoneNo());
+            Counselor counselor = new Counselor();
+            counselor.setCounselorName(highschoolDTO.getCounselorName());
+            counselor.setEmail(highschoolDTO.getCounselorEmail());
+            counselor.setPhone(highschoolDTO.getCounselorPhoneNo());
+            this.counselor = counselor;
         }
     }
 
@@ -60,15 +63,15 @@ public class Highschool {
     @Enumerated(EnumType.STRING)
     private City city;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private double lgsPercentile;
 
     @Column(nullable = false)
+    @Temporal(TemporalType.DATE)
     private LocalDate dateUpDated;
-
     
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "counselor_id", nullable = true) 
+    @JoinColumn(name = "counselor_id", nullable = false) 
     private Counselor counselor;
 
     @OneToMany(mappedBy = "highschool", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -93,4 +96,5 @@ public class Highschool {
     public List<Long> getGroupTourIds() {
         return groupTours != null ? groupTours.stream().map(Tour::getId).toList() : null;
     }
+    
 }

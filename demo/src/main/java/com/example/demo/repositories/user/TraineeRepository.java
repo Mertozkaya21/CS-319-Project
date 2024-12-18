@@ -12,4 +12,6 @@ public interface TraineeRepository extends JpaRepository<Trainee, Long>{
     List<Trainee> findByStatus(TraineeStatus status);
     List<Trainee> findByEmail(String email);
     List<Trainee> findByPassword(String password);
+    List<Trainee> findByAdvisor_Id(Long advisorId);
+
 }

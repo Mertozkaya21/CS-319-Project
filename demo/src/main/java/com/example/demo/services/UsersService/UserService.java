@@ -14,6 +14,7 @@ import com.example.demo.exceptions.EmailAlreadyExistsException;
 import com.example.demo.exceptions.LoginException;
 import com.example.demo.exceptions.UserNotFoundException;
 import com.example.demo.repositories.Auth.PasswordResetTokenRepository;
+import com.example.demo.repositories.user.TraineeRepository;
 import com.example.demo.services.EmailService;
 
 import org.springframework.stereotype.Service;
@@ -280,6 +281,11 @@ public class UserService {
         for(Long id: traineeIds) {
             traineeService.deleteById(id);
         }
+    }
+
+    public List<Trainee> getTraineesByAdvisorId(Long advisorId) {
+        TraineeRepository repo = (TraineeRepository) roleServiceFactory.getRoleService(UserRole.TRAINEE);
+        return repo.findByAdvisor_Id(advisorId);
     }
 
 }

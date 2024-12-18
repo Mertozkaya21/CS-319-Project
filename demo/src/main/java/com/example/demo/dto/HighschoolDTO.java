@@ -12,13 +12,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class HighschoolDTO {
-    private Long id; 
     private String name; 
     private City city; 
     private String counselorName; 
     private String counselorEmail; 
     private String counselorPhoneNo; 
-    private double priority; 
     private double lgsPercentile;
     private LocalDate dateUpdated; 
 }

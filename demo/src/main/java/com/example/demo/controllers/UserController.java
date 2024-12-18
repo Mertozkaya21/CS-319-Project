@@ -2,6 +2,7 @@ package com.example.demo.controllers;
 
 import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.UserUpdateDTO;
+import com.example.demo.entities.user.Trainee;
 import com.example.demo.entities.user.User;
 import com.example.demo.enums.UserRole;
 import com.example.demo.exceptions.EmailAlreadyExistsException;
@@ -47,6 +48,12 @@ public class UserController {
     @GetMapping("/{role}/count")
     public ResponseEntity<Long> countUsers(@PathVariable String role) {
         return ResponseEntity.ok(userService.count(role));
+    }
+
+    @GetMapping("/advisor/{advisorId}/trainees")
+    public ResponseEntity<List<Trainee>> getTraineesByAdvisor(@PathVariable Long advisorId) {
+        List<Trainee> trainees = userService.getTraineesByAdvisorId(advisorId);
+        return ResponseEntity.ok(trainees);
     }
 
     @PostMapping("/coordinator")
