@@ -1,0 +1,4 @@
+Factory Design Pattern - 
+Command Design Pattern - for event handling
+Strategy Design Pattern - for sorting application forms
+Singleton Design Pattern - for @Service,@Respository and @Controller
