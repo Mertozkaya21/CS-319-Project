@@ -102,7 +102,7 @@ public class EventService {
             return tourService.getGuideById(guideId);
         } catch (GuideNotFoundException e) {
             return fairService.getGuideById(guideId);
-        } 
+        }
     }
 
     public Event assignGuideToEvent(Long eventId, Long guideId) throws GuideNotFoundException {
@@ -110,6 +110,8 @@ public class EventService {
             return fairService.assignGuideToFair(eventId, guideId);
         } catch (FairNotFoundException e) {
             return tourService.assignGuideToTour(eventId, guideId);
+        } catch (TourNotFoundException e) {
+            return null;
         }
     }
 
@@ -118,6 +120,8 @@ public class EventService {
             return fairService.removeGuideFromFair(eventId, guide);
         } catch (FairNotFoundException e) {
             return tourService.removeGuideFromTour(eventId, guide);
+        } catch (TourNotFoundException e) {
+            return null;
         }
     }
 

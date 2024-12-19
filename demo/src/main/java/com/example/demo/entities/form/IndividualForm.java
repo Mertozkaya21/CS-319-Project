@@ -31,7 +31,7 @@ public class IndividualForm extends ApplicationForm{
         this.setPhoneNumber(individualFormDto.getPhoneNumber());
         this.setNumberOfAttendees(Integer.parseInt(individualFormDto.getNumberOfAttendees()));
         this.setTourHour(TourHours.fromString(individualFormDto.getTimeSlot()));
-        this.setDepartmentOfInterest(Department.fromString(individualFormDto.getDepartmentOfInterest()));
+        this.setDepartmentOfInterest(individualFormDto.getDepartmentOfInterest());
         this.setIndividualName(individualFormDto.getIndividualName());
         this.setSubmitTimeDate(LocalDate.now());
     }
@@ -41,4 +41,5 @@ public class IndividualForm extends ApplicationForm{
 
     @Column(nullable = true)
     private String individualName;
+
 }

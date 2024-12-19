@@ -3,8 +3,13 @@ package com.example.demo.services.applicationformservice.applicationformsorter;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Component;
+
 import com.example.demo.entities.form.GroupForm;
 
+@Component
+@Primary
 public class SortBySubmissionTime implements SortStrategy{
 
     @Override

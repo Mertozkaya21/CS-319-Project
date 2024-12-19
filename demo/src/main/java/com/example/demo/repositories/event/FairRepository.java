@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.example.demo.entities.event.Fair;
 import java.util.List;
+import java.util.Optional;
 import java.time.LocalDate;
 import com.example.demo.entities.user.Guide;
 import com.example.demo.enums.EventStatus;
@@ -14,6 +15,7 @@ import com.example.demo.enums.EventStatus;
 @Repository
 public interface FairRepository extends JpaRepository<Fair, Long>{
 
+    Optional<Fair> findByNameIgnoreCase(String name);
     List<Fair> findByDate(LocalDate date);
     List<Fair> findByGuides(List<Guide> guides);
     List<Fair> findByStatus(EventStatus status);

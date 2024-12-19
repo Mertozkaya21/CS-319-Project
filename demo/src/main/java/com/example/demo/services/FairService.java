@@ -104,7 +104,6 @@ public class FairService {
         return fairRepository.findByDateBetween(startDate, endDate);
     }
     
-
     public List<Object[]> countEventsByMonthAndStatus(EventStatus status) {
         return fairRepository.countEventsByMonthAndStatus(status);
     }

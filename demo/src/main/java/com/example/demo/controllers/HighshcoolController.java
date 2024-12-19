@@ -72,10 +72,13 @@ public class HighshcoolController {
 
 
     @PostMapping
-    public ResponseEntity<Highschool> saveHighschool(@RequestBody HighschoolDTO highschoolDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(highschoolService.saveHighschool(highschoolDTO));
+    public ResponseEntity<Highschool> saveHighschool(@RequestBody HighschoolDTO highschoolDTO) throws HighschoolNotFoundException {
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(highschoolService.saveHighschool(highschoolDTO));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
-
 
     @PatchMapping("/{id}/name")
     public ResponseEntity<Highschool> updateHighschoolName(@PathVariable Long id, @RequestBody Map<String, String> request) throws HighschoolNotFoundException {

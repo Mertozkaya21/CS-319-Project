@@ -45,6 +45,4 @@ public class Fair extends Event{
         inverseJoinColumns = @JoinColumn(name = "guide_id")
     )
     private List<Guide> guides;
-
-
 }

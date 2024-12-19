@@ -17,5 +17,5 @@ public interface  AdvisorRepository extends JpaRepository<Advisor, Long>{
     List<Advisor> findByEmail(String email);
     List<Advisor> findByDateAdded(DayOfWeek dateAdded);
     List<Advisor> findByPassword(String password);
-    Advisor findByUndertakenDay(DayOfWeek day);
+    List<Advisor> findByUndertakenDay(DayOfWeek day);
 }

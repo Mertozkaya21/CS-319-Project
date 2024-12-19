@@ -3,9 +3,12 @@ package com.example.demo.services.applicationformservice.applicationformsorter;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.example.demo.entities.form.GroupForm;
 import com.example.demo.enums.City;
 
+@Component
 public class SortByDistance implements SortStrategy{
 
     @Override

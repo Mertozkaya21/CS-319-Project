@@ -1,5 +1,7 @@
 package com.example.demo.dto;
 
+import java.time.LocalDate;
+
 import com.example.demo.enums.City;
 
 import lombok.AllArgsConstructor;
@@ -18,4 +20,12 @@ public class GroupFormDTO {
     private String phoneNumber;
     private boolean termsAccepted;
     private String timeSlot;
+
+    public LocalDate getEventDateAsLocalDate() {
+        try {
+            return LocalDate.parse(date);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Invalid date format: " + date);
+        }
+    }
 }

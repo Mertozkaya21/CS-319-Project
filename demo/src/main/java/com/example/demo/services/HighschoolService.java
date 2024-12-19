@@ -126,11 +126,12 @@ public class HighschoolService {
                 .orElseThrow(() -> new HighschoolNotFoundException("Highschool with ID " + highschoolId + " not found"));
     }
 
-    public Highschool saveHighschool(Highschool highschool) {
-        return highschoolRepository.save(highschool);
-    }
+    public Highschool saveHighschool(HighschoolDTO highschoolDTO) throws HighschoolNotFoundException {
+        Highschool temp = highschoolRepository.findByName(highschoolDTO.getName());
+        if (temp == null){
+            throw new HighschoolNotFoundException("Highschool with name '" + highschoolDTO.getName() + "' already exists.");
+        }
 
-    public Highschool saveHighschool(HighschoolDTO highschoolDTO) {
         Counselor counselor = new Counselor();
         counselor.setCounselorName(highschoolDTO.getCounselorName());
         counselor.setEmail(highschoolDTO.getCounselorEmail());

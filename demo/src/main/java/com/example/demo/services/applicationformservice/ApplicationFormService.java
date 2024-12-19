@@ -2,54 +2,33 @@ package com.example.demo.services.applicationformservice;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
-
 import org.springframework.stereotype.Service;
 
-import com.example.demo.dto.GroupFormDTO;
-import com.example.demo.dto.IndividualFormDTO;
 import com.example.demo.entities.form.ApplicationForm;
 import com.example.demo.entities.form.GroupForm;
 import com.example.demo.entities.form.IndividualForm;
-import com.example.demo.entities.highschool.Highschool;
-import com.example.demo.entities.user.Coordinator;
 import com.example.demo.enums.ApplicationFormStatus;
 import com.example.demo.enums.TourHours;
-import com.example.demo.repositories.form.ApplicationFormRepository;
-import com.example.demo.repositories.form.GroupFormRepository;
-import com.example.demo.repositories.form.IndividualFormRepository;
-import com.example.demo.repositories.highschool.HighschoolRepository;
-import com.example.demo.repositories.user.CoordinatorRepository;
-import com.example.demo.services.UsersService.AdvisorService;
+import com.example.demo.exceptions.ApplicationFormNotFoundException;
 import com.example.demo.services.applicationformservice.applicationformsorter.ApplicationFormSorter;
 import com.example.demo.services.applicationformservice.applicationformsorter.SortByLgsPercentile;
 import com.example.demo.services.applicationformservice.applicationformsorter.SortStrategy;
 
 @Service
 public class ApplicationFormService {
-    private final AdvisorService advisorService;
-    private final ApplicationFormRepository applicationFormRepository;
-    private final GroupFormRepository groupFormRepository;
-    private final IndividualFormRepository individualFormRepository;
-    private final HighschoolRepository highschoolRepository;
-    private ApplicationFormSorter applicationFormSorter;
-    private CoordinatorRepository coordinatorRepository;
+    
+    private final GroupFormService groupFormService;
+    private final IndividualFormService individualFormService;
+    private final ApplicationFormSorter applicationFormSorter;
 
-    public ApplicationFormService(GroupFormRepository groupFormRepo,
-                                    ApplicationFormRepository applicationFormRepo,
-                                    IndividualFormRepository individualFormRepo,
-                                    AdvisorService advisorService,
-                                    HighschoolRepository highschoolRepository,
-                                    CoordinatorRepository coordinatorRepository){
-        this.applicationFormRepository = applicationFormRepo;
-        this.groupFormRepository = groupFormRepo;
-        this.individualFormRepository = individualFormRepo;
-        this.advisorService = advisorService;
-        this.highschoolRepository = highschoolRepository;
-        this.coordinatorRepository = coordinatorRepository;
+    public ApplicationFormService(  IndividualFormService individualFormService,
+                                    GroupFormService groupFormService){
+        this.individualFormService = individualFormService;
+        this.groupFormService = groupFormService;                                
         this.applicationFormSorter = new ApplicationFormSorter(new SortByLgsPercentile()); //default sorting strategy is lgsPercentile
     }
 
@@ -57,70 +36,25 @@ public class ApplicationFormService {
         this.applicationFormSorter.setSortStrategy(strategy); 
     }
 
-    public List<GroupForm> getApplicationFormsByTourHour(LocalDate date, TourHours tourHour){
-        List<GroupForm> forms = groupFormRepository.findByEventDateAndTourHour(date,tourHour);
-        return applicationFormSorter.sortApplicationForms(forms);
-    }
-
     public List<ApplicationForm> getAllApplicationForms() {
-        return applicationFormRepository.findAll();
-    }
+        List<ApplicationForm> allForms = new ArrayList<>();
+        allForms.addAll(groupFormService.getAllGroupForms());
+        allForms.addAll(individualFormService.getAllIndividualForms());
 
-    public List<GroupForm> getAllGroupForms() {
-        List<GroupForm> groupForms = groupFormRepository.findAll();
-        List<GroupForm> sortedForms = new ArrayList<>();
-
-        // Grupları aynı tarih ve tur saatine göre ayır ve sıralı listeye ekle
-        groupForms.stream()
-            .collect(Collectors.groupingBy(form -> new FormDateHourKey(form.getEventDate(), form.getTourHour())))
-            .forEach((key, forms) -> {
-                List<GroupForm> sortedGroup = getApplicationFormsByTourHour(key.date, key.tourHour);
-                sortedForms.addAll(sortedGroup);
-            });
-
-        return sortedForms;
-    }
-
-    public List<IndividualForm> getAllIndividualForms() {
-        return individualFormRepository.findAll();
-    }
-
-    public IndividualForm saveIndividualForm(IndividualFormDTO individualFormDto) {
-        IndividualForm individualForm = new IndividualForm(individualFormDto);
-        individualForm.setAdvisor(advisorService.getAdvisorByUndertakenDay(individualForm.getEventDate().getDayOfWeek()));
-        List<Coordinator> coordinators = coordinatorRepository.findAll();
-        if(!coordinators.isEmpty()){
-            individualForm.setCoordinator(coordinators.get(0));
-        }
-        else{
-            throw new IllegalArgumentException("Coordinator could not be found.");
-        }
-        return individualFormRepository.save(individualForm);
+        allForms.sort(Comparator.comparing(ApplicationForm::getSubmitTimeDate));
+        return allForms;
     }
     
-    public GroupForm saveGroupForm(GroupFormDTO groupFormDto) {
-        GroupForm groupForm = new GroupForm(groupFormDto);
-        Highschool highschool = highschoolRepository.findByName(groupFormDto.getHighSchoolName());
-        groupForm.setHighschool(highschool);
-        groupForm.setCounselor(highschool.getCounselor());
-        groupForm.setAdvisor(advisorService.getAdvisorByUndertakenDay(groupForm.getEventDate().getDayOfWeek()));
-        List<Coordinator> coordinators = coordinatorRepository.findAll();
-        if(!coordinators.isEmpty()){
-            groupForm.setCoordinator(coordinators.get(0));
-        }
-        else{
-            throw new IllegalArgumentException("Coordinator could not be found.");
-        }
-        return groupFormRepository.save(groupForm);
-    }
 
-    public ApplicationForm getOneFormById(Long formId) {
-        Optional<GroupForm> groupFormOpt = groupFormRepository.findById(formId);
-        if (groupFormOpt.isPresent()) return groupFormOpt.get();
+    public ApplicationForm getOneFormById(Long formId) throws ApplicationFormNotFoundException {
+        GroupForm groupForm = groupFormService.getGroupFormById(formId);
+        if(groupForm != null)
+            return groupForm;
+        
+        IndividualForm individualForm = individualFormService.getIndividualFormById(formId);
+        if(individualForm != null)
+            return individualForm;
 
-        Optional<IndividualForm> individualFormOpt = individualFormRepository.findById(formId);
-        if (individualFormOpt.isPresent()) return individualFormOpt.get();
-    
         return null;
     }
 
@@ -133,54 +67,41 @@ public class ApplicationFormService {
     }
 
 
-    public boolean updateOneApplicationFormStatus(Long formId, ApplicationFormStatus newStatus) { //BTO_APPROVED or BTO_DENIED
-        Optional<GroupForm> groupFormOpt = groupFormRepository.findById(formId);
-        if (groupFormOpt.isPresent()) {
-            GroupForm foundForm = groupFormOpt.get();
-            foundForm.setStatus(newStatus);
-            groupFormRepository.save(foundForm);
+    public boolean updateOneApplicationFormStatus(Long formId, ApplicationFormStatus newStatus) throws ApplicationFormNotFoundException { //BTO_APPROVED or BTO_DENIED
+        GroupForm groupForm = groupFormService.updateGroupFormStatus(formId, newStatus);
+        if(groupForm != null)
             return true;
-        }
 
-        Optional<IndividualForm> individualFormOpt = individualFormRepository.findById(formId);
-        if (individualFormOpt.isPresent()){
-            IndividualForm foundForm = individualFormOpt.get();
-            foundForm.setStatus(newStatus);
-            individualFormRepository.save(foundForm);
+        IndividualForm individualForm = individualFormService.updateIndividualFormStatus(formId, newStatus);
+        if(individualForm != null)
             return true;
-        } 
-    
+
         return false;
     }
 
-    public ApplicationFormStatus getOneApplicationFormStatusByID(Long formId) {
-        Optional<GroupForm> groupForm = groupFormRepository.findById(formId);
-        if(groupForm.isPresent()){
-            ApplicationForm foundApplicationForm = groupForm.get();
-            return foundApplicationForm.getStatus();
+    public ApplicationFormStatus getOneApplicationFormStatusByID(Long formId) throws ApplicationFormNotFoundException {
+        GroupForm groupForm = groupFormService.getGroupFormById(formId);
+        if(groupForm != null){
+            return groupForm.getStatus();
         } 
 
-        Optional<IndividualForm> individualForm = individualFormRepository.findById(formId);
-        if(individualForm.isPresent()){
-            ApplicationForm foundApplicationForm = individualForm.get();
-            return foundApplicationForm.getStatus();
+        IndividualForm individualForm = individualFormService.getIndividualFormById(formId);
+        if(individualForm != null){
+            return individualForm.getStatus();
         } 
 
-        return null;
-        
+        return null;        
     }
 
     public boolean deleteById(Long formId) {
-        if (groupFormRepository.existsById(formId)) {
-            groupFormRepository.deleteById(formId);
+        if(groupFormService.deleteGroupFormById(formId)) {
             return true;
         }
 
-        else if (individualFormRepository.existsById(formId)) {
-            individualFormRepository.deleteById(formId);
+        if(individualFormService.deleteIndividualFormById(formId)) {
             return true;
         }
-
+        
         return false;
     }
 }

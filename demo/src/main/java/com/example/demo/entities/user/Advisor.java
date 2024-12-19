@@ -1,10 +1,8 @@
 package com.example.demo.entities.user;
 
 import com.example.demo.dto.UserDTO;
-import com.example.demo.entities.form.ApplicationForm;
 import com.example.demo.entities.payment.Payment;
 import com.example.demo.enums.UserRole;
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
@@ -57,13 +55,4 @@ public class Advisor extends User {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "payment_id")
     private Payment payment;
-
-    @OneToMany(mappedBy = "advisor", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JsonIgnore
-    private List<ApplicationForm> applicationForms;
-
-    @JsonGetter("applicationFormIds")
-    public List<Long> getApplicationFormIds() {
-        return applicationForms != null ? applicationForms.stream().map(ApplicationForm::getApplicationFormID).toList() : null;
-    }
 }

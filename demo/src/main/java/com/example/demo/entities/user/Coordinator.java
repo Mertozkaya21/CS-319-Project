@@ -1,7 +1,6 @@
 package com.example.demo.entities.user;
 
 import com.example.demo.dto.UserDTO;
-import com.example.demo.entities.form.ApplicationForm;
 import com.example.demo.entities.payment.Payment;
 import com.example.demo.enums.UserRole;
 import com.fasterxml.jackson.annotation.JsonGetter;
@@ -38,7 +37,6 @@ public class Coordinator extends User {
         this.notifications = new ArrayList<Long>();
         this.guides = new ArrayList<Guide>();
         this.trainees = new ArrayList<Trainee>();
-        this.applicationForms = new ArrayList<ApplicationForm>();
         this.dateAdded = LocalDate.now();
         Payment newPayment = new Payment();
         newPayment.setAmount(0);
@@ -56,13 +54,8 @@ public class Coordinator extends User {
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "payment_id")
-    @JsonIgnore // Prevent recursion
+    @JsonIgnore 
     private Payment payment;
-
-    @OneToMany(mappedBy = "coordinator", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JsonIgnore // Prevent recursion
-    private List<ApplicationForm> applicationForms;
-
 
     @JsonGetter("guideIds")
     public List<Long> getGuideIds() {
@@ -72,10 +65,5 @@ public class Coordinator extends User {
     @JsonGetter("traineeIds")
     public List<Long> getTraineeIds() {
         return trainees != null ? trainees.stream().map(Trainee::getId).toList() : null;
-    }
-
-    @JsonGetter("applicationFormIds")
-    public List<Long> getApplicationFormIds() {
-        return applicationForms != null ? applicationForms.stream().map(ApplicationForm::getApplicationFormID).toList() : null;
     }
 }

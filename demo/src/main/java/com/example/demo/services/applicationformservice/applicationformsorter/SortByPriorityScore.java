@@ -4,10 +4,14 @@ import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 
+import org.springframework.stereotype.Component;
+
 import com.example.demo.entities.form.ApplicationForm;
 import com.example.demo.entities.form.GroupForm;
 
+@Component
 public class SortByPriorityScore implements SortStrategy{
+
 
         public static double calculatePriorityScore(GroupForm form, 
                                                 double w1, double w2, double w3, 

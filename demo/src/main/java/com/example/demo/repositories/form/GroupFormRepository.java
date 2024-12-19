@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.entities.form.GroupForm;
@@ -18,4 +20,7 @@ public interface GroupFormRepository extends JpaRepository<GroupForm,Long>{
     List<GroupForm> findByEventDateAndTourHour(LocalDate eventDate, TourHours tourHour);
     List<GroupForm> findByApplicationFormID(long applicationFormID);
 
+
+    @Query("SELECT gf FROM GroupForm gf WHERE gf.eventDate = :eventDate AND gf.highschool.name = :highschoolName")
+    List<GroupForm> findByEventDateAndHighschoolName(@Param("eventDate") LocalDate eventDate, @Param("highschoolName") String highschoolName);
 }

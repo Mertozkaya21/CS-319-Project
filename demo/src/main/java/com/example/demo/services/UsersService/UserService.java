@@ -41,7 +41,7 @@ public class UserService {
     public User saveUser(String role, UserDTO newUserDTO) throws EmailAlreadyExistsException {
         UserRole userRole = UserRole.fromString(role);
 
-        validateEmailAndPassword(newUserDTO);
+        validateCredentials(newUserDTO);
         checkIfEmailExists(newUserDTO.getEmail());
 
         User user = switch (userRole) {
@@ -55,7 +55,7 @@ public class UserService {
     }
 
     public User saveTraineeWithAdvisor(UserDTO userDTO, Long advisorId) throws EmailAlreadyExistsException {
-        validateEmailAndPassword(userDTO);
+        validateCredentials(userDTO);
         checkIfEmailExists(userDTO.getEmail());
     
         Advisor advisor = (Advisor) roleServiceFactory.getRoleService(UserRole.ADVISOR)
@@ -70,7 +70,7 @@ public class UserService {
     
 
     public User saveAdvisor(UserDTO newUserDTO, String day) throws EmailAlreadyExistsException {
-        validateEmailAndPassword(newUserDTO);
+        validateCredentials(newUserDTO);
         checkIfEmailExists(newUserDTO.getEmail());
     
         DayOfWeek undertakenDay;
@@ -123,7 +123,7 @@ public class UserService {
         }
     }
 
-    private void validateEmailAndPassword(UserDTO userDTO) {
+    private void validateCredentials(UserDTO userDTO) {
         if (!isValidEmail(userDTO.getEmail())) {
             throw new IllegalArgumentException("Invalid email. Please use an email address with 'bilkent' in the domain.");
         }

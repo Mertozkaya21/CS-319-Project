@@ -2,14 +2,9 @@ package com.example.demo.entities.form;
 
 import java.time.LocalDate;
 
-import com.example.demo.entities.highschool.Highschool;
-import com.example.demo.entities.user.Advisor;
-import com.example.demo.entities.user.Coordinator;
 import com.example.demo.enums.ApplicationFormStatus;
 import com.example.demo.enums.City;
 import com.example.demo.enums.TourHours;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -20,8 +15,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -78,54 +71,5 @@ public class ApplicationForm {
     @Column(nullable = true)
     private int numberOfAttendees;
 
-    @ManyToOne
-    @JoinColumn(name = "highschoolID", nullable = true)
-    @JsonIgnore
-    private Highschool highschool;
-
-    @ManyToOne
-    @JoinColumn(name = "advisor_id") 
-    @JsonIgnore
-    private Advisor advisor;
-
-    @ManyToOne
-    @JoinColumn(name = "coordinator_id",nullable = true)
-    @JsonIgnore
-    private Coordinator coordinator;
-
-    @JsonProperty("highschoolId")
-    public Long getHighschoolIdOnly() {
-        return highschool != null ? highschool.getId() : null;
-    }
-
-    @JsonProperty("advisorId")
-    public Long getAdvisorIdOnly() {
-        return advisor != null ? advisor.getId() : null;
-    }
-
-    @JsonProperty("coordinatorId")
-    public Long getCoordinatorIdOnly() {
-        return coordinator != null ? coordinator.getId() : null;
-    }
-
     private double priorityScore;
-
-
-    public double calculatePriorityScore(double lgsPercentile, City city, LocalDate submitTimeDate, LocalDate earliestSubmissionDate) {
-        final double W_DISTANCE = 0.4; 
-        final double W_LGS = 0.4;      
-        final double W_TIME = 0.2;     
-        double distance = city.getDistanceFromAnkara();
-
-        double lgsScore = lgsPercentile;
-
-        long daysDifference = earliestSubmissionDate.until(submitTimeDate).getDays();
-        double timeScore = Math.max(30 - daysDifference, 0); 
-
-        double priorityScore = (W_DISTANCE * distance) 
-                            + (W_LGS * lgsScore) 
-                            + (W_TIME * timeScore);
-
-        return priorityScore;
-    }
 }

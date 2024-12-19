@@ -54,12 +54,14 @@ public class AdvisorService implements RoleService {
         return advisorRepository.count();
     }
 
-    public Advisor getAdvisorByUndertakenDay(DayOfWeek day){
-        Advisor advisor = advisorRepository.findByUndertakenDay(day);
-        if(advisor!=null)
-            return advisor;
-        else
-            return null;
+    public Advisor getAdvisorByUndertakenDay(DayOfWeek day) {
+        List<Advisor> advisors = advisorRepository.findByUndertakenDay(day);
+
+        if (advisors.isEmpty()) {
+            throw new IllegalArgumentException("No advisors found for day: " + day);
+        }
+
+        return advisors.get(0); 
     }
 
     @Override
