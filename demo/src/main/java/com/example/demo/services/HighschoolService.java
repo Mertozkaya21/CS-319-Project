@@ -63,6 +63,16 @@ public class HighschoolService {
         return highschoolRepository.save(highschool);
     }
 
+    public Highschool updateHighschool(Long id, HighschoolDTO highschoolDTO) throws HighschoolNotFoundException {
+        Highschool highschool = getHighschoolByID(id);
+        highschool.setName(highschoolDTO.getName());
+        highschool.setCity(highschoolDTO.getCity());
+        highschool.getCounselor().setCounselorName(highschoolDTO.getCounselorName());
+        highschool.getCounselor().setEmail(highschoolDTO.getCounselorEmail());
+        highschool.getCounselor().setPhone(highschoolDTO.getCounselorPhoneNo());
+        return highschoolRepository.save(highschool);
+    }
+
     public Highschool updateHighschoolName(Long id, String newName) throws HighschoolNotFoundException {
         Highschool highschool = getHighschoolByID(id);
 
@@ -128,7 +138,7 @@ public class HighschoolService {
 
     public Highschool saveHighschool(HighschoolDTO highschoolDTO) throws HighschoolNotFoundException {
         Highschool temp = highschoolRepository.findByName(highschoolDTO.getName());
-        if (temp == null){
+        if (temp != null){
             throw new HighschoolNotFoundException("Highschool with name '" + highschoolDTO.getName() + "' already exists.");
         }
 

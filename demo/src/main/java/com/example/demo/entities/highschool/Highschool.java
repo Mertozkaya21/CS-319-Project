@@ -92,6 +92,16 @@ public class Highschool {
         return counselor != null ? counselor.getCounselorName() : null;
     }
 
+    @JsonGetter("counselorPhoneNo")
+    public String getCounselorPhoneNo() {
+        return counselor != null ? counselor.getPhone() : null;
+    }
+
+    @JsonGetter("counselorEmail")
+    public String getCounselorEmail() {
+        return counselor != null ? counselor.getEmail() : null;
+    }
+
     @JsonGetter("groupTourIds")
     public List<Long> getGroupTourIds() {
         return groupTours != null ? groupTours.stream().map(Tour::getId).toList() : null;

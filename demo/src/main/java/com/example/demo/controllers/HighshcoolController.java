@@ -80,6 +80,11 @@ public class HighshcoolController {
         }
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<Highschool> updateHighschool(@PathVariable Long id, @RequestBody HighschoolDTO highschoolDTO) throws HighschoolNotFoundException {
+        return ResponseEntity.ok(highschoolService.updateHighschool(id,highschoolDTO));
+    }
+
     @PatchMapping("/{id}/name")
     public ResponseEntity<Highschool> updateHighschoolName(@PathVariable Long id, @RequestBody Map<String, String> request) throws HighschoolNotFoundException {
         String newName = request.get("name");
