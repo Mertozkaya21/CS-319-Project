@@ -28,6 +28,7 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -170,6 +171,15 @@ public class UserService {
     public List<? extends User> getAllUsers(String role) {
         UserRole userRole = UserRole.fromString(role);
         return roleServiceFactory.getRoleService(userRole).findAll();
+    }
+
+    public List<String> getAllUserFullNames(String role) {
+        UserRole userRole = UserRole.fromString(role);
+        return roleServiceFactory.getRoleService(userRole)
+                                 .findAll()
+                                 .stream()
+                                 .map(user -> user.getFirstName() + " " + user.getLastName()) // fullName oluşturuyoruz
+                                 .collect(Collectors.toList());
     }
 
     public void deleteUser(String role, Long id) {

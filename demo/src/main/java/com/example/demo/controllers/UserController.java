@@ -64,8 +64,8 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser("COORDINATOR", newUserDTO));
     }
 
-    @PostMapping("/trainee")
-    public ResponseEntity<User> createTrainee(@RequestBody UserDTO userDTO, @RequestParam Long advisorId) throws InvalidCredentialsException {
+    @PostMapping("/trainee/{advisorId}") 
+    public ResponseEntity<User> createTraineeByAdvisor(@PathVariable Long advisorId, @RequestBody UserDTO userDTO) throws InvalidCredentialsException {
         try {
             User savedTrainee = userService.saveTraineeWithAdvisor(userDTO, advisorId);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedTrainee);
@@ -73,6 +73,17 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
+
+    @PostMapping("/trainee")
+    public ResponseEntity<User> createTrainee(@RequestBody UserDTO userDTO) throws InvalidCredentialsException {
+        try {
+            User savedTrainee = userService.saveUser("trainee",userDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedTrainee);
+        } catch (EmailAlreadyExistsException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
     @PostMapping("/guide")
     public ResponseEntity<User> createGuide(@RequestBody UserDTO newUserDTO) throws EmailAlreadyExistsException, InvalidCredentialsException {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser("GUIDE", newUserDTO));
@@ -167,5 +178,10 @@ public class UserController {
     public ResponseEntity<String> deleteSelectedTrainees(@RequestBody List<Long> traineeIds) {
         userService.deleteTraineeByIds(traineeIds);
         return ResponseEntity.ok("Selected trainees have been removed successfully.");
+    }
+
+    @GetMapping("/dropdown/trainees")
+    public ResponseEntity<List<String>> getTraineeNames() {
+        return ResponseEntity.ok(userService.getAllUserFullNames("trainee"));
     }
 }
