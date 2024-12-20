@@ -1,7 +1,6 @@
 package com.example.demo.entities.event;
 
 import com.example.demo.entities.highschool.Highschool;
-import com.example.demo.entities.user.Advisor;
 import com.example.demo.entities.user.Guide;
 import com.example.demo.entities.user.Trainee;
 import com.example.demo.enums.Department;
@@ -30,28 +29,20 @@ public class Tour extends Event {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private TourType tourType; // Enum to differentiate between GROUP and INDIVIDUAL tours
+    private TourType tourType; 
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TourHours tourHours;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "advisorID", nullable = false)
-    @JsonIgnore
-    private Advisor advisor;
-
-    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "visitorSchoolID", nullable = true)
     @JsonIgnore
     private Highschool visitorSchool;
 
-    @ElementCollection(targetClass = Department.class)
     @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "DepartmentInterest", joinColumns = @JoinColumn(name = "tourID"))
-    @Column(name = "departmentName")
-    private List<Department> departmentsOfInterest;
-
+    @Column(name = "departmentName", nullable = true)
+    private Department departmentOfInterest;
 
     @Column(nullable = false)
     private int numberOfGuidesNeeded;
@@ -83,12 +74,6 @@ public class Tour extends Event {
     @JsonIgnore
     private List<Guide> guides;
 
-    // Custom JSON Getters to expose only IDs
-    @JsonGetter("advisorId")
-    public Long getAdvisorId() {
-        return advisor != null ? advisor.getId() : null;
-    }
-
     @JsonGetter("visitorSchoolId")
     public Long getVisitorSchoolId() {
         return visitorSchool != null ? visitorSchool.getId() : null;
@@ -107,22 +92,6 @@ public class Tour extends Event {
     @JsonGetter("tourParticipantSurveyIds")
     public List<Long> getTourParticipantSurveyIds() {
         return tourParticipantSurveys != null ? tourParticipantSurveys.stream().map(TourParticipantSurvey::getTourSurveyID).toList() : null;
-    }
-
-    @JsonGetter("departmentsOfInterest")
-    public List<String> getDepartmentsOfInterest() {
-        return departmentsOfInterest != null ? departmentsOfInterest.stream().map(Enum::name).toList() : null;
-    }
-
-    public void setDepartmentsOfInterest(List<String> departmentNames) {
-        if (departmentNames != null) {
-            this.departmentsOfInterest = departmentNames.stream()
-                    .map(String::toUpperCase)
-                    .map(Department::valueOf)
-                    .toList();
-        } else {
-            this.departmentsOfInterest = null;
-        }
     }
 
     public void setNoOfGuests(int noOfGuests) {

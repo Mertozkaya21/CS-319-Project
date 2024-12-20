@@ -7,12 +7,17 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.GroupFormDTO;
+import com.example.demo.entities.event.Tour;
 import com.example.demo.entities.form.GroupForm;
 import com.example.demo.entities.highschool.Counselor;
 import com.example.demo.entities.highschool.Highschool;
 import com.example.demo.enums.ApplicationFormStatus;
+import com.example.demo.enums.Department;
+import com.example.demo.enums.EventStatus;
 import com.example.demo.enums.TourHours;
+import com.example.demo.enums.TourType;
 import com.example.demo.exceptions.ApplicationFormNotFoundException;
+import com.example.demo.repositories.event.TourRepository;
 import com.example.demo.repositories.form.GroupFormRepository;
 import com.example.demo.repositories.highschool.HighschoolRepository;
 import com.example.demo.services.applicationformservice.applicationformsorter.ApplicationFormSorter;
@@ -23,13 +28,17 @@ public class GroupFormService {
     private final GroupFormRepository groupFormRepository;
     private final ApplicationFormSorter applicationFormSorter;
     private final HighschoolRepository highschoolRepository;
+    private final TourRepository tourRepository;
+
 
     public GroupFormService(GroupFormRepository groupFormRepository, 
                             ApplicationFormSorter applicationFormSorter,
-                            HighschoolRepository highschoolRepository) {
+                            HighschoolRepository highschoolRepository,
+                            TourRepository tourRepository) {
         this.groupFormRepository = groupFormRepository;
         this.applicationFormSorter = applicationFormSorter;
         this.highschoolRepository = highschoolRepository;
+        this.tourRepository = tourRepository;
     }
     
 
@@ -69,8 +78,27 @@ public class GroupFormService {
     public GroupForm updateGroupFormStatus(Long groupFormId, ApplicationFormStatus newStatus) throws ApplicationFormNotFoundException {
         GroupForm groupForm = getGroupFormById(groupFormId);
         groupForm.setStatus(newStatus);
+
+        if(newStatus == ApplicationFormStatus.BTO_APPROVED) {
+            createGroupTour(groupForm);
+        }
+
         return groupFormRepository.save(groupForm);
     }
+
+    private void createGroupTour(GroupForm groupForm) {
+        Tour groupTour = new Tour();
+        groupTour.setTourType(TourType.GROUP); 
+        groupTour.setTourHours(groupForm.getTourHour()); 
+        groupTour.setDate(groupForm.getEventDate());
+        groupTour.setNoOfGuests(groupForm.getNumberOfAttendees());
+        groupTour.setVisitorSchool(groupForm.getHighschool()); 
+        groupTour.setNumberOfGuidesNeeded((int) Math.ceil(groupTour.getNoOfGuests() / 60.0));
+        groupTour.setStatus(EventStatus.SCHEDULED);
+        
+        tourRepository.save(groupTour);
+    }
+
 
     public GroupForm saveGroupForm(GroupFormDTO groupFormDto) {
         Highschool highschool = highschoolRepository.findByName(groupFormDto.getHighSchoolName());

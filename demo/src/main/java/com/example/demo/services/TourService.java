@@ -71,9 +71,8 @@ public class TourService {
                     .orElseThrow(() -> new TourNotFoundException("Tour with ID " + id + " not found"));
         tour.setTourType(updatedTour.getTourType());
         tour.setTourHours(updatedTour.getTourHours());
-        tour.setAdvisor(updatedTour.getAdvisor());
         tour.setVisitorSchool(updatedTour.getVisitorSchool());
-        tour.setDepartmentsOfInterest(updatedTour.getDepartmentsOfInterest());
+        tour.setDepartmentOfInterest(updatedTour.getDepartmentOfInterest());
         tour.setTrainees(updatedTour.getTrainees());
         tour.setTourParticipantSurveys(updatedTour.getTourParticipantSurveys());
         tour.setGuides(updatedTour.getGuides());

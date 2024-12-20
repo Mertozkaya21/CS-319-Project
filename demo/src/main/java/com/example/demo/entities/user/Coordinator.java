@@ -49,11 +49,11 @@ public class Coordinator extends User {
     }
 
     @OneToMany(mappedBy = "coordinator", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JsonIgnore // Prevent recursion
+    @JsonIgnore 
     private List<Guide> guides;
 
     @OneToMany(mappedBy = "coordinator", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JsonIgnore // Prevent recursion
+    @JsonIgnore 
     private List<Trainee> trainees;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)

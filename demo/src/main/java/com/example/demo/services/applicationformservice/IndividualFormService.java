@@ -6,18 +6,25 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.IndividualFormDTO;
+import com.example.demo.entities.event.Tour;
 import com.example.demo.entities.form.IndividualForm;
 import com.example.demo.enums.ApplicationFormStatus;
+import com.example.demo.enums.EventStatus;
+import com.example.demo.enums.TourType;
 import com.example.demo.exceptions.ApplicationFormNotFoundException;
+import com.example.demo.repositories.event.TourRepository;
 import com.example.demo.repositories.form.IndividualFormRepository;
 
 @Service
 public class IndividualFormService {
 
     private final IndividualFormRepository individualFormRepository;
+    private final TourRepository tourRepository;
 
-    public IndividualFormService(IndividualFormRepository individualFormRepository) {
+    public IndividualFormService(IndividualFormRepository individualFormRepository,
+                                TourRepository tourRepository) {
         this.individualFormRepository = individualFormRepository;
+        this.tourRepository = tourRepository;
     }
 
     public List<IndividualForm> getAllIndividualForms() {
@@ -38,7 +45,25 @@ public class IndividualFormService {
     public IndividualForm updateIndividualFormStatus(Long individualFormId, ApplicationFormStatus newStatus) throws ApplicationFormNotFoundException {
         IndividualForm individualForm = getIndividualFormById(individualFormId);
         individualForm.setStatus(newStatus);
+
+        if (newStatus == ApplicationFormStatus.BTO_APPROVED) {
+            createIndividualTour(individualForm); 
+        }
+
         return individualFormRepository.save(individualForm);
+    }
+
+    private void createIndividualTour(IndividualForm individualForm) {
+        Tour individualTour = new Tour();
+        
+        individualTour.setTourType(TourType.INDIVIDUAL); 
+        individualTour.setTourHours(individualForm.getTourHour()); 
+        individualTour.setDate(individualForm.getEventDate());
+        individualTour.setNoOfGuests(individualForm.getNumberOfAttendees()); 
+        individualTour.setDepartmentOfInterest(individualForm.getDepartmentOfInterest()); 
+        individualTour.setStatus(EventStatus.SCHEDULED);
+
+        tourRepository.save(individualTour);
     }
 
     public IndividualForm saveIndividualForm(IndividualFormDTO individualFormDto) {

@@ -77,6 +77,7 @@ public class Trainee extends User{
     @JoinColumn(name = "advisor_id",nullable = true) 
     @JsonIgnore
     private Advisor advisor; 
+    
     @JsonGetter("tourIds")
     public List<Long> getTourIds() {
         return tours != null ? tours.stream().map(Tour::getId).toList() : null;
