@@ -114,7 +114,10 @@ const HighSchoolTable = ({ rows, setSelectedRows }) => {
           rowsPerPageOptions={[5, 10]}
           checkboxSelection
           disableSelectionOnClick
-          onSelectionModelChange={handleSelectionModelChange} 
+          onRowSelectionModelChange={(newSelectionModel) => {
+            console.log("Row Selection Changed:", newSelectionModel);
+            setSelectedRows(newSelectionModel);
+          }} 
           sx={{
             '& .MuiDataGrid-columnHeaders': {
               backgroundColor: '#f7f7f7',

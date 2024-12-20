@@ -12,7 +12,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 //import { getHighSchoolData } from './DashboardHighSchool'; // Import high school data
 
-const Header = ({ title, onSearchSelection , onConfirmDelete, rows}) => {
+const Header = ({ title, onSearchSelection , deleteSelectedHighschools, rows}) => {
   const [isPopupOpen, setPopupOpen] = useState(false); // State to control the popup
   const [sortOption, setSortOption] = useState('Date Updated');
 
@@ -22,11 +22,17 @@ const Header = ({ title, onSearchSelection , onConfirmDelete, rows}) => {
   }));
 
   const handleRemoveClick = () => {
-    setPopupOpen(true); // Open the popup
+    setPopupOpen(true);
   };
 
+  const handleDeletions = () => {
+    deleteSelectedHighschools();
+    setPopupOpen(false);
+  };  
+
+  // Close Confirmation Dialog
   const handleClosePopup = () => {
-    setPopupOpen(false); // Close the popup
+    setPopupOpen(false);
   };
 
   return (
@@ -131,10 +137,7 @@ const Header = ({ title, onSearchSelection , onConfirmDelete, rows}) => {
             No
           </Button>
           <Button
-            onClick={() => {
-              onConfirmDelete(); // Call the onConfirmDelete function passed from Dashboard
-              handleClosePopup(); // Close the popup after confirming
-            }}
+            onClick = {handleDeletions}
             variant="contained"
             sx={{
               backgroundColor: '#8a0303',
