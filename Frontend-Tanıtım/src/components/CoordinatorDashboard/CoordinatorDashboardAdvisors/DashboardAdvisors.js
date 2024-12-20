@@ -22,9 +22,6 @@ const DashboardAdvisors = () => {
     }
   };
 
-  const addSelectedAdvisors = async () => {
-  }
-
   const deleteSelectedAdvisors = async () => {
     try {
       const response = await fetch('http://localhost:8080/v1/user/advisor/remove', {
@@ -88,8 +85,7 @@ const DashboardAdvisors = () => {
       <div className={styles.mainContent}>
         {/* Header */}
         <Header title="Advisors" onSearchSelection={handleSearchSelection} 
-        deleteSelectedAdvisors={deleteSelectedAdvisors}
-        addSelectedAdvisors={addSelectedAdvisors}/>
+        deleteSelectedAdvisors={deleteSelectedAdvisors}/>
 
         {/* Advisors Table */}
         <AdvisorTable rows={filteredRows} 

@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -70,6 +71,7 @@ public class HighschoolService {
         highschool.getCounselor().setCounselorName(highschoolDTO.getCounselorName());
         highschool.getCounselor().setEmail(highschoolDTO.getCounselorEmail());
         highschool.getCounselor().setPhone(highschoolDTO.getCounselorPhoneNo());
+        highschool.setDateUpDated(LocalDate.now());
         return highschoolRepository.save(highschool);
     }
 

@@ -83,7 +83,7 @@ const columns = [
     width: 100,
     renderCell: (params) => (
       <div className={styles.contactButtons}>
-        <IconButton onClick={() => params.row.handleContactClick('phone', params.row)}>
+        <IconButton onClick={() => params.row.handleContactClick('phoneNo', params.row)}>
           <FaPhoneAlt className={styles.contactIcon} />
         </IconButton>
         <IconButton onClick={() => params.row.handleContactClick('email', params.row)}>
@@ -124,7 +124,7 @@ const columns = [
   },
 ];
 
-const GuidesTable = ({ rows }) => {
+const GuidesTable = ({ rows, setSelectedRows}) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogContent, setDialogContent] = useState('');
   const [dialogTitle, setDialogTitle] = useState(''); // State for dynamic dialog title
@@ -132,8 +132,8 @@ const GuidesTable = ({ rows }) => {
   // Handle contact click (phone/email)
   const handleContactClick = (type, row) => {
     const content =
-      type === 'phone'
-        ? `Phone: ${row.phone}`
+      type === 'phoneNo'
+        ? `Phone: ${row.phoneNo}`
         : `Email: ${row.email}`;
     setDialogTitle(`${row.name}'s Contact Information`);
     setDialogContent(content);
@@ -181,6 +181,10 @@ const GuidesTable = ({ rows }) => {
           rowsPerPageOptions={[10, 20, 50]}
           checkboxSelection
           disableSelectionOnClick
+          onRowSelectionModelChange={(newSelectionModel) => {
+            console.log("Row Selection Changed:", newSelectionModel);
+            setSelectedRows(newSelectionModel);
+          }}
           sx={{ 
             '& .MuiDataGrid-columnHeaders': {
               backgroundColor: '#f7f7f7',

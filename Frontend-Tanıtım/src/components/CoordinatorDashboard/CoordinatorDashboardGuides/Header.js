@@ -13,7 +13,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import { guidesRows } from './GuidesTable'; // Import guide data
 
-const Header = ({ title, onSearchSelection }) => {
+const Header = ({ title, onSearchSelection, deleteSelectedGuides }) => {
   const [isPopupOpen, setPopupOpen] = useState(false); // State to control the popup visibility
 
   // Transform guidesRows into a format suitable for Autocomplete
@@ -25,6 +25,11 @@ const Header = ({ title, onSearchSelection }) => {
   const handleRemoveClick = () => {
     setPopupOpen(true);
   };
+
+  const handleDeletions = () => {
+    deleteSelectedGuides();
+    setPopupOpen(false);
+  };  
 
   // Close Confirmation Dialog
   const handleClosePopup = () => {
@@ -157,7 +162,7 @@ const Header = ({ title, onSearchSelection }) => {
 
           {/* Yes Button */}
           <Button
-            onClick={handleClosePopup} // Replace with deletion logic if needed
+            onClick={handleDeletions} // Replace with deletion logic if needed
             variant="contained"
             sx={{
               backgroundColor: '#8a0303',
