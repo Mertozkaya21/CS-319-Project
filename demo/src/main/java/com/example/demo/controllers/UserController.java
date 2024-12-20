@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -184,8 +185,13 @@ public class UserController {
     }
 
     @GetMapping("/dropdown/trainees")
-    public ResponseEntity<List<String>> getTraineeNames() {
+    public ResponseEntity<List<Map<Long, String>>> getTraineeNames() {
         return ResponseEntity.ok(userService.getAllUserFullNamesWithIds("trainee"));
+    }
+
+    @GetMapping("/dropdown/advisors")
+    public ResponseEntity<List<Map<Long, String>>> getAdvisorNames() {
+        return ResponseEntity.ok(userService.getAllUserFullNamesWithIds("advisor"));
     }
 
     @GetMapping("/dropdown/eligibletrainees")

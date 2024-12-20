@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -15,7 +15,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import EmailIcon from "@mui/icons-material/Email";
 import PhoneIcon from "@mui/icons-material/Phone";
-import { NavLink } from 'react-router-dom';
+import { NavLink,useNavigate } from 'react-router-dom';
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -38,11 +38,80 @@ const advisors = [
 ];
 
 const Table = () => {
+  const [advisors, setAdvisors] = useState([]);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phoneNo: "",
+    advisorId: "",
+    password:""
+  });
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = React.useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => event.preventDefault();
   const handleMouseUpPassword = (event) => event.preventDefault();
+
+  useEffect(() => {
+    const fetchAdvisors = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/v1/user/advisor"); // API endpoint
+        if (!response.ok) {
+          throw new Error("Failed to fetch advisors.");
+        }
+        const data = await response.json();
+        // Backend'den gelen veriyi uygun formatta dönüştür
+        const formattedAdvisors = data.map((item) => {
+          const [id, name] = Object.entries(item)[0]; // Key-value pair olarak alın
+          return { id, name };   
+        });
+        setAdvisors(formattedAdvisors);
+        console.log(formattedAdvisors);
+      } catch (error) {
+        console.error("Error fetching advisors:", error);
+      }
+    };
+
+    fetchAdvisors();
+  }, []);
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    console.log(JSON.stringify(formData));
+    e.preventDefault(); // Sayfanın yenilenmesini engeller
+
+    const nameParts = formData.name.split(" ");
+    formData.firstName = nameParts.slice(0, -1).join(" "); // Son eleman hariç kalanları birleştir
+    formData.lastName = nameParts[nameParts.length - 1];
+
+    try {
+      console.log(JSON.stringify(formData));
+      const response = await fetch(`http://localhost:8080/v1/user/trainee`, {
+        method: "POST", 
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData), // Form verilerini JSON formatında gönder
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to add trainee.");
+      }
+  
+      const result = await response.json();
+      console.log("Added Trainee Data:", result);
+      alert("Trainee added successfully!");
+      navigate("/coordinatordashboardtrainees");
+    } catch (error) {
+      console.error("Error adding trainee:", error);
+      alert("Failed to add trainee. Please try again.");
+    }
+  };
 
   return (
     <Box
@@ -87,6 +156,7 @@ const Table = () => {
           label="Name"
           placeholder="Enter Full Name"
           fullWidth
+          onChange={handleChange}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -102,6 +172,7 @@ const Table = () => {
           label="Email Address"
           placeholder="Enter Email"
           fullWidth
+          onChange={handleChange}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -113,10 +184,11 @@ const Table = () => {
         {/* Phone Number */}
         <TextField
           required
-          id="phone"
+          id="phoneNo"
           label="Phone Number"
           placeholder="(123) 456-7890"
           fullWidth
+          onChange={handleChange}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -130,10 +202,13 @@ const Table = () => {
         <TextField
           select
           required
-          id="advisorResponsible"
+          id="advisorId"
+          name="advisorId"
           label="Advisor Responsible"
           placeholder="Choose Advisor"
           fullWidth
+          value={formData.advisorId}
+          onChange={handleChange}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -143,7 +218,7 @@ const Table = () => {
           }}
         >
           {advisors.map((advisor) => (
-            <MenuItem key={advisor.id} value={advisor.name}>
+            <MenuItem key={advisor.id} value={advisor.id}>
               {advisor.name}
             </MenuItem>
           ))}
@@ -199,8 +274,7 @@ const Table = () => {
           Cancel
         </Button>
         <Button
-          component={NavLink}
-          to="/coordinatordashboardtrainees" // Redirect to trainees Dashboard
+          onClick={handleSubmit}
           variant="contained"
           sx={{
             backgroundColor: "#8a0303",

@@ -25,6 +25,8 @@ import java.time.DayOfWeek;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
+import java.util.Map;
+
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -170,12 +172,15 @@ public class UserService {
         return roleServiceFactory.getRoleService(userRole).findAll();
     }
 
-    public List<String> getAllUserFullNamesWithIds(String role) {
+    public List<Map<Long, String>> getAllUserFullNamesWithIds(String role) {
         UserRole userRole = UserRole.fromString(role);
         return roleServiceFactory.getRoleService(userRole)
                                  .findAll()
                                  .stream()
-                                 .map(user -> user.getId() +" - "+user.getFirstName() + " " + user.getLastName()) //id + fullName
+                                 .map(user -> Map.of(
+                                     user.getId(),
+                                     user.getFirstName() + " " + user.getLastName()
+                                 ))
                                  .collect(Collectors.toList());
     }
 
