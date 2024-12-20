@@ -80,17 +80,7 @@ const Table = () => {
     time: "",
   });
   const [loading, setLoading] = useState(true);
-
-  // Fetch Data based on ID
-  useEffect(() => {
-    const fetchData = () => {
-      const event = tourApplicationsRows.find((row) => row.id === Number(id));
-      if (event) {
-        setFormData(event);
-      }
-    };
-    fetchData();
-  }, [id]);
+  const [error, setError] = useState(null);
 
   // Handle Editable Fields
   const handleInputChange = (e) => {
@@ -105,7 +95,31 @@ const Table = () => {
     alert("Event details updated successfully!");
   };
 
+  useEffect(() => {
+    console.log(id,"useEffect");
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        console.log(id,"useEffect");
+        const response = await fetch(`http://localhost:8080/v1/highschool/${id}`);
+        if (!response.ok) {
+          throw new Error("Data could not be loaded.");
+        }
+        const data = await response.json();
+        setFormData(data); // Backend'den dönen veriyi ayarla
+      } catch (error) {
+        setError("Data could not be loaded. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [id]);
 
+  if (loading) {
+    return <div>Loading...</div>; // Add this line here to show loading state
+  }
+  
   return (
     <Box
       sx={{
@@ -142,6 +156,7 @@ const Table = () => {
       >
         {/* Name */}
         <TextField
+          id="name"
           name="name"
           label="High School Name"
           value={formData.name}
@@ -159,6 +174,7 @@ const Table = () => {
 
         {/* City */}
         <TextField
+          id="city"
           name="city"
           label="City"
           value={formData.city}
@@ -176,6 +192,7 @@ const Table = () => {
 
         {/* Phone */}
         <TextField
+          id="phone"
           name="phone"
           label="Phone Number"
           value={formData.phone}
@@ -193,6 +210,7 @@ const Table = () => {
 
         {/* Email */}
         <TextField
+          id="email"
           name="email"
           label="Email Address"
           value={formData.email}
@@ -210,6 +228,7 @@ const Table = () => {
 
         {/* Priority */}
         <TextField
+          id="priority"
           name="priority"
           label="Priority"
           value={formData.priority}
@@ -228,6 +247,7 @@ const Table = () => {
         {/* Date - Editable */}
         <TextField
           required
+          id="date"
           name="date"
           label="Event Date"
           type="date"
@@ -239,6 +259,7 @@ const Table = () => {
 
         <TextField
           required
+          id="time"
           name="time"
           label="Event Time"
           value={formData.time} // Dynamically sets the initial value

@@ -2,19 +2,19 @@ package com.example.demo.controllers;
 
 import com.example.demo.dto.UserDTO;
 import com.example.demo.dto.UserUpdateDTO;
+import com.example.demo.entities.user.Advisor;
 import com.example.demo.entities.user.Trainee;
 import com.example.demo.entities.user.User;
 import com.example.demo.enums.UserRole;
 import com.example.demo.exceptions.EmailAlreadyExistsException;
 import com.example.demo.exceptions.UserNotFoundException;
+import com.example.demo.services.UsersService.AdvisorService;
 import com.example.demo.services.UsersService.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
@@ -23,9 +23,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class UserController {
 
     private final UserService userService;
+    private final AdvisorService advisorService;
 
-    public UserController(UserService service) {
+    public UserController(UserService service,AdvisorService advisorService) {
         this.userService = service;
+        this.advisorService = advisorService;
     }
 
     @GetMapping("/{role}")
@@ -108,13 +110,24 @@ public class UserController {
         return ResponseEntity.ok(userService.saveUser(role, updatedUser));
     }
 
-    @PatchMapping("/{role}/{id}")
+    @PatchMapping("/{role}/{id}") //üsttekiyle aynı metot
     public ResponseEntity<User> updateUser(
         @PathVariable String role, 
         @PathVariable Long id, 
         @RequestBody UserUpdateDTO userUpdateDTO) throws UserNotFoundException {
+        User updatedUser=null;
+        if(!role.equals("advisor")){
+            updatedUser = userService.updateUser(UserRole.fromString(role), id, userUpdateDTO);
+        }
+        return ResponseEntity.ok(updatedUser);
+    }
+
+    @PatchMapping("/advisor/{id}") 
+    public ResponseEntity<User> updateAdvisor(
+        @PathVariable Long id, 
+        @RequestBody UserUpdateDTO userUpdateDTO) throws UserNotFoundException {
     
-        User updatedUser = userService.updateUser(UserRole.fromString(role), id, userUpdateDTO);
+        Advisor updatedUser = advisorService.updateAdvisor(id, userUpdateDTO);
         return ResponseEntity.ok(updatedUser);
     }
 

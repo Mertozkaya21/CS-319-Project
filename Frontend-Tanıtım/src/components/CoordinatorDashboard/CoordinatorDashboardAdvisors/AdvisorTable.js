@@ -14,12 +14,12 @@ import styles from './CoordinatorDashboardAdvisors.module.css';
  
 // Data: Adapted from AdvisorTable dummy data
 export const advisorRows = [
-  { id: 1, name: 'Samanta William', dateAdded: 'Oct 25, 2023', tours: 23, phone: '555-123-4561', email: 'samanta.william@example.com', responsibleDay: 'Monday', profilePic: 'https://via.placeholder.com/40' },
-  { id: 2, name: 'Tony Soap', dateAdded: 'Oct 25, 2023', tours: 23, phone: '555-123-4562', email: 'tony.soap@example.com', responsibleDay: 'Tuesday', profilePic: 'https://via.placeholder.com/40'  },
-  { id: 3, name: 'Karen Hope', dateAdded: 'Oct 25, 2023', tours: 23, phone: '555-123-4563', email: 'karen.hope@example.com', responsibleDay: 'Wednesday', profilePic: 'https://via.placeholder.com/40'  },
-  { id: 4, name: 'Jordan Nico', dateAdded: 'Oct 26, 2023', tours: 23, phone: '555-987-6541', email: 'jordan.nico@example.com', responsibleDay: 'Thursday', profilePic: 'https://via.placeholder.com/40'  },
-  { id: 5, name: 'Nadila Adja', dateAdded: 'Oct 26, 2023', tours: 23, phone: '555-987-6542', email: 'nadila.adja@example.com', responsibleDay: 'Friday', profilePic: 'https://via.placeholder.com/40'  },
-  { id: 6, name: 'Johnny Ahmad', dateAdded: 'Oct 27, 2023', tours: 23, phone: '555-654-3211', email: 'johnny.ahmad@example.com', responsibleDay: 'Saturday', profilePic: 'https://via.placeholder.com/40'  },
+  { id: 1, name: 'Samanta William', dateAdded: 'Oct 25, 2023', tours: 23, phoneNo: '555-123-4561', email: 'samanta.william@example.com', undertakenDay: 'Monday', profilePic: 'https://via.placeholder.com/40' },
+  { id: 2, name: 'Tony Soap', dateAdded: 'Oct 25, 2023', tours: 23, phoneNo: '555-123-4562', email: 'tony.soap@example.com', undertakenDay: 'Tuesday', profilePic: 'https://via.placeholder.com/40'  },
+  { id: 3, name: 'Karen Hope', dateAdded: 'Oct 25, 2023', tours: 23, phoneNo: '555-123-4563', email: 'karen.hope@example.com', undertakenDay: 'Wednesday', profilePic: 'https://via.placeholder.com/40'  },
+  { id: 4, name: 'Jordan Nico', dateAdded: 'Oct 26, 2023', tours: 23, phoneNo: '555-987-6541', email: 'jordan.nico@example.com', undertakenDay: 'Thursday', profilePic: 'https://via.placeholder.com/40'  },
+  { id: 5, name: 'Nadila Adja', dateAdded: 'Oct 26, 2023', tours: 23, phoneNo: '555-987-6542', email: 'nadila.adja@example.com', undertakenDay: 'Friday', profilePic: 'https://via.placeholder.com/40'  },
+  { id: 6, name: 'Johnny Ahmad', dateAdded: 'Oct 27, 2023', tours: 23, phoneNo: '555-654-3211', email: 'johnny.ahmad@example.com', undertakenDay: 'Saturday', profilePic: 'https://via.placeholder.com/40'  },
 ];
 
 // Table Columns
@@ -28,14 +28,14 @@ const columns = [
   { field: 'id', headerName: 'Advisor ID', width: 90 },
   { field: 'dateAdded', headerName: 'Date Added', width: 100 },
   { field: 'tours', headerName: 'Tours Conducted', width: 130 },
-  { field: 'responsibleDay', headerName: 'Responsible Day', width: 130 }, // New column for Responsible Day
+  { field: 'undertakenDay', headerName: 'Responsible Day', width: 130 }, // New column for Responsible Day
   {
     field: 'contact',
     headerName: 'Contact',
     width: 100,
     renderCell: (params) => (
       <div className={styles.contactButtons}>
-        <IconButton onClick={() => params.row.handleContactClick('phone', params.row)}>
+        <IconButton onClick={() => params.row.handleContactClick('phoneNo', params.row)}>
           <FaPhoneAlt className={styles.contactIcon} />
         </IconButton>
         <IconButton onClick={() => params.row.handleContactClick('email', params.row)}>
@@ -66,15 +66,15 @@ const columns = [
   },
 ];
 
-const AdvisorTable = ({ rows }) => {
+const AdvisorTable = ({ rows ,setSelectedRows }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogContent, setDialogContent] = useState('');
 
   // Handle contact click (phone/email)
   const handleContactClick = (type, row) => {
     const content =
-      type === 'phone'
-        ? `Phone: ${row.phone}`
+      type === 'phoneNo'
+        ? `Phone: ${row.phoneNo}`
         : `Email: ${row.email}`;
     setDialogContent(content);
     setOpenDialog(true);
@@ -108,6 +108,10 @@ const AdvisorTable = ({ rows }) => {
           rowsPerPageOptions={[5, 10]}
           checkboxSelection
           disableSelectionOnClick
+          onRowSelectionModelChange={(newSelectionModel) => {
+            console.log("Row Selection Changed:", newSelectionModel);
+            setSelectedRows(newSelectionModel);
+          }}
           sx={{
             '& .MuiDataGrid-columnHeaders': {
               backgroundColor: '#f7f7f7',

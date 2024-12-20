@@ -13,7 +13,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import { advisorRows } from './AdvisorTable'; // Import advisor data
 
-const Header = ({ title, onSearchSelection }) => {
+const Header = ({ title, onSearchSelection, deleteSelectedAdvisors}) => {
   const [sortOption, setSortOption] = useState('Date Updated');
   const [isPopupOpen, setPopupOpen] = useState(false); // State to control popup visibility
 
@@ -26,6 +26,11 @@ const Header = ({ title, onSearchSelection }) => {
   const handleRemoveClick = () => {
     setPopupOpen(true);
   };
+
+  const handleDeletions = () => {
+    deleteSelectedAdvisors();
+    setPopupOpen(false);
+  };  
 
   // Close Confirmation Dialog
   const handleClosePopup = () => {
@@ -155,7 +160,7 @@ const Header = ({ title, onSearchSelection }) => {
 
           {/* Yes Button */}
           <Button
-            onClick={handleClosePopup} // Replace with deletion logic if needed
+            onClick={handleDeletions} // Replace with deletion logic if needed
             variant="contained"
             sx={{
               backgroundColor: '#8a0303',

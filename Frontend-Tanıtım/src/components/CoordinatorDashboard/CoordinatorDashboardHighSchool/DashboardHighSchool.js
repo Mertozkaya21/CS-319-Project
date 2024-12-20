@@ -10,7 +10,6 @@ const DashboardHighSchool = () => {
   const [filteredRows, setFilteredRows] = useState(highSchoolRows); // Manage filtered rows
   const [selectedRows, setSelectedRows] = useState([]); // Store selected high schools for deletion
 
-
   const handleSearchSelection = (value) => {
     if (value) {
       // Filter rows based on the selected high school name
@@ -22,7 +21,8 @@ const DashboardHighSchool = () => {
     }
   };
 
-  const handleRemoveSelected = async () => {
+  const handleConfirmDelete = async () => {
+    console.log("Selected Rows Before Deletion:", selectedRows);
     if (selectedRows.length === 0) {
       alert('No schools selected for removal.');
       return;
@@ -30,24 +30,25 @@ const DashboardHighSchool = () => {
 
     try {
       // Send the selected school IDs as a JSON array in a single DELETE request
-    const response = await fetch('http://localhost:8080/v1/highschool/batch-delete', {
+      const response = await fetch('http://localhost:8080/v1/highschool/remove', {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(selectedRows), // Send selected school IDs
       });
-
       if (!response.ok) {
         throw new Error(`Failed to delete high schools`);
       }
 
-      const updatedRows = highSchoolRows.filter((row) => !selectedRows.includes(row.id));
+      const updatedRows = filteredRows.filter((row) => !filteredRows.includes(row.id));
       setHighSchoolRows(updatedRows);
       setFilteredRows(updatedRows);
 
       setSelectedRows([]); // Reset selected rows
       alert('Selected high schools have been removed.');
+      console.log("Removing the following schools:", selectedRows);
+
     } catch (error) {
       console.error('Error removing high schools:', error);
       alert('There was an error while removing the selected high schools.');
@@ -72,13 +73,14 @@ const DashboardHighSchool = () => {
     fetchHighSchools(); // Fetch high schools on component mount
   }, []); 
 
+
   return (
     <div className={styles.dashboardContainer}>
       <Sidebar />
       <div className={styles.mainContent}>
-        <Header title="High Schools" onSearchSelection={handleSearchSelection} onConfirmDelete={handleRemoveSelected} />
+        <Header title="High Schools" onSearchSelection={handleSearchSelection} onConfirmDelete={handleConfirmDelete} rows={highSchoolRows}/>
         <HighSchoolTable
-          rows={filteredRows}
+          rows={highSchoolRows}
           setSelectedRows={setSelectedRows} 
         />
       </div>

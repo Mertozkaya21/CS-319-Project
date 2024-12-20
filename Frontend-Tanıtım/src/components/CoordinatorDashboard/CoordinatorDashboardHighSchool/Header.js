@@ -10,14 +10,14 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
-import { highSchoolRows } from './HighSchoolTable'; // Import high school data
+//import { getHighSchoolData } from './DashboardHighSchool'; // Import high school data
 
-const Header = ({ title, onSearchSelection , onConfirmDelete}) => {
+const Header = ({ title, onSearchSelection , onConfirmDelete, rows}) => {
   const [isPopupOpen, setPopupOpen] = useState(false); // State to control the popup
   const [sortOption, setSortOption] = useState('Date Updated');
 
   // Transform highSchoolRows into a format suitable for Autocomplete
-  const highSchoolOptions = highSchoolRows.map((school) => ({
+  const highSchoolOptions = rows.map((school) => ({
     label: school.name, // Only the school name will be displayed
   }));
 

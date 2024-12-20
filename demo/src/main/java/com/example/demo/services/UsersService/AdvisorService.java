@@ -1,7 +1,9 @@
 package com.example.demo.services.UsersService;
 
+import com.example.demo.dto.UserUpdateDTO;
 import com.example.demo.entities.user.Advisor;
 import com.example.demo.entities.user.User;
+import com.example.demo.exceptions.UserNotFoundException;
 import com.example.demo.repositories.user.AdvisorRepository;
 
 import org.springframework.stereotype.Service;
@@ -22,6 +24,27 @@ public class AdvisorService implements RoleService {
     @Override
     public Advisor save(User user) {
         return advisorRepository.save((Advisor) user);
+    }
+
+    public Advisor updateAdvisor(Long id, UserUpdateDTO userUpdateDTO) throws UserNotFoundException {
+        Advisor advisor = advisorRepository.findById(id)
+            .orElseThrow(() -> new UserNotFoundException("Advisor with ID " + id + " not found."));
+        if (userUpdateDTO.getFirstName() != null) {
+            advisor.setFirstName(userUpdateDTO.getFirstName());
+        }
+        if (userUpdateDTO.getLastName() != null) {
+            advisor.setLastName(userUpdateDTO.getLastName());
+        }
+        if (userUpdateDTO.getEmail() != null) {
+            advisor.setEmail(userUpdateDTO.getEmail());
+        }
+        if (userUpdateDTO.getPhoneNo() != null) {
+            advisor.setPhoneNo(userUpdateDTO.getPhoneNo());
+        }
+        if (userUpdateDTO.getDay() != null) {
+            advisor.setUndertakenDay(DayOfWeek.valueOf(userUpdateDTO.getDay()) );
+        }
+        return advisorRepository.save(advisor);
     }
 
     @Override

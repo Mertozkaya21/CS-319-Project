@@ -244,7 +244,6 @@ public class UserService {
         if (userUpdateDTO.getPhoneNo() != null) {
             user.setPhoneNo(userUpdateDTO.getPhoneNo());
         }
-
         return roleService.save(user);
     }
     

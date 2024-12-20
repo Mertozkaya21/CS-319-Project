@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, NavLink } from "react-router-dom";
+import { useParams, NavLink ,useNavigate} from "react-router-dom";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -24,20 +24,32 @@ const Table = () => {
   const { id } = useParams(); // Extract the ID from the URL
   const [formData, setFormData] = useState({
     name: "",
-    phone: "",
+    phoneNo: "",
     email: "",
-    responsibleDay: "",
+    undertakenDay: "",
   });
   const [loading, setLoading] = useState(true);
 
   // Fetch Advisor Data
   useEffect(() => {
-    const fetchAdvisorData = () => {
-      const advisor = advisorRows.find((row) => row.id === parseInt(id));
-      if (advisor) {
-        setFormData(advisor);
+    const fetchAdvisorData = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/v1/user/advisor/${id}`);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const advisor = await response.json();
+        const updatedAdvisor = {
+          ...advisor,
+          name: `${advisor.firstName} ${advisor.lastName}`,
+        };        
+        setFormData(updatedAdvisor);
+        console.log(updatedAdvisor.undertakenDay);
+      } catch (error) {
+        console.error("Failed to fetch advisor data:", error);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
     };
 
     fetchAdvisorData();
@@ -48,14 +60,33 @@ const Table = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-
-  // Handle Form Submit
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Updated Advisor Data:", formData);
-    alert("Advisor details updated successfully!");
-    // Add backend PUT/POST API call here
+  const navigate = useNavigate();
+  const handleSubmit = async (e) => {
+    console.log(JSON.stringify(formData));
+    e.preventDefault(); // Sayfanın yenilenmesini engeller
+    try {
+      const response = await fetch(`http://localhost:8080/v1/user/advisor/${id}`, {
+        method: "PATCH", // POST veya PUT (duruma göre)
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData), // Form verilerini JSON formatında gönder
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to update advisor details.");
+      }
+  
+      const result = await response.json();
+      console.log("Updated Advisor Data:", result);
+      alert("Advisor details updated successfully!");
+      navigate("/coordinatordashboardadvisors");
+    } catch (error) {
+      console.error("Error submitting advisor details:", error);
+      alert("Failed to update advisor details. Please try again.");
+    }
   };
+  
 
   if (loading) return <div>Loading...</div>;
 
@@ -129,9 +160,9 @@ const Table = () => {
         {/* Phone Number */}
         <TextField
           required
-          name="phone"
+          name="phoneNo"
           label="Phone Number"
-          value={formData.phone}
+          value={formData.phoneNo}
           onChange={handleInputChange}
           fullWidth
           InputProps={{
@@ -145,9 +176,9 @@ const Table = () => {
         {/* Dropdown for Responsible Day */}
         <TextField
           select
-          name="responsibleDay"
+          name="undertakenDay"
           label="Responsible Day"
-          value={formData.responsibleDay}
+          value={formData.undertakenDay}
           onChange={handleInputChange}
           fullWidth
           InputProps={{
@@ -158,13 +189,13 @@ const Table = () => {
             ),
           }}
         >
-          <MenuItem value="Monday">Monday</MenuItem>
-          <MenuItem value="Tuesday">Tuesday</MenuItem>
-          <MenuItem value="Wednesday">Wednesday</MenuItem>
-          <MenuItem value="Thursday">Thursday</MenuItem>
-          <MenuItem value="Friday">Friday</MenuItem>
-          <MenuItem value="Saturday">Saturday</MenuItem>
-          <MenuItem value="Sunday">Sunday</MenuItem>
+          <MenuItem value="MONDAY">Monday</MenuItem>
+          <MenuItem value="TUESDAY">Tuesday</MenuItem>
+          <MenuItem value="WEDNESDAY">Wednesday</MenuItem>
+          <MenuItem value="THURSDAY">Thursday</MenuItem>
+          <MenuItem value="FRIDAY">Friday</MenuItem>
+          <MenuItem value="SATURDAY">Saturday</MenuItem>
+          <MenuItem value="SUNDAY">Sunday</MenuItem>
         </TextField>
       </Box>
 
@@ -193,9 +224,9 @@ const Table = () => {
           Cancel 
         </Button>
         <Button
-        component={NavLink}
-        to="/coordinatordashboardadvisors" // Redirect to Advisors Dashboard
-          variant="contained"
+          //component={NavLink}
+          onSubmit={handleSubmit} 
+          //to="/coordinatordashboardadvisors" // Redirect to Advisors Dashboard 
           sx={{
             backgroundColor: "#8a0303",
             "&:hover": { backgroundColor: "#b10505" },

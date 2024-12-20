@@ -13,7 +13,7 @@ import Button from '@mui/material/Button';
 import styles from './CoordinatorDashboardHighSchool.module.css';
  
 // Data
-export const highSchoolRows = [
+/*export const highSchoolRows = [
   { id: 1, name: 'High School A', city: 'Ankara', counselorName: 'Jane Doe', dateUpdated: 'Oct 25, 2023', priority: 1, phone: '555-123-4561', email: 'jane.doe1@example.com' },
   { id: 2, name: 'High School B', city: 'Ankara', counselorName: 'Jane Doe', dateUpdated: 'Oct 25, 2023',  priority: 2, phone: '555-123-4562', email: 'jane.doe2@example.com' },
   { id: 3, name: 'High School C', city: 'Ankara', counselorName: 'Jane Doe', dateUpdated: 'Oct 25, 2023', priority: 3, phone: '555-123-4563', email: 'jane.doe3@example.com' },
@@ -26,9 +26,10 @@ export const highSchoolRows = [
   { id: 10, name: 'High School J', city: 'Istanbul', counselorName: 'John Doe', dateUpdated: 'Oct 26, 2023',  priority: 10, phone: '555-987-6543', email: 'john.doe3@example.com' },
   { id: 11, name: 'High School K', city: 'Istanbul', counselorName: 'John Doe', dateUpdated: 'Oct 26, 2023', priority: 11, phone: '555-987-6544', email: 'john.doe4@example.com' },
   { id: 12, name: 'High School L', city: 'Izmir', counselorName: 'Jane Doe', dateUpdated: 'Oct 27, 2023',  priority: 12, phone: '555-654-3212', email: 'jane.doe8@example.com' },
-];
+];*/
 
 const HighSchoolTable = ({ rows, setSelectedRows }) => {
+  //const [highSchoolRows, setHighSchoolRows] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogContent, setDialogContent] = useState('');
 
@@ -45,9 +46,9 @@ const HighSchoolTable = ({ rows, setSelectedRows }) => {
     setOpenDialog(false);
   };
 
-  const handleSelectionChange = (selectionModel) => {
-    // Update the selected rows in the parent component
-    setSelectedRows(selectionModel);
+  const handleSelectionModelChange = (newSelectionModel) => {
+    setSelectedRows(newSelectionModel);
+    console.log("Selected Row IDs:", newSelectionModel); // Seçilen satır ID'lerini log'la
   };
 
   const columns = [
@@ -79,7 +80,6 @@ const HighSchoolTable = ({ rows, setSelectedRows }) => {
       headerName: 'Edit',
       width: 60,
       renderCell: (params) => {
-        console.log("Row ID:", params.row.id); // Debug to check if ID is valid
         return (
           <NavLink
             to={`/coordinatordashboardedithighschool/${params.row.id}`} // Dynamically pass ID
@@ -114,7 +114,7 @@ const HighSchoolTable = ({ rows, setSelectedRows }) => {
           rowsPerPageOptions={[5, 10]}
           checkboxSelection
           disableSelectionOnClick
-          onSelectionModelChange={(newSelection) => handleSelectionChange(newSelection)}
+          onSelectionModelChange={handleSelectionModelChange} 
           sx={{
             '& .MuiDataGrid-columnHeaders': {
               backgroundColor: '#f7f7f7',
