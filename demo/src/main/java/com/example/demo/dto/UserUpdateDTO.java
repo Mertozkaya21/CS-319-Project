@@ -12,5 +12,5 @@ public class UserUpdateDTO {
     private String lastName;
     private String email;
     private String phoneNo;
-    private String day;
+    private String undertakenDay;
 }

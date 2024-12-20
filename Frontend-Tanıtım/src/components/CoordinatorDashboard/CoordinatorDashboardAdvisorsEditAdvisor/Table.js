@@ -64,9 +64,14 @@ const Table = () => {
   const handleSubmit = async (e) => {
     console.log(JSON.stringify(formData));
     e.preventDefault(); // Sayfanın yenilenmesini engeller
+
+    const nameParts = formData.name.split(" ");
+    formData.firstName = nameParts.slice(0, -1).join(" "); // Son eleman hariç kalanları birleştir
+    formData.lastName = nameParts[nameParts.length - 1];
+
     try {
       const response = await fetch(`http://localhost:8080/v1/user/advisor/${id}`, {
-        method: "PATCH", // POST veya PUT (duruma göre)
+        method: "PATCH", 
         headers: {
           "Content-Type": "application/json",
         },
@@ -225,7 +230,7 @@ const Table = () => {
         </Button>
         <Button
           //component={NavLink}
-          onSubmit={handleSubmit} 
+          onClick={handleSubmit} 
           //to="/coordinatordashboardadvisors" // Redirect to Advisors Dashboard 
           sx={{
             backgroundColor: "#8a0303",

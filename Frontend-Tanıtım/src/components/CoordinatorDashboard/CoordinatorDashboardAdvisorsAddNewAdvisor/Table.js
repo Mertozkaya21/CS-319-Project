@@ -1,4 +1,3 @@
-import React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -15,7 +14,8 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import EmailIcon from "@mui/icons-material/Email";
 import PhoneIcon from "@mui/icons-material/Phone";
-import { NavLink } from "react-router-dom";
+import React, { useState } from "react";
+import { NavLink ,useNavigate} from "react-router-dom";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -35,6 +35,49 @@ const Table = () => {
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (event) => event.preventDefault();
   const handleMouseUpPassword = (event) => event.preventDefault();
+
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+      name: "",
+      phoneNo: "",
+      email: "",
+      day: "",
+      password: "",
+      //imagePath: "",
+    });
+
+  const handleSubmit = async (e) => {
+    console.log(JSON.stringify(formData));
+    e.preventDefault(); // Sayfanın yenilenmesini engeller
+
+    const nameParts = formData.name.split(" ");
+    formData.firstName = nameParts.slice(0, -1).join(" "); // Son eleman hariç kalanları birleştir
+    formData.lastName = nameParts[nameParts.length - 1];
+
+    try {
+      console.log(JSON.stringify(formData));
+      const response = await fetch(`http://localhost:8080/v1/user/advisor`, {
+        method: "POST", 
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData), // Form verilerini JSON formatında gönder
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to add advisor.");
+      }
+  
+      const result = await response.json();
+      console.log("Added Advisor Data:", result);
+      alert("Advisor added successfully!");
+      navigate("/coordinatordashboardadvisors");
+    } catch (error) {
+      console.error("Error adding advisor:", error);
+      alert("Failed to add advisor. Please try again.");
+    }
+  };
 
   return (
     <Box
@@ -77,6 +120,8 @@ const Table = () => {
           required
           id="name"
           label="Name"
+          value={formData.name}
+          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
           placeholder="Enter Full Name"
           fullWidth
           InputProps={{
@@ -92,6 +137,8 @@ const Table = () => {
           required
           id="email"
           label="Email Address"
+          value={formData.email}
+          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
           placeholder="Enter Email"
           fullWidth
           InputProps={{
@@ -105,8 +152,10 @@ const Table = () => {
         {/* Phone Number */}
         <TextField
           required
-          id="phone"
+          id="phoneNo"
           label="Phone Number"
+          value={formData.phoneNo}
+          onChange={(e) => setFormData({ ...formData, phoneNo: e.target.value })}
           placeholder="(123) 456 7890"
           fullWidth
           InputProps={{
@@ -121,8 +170,10 @@ const Table = () => {
         <TextField
           select
           required
-          id="responsibleDay"
+          id="day"
           label="Choose the day the Advisor is responsible for"
+          value={formData.day}
+          onChange={(e) => setFormData({ ...formData, day: e.target.value })}
           placeholder="Choose Day"
           fullWidth
           InputProps={{
@@ -133,13 +184,13 @@ const Table = () => {
             ),
           }}
         >
-          <MenuItem value="Monday">Monday</MenuItem>
-          <MenuItem value="Tuesday">Tuesday</MenuItem>
-          <MenuItem value="Wednesday">Wednesday</MenuItem>
-          <MenuItem value="Thursday">Thursday</MenuItem>
-          <MenuItem value="Friday">Friday</MenuItem>
-          <MenuItem value="Saturday">Saturday</MenuItem>
-          <MenuItem value="Sunday">Sunday</MenuItem>
+          <MenuItem value="MONDAY">Monday</MenuItem>
+          <MenuItem value="TUESDAY">Tuesday</MenuItem>
+          <MenuItem value="WEDNESDAY">Wednesday</MenuItem>
+          <MenuItem value="THURSDAY">Thursday</MenuItem>
+          <MenuItem value="FRIDAY">Friday</MenuItem>
+          <MenuItem value="SATURDAY">Saturday</MenuItem>
+          <MenuItem value="SUNDAY">Sunday</MenuItem>
         </TextField>
 
         {/* Password Field */}
@@ -147,6 +198,8 @@ const Table = () => {
           <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
           <OutlinedInput
             id="password"
+            value={formData.password}
+            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
             type={showPassword ? "text" : "password"}
             endAdornment={
               <InputAdornment position="end">
@@ -193,8 +246,9 @@ const Table = () => {
           Cancel
         </Button>
         <Button
-          component={NavLink}
-          to="/coordinatordashboardadvisors" // Redirect to Advisors Dashboard
+          //component={NavLink}
+          //to="/coordinatordashboardadvisors" // Redirect to Advisors Dashboard
+          onClick={handleSubmit} 
           variant="contained"
           sx={{
             backgroundColor: "#8a0303",

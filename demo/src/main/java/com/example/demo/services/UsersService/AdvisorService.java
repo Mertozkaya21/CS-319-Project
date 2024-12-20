@@ -41,8 +41,8 @@ public class AdvisorService implements RoleService {
         if (userUpdateDTO.getPhoneNo() != null) {
             advisor.setPhoneNo(userUpdateDTO.getPhoneNo());
         }
-        if (userUpdateDTO.getDay() != null) {
-            advisor.setUndertakenDay(DayOfWeek.valueOf(userUpdateDTO.getDay()) );
+        if (userUpdateDTO.getUndertakenDay() != null) {
+            advisor.setUndertakenDay(DayOfWeek.valueOf(userUpdateDTO.getUndertakenDay()) );
         }
         return advisorRepository.save(advisor);
     }
