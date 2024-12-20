@@ -1,30 +1,27 @@
 package com.example.demo.entities.user;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-import java.util.Map;
 
 import com.example.demo.dto.UserDTO;
 import com.example.demo.entities.event.Fair;
 import com.example.demo.entities.event.Tour;
+import com.example.demo.entities.event.TourParticipantSurvey;
 import com.example.demo.entities.payment.Payment;
-import com.example.demo.enums.TourHours;
 import com.example.demo.enums.UserRole;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapKeyEnumerated;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -52,7 +49,7 @@ public class Guide extends User{
             this.setImage(imageData);
         }
         this.role = UserRole.GUIDE;
-        this.tourParticipantSurveyRanking = 0;
+        this.averageRating = 0;
         this.latestAcitivites = new ArrayList<Long>();
         this.notifications = new ArrayList<Long>();
         this.dateAdded = LocalDate.now();
@@ -62,11 +59,9 @@ public class Guide extends User{
         this.payment = newPayment;
     }
 
-    @ElementCollection
-    @CollectionTable(name = "guide_available_times", joinColumns = @JoinColumn(name = "guide_id"))
-    @MapKeyEnumerated(EnumType.STRING)
-    @Column(name = "tour_hours")
-    private Map<DayOfWeek, List<TourHours>> availableTimes;
+    @Lob
+    @Column(name = "schedule", nullable = true) 
+    private byte[] schedule; 
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "payment_id")
@@ -88,9 +83,20 @@ public class Guide extends User{
     )
     private List<Fair> fairs;
 
-    private double tourParticipantSurveyRanking;
-    
-    @ManyToOne
-    @JoinColumn(name = "coordinator_id") 
-    private Coordinator coordinator;
+    private double averageRating;
+
+    @OneToMany(mappedBy = "guide", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<TourParticipantSurvey> surveys = new ArrayList<>();
+
+    public void updateAverageRating() {
+        if (surveys.isEmpty()) {
+            this.averageRating = 0.0;
+        } else {
+            this.averageRating = surveys.stream()
+                .mapToDouble(TourParticipantSurvey::getGuideRate)
+                .average()
+                .orElse(0.0);
+        }
+    }
 }

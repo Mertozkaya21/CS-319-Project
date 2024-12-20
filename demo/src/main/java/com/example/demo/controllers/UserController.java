@@ -53,25 +53,9 @@ public class UserController {
         return ResponseEntity.ok(userService.count(role));
     }
 
-    @GetMapping("/advisor/{advisorId}/trainees")
-    public ResponseEntity<List<Trainee>> getTraineesByAdvisor(@PathVariable Long advisorId) {
-        List<Trainee> trainees = userService.getTraineesByAdvisorId(advisorId);
-        return ResponseEntity.ok(trainees);
-    }
-
     @PostMapping("/coordinator")
     public ResponseEntity<User> createCoordinator(@RequestBody UserDTO newUserDTO) throws EmailAlreadyExistsException, InvalidCredentialsException {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser("COORDINATOR", newUserDTO));
-    }
-
-    @PostMapping("/trainee/{advisorId}") 
-    public ResponseEntity<User> createTraineeByAdvisor(@PathVariable Long advisorId, @RequestBody UserDTO userDTO) throws InvalidCredentialsException {
-        try {
-            User savedTrainee = userService.saveTraineeWithAdvisor(userDTO, advisorId);
-            return ResponseEntity.status(HttpStatus.CREATED).body(savedTrainee);
-        } catch (EmailAlreadyExistsException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
     }
 
     @PostMapping("/trainee")

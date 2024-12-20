@@ -2,13 +2,11 @@ package com.example.demo.services.UsersService;
 
 import com.example.demo.entities.user.Guide;
 import com.example.demo.entities.user.User;
-import com.example.demo.enums.TourHours;
+import com.example.demo.exceptions.GuideNotFoundException;
 import com.example.demo.repositories.user.GuideRepository;
 
 import org.springframework.stereotype.Service;
 
-import java.time.DayOfWeek;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,18 +54,20 @@ public class GuideService implements RoleService {
         return guideRepository.count();
     }
 
-    // I am not sure about the hashmap data structure of the available times slot but 
-    // we will see
-    public List<Guide> findByAvailableTimes(HashMap<DayOfWeek,TourHours> availableTimes){
-        return guideRepository.findByAvailableTimes(availableTimes);
-    }
-
     @Override
     public Optional<Guide> login(String email, String rawPassword) {
         return guideRepository.findByEmail(email)
                 .stream()
                 .filter(u -> u.getPassword().equals(rawPassword))
                 .findFirst();
+    }
+
+    public void updateGuideAverageRating(Long guideId) throws GuideNotFoundException {
+        Guide guide = guideRepository.findById(guideId)
+                .orElseThrow(() -> new GuideNotFoundException("Guide with ID " + guideId + " not found."));
+        
+        guide.updateAverageRating();
+        guideRepository.save(guide);
     }
     
 }

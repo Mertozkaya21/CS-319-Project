@@ -1,7 +1,10 @@
 package com.example.demo.services;
 
 import com.example.demo.entities.event.TourParticipantSurvey;
+import com.example.demo.exceptions.GuideNotFoundException;
 import com.example.demo.repositories.event.TourParticipantSurveyRepository;
+import com.example.demo.services.UsersService.GuideService;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,9 +15,11 @@ import java.util.Optional;
 public class TourParticipantSurveyService {
 
     private final TourParticipantSurveyRepository tourParticipantSurveyRepository;
+    private final GuideService guideService;
 
-    public TourParticipantSurveyService(TourParticipantSurveyRepository repository) {
+    public TourParticipantSurveyService(TourParticipantSurveyRepository repository, GuideService service) {
         this.tourParticipantSurveyRepository = repository;
+        this.guideService = service;
     }
 
     public List<TourParticipantSurvey> getAllSurveys() {
@@ -25,11 +30,27 @@ public class TourParticipantSurveyService {
         return tourParticipantSurveyRepository.findById(id);
     }
 
-    public TourParticipantSurvey saveSurvey(TourParticipantSurvey survey) {
-        return tourParticipantSurveyRepository.save(survey);
+    public List<TourParticipantSurvey> getSurveysByTour(Long tourId) {
+        return tourParticipantSurveyRepository.findByTour_Id(tourId);
     }
 
-    public void deleteSurveyById(Long id) {
+    public List<TourParticipantSurvey> getSurveysByGuide(Long guideId) {
+        return tourParticipantSurveyRepository.findByGuide_Id(guideId);
+    }
+
+    public TourParticipantSurvey addSurvey(TourParticipantSurvey survey) throws GuideNotFoundException {
+        if (!survey.getTour().getGuides().contains(survey.getGuide())) {
+            throw new IllegalArgumentException("The guide is not assigned to this tour.");
+        }
+
+        TourParticipantSurvey savedSurvey = tourParticipantSurveyRepository.save(survey);
+
+        guideService.updateGuideAverageRating(survey.getGuide().getId());
+
+        return savedSurvey;
+    }
+
+    public void deleteSurvey(Long id) {
         if(tourParticipantSurveyRepository.existsById(id))
             tourParticipantSurveyRepository.deleteById(id);
     }
@@ -44,7 +65,7 @@ public class TourParticipantSurveyService {
         );
     }
 
-    public List<Map<String, Object>> getDepartmentDistribution() {
-        return tourParticipantSurveyRepository.getDepartmentDistribution();
-    }
+    // public List<Map<String, Object>> getDepartmentDistribution() {
+    //     return tourParticipantSurveyRepository.getDepartmentDistribution();
+    // }
 }

@@ -1,6 +1,7 @@
 package com.example.demo.entities.event;
 
 import com.example.demo.entities.highschool.Highschool;
+import com.example.demo.entities.user.Guide;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -31,7 +32,7 @@ public class TourParticipantSurvey {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long tourSurveyID;
 
-    private String nameOfDepartment;
+    
     private String feedbackMessage;
 
     @Column(nullable = false)
@@ -45,13 +46,18 @@ public class TourParticipantSurvey {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "highschool_id", referencedColumnName = "ID", nullable = false)
-    @JsonIgnore // Prevent recursion
+    @JsonIgnore 
     private Highschool highschool;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "tour_id", referencedColumnName = "ID", nullable = false)
-    @JsonIgnore // Prevent recursion
+    @JsonIgnore 
     private Tour tour;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "guide_id", referencedColumnName = "ID", nullable = false)
+    @JsonIgnore
+    private Guide guide;
 
     @JsonGetter("highschoolId")
     public Long getHighschoolId() {
@@ -61,5 +67,10 @@ public class TourParticipantSurvey {
     @JsonGetter("tourId")
     public Long getTourId() {
         return tour != null ? tour.getId() : null;
+    }
+
+    @JsonGetter("guideId")
+    public Long getGuideId() {
+        return guide != null ? guide.getId() : null;
     }
 }

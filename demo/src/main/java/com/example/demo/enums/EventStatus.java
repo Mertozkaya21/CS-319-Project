@@ -2,7 +2,7 @@ package com.example.demo.enums;
 
 public enum EventStatus {
     SCHEDULED,
-    ASSSIGNED,
+    ASSIGNED,
     COMPLETED,
     CANCELLED
 }

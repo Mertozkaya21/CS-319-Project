@@ -12,7 +12,6 @@ import com.example.demo.entities.form.GroupForm;
 import com.example.demo.entities.highschool.Counselor;
 import com.example.demo.entities.highschool.Highschool;
 import com.example.demo.enums.ApplicationFormStatus;
-import com.example.demo.enums.Department;
 import com.example.demo.enums.EventStatus;
 import com.example.demo.enums.TourHours;
 import com.example.demo.enums.TourType;
@@ -81,7 +80,7 @@ public class GroupFormService {
 
         if(newStatus == ApplicationFormStatus.BTO_APPROVED) {
             createGroupTour(groupForm);
-        }
+        } 
 
         return groupFormRepository.save(groupForm);
     }

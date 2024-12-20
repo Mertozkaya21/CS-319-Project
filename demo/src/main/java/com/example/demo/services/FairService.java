@@ -41,9 +41,29 @@ public class FairService {
         return fairRepository.save(fair);
     }
 
-    public Fair updateFairStatus(Long id, EventStatus status) {
-        Fair fair = getFairById(id);
-        fair.setStatus(status);
+    public Fair upadteFairStatus(Long fairid, EventStatus status) {
+        Fair fair = fairRepository.findById(fairid)
+                .orElseThrow(() -> new FairNotFoundException("Fair with ID " + fairid + " not found."));
+
+        switch (status) {
+            case ASSIGNED -> {
+                if (fair.getGuides() != null && fair.getGuides().size() >= 0) {
+                    fair.setStatus(EventStatus.ASSIGNED);
+                }
+            }
+            case COMPLETED -> {
+                if (fair.getDate().isBefore(LocalDate.now())) {
+                    fair.setStatus(EventStatus.COMPLETED);
+                }
+            }
+            case CANCELLED -> {
+                fair.setStatus(EventStatus.CANCELLED);
+            }
+            default -> {
+                return fair;
+            }
+        }
+
         return fairRepository.save(fair);
     }
 

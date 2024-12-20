@@ -8,12 +8,15 @@ import com.example.demo.enums.TourHours;
 import com.example.demo.enums.TourType;
 import com.example.demo.exceptions.GuideNotFoundException;
 import com.example.demo.exceptions.TourNotFoundException;
+import com.example.demo.exceptions.UserNotFoundException;
 import com.example.demo.repositories.event.TourRepository;
 import com.example.demo.repositories.user.GuideRepository;
+
 
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -87,9 +90,36 @@ public class TourService {
         return tourRepository.save(tour);
     }
 
-    public Tour updateTourStatus(Long id, EventStatus status) {
-        Tour tour = getTourById(id);
-        tour.setStatus(status);
+    public Tour updateTourStatus(Long tourId, EventStatus status) {
+        Tour tour = tourRepository.findById(tourId)
+                .orElseThrow(() -> new TourNotFoundException("Tour with ID " + tourId + " not found."));
+
+        switch (status) {
+            case ASSIGNED -> {
+                if (tour.getGuides() != null && tour.getGuides().size() >= tour.getNumberOfGuidesNeeded()) {
+                    tour.setStatus(EventStatus.ASSIGNED);
+                }
+            }
+            case COMPLETED -> {
+                if (tour.getDate().isBefore(LocalDate.now()) && tour.getStatus() == EventStatus.ASSIGNED) {
+                    tour.setStatus(EventStatus.COMPLETED);
+                }
+            }
+            case CANCELLED -> {
+                tour.setStatus(EventStatus.CANCELLED);
+            }
+            default -> {
+                return tour;
+            }
+        }
+
+        return tourRepository.save(tour);
+    }
+    
+    public Tour cancelTour(Long tourId) {
+        Tour tour = tourRepository.findById(tourId)
+                .orElseThrow(() -> new TourNotFoundException("Tour with ID " + tourId + " not found."));
+        tour.setStatus(EventStatus.CANCELLED);
         return tourRepository.save(tour);
     }
 
@@ -107,13 +137,18 @@ public class TourService {
         return tourRepository.save(tour);
     }
     
-    public Tour assignGuideToTour(Long tourId, Long guideId) throws GuideNotFoundException {
+    public Tour assignGuideToTour(Long tourId, Long guideId) throws UserNotFoundException, GuideNotFoundException {
         Tour tour = getTourById(tourId);
         Guide guide = getGuideById(guideId);
-    
-        if (tour.getGuides().contains(guide)) {
-            throw new GuideNotFoundException("Guide is already assigned to this tour.");
+
+        if (tour.getGuides() == null) {
+            tour.setGuides(new ArrayList<Guide>());
         }
+
+        if (tour.getGuides().size() >= tour.getNumberOfGuidesNeeded()) {
+            throw new IllegalStateException("Tour already has the required number of guides assigned.");
+        }
+
         tour.getGuides().add(guide);
         return tourRepository.save(tour);
     }
@@ -125,7 +160,6 @@ public class TourService {
         return tourRepository.save(tour);
     }
     
-
     public Guide getGuideById(Long guideId) throws GuideNotFoundException {
         return guideRepository.findById(guideId)
                 .orElseThrow(() -> new GuideNotFoundException("Guide with ID " + guideId + " not found"));

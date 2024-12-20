@@ -60,7 +60,6 @@ public class UserService {
             imageData = Base64.getDecoder().decode(newUserDTO.getImage());
         }
 
-        // Hash the password before saving
         newUserDTO.setPassword(passwordEncoder.encode(newUserDTO.getPassword()));
 
         User user = switch (userRole) {
@@ -73,21 +72,6 @@ public class UserService {
         user.setImage(imageData); 
 
         return roleServiceFactory.getRoleService(userRole).save(user);
-    }
-
-    public User saveTraineeWithAdvisor(UserDTO userDTO, Long advisorId) throws EmailAlreadyExistsException, InvalidCredentialsException {
-        validateCredentials(userDTO);
-        checkIfEmailExists(userDTO.getEmail());
-    
-        Advisor advisor = (Advisor) roleServiceFactory.getRoleService(UserRole.ADVISOR)
-                .findById(advisorId)
-                .orElseThrow(() -> new IllegalArgumentException("Advisor not found"));
-    
-        // Hash the password before saving
-        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        Trainee trainee = new Trainee(userDTO);
-        trainee.setAdvisor(advisor);
-        return roleServiceFactory.getRoleService(UserRole.TRAINEE).save(trainee);
     }
     
 
@@ -316,10 +300,4 @@ public class UserService {
             traineeService.deleteById(id);
         }
     }
-
-    public List<Trainee> getTraineesByAdvisorId(Long advisorId) {
-        TraineeRepository repo = (TraineeRepository) roleServiceFactory.getRoleService(UserRole.TRAINEE);
-        return repo.findByAdvisor_Id(advisorId);
-    }
-
 }

@@ -10,6 +10,8 @@ import com.example.demo.enums.TourHours;
 import com.example.demo.exceptions.FairNotFoundException;
 import com.example.demo.exceptions.GuideNotFoundException;
 import com.example.demo.exceptions.TourNotFoundException;
+import com.example.demo.exceptions.UserNotFoundException;
+
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -69,11 +71,12 @@ public class EventService {
 
     public Event updateEventStatus(Long eventId, EventStatus status) throws FairNotFoundException, TourNotFoundException {
         try {
-            return fairService.updateFairStatus(eventId, status);
+            return fairService.upadteFairStatus(eventId, status);
         } catch (FairNotFoundException e) {
             return tourService.updateTourStatus(eventId, status);
         }
     }
+
 
     public Event updateEventDate(Long eventId, LocalDate newDate) throws FairNotFoundException, TourNotFoundException {
         try {
@@ -105,7 +108,7 @@ public class EventService {
         }
     }
 
-    public Event assignGuideToEvent(Long eventId, Long guideId) throws GuideNotFoundException {
+    public Event assignGuideToEvent(Long eventId, Long guideId) throws GuideNotFoundException, UserNotFoundException {
         try {
             return fairService.assignGuideToFair(eventId, guideId);
         } catch (FairNotFoundException e) {
@@ -160,5 +163,9 @@ public class EventService {
         }
 
         return monthlyStats;
+    }
+
+    public Tour cancelTour(Long tourId) {
+        return tourService.cancelTour(tourId);
     }
 }

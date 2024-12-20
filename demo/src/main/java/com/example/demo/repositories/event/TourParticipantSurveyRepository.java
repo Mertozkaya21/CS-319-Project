@@ -19,13 +19,16 @@ public interface TourParticipantSurveyRepository extends JpaRepository<TourParti
     List<TourParticipantSurvey> findByHighschool(Highschool highschool);
     List<TourParticipantSurvey> findByTourSurveyID(long tourSurveyID);
 
+    List<TourParticipantSurvey> findByTour_Id(Long tourId);
+    List<TourParticipantSurvey> findByGuide_Id(Long guideId);
+
     @Query("SELECT COUNT(t) FROM TourParticipantSurvey t")
     Long getTotalSurveys();
 
     @Query("SELECT COUNT(DISTINCT t.highschool.id) FROM TourParticipantSurvey t")
     Long countUniqueHighschools();
 
-    @Query("SELECT t.nameOfDepartment as department, COUNT(t) as count " +
-           "FROM TourParticipantSurvey t GROUP BY t.nameOfDepartment")
-    List<Map<String, Object>> getDepartmentDistribution();
+    // @Query("SELECT t.nameOfDepartment as department, COUNT(t) as count " +
+    //        "FROM TourParticipantSurvey t GROUP BY t.nameOfDepartment")
+    // List<Map<String, Object>> getDepartmentDistribution();
 }

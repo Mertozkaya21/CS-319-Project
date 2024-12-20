@@ -27,6 +27,7 @@ import com.example.demo.enums.TourHours;
 import com.example.demo.exceptions.FairNotFoundException;
 import com.example.demo.exceptions.GuideNotFoundException;
 import com.example.demo.exceptions.TourNotFoundException;
+import com.example.demo.exceptions.UserNotFoundException;
 import com.example.demo.services.EventService;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -93,6 +94,12 @@ public class EventController {
         return ResponseEntity.ok(eventService.updateEventDate(id, date));
     }
 
+    @PatchMapping("/tours/{tourId}/cancel")
+    public ResponseEntity<Tour> cancelTour(@PathVariable Long tourId) {
+        Tour cancelledTour = eventService.cancelTour(tourId);
+        return ResponseEntity.ok(cancelledTour);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEventById(@PathVariable Long id) throws FairNotFoundException, TourNotFoundException, GuideNotFoundException{
         if (eventService.deleteEventById(id)) {
@@ -101,14 +108,14 @@ public class EventController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/{id}/guides/{guideId}")
-    public ResponseEntity<Event> assignGuideToEvent(@PathVariable Long id, @PathVariable Long guideId) throws GuideNotFoundException {
-        return ResponseEntity.ok(eventService.assignGuideToEvent(id, guideId));
+    @PostMapping("/{tourid}/guides/{guideId}")
+    public ResponseEntity<Event> assignGuideToEvent(@PathVariable Long tourid, @PathVariable Long guideId) throws GuideNotFoundException, UserNotFoundException {
+        return ResponseEntity.ok(eventService.assignGuideToEvent(tourid, guideId));
     }
 
-    @DeleteMapping("/{id}/guides/{guideId}")
-    public ResponseEntity<Event> removeGuideFromEvent(@PathVariable Long id, @PathVariable Long guideId) throws GuideNotFoundException {
+    @DeleteMapping("/{tourid}/guides/{guideId}")
+    public ResponseEntity<Event> removeGuideFromEvent(@PathVariable Long tourid, @PathVariable Long guideId) throws GuideNotFoundException {
         Guide guide = eventService.getGuideById(guideId);
-        return ResponseEntity.ok(eventService.removeGuideFromEvent(id, guide));
+        return ResponseEntity.ok(eventService.removeGuideFromEvent(tourid, guide));
     }
 }

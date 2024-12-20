@@ -3,7 +3,6 @@ package com.example.demo.entities.user;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.entities.payment.Payment;
 import com.example.demo.enums.UserRole;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -15,7 +14,6 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.List;
 
 
 @Entity
@@ -52,10 +50,6 @@ public class Advisor extends User {
     @Column(name = "undertaken_day", nullable = false)
     private DayOfWeek undertakenDay;
     
-    @OneToMany(mappedBy = "advisor", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnore
-    private List<Trainee> trainees = new ArrayList<>();
-
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "payment_id")
     private Payment payment;
