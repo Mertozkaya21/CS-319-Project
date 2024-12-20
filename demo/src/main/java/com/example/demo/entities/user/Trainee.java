@@ -58,28 +58,27 @@ public class Trainee extends User{
     private List<Tour> tours;
 
     @Column(nullable = false)
-    private boolean eligibleForPromotion;
+    private boolean eligibleForPromotion = false;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private TraineeStatus status;
+    private TraineeStatus status = TraineeStatus.OBSERVATION_TOURS;
 
     @ManyToOne
     @JoinColumn(name = "coordinator_id")
     @JsonIgnore 
     private Coordinator coordinator;
-
-    @ManyToOne
-    @JoinColumn(name = "advisor_id") 
+ 
+    @ManyToOne  
+    @JoinColumn(name = "advisor_id",nullable = true) 
     @JsonIgnore
     private Advisor advisor; 
-
     @JsonGetter("tourIds")
     public List<Long> getTourIds() {
         return tours != null ? tours.stream().map(Tour::getId).toList() : null;
     }
 
-    @JsonGetter("tourIds")
+    @JsonGetter("advisorIds")
     public Long getAdvisorId() {
         return advisor != null ? advisor.getId() : null;
     }
