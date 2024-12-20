@@ -2,6 +2,7 @@ package com.example.demo.entities.user;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import com.example.demo.dto.UserDTO;
@@ -40,7 +41,10 @@ public class Trainee extends User{
         this.email = userDTO.getEmail();
         this.password = userDTO.getPassword();
         this.phoneNo = userDTO.getPhoneNo();
-        this.imagePath = userDTO.getImagePath();
+        if (userDTO.getImage() != null && !userDTO.getImage().isEmpty()) {
+            byte[] imageData = Base64.getDecoder().decode(userDTO.getImage());
+            this.setImage(imageData);
+        }
         this.role = UserRole.TRAINEE;
         this.eligibleForPromotion = false;
         this.latestAcitivites = new ArrayList<Long>();

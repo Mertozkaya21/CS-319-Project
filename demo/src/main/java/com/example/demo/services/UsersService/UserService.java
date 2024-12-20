@@ -11,6 +11,7 @@ import com.example.demo.entities.user.Trainee;
 import com.example.demo.entities.user.User;
 import com.example.demo.enums.UserRole;
 import com.example.demo.exceptions.EmailAlreadyExistsException;
+import com.example.demo.exceptions.InvalidCredentialsException;
 import com.example.demo.exceptions.LoginException;
 import com.example.demo.exceptions.UserNotFoundException;
 import com.example.demo.repositories.Auth.PasswordResetTokenRepository;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -46,11 +48,16 @@ public class UserService {
         this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
-    public User saveUser(String role, UserDTO newUserDTO) throws EmailAlreadyExistsException {
+    public User saveUser(String role, UserDTO newUserDTO) throws EmailAlreadyExistsException, InvalidCredentialsException {
         UserRole userRole = UserRole.fromString(role);
 
         validateCredentials(newUserDTO);
         checkIfEmailExists(newUserDTO.getEmail());
+
+        byte[] imageData = null;
+        if (newUserDTO.getImage() != null && !newUserDTO.getImage().isEmpty()) {
+            imageData = Base64.getDecoder().decode(newUserDTO.getImage());
+        }
 
         // Hash the password before saving
         newUserDTO.setPassword(passwordEncoder.encode(newUserDTO.getPassword()));
@@ -62,10 +69,12 @@ public class UserService {
             case TRAINEE -> new Trainee(newUserDTO);
         };
 
+        user.setImage(imageData); 
+
         return roleServiceFactory.getRoleService(userRole).save(user);
     }
 
-    public User saveTraineeWithAdvisor(UserDTO userDTO, Long advisorId) throws EmailAlreadyExistsException {
+    public User saveTraineeWithAdvisor(UserDTO userDTO, Long advisorId) throws EmailAlreadyExistsException, InvalidCredentialsException {
         validateCredentials(userDTO);
         checkIfEmailExists(userDTO.getEmail());
     
@@ -81,7 +90,7 @@ public class UserService {
     }
     
 
-    public User saveAdvisor(UserDTO newUserDTO, String day) throws EmailAlreadyExistsException {
+    public User saveAdvisor(UserDTO newUserDTO, String day) throws EmailAlreadyExistsException, InvalidCredentialsException {
         validateCredentials(newUserDTO);
         checkIfEmailExists(newUserDTO.getEmail());
     
@@ -137,12 +146,12 @@ public class UserService {
         }
     }
 
-    private void validateCredentials(UserDTO userDTO) {
+    private void validateCredentials(UserDTO userDTO) throws InvalidCredentialsException {
         if (!isValidEmail(userDTO.getEmail())) {
-            throw new IllegalArgumentException("Invalid email. Please use an email address with 'bilkent' in the domain.");
+            throw new InvalidCredentialsException("Invalid email. Please use an email address with 'bilkent' in the domain.");
         }
         if (!isValidPassword(userDTO.getPassword())) {
-            throw new IllegalArgumentException("Invalid password. Password must be at least 5 characters.");
+            throw new InvalidCredentialsException("Invalid password. Password must be at least 5 characters.");
         }
     }
     private boolean isValidEmail(String email) {
@@ -219,7 +228,7 @@ public class UserService {
     }
     
 
-    public void resetPassword(String token, String newPassword) {
+    public void resetPassword(String token, String newPassword) throws UserNotFoundException {
         PasswordResetToken resetToken = passwordResetTokenRepository.findByToken(token)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid or expired reset token."));
     
@@ -232,7 +241,7 @@ public class UserService {
                                             .findFirst(); 
     
         if (user.isEmpty()) {
-            throw new IllegalArgumentException("User not found.");
+            throw new UserNotFoundException("User not found.");
         }
     
         User updatedUser = user.get();
@@ -264,11 +273,11 @@ public class UserService {
     }
     
     
-    public void cancelEvent(Long userId, Long eventId, String eventType) {
+    public void cancelEvent(Long userId, Long eventId, String eventType) throws UserNotFoundException {
         CoordinatorService roleService = roleServiceFactory.getCoordinatorService();
     
         User user = roleService.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("Coordinator not found."));
+                .orElseThrow(() -> new UserNotFoundException("Coordinator not found."));
         
         if (user.getRole() != UserRole.COORDINATOR) {
             throw new IllegalStateException("Only coordinators can cancel events.");

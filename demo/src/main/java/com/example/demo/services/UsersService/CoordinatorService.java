@@ -10,6 +10,7 @@ import com.example.demo.entities.event.Fair;
 import com.example.demo.entities.event.Tour;
 import com.example.demo.entities.user.Coordinator;
 import com.example.demo.entities.user.User;
+import com.example.demo.exceptions.UserNotFoundException;
 import com.example.demo.repositories.event.FairRepository;
 import com.example.demo.repositories.event.TourRepository;
 import com.example.demo.repositories.user.CoordinatorRepository;
@@ -73,9 +74,9 @@ public class CoordinatorService implements RoleService{
                 .findFirst();
     }
 
-    public void cancelEvent(Long coordinatorId, Long eventId, String eventType) {
+    public void cancelEvent(Long coordinatorId, Long eventId, String eventType) throws UserNotFoundException {
         Coordinator coordinator = findById(coordinatorId)
-                .orElseThrow(() -> new IllegalArgumentException("Coordinator not found."));
+                .orElseThrow(() -> new UserNotFoundException("Coordinator not found."));
 
         if (eventType.equalsIgnoreCase("fair")) {
             Fair fair = fairRepository.findById(eventId)

@@ -16,6 +16,7 @@ import com.example.demo.dto.LoginResponse;
 import com.example.demo.dto.ResetPasswordDTO;
 import com.example.demo.entities.user.User;
 import com.example.demo.exceptions.LoginException;
+import com.example.demo.exceptions.UserNotFoundException;
 import com.example.demo.services.UsersService.UserService;
 
 
@@ -49,7 +50,7 @@ public class AuthController {
     }
 
     @PostMapping("/reset-password")
-    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordDTO resetPasswordRequest) {
+    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordDTO resetPasswordRequest) throws UserNotFoundException {
         try {
             userService.resetPassword(resetPasswordRequest.getToken(), resetPasswordRequest.getNewPassword());
             return ResponseEntity.ok("Password has been reset successfully.");

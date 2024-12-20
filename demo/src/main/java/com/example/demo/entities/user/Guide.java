@@ -3,6 +3,7 @@ package com.example.demo.entities.user;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
@@ -46,7 +47,10 @@ public class Guide extends User{
         this.email = userDTO.getEmail();
         this.password = userDTO.getPassword();
         this.phoneNo = userDTO.getPhoneNo();
-        this.imagePath = userDTO.getImagePath();
+        if (userDTO.getImage() != null && !userDTO.getImage().isEmpty()) {
+            byte[] imageData = Base64.getDecoder().decode(userDTO.getImage());
+            this.setImage(imageData);
+        }
         this.role = UserRole.GUIDE;
         this.tourParticipantSurveyRanking = 0;
         this.latestAcitivites = new ArrayList<Long>();

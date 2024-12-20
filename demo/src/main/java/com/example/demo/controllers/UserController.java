@@ -7,6 +7,7 @@ import com.example.demo.entities.user.Trainee;
 import com.example.demo.entities.user.User;
 import com.example.demo.enums.UserRole;
 import com.example.demo.exceptions.EmailAlreadyExistsException;
+import com.example.demo.exceptions.InvalidCredentialsException;
 import com.example.demo.exceptions.UserNotFoundException;
 import com.example.demo.services.UsersService.AdvisorService;
 import com.example.demo.services.UsersService.UserService;
@@ -59,12 +60,12 @@ public class UserController {
     }
 
     @PostMapping("/coordinator")
-    public ResponseEntity<User> createCoordinator(@RequestBody UserDTO newUserDTO) throws EmailAlreadyExistsException {
+    public ResponseEntity<User> createCoordinator(@RequestBody UserDTO newUserDTO) throws EmailAlreadyExistsException, InvalidCredentialsException {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser("COORDINATOR", newUserDTO));
     }
 
     @PostMapping("/trainee")
-    public ResponseEntity<User> createTrainee(@RequestBody UserDTO userDTO, @RequestParam Long advisorId) {
+    public ResponseEntity<User> createTrainee(@RequestBody UserDTO userDTO, @RequestParam Long advisorId) throws InvalidCredentialsException {
         try {
             User savedTrainee = userService.saveTraineeWithAdvisor(userDTO, advisorId);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedTrainee);
@@ -73,12 +74,12 @@ public class UserController {
         }
     }
     @PostMapping("/guide")
-    public ResponseEntity<User> createGuide(@RequestBody UserDTO newUserDTO) throws EmailAlreadyExistsException {
+    public ResponseEntity<User> createGuide(@RequestBody UserDTO newUserDTO) throws EmailAlreadyExistsException, InvalidCredentialsException {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser("GUIDE", newUserDTO));
     }
 
     @PostMapping("/advisor")
-    public ResponseEntity<User> createAdvisor(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<User> createAdvisor(@RequestBody UserDTO userDTO) throws InvalidCredentialsException {
         try {
             String undertakenDay = userDTO.getDay();
             if (undertakenDay == null || undertakenDay.isBlank()) {
@@ -106,7 +107,7 @@ public class UserController {
     }
 
     @PutMapping("/{role}/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable String role, @PathVariable Long id, @RequestBody UserDTO updatedUser) throws EmailAlreadyExistsException {
+    public ResponseEntity<User> updateUser(@PathVariable String role, @PathVariable Long id, @RequestBody UserDTO updatedUser) throws EmailAlreadyExistsException, InvalidCredentialsException {
         return ResponseEntity.ok(userService.saveUser(role, updatedUser));
     }
 
@@ -141,7 +142,7 @@ public class UserController {
     public ResponseEntity<?> cancelEvent(
         @PathVariable Long userId,
         @PathVariable Long eventId,
-        @RequestParam String eventType) {
+        @RequestParam String eventType) throws UserNotFoundException {
         try {
             userService.cancelEvent(userId, eventId, eventType);
         return ResponseEntity.ok("Event has been successfully canceled.");
