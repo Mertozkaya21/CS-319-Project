@@ -17,6 +17,8 @@ import com.example.demo.repositories.Auth.PasswordResetTokenRepository;
 import com.example.demo.repositories.user.TraineeRepository;
 import com.example.demo.services.EmailService;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
@@ -32,10 +34,16 @@ public class UserService {
     private final PasswordResetTokenRepository passwordResetTokenRepository;
     private final EmailService emailService;
 
-    public UserService(RoleServiceFactory roleServiceFactory , PasswordResetTokenRepository repo, EmailService service) {
+    private final PasswordEncoder passwordEncoder;
+
+
+    public UserService(RoleServiceFactory roleServiceFactory , 
+                        PasswordResetTokenRepository repo, 
+                         EmailService service) {
         this.roleServiceFactory = roleServiceFactory;
         this.passwordResetTokenRepository = repo;
         this.emailService = service;
+        this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
     public User saveUser(String role, UserDTO newUserDTO) throws EmailAlreadyExistsException {
@@ -43,6 +51,9 @@ public class UserService {
 
         validateCredentials(newUserDTO);
         checkIfEmailExists(newUserDTO.getEmail());
+
+        // Hash the password before saving
+        newUserDTO.setPassword(passwordEncoder.encode(newUserDTO.getPassword()));
 
         User user = switch (userRole) {
             case COORDINATOR -> new Coordinator(newUserDTO);
@@ -62,9 +73,10 @@ public class UserService {
                 .findById(advisorId)
                 .orElseThrow(() -> new IllegalArgumentException("Advisor not found"));
     
+        // Hash the password before saving
+        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         Trainee trainee = new Trainee(userDTO);
         trainee.setAdvisor(advisor);
-        trainee.setPassword(userDTO.getPassword()); 
         return roleServiceFactory.getRoleService(UserRole.TRAINEE).save(trainee);
     }
     
@@ -79,7 +91,9 @@ public class UserService {
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Invalid day of the week: " + day);
         }
-    
+
+        // Hash the password before saving
+        newUserDTO.setPassword(passwordEncoder.encode(newUserDTO.getPassword()));
         Advisor advisor = new Advisor(newUserDTO, undertakenDay);
         return roleServiceFactory.getRoleService(UserRole.ADVISOR).save(advisor);
     }
@@ -97,7 +111,7 @@ public class UserService {
         newGuide.setFirstName(trainee.getFirstName());
         newGuide.setLastName(trainee.getLastName());
         newGuide.setEmail(trainee.getEmail());
-        newGuide.setPassword(trainee.getPassword());
+        newGuide.setPassword(passwordEncoder.encode(trainee.getPassword())); // The trainee password is already hashed
         newGuide.setPhoneNo(trainee.getPhoneNo());
         newGuide.setDateAdded(trainee.getDateAdded());
         newGuide.setRole(UserRole.GUIDE);
@@ -167,7 +181,7 @@ public class UserService {
     public User loginUser(String email, String rawPassword) {
         for (RoleService roleService : roleServiceFactory.getAllRoleServices()) {
             Optional<? extends User> user = roleService.findByEmail(email).stream()
-                    .filter(u -> u.getPassword().equals(rawPassword)) 
+                    .filter(u -> passwordEncoder.matches(rawPassword, u.getPassword())) 
                     .findFirst();
     
             if (user.isPresent()) {
@@ -176,7 +190,7 @@ public class UserService {
         }
         throw new LoginException("Invalid email or password.");
     }
-
+    
     public String generateResetToken(String email) {
         Optional<? extends User> user = Arrays.stream(roleServiceFactory.getAllRoleServices()) // Convert array to Stream
                                             .flatMap(roleService -> roleService.findByEmail(email).stream()) // Flatten results of findByEmail
@@ -216,15 +230,17 @@ public class UserService {
         Optional<? extends User> user = Arrays.stream(roleServiceFactory.getAllRoleServices()) 
                                             .flatMap(roleService -> roleService.findByEmail(resetToken.getEmail()).stream()) 
                                             .findFirst(); 
-
+    
         if (user.isEmpty()) {
             throw new IllegalArgumentException("User not found.");
         }
+    
         User updatedUser = user.get();
         updatedUser.setPassword(newPassword); 
         roleServiceFactory.getRoleService(updatedUser.getRole()).save(updatedUser);
         passwordResetTokenRepository.delete(resetToken);
     }
+    
 
     public User updateUser(UserRole role, Long id, UserUpdateDTO userUpdateDTO) throws UserNotFoundException {
         RoleService roleService = roleServiceFactory.getRoleService(role);

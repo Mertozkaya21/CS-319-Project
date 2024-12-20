@@ -18,12 +18,8 @@ import com.example.demo.entities.form.ApplicationForm;
 import com.example.demo.enums.ApplicationFormStatus;
 import com.example.demo.enums.Department;
 import com.example.demo.exceptions.ApplicationFormNotFoundException;
-import com.example.demo.services.EventService;
 import com.example.demo.services.applicationformservice.ApplicationFormService;
-import com.example.demo.services.applicationformservice.applicationformsorter.SortByDistance;
-import com.example.demo.services.applicationformservice.applicationformsorter.SortByLgsPercentile;
-import com.example.demo.services.applicationformservice.applicationformsorter.SortByPriorityScore;
-import com.example.demo.services.applicationformservice.applicationformsorter.SortBySubmissionTime;
+import com.example.demo.services.applicationformservice.applicationformsorter.*;
 
 @RestController
 @RequestMapping("/v1/applicationform")
