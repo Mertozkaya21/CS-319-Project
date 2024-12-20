@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import com.example.demo.entities.event.Tour;
 import com.example.demo.entities.event.TourParticipantSurvey;
 import java.util.List;
-import java.util.Map;
 
 import com.example.demo.entities.highschool.Highschool;
 

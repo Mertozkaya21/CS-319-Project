@@ -15,7 +15,6 @@ import com.example.demo.exceptions.InvalidCredentialsException;
 import com.example.demo.exceptions.LoginException;
 import com.example.demo.exceptions.UserNotFoundException;
 import com.example.demo.repositories.Auth.PasswordResetTokenRepository;
-import com.example.demo.repositories.user.TraineeRepository;
 import com.example.demo.services.EmailService;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,7 +26,7 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
+import java.util.UUID;t
 import java.util.stream.Collectors;
 
 @Service
@@ -90,6 +89,20 @@ public class UserService {
         newUserDTO.setPassword(passwordEncoder.encode(newUserDTO.getPassword()));
         Advisor advisor = new Advisor(newUserDTO, undertakenDay);
         return roleServiceFactory.getRoleService(UserRole.ADVISOR).save(advisor);
+    }
+
+    public User saveTraineeWithAdvisor(UserDTO userDTO, Long advisorId) throws EmailAlreadyExistsException, InvalidCredentialsException {
+        validateCredentials(userDTO);
+        checkIfEmailExists(userDTO.getEmail());
+    
+        Advisor advisor = (Advisor) roleServiceFactory.getRoleService(UserRole.ADVISOR)
+                .findById(advisorId)
+                .orElseThrow(() -> new IllegalArgumentException("Advisor not found"));
+    
+        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        Trainee trainee = new Trainee(userDTO);
+        trainee.setAdvisor(advisor);
+        return roleServiceFactory.getRoleService(UserRole.TRAINEE).save(trainee);
     }
 
     public User promoteTraineeToGuide(Long traineeId) throws UserNotFoundException {

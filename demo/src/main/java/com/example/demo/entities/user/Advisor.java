@@ -14,6 +14,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 
 
 @Entity
@@ -45,6 +46,9 @@ public class Advisor extends User {
         newPayment.setReceiptFullName(userDTO.getFirstName() + " " + userDTO.getLastName());
         this.payment = newPayment;
     }
+
+    @OneToMany(mappedBy = "advisor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Trainee> trainees = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "undertaken_day", nullable = false)

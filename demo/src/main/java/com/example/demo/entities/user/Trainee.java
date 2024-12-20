@@ -16,6 +16,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
@@ -51,6 +52,10 @@ public class Trainee extends User{
         this.notifications = new ArrayList<Long>();
         this.dateAdded = LocalDate.now();
     }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "advisor_id")
+    private Advisor advisor;
 
     @ManyToMany
     @JoinTable(

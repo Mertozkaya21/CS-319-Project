@@ -68,6 +68,16 @@ public class UserController {
         }
     }
 
+    @PostMapping("/trainee/{advisorId}") 
+    public ResponseEntity<User> createTraineeByAdvisor(@PathVariable Long advisorId, @RequestBody UserDTO userDTO) throws InvalidCredentialsException {
+        try {
+            User savedTrainee = userService.saveTraineeWithAdvisor(userDTO, advisorId);
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedTrainee);
+        } catch (EmailAlreadyExistsException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
     @PostMapping("/guide")
     public ResponseEntity<User> createGuide(@RequestBody UserDTO newUserDTO) throws EmailAlreadyExistsException, InvalidCredentialsException {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser("GUIDE", newUserDTO));
