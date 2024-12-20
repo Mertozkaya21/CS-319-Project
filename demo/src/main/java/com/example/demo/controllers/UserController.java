@@ -9,6 +9,7 @@ import com.example.demo.enums.UserRole;
 import com.example.demo.exceptions.EmailAlreadyExistsException;
 import com.example.demo.exceptions.InvalidCredentialsException;
 import com.example.demo.exceptions.UserNotFoundException;
+import com.example.demo.services.UsersService.TraineeService;
 import com.example.demo.services.UsersService.AdvisorService;
 import com.example.demo.services.UsersService.UserService;
 import org.springframework.http.HttpStatus;
@@ -25,10 +26,12 @@ public class UserController {
 
     private final UserService userService;
     private final AdvisorService advisorService;
+    private final TraineeService traineeService;
 
-    public UserController(UserService service,AdvisorService advisorService) {
+    public UserController(UserService service,AdvisorService advisorService, TraineeService traineeService) {
         this.userService = service;
         this.advisorService = advisorService;
+        this.traineeService = traineeService;
     }
 
     @GetMapping("/{role}")
@@ -53,25 +56,31 @@ public class UserController {
         return ResponseEntity.ok(userService.count(role));
     }
 
+    @GetMapping("/advisor/{advisorId}/trainees")
+    public ResponseEntity<List<Trainee>> getTraineesByAdvisor(@PathVariable Long advisorId) {
+        List<Trainee> trainees = userService.getTraineesByAdvisorId(advisorId);
+        return ResponseEntity.ok(trainees);
+    }
+
     @PostMapping("/coordinator")
     public ResponseEntity<User> createCoordinator(@RequestBody UserDTO newUserDTO) throws EmailAlreadyExistsException, InvalidCredentialsException {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.saveUser("COORDINATOR", newUserDTO));
-    }
-
-    @PostMapping("/trainee")
-    public ResponseEntity<User> createTrainee(@RequestBody UserDTO userDTO) throws InvalidCredentialsException {
-        try {
-            User savedTrainee = userService.saveUser("trainee",userDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).body(savedTrainee);
-        } catch (EmailAlreadyExistsException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
     }
 
     @PostMapping("/trainee/{advisorId}") 
     public ResponseEntity<User> createTraineeByAdvisor(@PathVariable Long advisorId, @RequestBody UserDTO userDTO) throws InvalidCredentialsException {
         try {
             User savedTrainee = userService.saveTraineeWithAdvisor(userDTO, advisorId);
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedTrainee);
+        } catch (EmailAlreadyExistsException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
+    @PostMapping("/trainee")
+    public ResponseEntity<User> createTrainee(@RequestBody UserDTO userDTO) throws InvalidCredentialsException {
+        try {
+            User savedTrainee = userService.saveUser("trainee",userDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedTrainee);
         } catch (EmailAlreadyExistsException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -176,6 +185,12 @@ public class UserController {
 
     @GetMapping("/dropdown/trainees")
     public ResponseEntity<List<String>> getTraineeNames() {
-        return ResponseEntity.ok(userService.getAllUserFullNames("trainee"));
+        return ResponseEntity.ok(userService.getAllUserFullNamesWithIds("trainee"));
     }
+
+    @GetMapping("/dropdown/eligibletrainees")
+    public ResponseEntity<List<String>> getEligibleTraineeNames() {
+        return ResponseEntity.ok(traineeService.getAllEligibleTraineeFullNamesWithIds());
+    }
+    
 }

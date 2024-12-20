@@ -13,7 +13,7 @@ import DialogActions from '@mui/material/DialogActions';
 import AddIcon from '@mui/icons-material/Add';
 import { traineesRows } from './TraineesTable'; // Import trainee data
 
-const Header = ({ title, onSearchSelection }) => {
+const Header = ({ title, onSearchSelection, deleteSelectedTrainees }) => {
   const [isPopupOpen, setPopupOpen] = useState(false);
 
   // Transform traineesRows into options for Autocomplete
@@ -21,15 +21,21 @@ const Header = ({ title, onSearchSelection }) => {
     label: trainee.name,
   }));
 
-  // Open Confirmation Popup
+  // Open Confirmation Dialog
   const handleRemoveClick = () => {
     setPopupOpen(true);
   };
 
-  // Close Confirmation Popup
+  const handleDeletions = () => {
+    deleteSelectedTrainees();
+    setPopupOpen(false);
+  };  
+
+  // Close Confirmation Dialog
   const handleClosePopup = () => {
     setPopupOpen(false);
   };
+
 
   return (
     <div className={styles.header}>
@@ -157,7 +163,7 @@ const Header = ({ title, onSearchSelection }) => {
 
           {/* Yes Button */}
           <Button
-            onClick={handleClosePopup} // Replace this with deletion logic
+            onClick={handleDeletions}  // Replace this with deletion logic
             variant="contained"
             sx={{
               backgroundColor: '#8a0303',

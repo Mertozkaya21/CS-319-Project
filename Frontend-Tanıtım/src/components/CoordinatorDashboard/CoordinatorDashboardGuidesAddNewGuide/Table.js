@@ -1,11 +1,11 @@
-import React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import MenuItem from "@mui/material/MenuItem";
 import InputAdornment from "@mui/material/InputAdornment";
 import PersonIcon from "@mui/icons-material/Person";
-import { NavLink } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { NavLink ,useNavigate} from "react-router-dom";
 
 const trainees = [
   { id: 1, name: "John Doe" },
@@ -16,6 +16,63 @@ const trainees = [
 ];
 
 const AddGuide = () => {
+
+  const [trainees, setTrainees] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedTraineeId, setSelectedTraineeId] = useState(null);
+  const navigate = useNavigate(); 
+
+  useEffect(() => {
+    // Fetch trainees from backend using fetch
+    const fetchTrainees = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/v1/user/dropdown/eligibletrainees"); //only eligible trainees
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data = await response.json();
+        setTrainees(data);
+      } catch (err) {
+        setError("Failed to load trainees");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTrainees();
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Check if a trainee is selected
+    if (!selectedTraineeId) {
+      alert("Please select a trainee");
+      return;
+    }
+    const traineeId = selectedTraineeId.split(" - ")[0];
+    // Send the selected trainee ID to the backend
+    try {
+      const response = await fetch(`http://localhost:8080/v1/user/trainee/${traineeId}/promote`, {
+        method: "POST",
+      });
+
+      if (response.ok) {
+        // Redirect to the guides dashboard after successful submission
+        navigate("/coordinatordashboardguides");
+      } else {
+        alert("Failed to promote trainee");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("An error occurred");
+    }
+  };
+
+  if (loading) return <Box>Loading...</Box>;
+  if (error) return <Box>Error: {error}</Box>;
+
   return (
     <Box
       sx={{
@@ -59,6 +116,8 @@ const AddGuide = () => {
         label="Choose Trainee to Promote to Guide"
         placeholder="Choose Trainee"
         fullWidth
+        value={selectedTraineeId || ""}
+        onChange={(e) => setSelectedTraineeId(e.target.value)}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
@@ -67,11 +126,15 @@ const AddGuide = () => {
           ),
         }}
       >
-        {trainees.map((trainee) => (
-          <MenuItem key={trainee.id} value={trainee.name}>
-            {trainee.name}
-          </MenuItem>
-        ))}
+        {trainees.length > 0 ? (
+          trainees.map((trainee) => (
+            <MenuItem key={trainee} value={trainee}>
+              {trainee}
+            </MenuItem>
+          ))
+        ) : (
+          <MenuItem disabled>No trainees eligible</MenuItem>
+        )}
       </TextField>
       </Box>
 
@@ -103,6 +166,7 @@ const AddGuide = () => {
           component={NavLink}
           to="/coordinatordashboardguides" // Redirect to guides Dashboard
           variant="contained"
+          onClick={handleSubmit}
           sx={{
             backgroundColor: "#8a0303",
             "&:hover": { backgroundColor: "#b10505" },

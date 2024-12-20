@@ -26,7 +26,7 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;t
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -170,12 +170,12 @@ public class UserService {
         return roleServiceFactory.getRoleService(userRole).findAll();
     }
 
-    public List<String> getAllUserFullNames(String role) {
+    public List<String> getAllUserFullNamesWithIds(String role) {
         UserRole userRole = UserRole.fromString(role);
         return roleServiceFactory.getRoleService(userRole)
                                  .findAll()
                                  .stream()
-                                 .map(user -> user.getFirstName() + " " + user.getLastName()) // fullName oluşturuyoruz
+                                 .map(user -> user.getId() +" - "+user.getFirstName() + " " + user.getLastName()) //id + fullName
                                  .collect(Collectors.toList());
     }
 
@@ -312,5 +312,11 @@ public class UserService {
         for(Long id: traineeIds) {
             traineeService.deleteById(id);
         }
+    }
+
+    public List<Trainee> getTraineesByAdvisorId(Long id){
+        //RoleService traineeService = roleServiceFactory.getRoleService(UserRole.TRAINEE);
+        //return traineeService.findAllByAdvisorId(id);
+        return null;
     }
 }
