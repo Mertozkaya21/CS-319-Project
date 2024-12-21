@@ -2,11 +2,9 @@ package com.example.demo.entities.user;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 import com.example.demo.dto.AdvisorDTO;
-import com.example.demo.dto.TourDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.entities.event.Tour;
 import com.example.demo.enums.TraineeStatus;
@@ -49,6 +47,7 @@ public class Trainee extends User{
             byte[] imageData = Base64.getDecoder().decode(userDTO.getImagePath());
             this.imagePath=imageData;
         }*/
+        this.imagePath = userDTO.getImagePath();
         this.role = UserRole.TRAINEE;
         this.eligibleForPromotion = false;
         this.latestAcitivites = new ArrayList<Long>();

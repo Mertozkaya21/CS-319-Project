@@ -42,7 +42,7 @@ public class Guide extends User{
         this.email = userDTO.getEmail();
         this.password = userDTO.getPassword();
         this.phoneNo = userDTO.getPhoneNo();
-        this.setImagePath(userDTO.getImagePath());
+        this.imagePath = (userDTO.getImagePath());
         this.role = UserRole.GUIDE;
         this.averageRating = 0;
         this.latestAcitivites = new ArrayList<Long>();
