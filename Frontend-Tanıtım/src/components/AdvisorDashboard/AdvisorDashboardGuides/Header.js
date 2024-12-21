@@ -9,13 +9,13 @@ import TextField from '@mui/material/TextField';
 import { guidesRows } from './GuidesTable'; // Import guide data
 import AddIcon from '@mui/icons-material/Add'; // Import plus icon
 
-const Header = ({ title, onSearchSelection }) => {
+const Header = ({ title, onSearchSelection, guides }) => {
   const [sortOption, setSortOption] = useState('Date Updated');
 
-  // Transform guidesrows into a format suitable for Autocomplete
-  const guidesOptions = guidesRows.map((school) => ({
-    label: school.name, // Only the school name will be displayed
-  }));
+  // Transform guides into options for Autocomplete
+  const guidesOptions = guides?.map((guide) => ({
+    label: guide.name,
+  })) || [];
 
   return (
     <div className={styles.header}>
@@ -50,30 +50,30 @@ const Header = ({ title, onSearchSelection }) => {
         {/* Replace Search Bar with Autocomplete */}
         <Autocomplete
           disablePortal
-          options={guidesOptions} //  guide name options
-          onChange={(event, value) => onSearchSelection(value)} // Handle selection
+          options={guidesOptions}
+          onChange={(event, value) => onSearchSelection(value)}
           sx={{
             width: 300,
             '& .MuiOutlinedInput-root': {
               '& fieldset': {
-                borderColor: '#8a0303', // Red outline
+                borderColor: '#8a0303',
               },
               '&:hover fieldset': {
-                borderColor: '#6c0101', // Darker red on hover
+                borderColor: '#6c0101',
               },
               '&.Mui-focused fieldset': {
-                borderColor: '#8a0303', // Red outline when focused
+                borderColor: '#8a0303',
               },
-              color: '#8a0303', // Ensures input text stays red
+              color: '#8a0303',
             },
             '& .MuiInputBase-input': {
-              color: '#8a0303', // Set the text color of the input
+              color: '#8a0303',
             },
             '& .MuiInputLabel-root': {
-              color: '#8a0303', // Red label color
+              color: '#8a0303',
             },
             '& .MuiInputLabel-root.Mui-focused': {
-              color: '#6c0101', // Darker red when label is focused
+              color: '#6c0101',
             },
           }}
           renderInput={(params) => (
