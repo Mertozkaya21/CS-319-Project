@@ -273,6 +273,12 @@ public class UserService {
         if (userUpdateDTO.getPhoneNo() != null) {
             user.setPhoneNo(userUpdateDTO.getPhoneNo());
         }
+        if (userUpdateDTO.getAdvisorId() != null) {
+            user.setAdvisor(roleService.findById(Long.valueOf(userUpdateDTO.getAdvisorId())));
+        }
+        if (userUpdateDTO.getTraineeStatus() != null) {
+            ((Trainee)user).setTraineeStatus(userUpdateDTO.getTraineeStatus());
+        }
         return roleService.save(user);
     }
     

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams, NavLink } from "react-router-dom";
+import { useParams, NavLink, useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -113,13 +113,38 @@ const Table = () => {
   };
 
   // Handle Form Submit
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Updated Trainee Data:", formData);
-    alert("Trainee details updated successfully!");
-    // Add backend PUT/POST API call here
-  };
-
+  const navigate = useNavigate();
+    // Handle Form Submit
+    const handleSubmit = async (e) => {
+      console.log(JSON.stringify(formData));
+      e.preventDefault(); // Sayfanın yenilenmesini engeller
+  
+      const nameParts = formData.name.split(" ");
+      formData.firstName = nameParts.slice(0, -1).join(" "); // Son eleman hariç kalanları birleştir
+      formData.lastName = nameParts[nameParts.length - 1];
+  
+      try {
+        const response = await fetch(`http://localhost:8080/v1/user/trainee/${id}`, {
+          method: "PATCH", 
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData), // Form verilerini JSON formatında gönder
+        });
+    
+        if (!response.ok) {
+          throw new Error("Failed to update trainee details.");
+        }
+    
+        const result = await response.json();
+        console.log("Updated Trainee Data:", result);
+        alert("Trainee details updated successfully!");
+        navigate("/coordinatordashboardtrainees");
+      } catch (error) {
+        console.error("Error submitting trainee details:", error);
+        alert("Failed to update trainee details. Please try again.");
+      }
+    };
   if (loading) return <div>Loading...</div>;
 
   return (
@@ -211,7 +236,7 @@ const Table = () => {
           select
           name="advisorResponsible"
           label="Advisor Responsible"
-          value={formData.advisorResponsible}
+          value={`${formData.advisor.firstName} ${formData.advisor.lastName}`}
           onChange={(event) => {
             const selectedId = event.target.value;
             setFormData((prevFormData) => ({ ...prevFormData, advisorId: selectedId }));
@@ -285,8 +310,7 @@ const Table = () => {
           Cancel
         </Button>
         <Button
-          component={NavLink}
-          to="/coordinatordashboardtrainees" // Redirect to trainees Dashboard
+          onClick={handleSubmit}
           variant="contained"
           sx={{
             backgroundColor: "#8a0303",

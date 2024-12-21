@@ -13,4 +13,6 @@ public class UserUpdateDTO {
     private String email;
     private String phoneNo;
     private String undertakenDay;
+    private String advisorId; //
+    private String status; //bu ikisinin ismi aynı kalsın
 }
