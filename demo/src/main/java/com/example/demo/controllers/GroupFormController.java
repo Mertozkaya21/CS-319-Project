@@ -58,8 +58,6 @@ public class GroupFormController {
             groupFormService.setSortingStrategy(new SortBySubmissionTime());
         } else if ("byPriorityScore".equals(newParameter)) {
             groupFormService.setSortingStrategy(new SortByPriorityScore());
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         return ResponseEntity.noContent().build();
     }

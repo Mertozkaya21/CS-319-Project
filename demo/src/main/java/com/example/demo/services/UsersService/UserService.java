@@ -9,6 +9,7 @@ import com.example.demo.entities.user.Coordinator;
 import com.example.demo.entities.user.Guide;
 import com.example.demo.entities.user.Trainee;
 import com.example.demo.entities.user.User;
+import com.example.demo.enums.TraineeStatus;
 import com.example.demo.enums.UserRole;
 import com.example.demo.exceptions.EmailAlreadyExistsException;
 import com.example.demo.exceptions.InvalidCredentialsException;
@@ -255,12 +256,12 @@ public class UserService {
     }
     
 
-    public User updateUser(UserRole role, Long id, UserUpdateDTO userUpdateDTO) throws UserNotFoundException {
-        RoleService roleService = roleServiceFactory.getRoleService(role);
+    public User updateTrainee(Long id, UserUpdateDTO userUpdateDTO) throws UserNotFoundException {
+        TraineeService roleService = (TraineeService) roleServiceFactory.getRoleService(UserRole.TRAINEE);
         
-        User user = roleService.findById(id)
+        Trainee user = roleService.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User with ID " + id + " not found."));
-        
+
         if (userUpdateDTO.getFirstName() != null) {
             user.setFirstName(userUpdateDTO.getFirstName());
         }
@@ -274,11 +275,20 @@ public class UserService {
             user.setPhoneNo(userUpdateDTO.getPhoneNo());
         }
         if (userUpdateDTO.getAdvisorId() != null) {
-            user.setAdvisor(roleService.findById(Long.valueOf(userUpdateDTO.getAdvisorId())));
+            AdvisorService advisorService = (AdvisorService) roleServiceFactory.getRoleService(UserRole.ADVISOR);
+            Advisor advisor = advisorService.getById(Long.valueOf(userUpdateDTO.getAdvisorId()));
+            user.setAdvisor(advisor);
         }
-        if (userUpdateDTO.getTraineeStatus() != null) {
-            ((Trainee)user).setTraineeStatus(userUpdateDTO.getTraineeStatus());
+        
+        if (userUpdateDTO.getStatus() != null) {
+            try {
+                TraineeStatus status = TraineeStatus.fromString(userUpdateDTO.getStatus());
+                user.setStatus(status);
+            } catch (IllegalArgumentException e) {
+                throw new IllegalStateException("Invalid status value: " + userUpdateDTO.getStatus());
+            }
         }
+        
         return roleService.save(user);
     }
     

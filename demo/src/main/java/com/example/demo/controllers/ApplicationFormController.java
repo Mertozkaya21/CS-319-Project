@@ -20,6 +20,8 @@ import com.example.demo.enums.Department;
 import com.example.demo.exceptions.ApplicationFormNotFoundException;
 import com.example.demo.services.applicationformservice.ApplicationFormService;
 import com.example.demo.services.applicationformservice.applicationformsorter.*;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/v1/applicationform")
@@ -43,6 +45,17 @@ public class ApplicationFormController {
     public ResponseEntity<List<ApplicationForm>> getAllApplicationForms() {
         return ResponseEntity.ok(applicationFormService.getAllApplicationForms());
     }
+
+    @GetMapping("/status")
+    public ResponseEntity<List<ApplicationForm>> getApplicationFormsByStatus(@RequestParam("stat") ApplicationFormStatus stat) {
+        List<ApplicationForm> forms = applicationFormService.getAllApplicationFormByStatus(stat);
+        if (forms.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(forms);
+    }
+    
+    
 
     @GetMapping("/{id}/status") 
     public ResponseEntity<ApplicationFormStatus> getFormStatus(@PathVariable Long id) throws ApplicationFormNotFoundException {

@@ -93,9 +93,10 @@ public class FairService {
         return fairRepository.save(fair);
     }
 
-    public Fair removeGuideFromFair(Long fairId, Guide guide) throws GuideNotFoundException {
+    public Fair removeGuideFromFair(Long fairId, Long guideId) throws GuideNotFoundException {
         Fair fair = getFairById(fairId);
-
+        Guide guide = getGuideById(guideId);
+        
         if (!fair.getGuides().remove(guide)) {
             throw new GuideNotFoundException("Guide with ID " + guide.getId() + " is not assigned to the fair with ID " + fairId);
         }

@@ -3,8 +3,8 @@ package com.example.demo.services;
 import com.example.demo.entities.event.Event;
 import com.example.demo.entities.event.Fair;
 import com.example.demo.entities.event.Tour;
-import com.example.demo.entities.form.ApplicationForm;
 import com.example.demo.entities.user.Guide;
+import com.example.demo.entities.user.Trainee;
 import com.example.demo.enums.EventStatus;
 import com.example.demo.enums.TourHours;
 import com.example.demo.exceptions.FairNotFoundException;
@@ -64,11 +64,6 @@ public class EventService {
         }
     }
 
-    public Event saveEvent(ApplicationForm applicationForm) {
-        //to be implemented
-        throw new IllegalArgumentException("Implement the saveEvent method.");
-    }
-
     public Event updateEventStatus(Long eventId, EventStatus status) throws FairNotFoundException, TourNotFoundException {
         try {
             return fairService.upadteFairStatus(eventId, status);
@@ -100,14 +95,6 @@ public class EventService {
         return events;
     }
 
-    public Guide getGuideById(Long guideId) throws GuideNotFoundException {
-        try {
-            return tourService.getGuideById(guideId);
-        } catch (GuideNotFoundException e) {
-            return fairService.getGuideById(guideId);
-        }
-    }
-
     public Event assignGuideToEvent(Long eventId, Long guideId) throws GuideNotFoundException, UserNotFoundException {
         try {
             return fairService.assignGuideToFair(eventId, guideId);
@@ -118,11 +105,15 @@ public class EventService {
         }
     }
 
-    public Event removeGuideFromEvent(Long eventId, Guide guide) throws GuideNotFoundException {
+    public Tour assignTraineeToTour(Long tourId, Long traineeId) throws TourNotFoundException, UserNotFoundException {
+        return tourService.assignTraineeToTour(tourId, traineeId);
+    }
+
+    public Event removeGuideFromEvent(Long eventId, Long guideid) throws GuideNotFoundException {
         try {
-            return fairService.removeGuideFromFair(eventId, guide);
+            return fairService.removeGuideFromFair(eventId, guideid);
         } catch (FairNotFoundException e) {
-            return tourService.removeGuideFromTour(eventId, guide);
+            return tourService.removeGuideFromTour(eventId, guideid);
         } catch (TourNotFoundException e) {
             return null;
         }
@@ -167,5 +158,9 @@ public class EventService {
 
     public Tour cancelTour(Long tourId) {
         return tourService.cancelTour(tourId);
+    }
+
+    public Object assignTraineeToEvent(Long tourid, Long traineeId) {
+        return null;
     }
 }

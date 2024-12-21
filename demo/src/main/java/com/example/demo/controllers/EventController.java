@@ -113,9 +113,15 @@ public class EventController {
         return ResponseEntity.ok(eventService.assignGuideToEvent(tourid, guideId));
     }
 
+    @PostMapping("/{tourid}/trainees/{traineeId}")
+    public ResponseEntity<Tour> assignTraineeToTour(@PathVariable Long tourid, @PathVariable Long traineeId)
+            throws UserNotFoundException, TourNotFoundException {
+        return ResponseEntity.ok(eventService.assignTraineeToTour(tourid, traineeId));
+    }
+
+
     @DeleteMapping("/{tourid}/guides/{guideId}")
     public ResponseEntity<Event> removeGuideFromEvent(@PathVariable Long tourid, @PathVariable Long guideId) throws GuideNotFoundException {
-        Guide guide = eventService.getGuideById(guideId);
-        return ResponseEntity.ok(eventService.removeGuideFromEvent(tourid, guide));
+        return ResponseEntity.ok(eventService.removeGuideFromEvent(tourid, guideId));
     }
 }

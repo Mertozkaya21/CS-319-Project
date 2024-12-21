@@ -78,4 +78,8 @@ public class IndividualFormService {
         }
         return false;
     }
+
+    public List<IndividualForm> getAllApplicationFormByStatus(ApplicationFormStatus stat) {
+        return individualFormRepository.findByStatus(stat);
+    }
 }

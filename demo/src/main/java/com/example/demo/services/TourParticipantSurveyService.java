@@ -64,8 +64,4 @@ public class TourParticipantSurveyService {
                 "Number of Visiting Schools", uniqueSchools
         );
     }
-
-    // public List<Map<String, Object>> getDepartmentDistribution() {
-    //     return tourParticipantSurveyRepository.getDepartmentDistribution();
-    // }
 }

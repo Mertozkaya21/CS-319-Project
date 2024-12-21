@@ -94,7 +94,7 @@ public class GroupFormService {
         groupTour.setVisitorSchool(groupForm.getHighschool()); 
         groupTour.setNumberOfGuidesNeeded((int) Math.ceil(groupTour.getNoOfGuests() / 60.0));
         groupTour.setStatus(EventStatus.SCHEDULED);
-        
+
         tourRepository.save(groupTour);
     }
 
@@ -144,4 +144,7 @@ public class GroupFormService {
         return false;
     }
 
+    public List<GroupForm> getAllApplicationFormByStatus(ApplicationFormStatus stat) {
+        return groupFormRepository.findByStatus(stat);
+    }
 }

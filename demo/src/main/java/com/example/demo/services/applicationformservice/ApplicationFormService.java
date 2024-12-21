@@ -45,6 +45,13 @@ public class ApplicationFormService {
         return allForms;
     }
     
+    public List<ApplicationForm> getAllApplicationFormByStatus(ApplicationFormStatus stat) {
+        List<ApplicationForm> allForms = new ArrayList<>();
+        allForms.addAll(groupFormService.getAllApplicationFormByStatus(stat));
+        allForms.addAll(individualFormService.getAllApplicationFormByStatus(stat));
+        allForms.sort(Comparator.comparing(ApplicationForm::getSubmitTimeDate));
+        return allForms;
+    }
 
     public ApplicationForm getOneFormById(Long formId) throws ApplicationFormNotFoundException {
         GroupForm groupForm = groupFormService.getGroupFormById(formId);

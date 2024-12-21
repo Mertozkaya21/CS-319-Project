@@ -34,6 +34,7 @@ public class GuideService implements RoleService {
         return guideRepository.findAll();
     }
 
+
     @Override
     public boolean deleteById(Long id) {
         Optional<Guide> advisor = guideRepository.findById(id);
@@ -68,6 +69,10 @@ public class GuideService implements RoleService {
         
         guide.updateAverageRating();
         guideRepository.save(guide);
+    }
+
+    public List<Guide> findAllByIds(List<Long> guideIds) {
+        return guideRepository.findAllByIdIn(guideIds);
     }
     
 }

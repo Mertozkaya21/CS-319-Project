@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.example.demo.entities.user.Trainee;
 import com.example.demo.entities.user.User;
 import com.example.demo.enums.TraineeStatus;
-import com.example.demo.enums.UserRole;
 import com.example.demo.exceptions.UserNotFoundException;
 import com.example.demo.repositories.user.TraineeRepository;
 
@@ -36,29 +35,6 @@ public class TraineeService implements RoleService {
 
         int completedTours = trainee.getTours() != null ? trainee.getTours().size() : 0;
 
-        //buradaki switchcase in mantığı yanlış gibi
-        /*switch (trainee.getStatus()) { 
-            case OBSERVATION_TOURS:
-                if (completedTours >= 2) {
-                    trainee.setStatus(TraineeStatus.PRACTICE_TOURS);
-                }
-                break;
-
-            case PRACTICE_TOURS:
-                if (completedTours >= 4) {
-                    trainee.setStatus(TraineeStatus.TRIAL_TOURS);
-                }
-                break;
-
-            case TRIAL_TOURS:
-                if (completedTours >= 6) {
-                    trainee.setStatus(TraineeStatus.COMPLETED_TOURS);
-                }
-                break;
-            case COMPLETED_TOURS:
-                break;
-        }*/
-
         if (completedTours >= 6) {
             trainee.setStatus(TraineeStatus.COMPLETED_TOURS);
         }
@@ -73,6 +49,12 @@ public class TraineeService implements RoleService {
         }
 
         return traineeRepository.save(trainee);
+    }
+    
+    public Trainee getById(Long id) throws UserNotFoundException {
+        Trainee trainee = traineeRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("Trainee not found with ID: " + id));
+        return trainee;
     }
 
     @Override

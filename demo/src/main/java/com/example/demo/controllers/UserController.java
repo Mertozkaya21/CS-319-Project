@@ -126,16 +126,11 @@ public class UserController {
         return ResponseEntity.ok(userService.saveUser(role, updatedUser));
     }
 
-    @PatchMapping("/{role}/{id}") //üsttekiyle aynı metot
-    public ResponseEntity<User> updateUser(
-        @PathVariable String role, 
+    @PatchMapping("/trainee/{id}") 
+    public ResponseEntity<User> updateUser( 
         @PathVariable Long id, 
         @RequestBody UserUpdateDTO userUpdateDTO) throws UserNotFoundException {
-        User updatedUser=null;
-        if(!role.equals("advisor")){
-            updatedUser = userService.updateUser(UserRole.fromString(role), id, userUpdateDTO);
-        }
-        return ResponseEntity.ok(updatedUser);
+        return ResponseEntity.ok(userService.updateTrainee(id, userUpdateDTO));
     }
 
     @PatchMapping("/advisor/{id}") 
