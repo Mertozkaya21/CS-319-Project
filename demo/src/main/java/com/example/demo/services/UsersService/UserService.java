@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
 import java.util.Arrays;
-import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
@@ -55,11 +54,6 @@ public class UserService {
         validateCredentials(newUserDTO);
         checkIfEmailExists(newUserDTO.getEmail());
 
-        byte[] imageData = null;
-        if (newUserDTO.getImage() != null && !newUserDTO.getImage().isEmpty()) {
-            imageData = Base64.getDecoder().decode(newUserDTO.getImage());
-        }
-
         newUserDTO.setPassword(passwordEncoder.encode(newUserDTO.getPassword()));
 
         User user = switch (userRole) {
@@ -69,7 +63,6 @@ public class UserService {
             case TRAINEE -> new Trainee(newUserDTO);
         };
 
-        user.setImage(imageData); 
 
         return roleServiceFactory.getRoleService(userRole).save(user);
     }

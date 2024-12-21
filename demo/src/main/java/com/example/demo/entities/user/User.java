@@ -11,7 +11,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Lob;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -51,9 +50,8 @@ public abstract class User {
     @Column(nullable = false)
     protected UserRole role;
 
-    @Lob
-    @Column(name = "image", nullable = true) 
-    private byte[] image; 
+    @Column(nullable = true)
+    private String imagePath;
     
     protected List<Long> latestAcitivites; // Contains ID's of latest Activities
     protected List<Long> notifications;

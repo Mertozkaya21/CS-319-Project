@@ -13,7 +13,6 @@ import lombok.Setter;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.List;
 
 
@@ -32,10 +31,7 @@ public class Advisor extends User {
         this.email = userDTO.getEmail();
         this.password = userDTO.getPassword();
         this.phoneNo = userDTO.getPhoneNo();
-        if (userDTO.getImage() != null && !userDTO.getImage().isEmpty()) {
-            byte[] imageData = Base64.getDecoder().decode(userDTO.getImage());
-            this.setImage(imageData);
-        }
+        this.setImagePath(userDTO.getImagePath());
         this.latestAcitivites = new ArrayList<Long>();
         this.undertakenDay = undertakenDay;
         this.role = UserRole.ADVISOR;

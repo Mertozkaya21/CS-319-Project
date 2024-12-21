@@ -13,6 +13,6 @@ public class UserDTO {
     private String email;
     private String password;
     private String phoneNo;
-    private String image;
+    private String imagePath;
     private String day;
 }

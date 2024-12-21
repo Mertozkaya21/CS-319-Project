@@ -13,7 +13,6 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Base64;
 
 @Entity
 @Table(name = "Coordinator")
@@ -31,10 +30,7 @@ public class Coordinator extends User {
         this.password = userDTO.getPassword();
         this.phoneNo = userDTO.getPhoneNo();
         this.role = UserRole.COORDINATOR;
-        if (userDTO.getImage() != null && !userDTO.getImage().isEmpty()) {
-            byte[] imageData = Base64.getDecoder().decode(userDTO.getImage());
-            this.setImage(imageData);
-        }
+        this.setImagePath(userDTO.getImagePath());
         this.latestAcitivites = new ArrayList<Long>();
         this.notifications = new ArrayList<Long>();
         this.dateAdded = LocalDate.now();
