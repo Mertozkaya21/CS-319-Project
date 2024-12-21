@@ -51,7 +51,7 @@ public abstract class User {
     protected UserRole role;
 
     @Column(nullable = true)
-    private String imagePath;
+    protected String imagePath;
     
     protected List<Long> latestAcitivites; // Contains ID's of latest Activities
     protected List<Long> notifications;

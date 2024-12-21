@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.HighschoolDTO;
 import com.example.demo.entities.highschool.Highschool;
+import com.example.demo.entities.user.Trainee;
 import com.example.demo.enums.City;
 import com.example.demo.enums.TraineeStatus;
 import com.example.demo.enums.Department;
@@ -56,7 +57,7 @@ public class HighshcoolController {
     @GetMapping("/dropdown/traineestatus")
     public ResponseEntity<List<String>> getTraineeStatus() {
         List<String> traineeStatus = Arrays.stream(TraineeStatus.values())
-                                      .map(Enum::name)
+                                      .map(TraineeStatus::getDisplayName)
                                       .toList();
         return ResponseEntity.ok(traineeStatus);
     }
