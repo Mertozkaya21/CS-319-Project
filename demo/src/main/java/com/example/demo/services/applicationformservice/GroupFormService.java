@@ -46,6 +46,24 @@ public class GroupFormService {
         return applicationFormSorter.sortApplicationForms(forms);
     }
 
+    public GroupForm updateGroupForm(Long id, GroupFormDTO groupFormDTO) throws ApplicationFormNotFoundException {
+        GroupForm existingForm = groupFormRepository.findById(id)
+                .orElseThrow(() -> new ApplicationFormNotFoundException("GroupForm with id " + id + " not found"));
+
+        Highschool highschool = highschoolRepository.findByName(groupFormDTO.getHighSchoolName());
+        
+        // Update the fields of the existing form with the new data from the DTO
+        existingForm.setHighschool(highschool);
+        existingForm.setCity(groupFormDTO.getCity());
+        existingForm.setPhoneNumber(groupFormDTO.getPhoneNumber());
+        existingForm.setEmail(groupFormDTO.getEmail());
+        existingForm.setEventDate(LocalDate.parse(groupFormDTO.getEventDate()));
+        existingForm.setTourHour(TourHours.fromString(groupFormDTO.getTourHour()));
+
+        // Save and return the updated form
+        return groupFormRepository.save(existingForm);
+    }
+
     public void setSortingStrategy(SortStrategy strategy){
         this.applicationFormSorter.setSortStrategy(strategy); 
     }
@@ -101,10 +119,10 @@ public class GroupFormService {
 
     public GroupForm saveGroupForm(GroupFormDTO groupFormDto) {
         Highschool highschool = highschoolRepository.findByName(groupFormDto.getHighSchoolName());
-        if (highschool == null) {
+        /*if (highschool == null) {
             highschool = createNewHighSchool(groupFormDto);
             highschoolRepository.save(highschool);
-        } else if (hasHighschoolAlreadyApplied(highschool.getName(), groupFormDto.getEventDateAsLocalDate())) {
+        } else*/ if (hasHighschoolAlreadyApplied(highschool.getName(), groupFormDto.getEventDateAsLocalDate())) {
             throw new IllegalArgumentException("High school has already applied for a tour on this date.");
         }
 
@@ -115,7 +133,8 @@ public class GroupFormService {
         return groupFormRepository.save(groupForm);
     }
 
-    private Highschool createNewHighSchool(GroupFormDTO groupFormDto) {
+    //useless method
+    /*private Highschool createNewHighSchool(GroupFormDTO groupFormDto) {
         Highschool newHighschool = new Highschool();
         newHighschool.setName(groupFormDto.getHighSchoolName());
         newHighschool.setCity(groupFormDto.getCity());
@@ -129,7 +148,7 @@ public class GroupFormService {
         newHighschool.setCounselor(counselor);
 
         return newHighschool;
-    }
+    }*/
 
     private boolean hasHighschoolAlreadyApplied(String highschoolName, LocalDate tourDate) {
         List<GroupForm> forms = groupFormRepository.findByEventDateAndHighschoolName(tourDate, highschoolName);

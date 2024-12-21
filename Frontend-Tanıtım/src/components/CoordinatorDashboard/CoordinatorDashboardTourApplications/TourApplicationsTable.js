@@ -265,10 +265,10 @@ const columns = [
     headerName: 'Edit',
     width: 40,
     renderCell: (params) => {
-      console.log("Row ID:", params.row.id); // Debug to check if ID is valid
+      console.log("Row ID:", params.row.applicationFormID); // Debug to check if ID is valid
       return (
         <NavLink
-          to={`/coordinatordashboardedithighschoolapplication/${params.row.id}`} // Dynamically pass ID
+          to={`/coordinatordashboardedithighschoolapplication/${params.row.applicationFormID}`} // Dynamically pass ID
           className={({ isActive }) =>
             `${styles.navItem} ${isActive ? styles.active : ''}`
           }

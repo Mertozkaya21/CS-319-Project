@@ -21,6 +21,7 @@ import com.example.demo.entities.highschool.Highschool;
 import com.example.demo.enums.City;
 import com.example.demo.enums.TraineeStatus;
 import com.example.demo.enums.Department;
+import com.example.demo.enums.TourHours;
 import com.example.demo.exceptions.HighschoolNotFoundException;
 import com.example.demo.services.HighschoolService;
 
@@ -59,6 +60,14 @@ public class HighshcoolController {
                                       .map(Enum::name)
                                       .toList();
         return ResponseEntity.ok(traineeStatus);
+    }
+
+    @GetMapping("/dropdown/tourhours")
+    public ResponseEntity<List<String>> getTourHours() {
+        List<String> tourHours = Arrays.stream(TourHours.values())
+                                      .map(Enum::name)
+                                      .toList();
+        return ResponseEntity.ok(tourHours);
     }
 
     @GetMapping("/dropdown/departments")

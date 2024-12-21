@@ -30,8 +30,8 @@ public class GroupForm extends ApplicationForm{
     
     public GroupForm(GroupFormDTO groupFormDTO){
         super();
-        this.setTourHour(TourHours.fromString(groupFormDTO.getTimeSlot()));
-        this.setEventDate(LocalDate.parse(groupFormDTO.getDate()));
+        this.setTourHour(TourHours.fromString(groupFormDTO.getTourHour()));
+        this.setEventDate(LocalDate.parse(groupFormDTO.getEventDate()));
         this.setComments(groupFormDTO.getComments());
         this.setChaperoneName(groupFormDTO.getChaperoneName());
         this.setChaperoneRole(groupFormDTO.getChaperoneRole());

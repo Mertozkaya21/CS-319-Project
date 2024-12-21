@@ -35,13 +35,13 @@ const DashboardTourApplications = () => {
         );
         setTourRows(updatedTourRows);
         setFilteredRows(updatedTourRows);
-        alert('Tours deleted successfully!');
+        alert('Applications confirmed successfully!');
       } else {
-        alert('Failed to delete tours.');
+        alert('Failed to confirm applications.');
       }
     } catch (error) {
-      console.error('Error deleting tours:', error);
-      alert('An error occurred while deleting tours.');
+      console.error('Error confirming applications:', error);
+      alert('An error occurred while confirming applications.');
     }
   };
 

@@ -57,7 +57,7 @@ const Form = () => {
     email: "",
     phoneNumber: "",
     city: "",
-    date: null,
+    eventDate: null,
     timeSlot: "",
     chaperoneRole: "",
     chaperoneName: "",
@@ -138,7 +138,7 @@ const Form = () => {
     if (!formData.email) errors.email = 'Email is required.';
     if (!formData.phoneNumber) errors.phoneNumber = 'Phone Number is required.';
     if (!formData.city) errors.city = 'City is required.';
-    if (!formData.date) errors.date = 'Date is required.';
+    if (!formData.eventDate) errors.eventDate = 'Date is required.';
     if (!formData.timeSlot) errors.timeSlot = 'Time Slot is required.';
     if (!formData.chaperoneRole) errors.chaperoneRole = 'Chaperone Role is required.';
     if (!formData.chaperoneName) errors.chaperoneName = 'Chaperone Name is required.';
@@ -167,7 +167,7 @@ const Form = () => {
     try {
       const formattedData = {
         ...formData,
-        date: formData.date ? formData.date.format('YYYY-MM-DD') : null, // Format the date here
+        eventDate: formData.eventDate ? formData.eventDate.format('YYYY-MM-DD') : null, // Format the date here
       };
       console.log(formattedData);
       const response = await fetch('http://localhost:8080/v1/groupform', {
@@ -187,7 +187,7 @@ const Form = () => {
           email: '',
           phoneNumber: '',
           city: '',
-          date: null,
+          eventDate: null,
           timeSlot: '',
           chaperoneRole: '',
           chaperoneName: '',
@@ -331,9 +331,9 @@ const Form = () => {
                 <DemoContainer components={['DatePicker']}>
                 <DatePicker
                   label="Select Date"
-                  value={formData.date} // Keep the Day.js object here
+                  value={formData.eventDate} // Keep the Day.js object here
                   onChange={(newValue) => {
-                    setFormData({ ...formData, date: newValue }); // Store the Day.js object directly
+                    setFormData({ ...formData, eventDate: newValue }); // Store the Day.js object directly
                   }}
                   minDate={dayjs()} // Disable dates before today
                 />
