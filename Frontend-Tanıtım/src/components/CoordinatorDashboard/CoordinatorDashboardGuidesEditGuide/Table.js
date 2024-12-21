@@ -72,24 +72,34 @@ const Table = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    phone: "",
+    phoneNo: "",
   });
   const [loading, setLoading] = useState(true);
 
 
   // Fetch Guide Data
-  useEffect(() => {
-    const fetchGuideData = () => {
-      const guide = guidesRows.find((row) => row.id === parseInt(id));
-      if (guide) {
-        setFormData(guide);
-      }
-      setLoading(false);
-    };
-
-    fetchGuideData();
-  }, [id]);
-
+ useEffect(() => {
+     const fetchGuideData = async () => {
+       try {
+         const response = await fetch(`http://localhost:8080/v1/user/guide/${id}`);
+         if (!response.ok) {
+           throw new Error("Network response was not ok");
+         }
+         const guide = await response.json();
+         const updatedGuide = {
+           ...guide,
+           name: `${guide.firstName} ${guide.lastName}`,
+         };        
+         setFormData(updatedGuide);
+       } catch (error) {
+         console.error("Failed to fetch guide data:", error);
+       } finally {
+         setLoading(false);
+       }
+     };
+ 
+     fetchGuideData();
+   }, [id]);
   // Handle Input Changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -177,9 +187,9 @@ const Table = () => {
         {/* Phone Number */}
         <TextField
           required
-          name="phone"
+          name="phoneNo"
           label="Phone Number"
-          value={formData.phone}
+          value={formData.phoneNo}
           onChange={handleInputChange}
           fullWidth
           InputProps={{

@@ -7,9 +7,9 @@ import styles from './CoordinatorDashboardGuides.module.css';
 
 const DashboardGuides = () => {
   const [guideRows, setGuideRows] = useState([]);
-    const [filteredRows, setFilteredRows] = useState([]); // Manage filtered rows
-    const [loading, setLoading] = useState(true);
-    const [selectedRows, setSelectedRows] = useState([]);
+  const [filteredRows, setFilteredRows] = useState([]); // Manage filtered rows
+  const [loading, setLoading] = useState(true);
+  const [selectedRows, setSelectedRows] = useState([]);
 
   const handleSearchSelection = (value) => {
     if (value) {

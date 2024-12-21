@@ -86,7 +86,7 @@ const columns = [
   },
 ];
 
-const TraineesTable = ({ rows }) => {
+const TraineesTable = ({ rows , setSelectedRows}) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogContent, setDialogContent] = useState('');
   const [dialogTitle, setDialogTitle] = useState(''); // State for dynamic dialog title
@@ -94,8 +94,8 @@ const TraineesTable = ({ rows }) => {
   // Handle contact click (phone/email)
   const handleContactClick = (type, row) => {
     const content =
-      type === 'phone'
-        ? `Phone: ${row.phone}`
+      type === 'phoneNo'
+        ? `Phone: ${row.phoneNo}`
         : `Email: ${row.email}`;
     setDialogTitle(`${row.name}'s Contact Information`);
     setDialogContent(content);
@@ -144,6 +144,10 @@ const TraineesTable = ({ rows }) => {
           rowsPerPageOptions={[5, 10]}
           checkboxSelection
           disableSelectionOnClick
+          onRowSelectionModelChange={(newSelectionModel) => {
+            console.log("Row Selection Changed:", newSelectionModel);
+            setSelectedRows(newSelectionModel);
+          }}
           sx={{
             '& .MuiDataGrid-columnHeaders': {
               backgroundColor: '#f7f7f7',

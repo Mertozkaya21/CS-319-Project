@@ -57,6 +57,7 @@ public class Trainee extends User{
     @JoinColumn(name = "advisor_id")
     private Advisor advisor;
 
+
     @ManyToMany
     @JoinTable(
         name = "trainee_tour",
@@ -76,5 +77,22 @@ public class Trainee extends User{
     @JsonGetter("tourIds")
     public List<Long> getTourIds() {
         return tours != null ? tours.stream().map(Tour::getId).toList() : null;
+    }
+
+    @JsonGetter("advisorIds")
+    public Long getAdvisorId() {
+        return advisor != null ? advisor.getId() : null;
+    }
+
+    /*@JsonGetter("coordinatorId")
+    public Long getCoordinatorId() {
+        return coordinator != null ? coordinator.getId() : null;
+    }*/
+    
+    public void setStatus(TraineeStatus newStatus){
+        this.status = newStatus;
+        if(status == TraineeStatus.COMPLETED_TOURS){
+            this.eligibleForPromotion = true;
+        }
     }
 }
