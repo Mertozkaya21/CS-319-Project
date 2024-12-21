@@ -7,6 +7,7 @@ import com.example.demo.dto.GroupFormDTO;
 import com.example.demo.entities.highschool.Counselor;
 import com.example.demo.entities.highschool.Highschool;
 import com.example.demo.enums.TourHours;
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -59,5 +60,10 @@ public class GroupForm extends ApplicationForm{
     @JsonProperty("counselorId")
     public Long getCounselorId() {
         return counselor != null ? counselor.getId() : null;
+    }
+
+    @JsonGetter("name")
+    public String getHighschoolName() {
+        return highschool != null ? highschool.getName() : null;
     }
 }

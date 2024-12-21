@@ -170,7 +170,7 @@ const Form = () => {
         date: formData.date ? formData.date.format('YYYY-MM-DD') : null, // Format the date here
       };
       console.log(formattedData);
-      const response = await fetch('http://localhost:8080/v1/applicationform/groupform', {
+      const response = await fetch('http://localhost:8080/v1/groupform', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formattedData),

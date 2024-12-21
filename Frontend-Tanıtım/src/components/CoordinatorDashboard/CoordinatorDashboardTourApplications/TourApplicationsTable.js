@@ -79,7 +79,7 @@ export const tourApplicationsRows = [
   },
 ];
 
-const TourApplicationsTable = ({ rows }) => {
+const TourApplicationsTable = ({ rows, setSelectedRows }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogContent, setDialogContent] = useState('');
   const [decisions, setDecisions] = useState({}); // Store decisions for each row
@@ -91,8 +91,8 @@ const TourApplicationsTable = ({ rows }) => {
 
   const handleContactClick = (type, row) => {
     const content =
-      type === 'phone'
-        ? `Phone: ${row.phone}`
+      type === 'phoneNumber'
+        ? `Phone: ${row.phoneNumber}`
         : `Email: ${row.email}`;
     setDialogContent(content);
     setOpenDialog(true);
@@ -145,8 +145,8 @@ const columns = [
     width: selectedColumn === 'priority' ? 170 : selectedColumn === 'distance' ? 180 : 220,
     renderCell: (params) => <div>{params.row[selectedColumn]}</div>,
   },
-  { field: 'date', headerName: 'Tour Date', width: 110 },
-  { field: 'time', headerName: 'Tour Time', width: 100 },
+  { field: 'eventDate', headerName: 'Tour Date', width: 110 },
+  { field: 'tourHour', headerName: 'Tour Time', width: 100 },
   { field: 'city', headerName: 'City', width: 70 },
   { field: 'numberOfAttendees', headerName: 'Count', width: 60 },
   {
@@ -155,7 +155,7 @@ const columns = [
     width: 80,
     renderCell: (params) => (
       <div className={styles.contactButtons}>
-        <IconButton onClick={() => params.row.handleContactClick('phone', params.row)}>
+        <IconButton onClick={() => params.row.handleContactClick('phoneNumber', params.row)}>
           <FaPhoneAlt className={styles.contactIcon} />
         </IconButton>
         <IconButton onClick={() => params.row.handleContactClick('email', params.row)}>
@@ -304,6 +304,7 @@ const columns = [
       >
         <DataGrid
           rows={rowsWithHandlers} // Pass rows with handlers
+          getRowId={(row) => row.applicationFormID}
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5, 10]}
