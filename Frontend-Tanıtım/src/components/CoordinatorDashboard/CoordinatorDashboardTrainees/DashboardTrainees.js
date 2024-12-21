@@ -57,6 +57,7 @@ const DashboardTrainees = () => {
         const updatedData = data.map(trainee => ({
           ...trainee,
           name: `${trainee.firstName} ${trainee.lastName}`,
+          advisorResponsible: trainee.advisor ? `${trainee.advisor.firstName} ${trainee.advisor.lastName}` : null
         }));
 
         setTraineeRows(updatedData);

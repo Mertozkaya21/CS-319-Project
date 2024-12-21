@@ -33,6 +33,8 @@ const advisors = [
 
 const Table = () => {
   const { id } = useParams(); // Extract the ID from the URL
+  const [advisors, setAdvisors] = useState([]);
+  const [traineeStatuses, setTraineeStatuses] = useState([]);
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -43,17 +45,66 @@ const Table = () => {
   const [loading, setLoading] = useState(true);
 
   // Fetch Trainee Data
-  useEffect(() => {
-    const fetchTraineeData = () => {
-      const trainee = traineesRows.find((row) => row.id === parseInt(id));
-      if (trainee) {
-        setFormData(trainee);
-      }
-      setLoading(false);
-    };
+ useEffect(() => {
+      const fetchTraineeData = async () => {
+        try {
+          const response = await fetch(`http://localhost:8080/v1/user/trainee/${id}`);
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          const trainee = await response.json();
+          const updatedTrainee = {
+            ...trainee,
+            name: `${trainee.firstName} ${trainee.lastName}`,
+          };        
+          setFormData(updatedTrainee);
+        } catch (error) {
+          console.error("Failed to fetch trainee data:", error);
+        } finally {
+          setLoading(false);
+        }
+      };
+  
+      fetchTraineeData();
+    }, [id]);
 
-    fetchTraineeData();
-  }, [id]);
+    useEffect(() => {
+        const fetchAdvisors = async () => {
+          try {
+            const response = await fetch("http://localhost:8080/v1/user/dropdown/advisors"); // API endpoint
+            if (!response.ok) {
+              throw new Error("Failed to fetch advisors.");
+            }
+            const data = await response.json();
+            console.log(data);
+            // Backend'den gelen veriyi uygun formatta dönüştür
+            const formattedAdvisors = data.map((item) => {
+              const [id, name] = Object.entries(item)[0]; // Anahtar ve değer al
+              return { 
+                id: id,  
+                name: name  
+              };   
+            });
+      
+            setAdvisors(formattedAdvisors);
+            console.log(formattedAdvisors);
+          } catch (error) {
+            console.error("Error fetching advisors:", error);
+          }
+        };
+        const fetchTraineeStatus = async () => {
+          try {
+            const response = await fetch('http://localhost:8080/v1/highschool/dropdown/traineestatus'); // City'leri çeken API endpoint
+            const data = await response.json();
+            console.log(data);
+            setTraineeStatuses(data); // City'leri state'e kaydedin
+          } catch (error) {
+            console.error('Error fetching trainee status:', error);
+          }
+        };
+        fetchAdvisors();
+        fetchTraineeStatus();
+      }, []);
 
   // Handle Input Changes
   const handleInputChange = (e) => {
@@ -142,9 +193,9 @@ const Table = () => {
         {/* Phone Number */}
         <TextField
           required
-          name="phone"
+          name="phoneNo"
           label="Phone Number"
-          value={formData.phone}
+          value={formData.phoneNo}
           onChange={handleInputChange}
           fullWidth
           InputProps={{
@@ -161,7 +212,10 @@ const Table = () => {
           name="advisorResponsible"
           label="Advisor Responsible"
           value={formData.advisorResponsible}
-          onChange={handleInputChange}
+          onChange={(event) => {
+            const selectedId = event.target.value;
+            setFormData((prevFormData) => ({ ...prevFormData, advisorId: selectedId }));
+          }}
           fullWidth
           InputProps={{
             startAdornment: (
@@ -193,9 +247,15 @@ const Table = () => {
             ),
           }}
         >
-          <MenuItem value="Observing">Observing</MenuItem>
-          <MenuItem value="Practicing">Practicing</MenuItem>
-          <MenuItem value="On Trial">On Trial</MenuItem>
+          {traineeStatuses.length > 0 ? (
+            traineeStatuses.map((statuses) => (
+              <MenuItem key={statuses} value={statuses}>
+                {statuses}
+              </MenuItem>
+            ))
+          ) : (
+            <MenuItem disabled>No trainee status available</MenuItem>
+          )}
         </TextField>
         
       </Box>

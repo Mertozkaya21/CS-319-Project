@@ -43,9 +43,10 @@ const Table = () => {
     name: "",
     email: "",
     phoneNo: "",
-    advisorId: "",
-    password:""
+    password:"",
+
   });
+
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = React.useState(false);
 
@@ -56,16 +57,21 @@ const Table = () => {
   useEffect(() => {
     const fetchAdvisors = async () => {
       try {
-        const response = await fetch("http://localhost:8080/v1/user/advisor"); // API endpoint
+        const response = await fetch("http://localhost:8080/v1/user/dropdown/advisors"); // API endpoint
         if (!response.ok) {
           throw new Error("Failed to fetch advisors.");
         }
         const data = await response.json();
+        console.log(data);
         // Backend'den gelen veriyi uygun formatta dönüştür
         const formattedAdvisors = data.map((item) => {
-          const [id, name] = Object.entries(item)[0]; // Key-value pair olarak alın
-          return { id, name };   
+          const [id, name] = Object.entries(item)[0]; // Anahtar ve değer al
+          return { 
+            id: id,  
+            name: name  
+          };   
         });
+  
         setAdvisors(formattedAdvisors);
         console.log(formattedAdvisors);
       } catch (error) {
@@ -88,10 +94,10 @@ const Table = () => {
     const nameParts = formData.name.split(" ");
     formData.firstName = nameParts.slice(0, -1).join(" "); // Son eleman hariç kalanları birleştir
     formData.lastName = nameParts[nameParts.length - 1];
-
+    console.log(JSON.stringify(formData));
     try {
       console.log(JSON.stringify(formData));
-      const response = await fetch(`http://localhost:8080/v1/user/trainee`, {
+      const response = await fetch(`http://localhost:8080/v1/user/trainee/${formData.advisorId}`, {
         method: "POST", 
         headers: {
           "Content-Type": "application/json",
@@ -153,6 +159,7 @@ const Table = () => {
         <TextField
           required
           id="name"
+          name="name"
           label="Name"
           placeholder="Enter Full Name"
           fullWidth
@@ -169,6 +176,7 @@ const Table = () => {
         <TextField
           required
           id="email"
+          name="email"
           label="Email Address"
           placeholder="Enter Email"
           fullWidth
@@ -185,6 +193,7 @@ const Table = () => {
         <TextField
           required
           id="phoneNo"
+          name="phoneNo"
           label="Phone Number"
           placeholder="(123) 456-7890"
           fullWidth
@@ -207,8 +216,11 @@ const Table = () => {
           label="Advisor Responsible"
           placeholder="Choose Advisor"
           fullWidth
-          value={formData.advisorId}
-          onChange={handleChange}
+          //value={advisorId}
+          onChange={(event) => {
+            const selectedId = event.target.value;
+            setFormData((prevFormData) => ({ ...prevFormData, advisorId: selectedId }));
+          }}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -228,6 +240,8 @@ const Table = () => {
             <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
             <OutlinedInput
               id="password"
+              name="password"
+              onChange={handleChange}
               type={showPassword ? "text" : "password"}
               endAdornment={
                 <InputAdornment position="end">

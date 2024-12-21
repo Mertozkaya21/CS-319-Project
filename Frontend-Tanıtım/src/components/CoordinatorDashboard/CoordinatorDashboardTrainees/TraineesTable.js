@@ -45,7 +45,7 @@ const columns = [
     width: 100,
     renderCell: (params) => (
       <div className={styles.contactButtons}>
-        <IconButton onClick={() => params.row.handleContactClick('phone', params.row)}>
+        <IconButton onClick={() => params.row.handleContactClick('phoneNo', params.row)}>
           <FaPhoneAlt className={styles.contactIcon} />
         </IconButton>
         <IconButton onClick={() => params.row.handleContactClick('email', params.row)}>
