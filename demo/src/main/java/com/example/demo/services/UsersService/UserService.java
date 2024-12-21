@@ -26,7 +26,7 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;t
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,7 +35,6 @@ public class UserService {
     private final RoleServiceFactory roleServiceFactory;
     private final PasswordResetTokenRepository passwordResetTokenRepository;
     private final EmailService emailService;
-
     private final PasswordEncoder passwordEncoder;
 
 
