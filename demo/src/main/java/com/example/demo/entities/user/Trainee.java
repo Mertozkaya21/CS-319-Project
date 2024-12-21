@@ -2,6 +2,7 @@ package com.example.demo.entities.user;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import com.example.demo.dto.AdvisorDTO;
@@ -43,7 +44,11 @@ public class Trainee extends User{
         this.email = userDTO.getEmail();
         this.password = userDTO.getPassword();
         this.phoneNo = userDTO.getPhoneNo();
-        this.setImagePath(userDTO.getImagePath());
+        //Byte ı stringe mi çevirmeye çalışıyoruz?
+        /*if (userDTO.getImagePath() != null && !userDTO.getImagePath().isEmpty()) {
+            byte[] imageData = Base64.getDecoder().decode(userDTO.getImagePath());
+            this.imagePath=imageData;
+        }*/
         this.role = UserRole.TRAINEE;
         this.eligibleForPromotion = false;
         this.latestAcitivites = new ArrayList<Long>();
@@ -77,7 +82,7 @@ public class Trainee extends User{
         return tours != null ? tours.stream().map(Tour::getId).toList() : null;
     }
 
-    @JsonGetter("advisorIds")
+    @JsonGetter("advisorId")
     public Long getAdvisorId() {
         return advisor != null ? advisor.getId() : null;
     }
