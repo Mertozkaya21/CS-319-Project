@@ -1,8 +1,11 @@
 package com.example.demo.entities.user;
 
+import com.example.demo.dto.TraineeDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.entities.payment.Payment;
 import com.example.demo.enums.UserRole;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -44,6 +47,7 @@ public class Advisor extends User {
     }
 
     @OneToMany(mappedBy = "advisor", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Trainee> trainees = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
@@ -53,4 +57,20 @@ public class Advisor extends User {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "payment_id")
     private Payment payment;
+
+    @JsonGetter("trainees")
+    public List<TraineeDTO> getTraineesDetails() {
+        return trainees != null ? 
+            trainees.stream()
+                    .map(trainee -> new TraineeDTO(
+                            trainee.getId(),
+                            trainee.getFirstName(),
+                            trainee.getLastName(),
+                            trainee.getEmail(),
+                            trainee.getPhoneNo()))
+                    .toList() : 
+            new ArrayList<>();
+    }
+
+    
 }

@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.demo.dto.AdvisorDTO;
+import com.example.demo.dto.TourDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.entities.event.Tour;
 import com.example.demo.enums.TraineeStatus;
@@ -51,8 +53,8 @@ public class Trainee extends User{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "advisor_id")
+    @JsonIgnore
     private Advisor advisor;
-
 
     @ManyToMany
     @JoinTable(
@@ -79,11 +81,6 @@ public class Trainee extends User{
     public Long getAdvisorId() {
         return advisor != null ? advisor.getId() : null;
     }
-
-    /*@JsonGetter("coordinatorId")
-    public Long getCoordinatorId() {
-        return coordinator != null ? coordinator.getId() : null;
-    }*/
     
     public void setStatus(TraineeStatus newStatus){
         this.status = newStatus;
@@ -91,4 +88,18 @@ public class Trainee extends User{
             this.eligibleForPromotion = true;
         }
     }
+
+    @JsonGetter("advisor")
+    public AdvisorDTO getAdvisorDetails() {
+        return advisor != null ? 
+            new AdvisorDTO(
+                advisor.getId(),
+                advisor.getFirstName(),
+                advisor.getLastName(),
+                advisor.getEmail(),
+                advisor.getPhoneNo(),
+                advisor.getUndertakenDay()) 
+            : null;
+    }
+
 }
