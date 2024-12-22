@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.GroupFormDTO;
-import com.example.demo.entities.form.ApplicationForm;
 import com.example.demo.entities.form.GroupForm;
 import com.example.demo.enums.ApplicationFormStatus;
 import com.example.demo.enums.TourHours;

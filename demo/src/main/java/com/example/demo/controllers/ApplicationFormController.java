@@ -109,14 +109,14 @@ public class ApplicationFormController {
     @PostMapping("/update-statuses")
     public ResponseEntity<List<ApplicationForm>> updateApplicationFormStatuses(
             @RequestBody UpdateApplicationFormStatusDTO dto) {
-        List<ApplicationForm> updatedForms = applicationFormService.updateStatuses((List<Long>) dto.getIds(), dto.getStatus());
-    
+        List<ApplicationForm> updatedForms = applicationFormService.updateStatuses(dto.getStatuses());
+
         if (updatedForms.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(updatedForms);
     }
-    
+
 
     @DeleteMapping("/{id}") 
     public ResponseEntity<Void> deleteApplicationForm(@PathVariable Long id) {

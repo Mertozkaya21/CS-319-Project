@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -141,25 +142,36 @@ public class ApplicationFormService {
         return false;
     }
 
-    public List<ApplicationForm> updateStatuses(List<Long> ids, ApplicationFormStatus status) {
+    public List<ApplicationForm> updateStatuses(Map<Long, String> statuses) {
         List<ApplicationForm> updatedForms = new ArrayList<>();
-        for (Long id : ids) {
+    
+        for (Map.Entry<Long, String> entry : statuses.entrySet()) {
+            Long id = entry.getKey();
+            String statusString = entry.getValue();
+    
             try {
+                ApplicationFormStatus status = ApplicationFormStatus.valueOf(statusString.toUpperCase());
                 ApplicationForm form = getOneFormById(id);
+    
                 if (form != null) {
                     form.setStatus(status);
+    
                     if (form instanceof GroupForm) {
                         groupFormService.save((GroupForm) form);
                     } else if (form instanceof IndividualForm) {
                         individualFormService.save((IndividualForm) form);
                     }
+    
                     updatedForms.add(form);
                 }
+            } catch (IllegalArgumentException e) {
             } catch (ApplicationFormNotFoundException e) {
             }
         }
+    
         return updatedForms;
     }
+    
 
 }
 
