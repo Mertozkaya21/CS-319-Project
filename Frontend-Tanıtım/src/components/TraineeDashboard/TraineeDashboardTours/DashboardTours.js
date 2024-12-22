@@ -1,36 +1,64 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Sidebar from '../TraineeDashboardCommon/Sidebar';
 import Header from './Header';
 import ToursTable from './ToursTable';
-import { eventRows } from './ToursTable'; // Import data
 import styles from './TraineeDashboardTours.module.css';
+import axios from 'axios';
 
 const DashboardTours = () => {
-  const [filteredRows, setFilteredRows] = useState(eventRows); // Manage filtered rows
+  const [tours, setTours] = useState([]);
+  const [filteredTours, setFilteredTours] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const traineeId = localStorage.getItem('userId');
+
+  useEffect(() => {
+    const fetchTours = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/v1/events');
+        // Filter tours assigned to this trainee
+        const traineeTours = response.data.filter(event => 
+          event.tourType && 
+          event.traineeIds && 
+          event.traineeIds.includes(Number(traineeId))
+        );
+        setTours(traineeTours);
+        setFilteredTours(traineeTours);
+        setIsLoading(false);
+      } catch (err) {
+        console.error('Error fetching tours:', err);
+        setError(err.message);
+        setIsLoading(false);
+      }
+    };
+
+    if (traineeId) {
+      fetchTours();
+    }
+  }, [traineeId]);
 
   const handleSearchSelection = (value) => {
     if (value) {
-      // Filter rows based on the selected event name
-      const filtered = eventRows.filter((row) => row.name === value.label);
-      setFilteredRows(filtered);
+      const filtered = tours.filter((tour) => tour.name === value.label);
+      setFilteredTours(filtered);
     } else {
-      // Reset to show all rows when the search is cleared
-      setFilteredRows(eventRows);
+      setFilteredTours(tours);
     }
   };
 
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
   return (
     <div className={styles.dashboardContainer}>
-      {/* Sidebar */}
       <Sidebar />
-
-      {/* Main Content */}
       <div className={styles.mainContent}>
-        {/* Header */}
-        <Header title="Tours" onSearchSelection={handleSearchSelection} />
-
-        {/* Events Table */}
-        <ToursTable rows={filteredRows} />
+        <Header 
+          title="My Tours" 
+          onSearchSelection={handleSearchSelection}
+          tours={tours}
+        />
+        <ToursTable rows={filteredTours} />
       </div>
     </div>
   );
