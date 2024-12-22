@@ -124,9 +124,8 @@ public class EventController {
         return ResponseEntity.ok(eventService.removeTraineeFromTour(tourid, traineeId));
     }
 
-
     @DeleteMapping("/{tourid}/guides/{guideId}")
-    public ResponseEntity<Event> removeGuideFromEvent(@PathVariable Long tourid, @PathVariable Long guideId) throws GuideNotFoundException {
+    public ResponseEntity<Event> removeGuideFromEvent(@PathVariable Long tourid, @PathVariable Long guideId) throws GuideNotFoundException, UserNotFoundException {
         return ResponseEntity.ok(eventService.removeGuideFromEvent(tourid, guideId));
     }
 }

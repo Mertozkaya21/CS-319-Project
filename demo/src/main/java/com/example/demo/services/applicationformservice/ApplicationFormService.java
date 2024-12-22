@@ -6,6 +6,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entities.form.ApplicationForm;
@@ -32,6 +34,31 @@ public class ApplicationFormService {
         this.applicationFormSorter = new ApplicationFormSorter(new SortByLgsPercentile()); //default sorting strategy is lgsPercentile
     }
 
+    @Scheduled(cron = "0 0 0 * * ?") // Runs every day at midnight
+    public void updateApplicationFormStatusesDaily() {
+        updateStatusForPastApplications();
+    }
+
+    private void updateStatusForPastApplications() {
+        LocalDate today = LocalDate.now();
+
+        List<GroupForm> groupForms = groupFormService.getAllGroupForms();
+        for (GroupForm form : groupForms) {
+            if (form.getEventDate().isBefore(today) && form.getStatus() == ApplicationFormStatus.BTO_APPROVED) {
+                form.setStatus(ApplicationFormStatus.COMPLETED);
+                groupFormService.save(form);
+            }
+        }
+
+        List<IndividualForm> individualForms = individualFormService.getAllIndividualForms();
+        for (IndividualForm form : individualForms) {
+            if (form.getEventDate().isBefore(today) && form.getStatus() == ApplicationFormStatus.BTO_APPROVED) {
+                form.setStatus(ApplicationFormStatus.COMPLETED);
+                individualFormService.save(form);
+            }
+        }
+    }
+    
     public void setSortingStrategy(SortStrategy strategy){
         this.applicationFormSorter.setSortStrategy(strategy); 
     }
