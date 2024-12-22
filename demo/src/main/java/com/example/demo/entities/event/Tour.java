@@ -1,9 +1,11 @@
 package com.example.demo.entities.event;
 
+import com.example.demo.entities.form.ApplicationForm;
 import com.example.demo.entities.highschool.Highschool;
 import com.example.demo.entities.user.Guide;
 import com.example.demo.entities.user.Trainee;
 import com.example.demo.enums.Department;
+import com.example.demo.enums.EventStatus;
 import com.example.demo.enums.TourHours;
 import com.example.demo.enums.TourType;
 import com.fasterxml.jackson.annotation.JsonGetter;
@@ -26,6 +28,22 @@ import java.util.List;
 @Getter
 @Setter
 public class Tour extends Event {
+
+    public Tour(ApplicationForm applicationForm) {
+        this.tourHours = applicationForm.getTourHour();
+        this.noOfGuests = applicationForm.getNumberOfAttendees();
+        this.setNoOfGuests(applicationForm.getNumberOfAttendees());
+        this.setDate(applicationForm.getEventDate()); 
+        this.tourType = TourType.GROUP;
+        this.setStatus(EventStatus.SCHEDULED);
+        this.visitorSchool = null;
+        this.departmentOfInterest = null;
+        this.guides = null;
+        this.trainees = null;
+        this.qAroomID = 0;
+        this.tourParticipantSurveys = null;
+    }
+
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

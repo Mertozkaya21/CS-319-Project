@@ -11,12 +11,14 @@ import java.util.stream.Collectors;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.entities.event.Tour;
 import com.example.demo.entities.form.ApplicationForm;
 import com.example.demo.entities.form.GroupForm;
 import com.example.demo.entities.form.IndividualForm;
 import com.example.demo.enums.ApplicationFormStatus;
 import com.example.demo.enums.TourHours;
 import com.example.demo.exceptions.ApplicationFormNotFoundException;
+import com.example.demo.services.TourService;
 import com.example.demo.services.applicationformservice.applicationformsorter.ApplicationFormSorter;
 import com.example.demo.services.applicationformservice.applicationformsorter.SortByLgsPercentile;
 import com.example.demo.services.applicationformservice.applicationformsorter.SortStrategy;
@@ -27,12 +29,14 @@ public class ApplicationFormService {
     private final GroupFormService groupFormService;
     private final IndividualFormService individualFormService;
     private final ApplicationFormSorter applicationFormSorter;
+    private final TourService tourService;
 
     public ApplicationFormService(  IndividualFormService individualFormService,
-                                    GroupFormService groupFormService){
+                                    GroupFormService groupFormService, TourService tourService){
         this.individualFormService = individualFormService;
         this.groupFormService = groupFormService;                                
         this.applicationFormSorter = new ApplicationFormSorter(new SortByLgsPercentile()); 
+        this.tourService = tourService;
     }
 
     @Scheduled(cron = "0 0 0 * * ?") 
@@ -155,11 +159,16 @@ public class ApplicationFormService {
     
                 if (form != null) {
                     form.setStatus(status);
+                    if(status == ApplicationFormStatus.BTO_APPROVED){
+                        Tour newTour = new Tour(form);
+                        tourService.saveTour(newTour);
+                    }
     
                     if (form instanceof GroupForm) {
                         groupFormService.save((GroupForm) form);
                     } else if (form instanceof IndividualForm) {
                         individualFormService.save((IndividualForm) form);
+                        
                     }
     
                     updatedForms.add(form);
