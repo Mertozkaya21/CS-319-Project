@@ -13,6 +13,9 @@ public class SortByDistance implements SortStrategy{
 
     @Override
     public List<GroupForm> sort(List<GroupForm> applicationForms) {
+        for (GroupForm form : applicationForms) {
+            form.setSortType("byDistance");
+        }
        Collections.sort(applicationForms, (a, b) -> {
             City cityA = a.getHighschool().getCity();
             City cityB = b.getHighschool().getCity();

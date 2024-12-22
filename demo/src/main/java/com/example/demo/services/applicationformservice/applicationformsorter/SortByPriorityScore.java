@@ -19,17 +19,32 @@ public class SortByPriorityScore implements SortStrategy{
                                                 LocalDate earliestSubmissionDate, LocalDate latestSubmissionDate, 
                                                 int minDistance, int maxDistance) {
         // LGS% Normalization (Inverse)
-        double normalizedLGS = 1 - (form.getHighschool().getLgsPercentile() - minLGS) / (maxLGS - minLGS);
+        double normalizedLGS;
+        if (maxLGS == minLGS) {
+            normalizedLGS = 0.5;  // or some default value if no variation
+        } else {
+            normalizedLGS = 1 - (form.getHighschool().getLgsPercentile() - minLGS) / (maxLGS - minLGS);
+        }
 
         // Submission Time Normalization
         long daysSinceSubmission = LocalDate.now().toEpochDay() - form.getSubmitTimeDate().toEpochDay();
         long maxDaysSinceSubmission = latestSubmissionDate.toEpochDay() - earliestSubmissionDate.toEpochDay();
-        double normalizedSubmissionTime = 1 - (double) daysSinceSubmission / maxDaysSinceSubmission;
+        double normalizedSubmissionTime;
+
+        if (maxDaysSinceSubmission == 0) {
+            normalizedSubmissionTime = 0.5; // or a default value
+        } else {
+            normalizedSubmissionTime = 1 - (double) daysSinceSubmission / maxDaysSinceSubmission;
+        }
 
         // Distance Normalization
         int distance = form.getHighschool().getCity().getDistanceFromAnkara();
-        double normalizedDistance = (double) (distance - minDistance) / (maxDistance - minDistance);
-
+        double normalizedDistance;
+        if (maxDistance == minDistance) {
+            normalizedDistance = 0.5; // or a default value
+        } else {
+            normalizedDistance = (double) (distance - minDistance) / (maxDistance - minDistance);
+        }
         // Weighted Priority Score
         return (w1 * normalizedLGS) + (w2 * normalizedSubmissionTime) + (w3 * normalizedDistance);
     }
@@ -65,6 +80,7 @@ public class SortByPriorityScore implements SortStrategy{
         }
         for (GroupForm form : applicationForms) {
             form.setPriorityScore(calculatePriorityScore(form, w1, w2, w3, minLGS, maxLGS, earliestDate, latestDate, minDistance, maxDistance));
+            form.setSortType("byPriorityScore");
         }
         applicationForms.sort(Comparator.comparingDouble(ApplicationForm::getPriorityScore).reversed());
         return applicationForms;

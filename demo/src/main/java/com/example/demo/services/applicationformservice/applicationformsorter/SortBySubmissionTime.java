@@ -15,6 +15,9 @@ public class SortBySubmissionTime implements SortStrategy{
     @Override
     public List<GroupForm> sort(List<GroupForm> applicationForms) {
         Collections.sort(applicationForms, (a, b) -> a.getSubmitTimeDate().compareTo(b.getSubmitTimeDate()));
+        for (GroupForm form : applicationForms) {
+            form.setSortType("bySubmitTime");
+        }
         return applicationForms;
     }
 

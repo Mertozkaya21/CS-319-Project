@@ -10,7 +10,7 @@ import PhoneIcon from "@mui/icons-material/Phone";
 import EmailIcon from "@mui/icons-material/Email";
 import MenuItem from "@mui/material/MenuItem";
 import PersonIcon from "@mui/icons-material/Person";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import EventIcon from "@mui/icons-material/Event";
 
 export const tourApplicationsRows = [
@@ -71,42 +71,62 @@ export const tourApplicationsRows = [
 const Table = () => {
   const { id } = useParams(); // Extract ID from URL params
   const [formData, setFormData] = useState({
-    name: "",
-    city: "",
-    phone: "",
+    phoneNumber: "",
     email: "",
-    priority: "",
-    date: "",
-    time: "",
+    eventDate: "",
+    tourHour: "",
   });
   const [loading, setLoading] = useState(true);
+  const [tourHours, setTourHours] = useState(true);
   const [error, setError] = useState(null);
+  
 
   // Handle Editable Fields
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-
+  const navigate = useNavigate();
   // Handle Form Submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Updated Event Data:", formData);
-    alert("Event details updated successfully!");
+  const handleSubmit = async (e) => {
+    console.log("işte veriler:")
+    console.log(JSON.stringify(formData));
+    e.preventDefault(); // Sayfanın yenilenmesini engeller
+
+    try {
+      const response = await fetch(`http://localhost:8080/v1/groupform/${id}`, {
+        method: "PUT", 
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData), // Form verilerini JSON formatında gönder
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to update highschool form details.");
+      }
+  
+      const result = await response.json();
+      console.log("Updated Highschool Form Data:", result);
+      alert("Highschool form details updated successfully!");
+      navigate("/coordinatordashboardtourapplications");
+    } catch (error) {
+      console.error("Error submitting highschool form details:", error);
+      alert("Failed to update highschool form details. Please try again.");
+    }
   };
 
   useEffect(() => {
-    console.log(id,"useEffect");
     const fetchData = async () => {
       setLoading(true);
       try {
-        console.log(id,"useEffect");
-        const response = await fetch(`http://localhost:8080/v1/highschool/${id}`);
+        const response = await fetch(`http://localhost:8080/v1/groupform/${id}`);
         if (!response.ok) {
           throw new Error("Data could not be loaded.");
         }
         const data = await response.json();
         setFormData(data); // Backend'den dönen veriyi ayarla
+        console.log(data);
       } catch (error) {
         setError("Data could not be loaded. Please try again.");
       } finally {
@@ -115,6 +135,25 @@ const Table = () => {
     };
     fetchData();
   }, [id]);
+
+  useEffect(() => {
+      const fetchTourHours = async () => {
+        try {
+          const response = await fetch("http://localhost:8080/v1/highschool/dropdown/tourhours"); // API endpoint
+          if (!response.ok) {
+            throw new Error("Failed to fetch tourhours.");
+          }
+          const data = await response.json();
+          console.log(data);
+    
+          setTourHours(data);
+          console.log(data);
+        } catch (error) {
+          console.error("Error fetching tourhours:", error);
+        }
+      };
+      fetchTourHours();
+    }, []);
 
   if (loading) {
     return <div>Loading...</div>; // Add this line here to show loading state
@@ -154,48 +193,14 @@ const Table = () => {
         }}
         onSubmit={handleSubmit}
       >
-        {/* Name */}
-        <TextField
-          id="name"
-          name="name"
-          label="High School Name"
-          value={formData.name}
-          fullWidth
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SchoolIcon sx={{ color: "#8a0303" }} />
-              </InputAdornment>
-            ),
-            readOnly: true,
-            style: { color: "#9e9e9e" },
-          }}
-        />
-
-        {/* City */}
-        <TextField
-          id="city"
-          name="city"
-          label="City"
-          value={formData.city}
-          fullWidth
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <LocationCityIcon sx={{ color: "#8a0303" }} />
-              </InputAdornment>
-            ),
-            readOnly: true,
-            style: { color: "#9e9e9e" },
-          }}
-        />
 
         {/* Phone */}
         <TextField
-          id="phone"
-          name="phone"
+          id="phoneNumber"
+          name="phoneNumber"
           label="Phone Number"
-          value={formData.phone}
+          value={formData.phoneNumber}
+          onChange={handleInputChange}
           fullWidth
           InputProps={{
             startAdornment: (
@@ -203,7 +208,6 @@ const Table = () => {
                 <PhoneIcon sx={{ color: "#8a0303" }} />
               </InputAdornment>
             ),
-            readOnly: true,
             style: { color: "#9e9e9e" },
           }}
         />
@@ -214,6 +218,7 @@ const Table = () => {
           name="email"
           label="Email Address"
           value={formData.email}
+          onChange={handleInputChange}
           fullWidth
           InputProps={{
             startAdornment: (
@@ -221,12 +226,11 @@ const Table = () => {
                 <EmailIcon sx={{ color: "#8a0303" }} />
               </InputAdornment>
             ),
-            readOnly: true,
             style: { color: "#9e9e9e" },
           }}
         />
 
-        {/* Priority */}
+        {/*
         <TextField
           id="priority"
           name="priority"
@@ -242,16 +246,16 @@ const Table = () => {
             readOnly: true,
             style: { color: "#9e9e9e" },
           }}
-        />
+        />*/}
 
         {/* Date - Editable */}
         <TextField
           required
-          id="date"
-          name="date"
+          id="eventDate"
+          name="eventDate"
           label="Event Date"
           type="date"
-          value={formData.date}
+          value={formData.eventDate}
           onChange={handleInputChange}
           InputLabelProps={{ shrink: true }}
           fullWidth
@@ -259,10 +263,10 @@ const Table = () => {
 
         <TextField
           required
-          id="time"
-          name="time"
+          id="tourHour"
+          name="tourHour"
           label="Event Time"
-          value={formData.time} // Dynamically sets the initial value
+          value={formData.tourHour} // Dynamically sets the initial value
           onChange={handleInputChange}
           select
           fullWidth
@@ -274,10 +278,11 @@ const Table = () => {
             ),
           }}
         >
-          <MenuItem value="09:00 - 11:00">09:00 - 11:00</MenuItem>
-          <MenuItem value="11:00 - 13:00">11:00 - 13:00</MenuItem>
-          <MenuItem value="13:30 - 15:30">13:30 - 15:30</MenuItem>
-          <MenuItem value="16:00 - 18:00">16:00 - 18:00</MenuItem>
+          {tourHours.map((tourHour) => (
+            <MenuItem key={tourHour} value={tourHour}>
+              {tourHour}
+            </MenuItem>
+          ))}
         </TextField>
       </Box>
 
@@ -292,7 +297,7 @@ const Table = () => {
       >
         <Button
           component={NavLink}
-          to="/coordinatordashboardtoursandfairsviewall"
+          to="/coordinatordashboardtourapplications"
           variant="outlined"
           sx={{
             color: "#8a0303",
@@ -305,6 +310,7 @@ const Table = () => {
         <Button
           type="submit"
           variant="contained"
+          onClick={handleSubmit}
           sx={{
             backgroundColor: "#8a0303",
             "&:hover": { backgroundColor: "#b10505" },

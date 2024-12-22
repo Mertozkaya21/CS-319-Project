@@ -8,12 +8,14 @@ import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import { tourApplicationsRows } from './TourApplicationsTable'; // Import application data
 
-const Header = ({ title, onSearchSelection }) => {
+const Header = ({ title, onSearchSelection, confirmSelectedChanges }) => {
   const [sortOption, setSortOption] = useState('Date Updated');
 
   // Transform tourApplicationsRows into a format suitable for Autocomplete
   const highSchoolOptions = tourApplicationsRows.map((school) => school.name);
-
+  const handleConfirm = () => {
+    confirmSelectedChanges();
+  }; 
   return (
     <div className={styles.header}>
       {/* Title Row */}
@@ -81,6 +83,7 @@ const Header = ({ title, onSearchSelection }) => {
           <Button
             variant="contained" // Contained style
             startIcon={<AddIcon />}
+            onClick={handleConfirm}
             sx={{
               backgroundColor: '#8a0303', // Red background
               color: '#ffffff', // White text

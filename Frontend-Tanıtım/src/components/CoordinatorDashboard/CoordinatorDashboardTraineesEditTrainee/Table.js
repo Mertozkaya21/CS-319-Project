@@ -237,10 +237,11 @@ const Table = () => {
           name="advisorResponsible"
           label="Advisor Responsible"
           value={`${formData.advisor.firstName} ${formData.advisor.lastName}`}
-          onChange={(event) => {
+          /*onChange={(event) => {
             const selectedId = event.target.value;
             setFormData((prevFormData) => ({ ...prevFormData, advisorId: selectedId }));
-          }}
+          }}*/
+          onChange={handleInputChange}
           fullWidth
           InputProps={{
             startAdornment: (
@@ -251,7 +252,7 @@ const Table = () => {
           }}
         >
           {advisors.map((advisor) => (
-            <MenuItem key={advisor.id} value={advisor.name}>
+            <MenuItem key={advisor.id} value={advisor.id}>
               {advisor.name}
             </MenuItem>
           ))}

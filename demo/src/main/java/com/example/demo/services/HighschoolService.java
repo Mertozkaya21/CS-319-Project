@@ -69,6 +69,7 @@ public class HighschoolService {
         highschool.getCounselor().setEmail(highschoolDTO.getCounselorEmail());
         highschool.getCounselor().setPhone(highschoolDTO.getCounselorPhoneNo());
         highschool.setDateUpDated(LocalDate.now());
+        highschool.setLgsPercentile(highschoolDTO.getLgsPercentile());
         return highschoolRepository.save(highschool);
     }
 

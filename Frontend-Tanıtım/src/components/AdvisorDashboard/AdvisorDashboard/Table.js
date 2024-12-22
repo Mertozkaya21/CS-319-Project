@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,9 +8,10 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import styles from './AdvisorDashboard.module.css';
+import axios from 'axios';
 
 // Data
-const rows = [
+/* const rows = [
   { id: 1, school: 'High School A', timeSlot: '9:00 AM', guide: 'John Doe', date: '01-12-2024' },
   { id: 2, school: 'High School B', timeSlot: '10:00 AM', guide: 'Jane Smith', date: '05-12-2024' },
   { id: 3, school: 'High School C', timeSlot: '11:00 AM', guide: 'John Doe', date: '08-12-2024' },
@@ -21,20 +22,58 @@ const rows = [
   { id: 8, school: 'High School H', timeSlot: '4:00 PM', guide: 'Jane Smith', date: '20-12-2024' },
   { id: 9, school: 'High School I', timeSlot: '5:00 PM', guide: 'John Doe', date: '22-12-2024' },
   { id: 10, school: 'High School J', timeSlot: '6:00 PM', guide: 'Jane Smith', date: '27-12-2024' },
-];
+]; */
 
-export default function CustomTable() {
+/* export default function CustomTable() {
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5); // Default to 5 rows per page
+  const [rowsPerPage, setRowsPerPage] = React.useState(5); // Default to 5 rows per page */
+  export default function CustomTable() {
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [tours, setTours] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchTours = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/v1/events');
+        // Filter only tour events and format them
+        const tourEvents = response.data
+          .filter(event => event.tourType) // Only get tours
+          .map(tour => ({
+            id: tour.id,
+            school: tour.visitorSchool?.name || 'N/A',
+            timeSlot: tour.tourHours || 'N/A',
+            guide: tour.guides?.length > 0 
+              ? `${tour.guides[0].firstName} ${tour.guides[0].lastName}`
+              : 'Not Assigned',
+            date: new Date(tour.date).toLocaleDateString()
+          }));
+        setTours(tourEvents);
+        setIsLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setIsLoading(false);
+      }
+    };
+
+    fetchTours();
+  }, []);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
+
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0); // Reset to first page on rows per page change
   };
+
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div className={styles.tableContainer}>
@@ -52,7 +91,7 @@ export default function CustomTable() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows
+              {tours
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) // Apply pagination
                 .map((row) => (
                   <TableRow
@@ -75,7 +114,7 @@ export default function CustomTable() {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]} // Options for rows per page
           component="div"
-          count={rows.length} // Total number of rows
+          count={tours.length} // Total number of rows
           rowsPerPage={rowsPerPage} // Rows per page
           page={page} // Current page
           onPageChange={handleChangePage} // Handle page change

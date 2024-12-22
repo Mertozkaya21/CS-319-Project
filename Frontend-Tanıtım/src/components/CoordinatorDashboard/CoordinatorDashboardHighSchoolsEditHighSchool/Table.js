@@ -10,6 +10,7 @@ import PhoneIcon from "@mui/icons-material/Phone";
 import EmailIcon from "@mui/icons-material/Email";
 import MenuItem from "@mui/material/MenuItem";
 import PersonIcon from "@mui/icons-material/Person";
+import PercentIcon from "@mui/icons-material/Percent"; 
 import { NavLink , useNavigate} from "react-router-dom";
 
 // Mock Data (Replace this with a real API call)
@@ -36,6 +37,7 @@ const Table = () => {
     counselorPhoneNo: "",
     counselorEmail: "",
     counselorName: "",
+    lgsPercentile: "",
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -240,6 +242,23 @@ const Table = () => {
               </InputAdornment>
             ),
           }}
+        />
+        <TextField
+          required
+          name="lgsPercentile"
+          label="LGS Percentile"
+          value={formData.lgsPercentile}
+          onChange={handleInputChange}
+          fullWidth
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <PercentIcon sx={{ color: "#8a0303" }} />
+              </InputAdornment>
+            ),
+            inputProps: { min: 0, max: 100 },
+          }}
+          type="number"
         />
       </Box>
 

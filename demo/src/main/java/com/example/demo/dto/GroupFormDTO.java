@@ -13,19 +13,19 @@ public class GroupFormDTO {
     private String chaperoneRole;
     private City city;
     private String comments;
-    private String date;
+    private String eventDate;
     private String email;
     private String highSchoolName;
     private String numberOfAttendees;
     private String phoneNumber;
     private boolean termsAccepted;
-    private String timeSlot;
+    private String tourHour;
 
     public LocalDate getEventDateAsLocalDate() {
         try {
-            return LocalDate.parse(date);
+            return LocalDate.parse(eventDate);
         } catch (Exception e) {
-            throw new IllegalArgumentException("Invalid date format: " + date);
+            throw new IllegalArgumentException("Invalid date format: " + eventDate);
         }
     }
 }
