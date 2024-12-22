@@ -44,7 +44,7 @@ public class GroupForm extends ApplicationForm{
         this.sortType="byLgsPercentile";
     }
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "counselorID", nullable = false)
     @JsonIgnore
     private Counselor counselor;

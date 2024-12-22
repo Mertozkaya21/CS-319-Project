@@ -1,28 +1,33 @@
 package com.example.demo.services;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.HighschoolDTO;
 import com.example.demo.entities.event.Tour;
+import com.example.demo.entities.form.GroupForm;
 import com.example.demo.entities.highschool.Counselor;
 import com.example.demo.entities.highschool.Highschool;
 import com.example.demo.enums.City;
 import com.example.demo.exceptions.HighschoolNotFoundException;
+import com.example.demo.repositories.form.GroupFormRepository;
 import com.example.demo.repositories.highschool.CounselorRepository;
 import com.example.demo.repositories.highschool.HighschoolRepository;
 
 @Service
 public class HighschoolService {
     
-    private HighschoolRepository highschoolRepository;
+    private final HighschoolRepository highschoolRepository;
     private final CounselorRepository counselorRepository;
+    private final GroupFormRepository groupFormRepository;
 
-    public HighschoolService(HighschoolRepository hRepository, CounselorRepository counselorRepository) {
+    public HighschoolService(HighschoolRepository hRepository, CounselorRepository counselorRepository, GroupFormRepository groupFormRepository) {
         this.highschoolRepository = hRepository;
         this.counselorRepository = counselorRepository;
+        this.groupFormRepository = groupFormRepository;
     }
 
     public List<Highschool> getAllHighschool() {
@@ -162,20 +167,65 @@ public class HighschoolService {
     }
     
 
-    public boolean deleteHighschoolByID(Long id) {
-        if (highschoolRepository.existsById(id)) {
-            highschoolRepository.deleteById(id);
-            return true;
+    public void deleteHighschoolById(Long id) {
+        if (!highschoolRepository.existsById(id)) {
+            throw new IllegalArgumentException("Highschool with ID " + id + " does not exist.");
         }
-        return false;
+    
+        List<GroupForm> groupForms = groupFormRepository.findByHighschoolId(id);
+        if (!groupForms.isEmpty()) {
+            for (GroupForm groupForm : groupForms) {
+                groupForm.setHighschool(null); 
+                groupFormRepository.save(groupForm); 
+            }
+        }
+    
+        highschoolRepository.deleteById(id);
+    }
+    
+
+    public boolean checkHighschoolHasGroupForms(Long id) {
+        if (!highschoolRepository.existsById(id)) {
+            throw new IllegalArgumentException("Highschool with ID " + id + " does not exist.");
+        }
+    
+        List<GroupForm> groupForms = groupFormRepository.findByHighschoolId(id);
+        return !groupForms.isEmpty();
     }
 
+    public List<Long> checkHighschoolsHaveGroupForms(List<Long> highschoolIds) {
+        List<Long> idsWithGroupForms = new ArrayList<>();
     
+        for (Long id : highschoolIds) {
+            if (!highschoolRepository.existsById(id)) {
+                continue;
+            }
+    
+            List<GroupForm> groupForms = groupFormRepository.findByHighschoolId(id);
+            if (!groupForms.isEmpty()) {
+                idsWithGroupForms.add(id);
+            }
+        }
+    
+        return idsWithGroupForms;
+    }
 
     public void deleteHighschoolsByIds(List<Long> highschoolIds) {
         for (Long id : highschoolIds) {
-            if(highschoolRepository.existsById(id))
-                highschoolRepository.deleteById(id);
+            if (!highschoolRepository.existsById(id)) {
+                continue;
+            }
+    
+            List<GroupForm> groupForms = groupFormRepository.findByHighschoolId(id);
+            if (!groupForms.isEmpty()) {
+                for (GroupForm groupForm : groupForms) {
+                    groupForm.setHighschool(null); 
+                    groupFormRepository.save(groupForm); 
+                }
+            }
+    
+            highschoolRepository.deleteById(id);
         }
     }
+
 }

@@ -137,19 +137,31 @@ public class HighshcoolController {
         Highschool updatedHighschool = highschoolService.updateHighschoolEmailAddress(id, newEmailAddress);
         return ResponseEntity.ok(updatedHighschool);
     }
-    
+
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteHighschool(@PathVariable Long id) {
-        boolean deleted = highschoolService.deleteHighschoolByID(id);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
+    public ResponseEntity<?> deleteHighschool(@PathVariable Long id) {
+        try {
+            highschoolService.deleteHighschoolById(id);
+            return ResponseEntity.ok("Highschool with ID " + id + " has been removed successfully.");
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Highschool with associated group forms cannot be deleted.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Highschool with ID " + id + " does not exist.");
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+    
+    @DeleteMapping("/remove")
+    public ResponseEntity<?> deleteSelectedHighschools(@RequestBody List<Long> highschoolIds) {
+        try {
+            highschoolService.deleteHighschoolsByIds(highschoolIds);
+            return ResponseEntity.ok("Selected highschools have been removed successfully.");
+        } catch (IllegalStateException e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Some highschools have associated group forms and cannot be deleted.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid request. Some highschool IDs do not exist.");
+        }
     }
 
-    @DeleteMapping("/remove") 
-    public ResponseEntity<?> deleteSelectedHighschools(@RequestBody List<Long> highschoolIds) {
-        highschoolService.deleteHighschoolsByIds(highschoolIds);
-        return ResponseEntity.ok("Selected highschools have been removed successfully.");
-    }
+    
 }
