@@ -99,17 +99,12 @@ public class NotificationService {
         return switch (type) {
             case PENDING_APPLICATION_FORM -> "Pending Application Form Alert";
             case UPCOMING_NOT_ASSIGNED_EVENT -> "Upcoming Event Requires Guides";
-            case CONFIRMED_TOUR -> "Tour Confirmation";
             case CANCELLED_EVENT -> "Event Cancellation Notification";
             case NEW_TOUR_CREATED -> "New Tour Created Notification";
             case NEW_FAIR_CREATED -> "New Fair Created Notification";
-            case GUIDE_FEEDBACK_RECEIVED -> "Guide Feedback Received";
+            case GUIDE_ASSIGNED_TOUR -> "Assigned to a Tour Notification";
             case TRAINEE_COMPLETION_REACHED -> "Trainee Promotion Pending";
             case TRAINEE_PROMOTED -> "Trainee is Promoted to Guide";
-            case NEW_TRAINEE_ASSIGNED -> "New Trainee Assigned Notification";
-            case EVENT_RESCHEDULED -> "Event Reschedule Update";
-            case REJECTED_FORM -> "The Application Form Rejected";
-            case ACCEPTED_FORM -> "The Application Form Accepted";
             case PASSWORD_RESET -> "The Password is Reset";
         };
     }

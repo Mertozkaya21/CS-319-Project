@@ -118,6 +118,12 @@ public class TourService {
     }
 
     public Tour saveTour(Tour tour) {
+        notificationService.createNotificationToAllUsersByRole(
+            "COORDINATOR",
+            "The tour scheduled on " + tour.getDate() + " to " + tour.getTourHours() + 
+            " still requires guides to be assigned.",
+            NotificationType.NEW_TOUR_CREATED
+        );
         return tourRepository.save(tour);
     }
 
@@ -211,7 +217,7 @@ public class TourService {
         notificationService.addNotificationToUser(
             guide.getId(),
             "You have been assigned to a tour scheduled on " + tour.getDate(),
-            NotificationType.CONFIRMED_TOUR
+            NotificationType.GUIDE_ASSIGNED_TOUR
         );
 
         tour.getGuides().add(guide);
@@ -238,7 +244,7 @@ public class TourService {
         notificationService.addNotificationToUser(
             traineeId,
             "You have been assigned to a tour scheduled on " + tour.getDate(),
-            NotificationType.CONFIRMED_TOUR
+            NotificationType.GUIDE_ASSIGNED_TOUR
         );
 
         traineeService.updateTraineeStatus(trainee.getId());
@@ -274,7 +280,7 @@ public class TourService {
             notificationService.addNotificationToUser(
                 guide.getId(),
                 "You have been assigned to a tour scheduled on " + tour.getDate(),
-                NotificationType.CONFIRMED_TOUR
+                NotificationType.GUIDE_ASSIGNED_TOUR
             );
         }
 

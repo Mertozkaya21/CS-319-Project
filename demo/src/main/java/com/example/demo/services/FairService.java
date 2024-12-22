@@ -51,6 +51,13 @@ public class FairService {
     }
 
     public Fair saveFair(Fair fair) {
+        notificationService.createNotificationToAllUsersByRole(
+                "COORDINATOR",
+                "The fair scheduled on " + fair.getDate() + " to " + fair.getCity() + 
+                " still requires guides to be assigned.",
+                NotificationType.NEW_FAIR_CREATED
+            );
+
         return fairRepository.save(fair);
     }
 
@@ -109,7 +116,7 @@ public class FairService {
         notificationService.addNotificationToUser(
             guide.getId(),
             "You have been assigned to a fair scheduled on " + fair.getDate(),
-            NotificationType.CONFIRMED_TOUR
+            NotificationType.GUIDE_ASSIGNED_TOUR
         );
         
         return fairRepository.save(fair);
