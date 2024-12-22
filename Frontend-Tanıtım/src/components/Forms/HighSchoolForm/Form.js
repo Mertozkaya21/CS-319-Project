@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import TimeSlotPicker from './TimeSlotPicker'; // Adjust path based on your file structure
+import TourHourPicker from './TourHourPicker'; // Adjust path based on your file structure
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -57,8 +57,8 @@ const Form = () => {
     email: "",
     phoneNumber: "",
     city: "",
-    date: null,
-    timeSlot: "",
+    eventDate: null,
+    tourHour: "",
     chaperoneRole: "",
     chaperoneName: "",
     numberOfAttendees: 0,
@@ -127,7 +127,7 @@ const Form = () => {
   };
 
   const handleTimeSelection = (time) => {
-    setFormData({ ...formData, timeSlot: time });
+    setFormData({ ...formData, tourHour: time });
   };
 
   const validateForm = () => {
@@ -138,8 +138,8 @@ const Form = () => {
     if (!formData.email) errors.email = 'Email is required.';
     if (!formData.phoneNumber) errors.phoneNumber = 'Phone Number is required.';
     if (!formData.city) errors.city = 'City is required.';
-    if (!formData.date) errors.date = 'Date is required.';
-    if (!formData.timeSlot) errors.timeSlot = 'Time Slot is required.';
+    if (!formData.eventDate) errors.eventDate = 'Date is required.';
+    if (!formData.tourHour) errors.tourHour = 'Tour hour is required.';
     if (!formData.chaperoneRole) errors.chaperoneRole = 'Chaperone Role is required.';
     if (!formData.chaperoneName) errors.chaperoneName = 'Chaperone Name is required.';
     if (formData.numberOfAttendees <= 0) errors.numberOfAttendees = 'Number of attendees must be greater than 0.';
@@ -167,7 +167,7 @@ const Form = () => {
     try {
       const formattedData = {
         ...formData,
-        date: formData.date ? formData.date.format('YYYY-MM-DD') : null, // Format the date here
+        eventDate: formData.eventDate ? formData.eventDate.format('YYYY-MM-DD') : null, // Format the date here
       };
       console.log(formattedData);
       const response = await fetch('http://localhost:8080/v1/groupform', {
@@ -187,8 +187,8 @@ const Form = () => {
           email: '',
           phoneNumber: '',
           city: '',
-          date: null,
-          timeSlot: '',
+          eventDate: null,
+          tourHour: '',
           chaperoneRole: '',
           chaperoneName: '',
           numberOfAttendees: 0,
@@ -331,17 +331,17 @@ const Form = () => {
                 <DemoContainer components={['DatePicker']}>
                 <DatePicker
                   label="Select Date"
-                  value={formData.date} // Keep the Day.js object here
+                  value={formData.eventDate} // Keep the Day.js object here
                   onChange={(newValue) => {
-                    setFormData({ ...formData, date: newValue }); // Store the Day.js object directly
+                    setFormData({ ...formData, eventDate: newValue }); // Store the Day.js object directly
                   }}
                   minDate={dayjs()} // Disable dates before today
                 />
                 </DemoContainer>
               </LocalizationProvider>
-              <TimeSlotPicker
-                selectedTime={formData.timeSlot} // Controlled by the parent
-                onTimeSelect={(time) => setFormData({ ...formData, timeSlot: time })} // Update parent state
+              <TourHourPicker
+                selectedTime={formData.tourHour} // Controlled by the parent
+                onTimeSelect={handleTimeSelection} // Update parent state
               />
             </Box>
           );
