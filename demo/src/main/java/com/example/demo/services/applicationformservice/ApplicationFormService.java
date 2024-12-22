@@ -31,10 +31,10 @@ public class ApplicationFormService {
                                     GroupFormService groupFormService){
         this.individualFormService = individualFormService;
         this.groupFormService = groupFormService;                                
-        this.applicationFormSorter = new ApplicationFormSorter(new SortByLgsPercentile()); //default sorting strategy is lgsPercentile
+        this.applicationFormSorter = new ApplicationFormSorter(new SortByLgsPercentile()); 
     }
 
-    @Scheduled(cron = "0 0 0 * * ?") // Runs every day at midnight
+    @Scheduled(cron = "0 0 0 * * ?") 
     public void updateApplicationFormStatusesDaily() {
         updateStatusForPastApplications();
     }

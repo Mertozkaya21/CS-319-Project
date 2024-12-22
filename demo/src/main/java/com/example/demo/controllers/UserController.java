@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @RestController
@@ -59,6 +62,7 @@ public class UserController {
     public ResponseEntity<List<Map<Long, String>>> getTraineeNames() {
         return ResponseEntity.ok(userService.getAllUserFullNamesWithIds("trainee"));
     }
+    
 
     @GetMapping("/dropdown/advisors")
     public ResponseEntity<List<Map<Long, String>>> getAdvisorNames() {

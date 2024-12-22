@@ -109,7 +109,7 @@ public class ApplicationFormController {
     @PostMapping("/update-statuses")
     public ResponseEntity<List<ApplicationForm>> updateApplicationFormStatuses(
             @RequestBody UpdateApplicationFormStatusDTO dto) {
-        List<ApplicationForm> updatedForms = applicationFormService.updateStatuses(dto.getIds(), dto.getStatus());
+        List<ApplicationForm> updatedForms = applicationFormService.updateStatuses((List<Long>) dto.getIds(), dto.getStatus());
     
         if (updatedForms.isEmpty()) {
             return ResponseEntity.noContent().build();

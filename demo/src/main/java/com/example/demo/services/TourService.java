@@ -5,17 +5,22 @@ import com.example.demo.entities.highschool.Highschool;
 import com.example.demo.entities.user.Advisor;
 import com.example.demo.entities.user.Guide;
 import com.example.demo.entities.user.Trainee;
+import com.example.demo.entities.user.User;
 import com.example.demo.enums.EventStatus;
+import com.example.demo.enums.NotificationType;
 import com.example.demo.enums.TourHours;
 import com.example.demo.enums.TourType;
+import com.example.demo.enums.UserRole;
 import com.example.demo.exceptions.GuideNotFoundException;
 import com.example.demo.exceptions.TourNotFoundException;
 import com.example.demo.exceptions.UserNotFoundException;
 import com.example.demo.repositories.event.TourRepository;
 import com.example.demo.services.UsersService.AdvisorService;
 import com.example.demo.services.UsersService.GuideService;
+import com.example.demo.services.UsersService.RoleServiceFactory;
 import com.example.demo.services.UsersService.TraineeService;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -29,14 +34,54 @@ public class TourService {
     private final GuideService guideService;
     private final TraineeService traineeService;
     private final AdvisorService advisorService;
+    private final NotificationService notificationService;
+    private final RoleServiceFactory roleServiceFactory;
 
-    public TourService(TourRepository tourRepository,GuideService guideService, TraineeService traineeService,
-                        AdvisorService advisorService) {
+    public TourService(TourRepository tourRepository,
+                        GuideService guideService, 
+                        TraineeService traineeService,
+                        AdvisorService advisorService,
+                        NotificationService notificationService,
+                        RoleServiceFactory roleServiceFactory) {
         this.tourRepository = tourRepository;
         this.guideService = guideService;
         this.traineeService = traineeService;
         this.advisorService = advisorService;
+        this.notificationService = notificationService;
+        this.roleServiceFactory = roleServiceFactory;
     }
+
+    @Scheduled(cron = "0 0 0 * * ?") 
+    public void notifyUnassignedScheduledTours() {
+        List<Tour> unassignedTours = tourRepository.findByStatus(EventStatus.SCHEDULED)
+            .stream()
+            .filter(tour -> tour.getGuides().size() < tour.getNumberOfGuidesNeeded())
+            .toList();
+
+        for (Tour tour : unassignedTours) {
+            notificationService.createNotificationToAllUsersByRole(
+                "COORDINATOR",
+                "The tour scheduled on " + tour.getDate() + " to " + tour.getVisitorSchool().getName() + 
+                " still requires guides to be assigned.",
+                NotificationType.UPCOMING_NOT_ASSIGNED_EVENT
+            );
+
+            notificationService.createNotificationToAllUsersByRole(
+                "ADVISOR",
+                "A tour scheduled on " + tour.getDate() + " to " + tour.getVisitorSchool().getName() + 
+                " is pending guide assignments.",
+                NotificationType.UPCOMING_NOT_ASSIGNED_EVENT
+            );
+
+            notificationService.createNotificationToAllUsersByRole(
+                "GUIDE",
+                "A tour scheduled on " + tour.getDate() + " to " + tour.getVisitorSchool().getName() + 
+                " needs guide assignments. Check your availability.",
+                NotificationType.UPCOMING_NOT_ASSIGNED_EVENT
+            );
+        }
+    }
+
 
     public List<Tour> getAllTours() {
         return tourRepository.findAll();
@@ -73,6 +118,12 @@ public class TourService {
     }
 
     public Tour saveTour(Tour tour) {
+        notificationService.createNotificationToAllUsersByRole(
+            "COORDINATOR",
+            "The tour scheduled on " + tour.getDate() + " to " + tour.getTourHours() + 
+            " still requires guides to be assigned.",
+            NotificationType.NEW_TOUR_CREATED
+        );
         return tourRepository.save(tour);
     }
 
@@ -128,13 +179,19 @@ public class TourService {
         return tourRepository.save(tour);
     }
 
-    public Tour removeGuideFromTour(Long tourId, Long guideId) throws GuideNotFoundException{
+    public Tour removeGuideFromTour(Long tourId, Long guideId) throws GuideNotFoundException, UserNotFoundException{
         Tour tour = getTourById(tourId);
         Guide guide = getGuideById(tourId);
 
         if (!tour.getGuides().remove(guide)) {
             throw new GuideNotFoundException("Guide with ID " + guide.getId() + " is not assigned to the tour with ID " + tourId);
         }
+
+        notificationService.addNotificationToUser(
+            guideId,
+            "You have been removed from the tour scheduled on " + tour.getDate(),
+            NotificationType.CANCELLED_EVENT
+        );
 
         return tourRepository.save(tour);
     }
@@ -157,6 +214,12 @@ public class TourService {
             throw new IllegalStateException("Tour already has the required number of guides assigned.");
         }
 
+        notificationService.addNotificationToUser(
+            guide.getId(),
+            "You have been assigned to a tour scheduled on " + tour.getDate(),
+            NotificationType.GUIDE_ASSIGNED_TOUR
+        );
+
         tour.getGuides().add(guide);
         return tourRepository.save(tour);
     }
@@ -178,6 +241,12 @@ public class TourService {
 
         tour.getTrainees().add(trainee);
 
+        notificationService.addNotificationToUser(
+            traineeId,
+            "You have been assigned to a tour scheduled on " + tour.getDate(),
+            NotificationType.GUIDE_ASSIGNED_TOUR
+        );
+
         traineeService.updateTraineeStatus(trainee.getId());
 
         return tourRepository.save(tour);
@@ -193,13 +262,28 @@ public class TourService {
     
         traineeService.updateTraineeStatus(trainee.getId());
     
+        notificationService.addNotificationToUser(
+            trainee.getId(),
+            "You have been removed from the tour scheduled on " + tour.getDate(),
+            NotificationType.CANCELLED_EVENT
+        );
+
         return tourRepository.save(tour);
     }
 
-    public Tour assignGuidesToTour(Long tourId, List<Long> guideIds) {
+    public Tour assignGuidesToTour(Long tourId, List<Long> guideIds) throws UserNotFoundException {
         Tour tour = getTourById(tourId);
         List<Guide> guides = guideService.findAllByIds(guideIds);
         tour.getGuides().addAll(guides);
+
+        for(Guide guide: guides) {
+            notificationService.addNotificationToUser(
+                guide.getId(),
+                "You have been assigned to a tour scheduled on " + tour.getDate(),
+                NotificationType.GUIDE_ASSIGNED_TOUR
+            );
+        }
+
         return tourRepository.save(tour);
     }
     
@@ -210,16 +294,27 @@ public class TourService {
 
     public boolean deleteTourById(Long id) {
         if (tourRepository.existsById(id)) {
+            Tour tour = getTourById(id);
+            List<User> usersToNotify = new ArrayList<>();
+
+            usersToNotify.addAll(roleServiceFactory.getRoleService(UserRole.COORDINATOR).findAll());
+            usersToNotify.addAll(roleServiceFactory.getRoleService(UserRole.ADVISOR).findAll());
+            usersToNotify.addAll(tour.getTrainees());
+            usersToNotify.addAll(tour.getGuides());
+
+            notificationService.notifyCancellation(
+                "tour",
+                id,
+                "Tour to " + tour.getVisitorSchool().getName(),
+                tour.getDate(),
+                usersToNotify
+            );
+
+
             tourRepository.deleteById(id);
             return true;
         }
         return false;
-    }
-
-    public Tour assignGuideToTour(Long tourId, Guide guide) {
-        Tour tour = getTourById(tourId);
-        tour.getGuides().add(guide);
-        return tourRepository.save(tour);
     }
 
     public List<Object[]> countEventsByMonthAndStatus(EventStatus status) {

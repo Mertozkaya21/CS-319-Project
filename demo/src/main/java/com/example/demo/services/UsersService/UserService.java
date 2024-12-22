@@ -9,6 +9,7 @@ import com.example.demo.entities.user.Coordinator;
 import com.example.demo.entities.user.Guide;
 import com.example.demo.entities.user.Trainee;
 import com.example.demo.entities.user.User;
+import com.example.demo.enums.NotificationType;
 import com.example.demo.enums.TraineeStatus;
 import com.example.demo.enums.UserRole;
 import com.example.demo.exceptions.EmailAlreadyExistsException;
@@ -17,6 +18,7 @@ import com.example.demo.exceptions.LoginException;
 import com.example.demo.exceptions.UserNotFoundException;
 import com.example.demo.repositories.Auth.PasswordResetTokenRepository;
 import com.example.demo.services.EmailService;
+import com.example.demo.services.NotificationService;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,16 +40,20 @@ public class UserService {
     private final PasswordResetTokenRepository passwordResetTokenRepository;
     private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
+    private final NotificationService notificationService;
 
 
     public UserService(RoleServiceFactory roleServiceFactory , 
                         PasswordResetTokenRepository repo, 
-                         EmailService service) {
+                         EmailService service,
+                         NotificationService notificationService) {
         this.roleServiceFactory = roleServiceFactory;
         this.passwordResetTokenRepository = repo;
         this.emailService = service;
         this.passwordEncoder = new BCryptPasswordEncoder();
+        this.notificationService = notificationService;
     }
+    
 
     public User saveUser(String role, UserDTO newUserDTO) throws EmailAlreadyExistsException, InvalidCredentialsException {
         UserRole userRole = UserRole.fromString(role);
@@ -116,6 +122,18 @@ public class UserService {
         newGuide.setDateAdded(trainee.getDateAdded());
         newGuide.setRole(UserRole.GUIDE);
 
+        notificationService.addNotificationToUser(
+            traineeId,
+            "Congratulations! You have been promoted to a guide.",
+            NotificationType.TRAINEE_PROMOTED
+        );
+
+        notificationService.createNotificationToAllUsersByRole(
+            "COORDINATOR",
+            "Trainee " + trainee.getFirstName() + " " + trainee.getLastName() + " has been promoted to a guide.",
+            NotificationType.TRAINEE_PROMOTED
+        );
+
         roleServiceFactory.getRoleService(UserRole.TRAINEE).deleteById(traineeId);
         return roleServiceFactory.getRoleService(UserRole.GUIDE).save(newGuide);
     }
@@ -157,6 +175,14 @@ public class UserService {
         UserRole userRole = UserRole.fromString(role);
         return roleServiceFactory.getRoleService(userRole).findById(id);
     }
+
+    public User getUserById(Long id) throws UserNotFoundException {
+        return Arrays.stream(roleServiceFactory.getAllRoleServices())
+            .flatMap(roleService -> roleService.findById(id).stream())
+            .findFirst()
+            .orElseThrow(() -> new UserNotFoundException("User with ID " + id + " not found."));
+    }
+    
 
     public List<? extends User> getAllUsers(String role) {
         UserRole userRole = UserRole.fromString(role);
@@ -250,6 +276,13 @@ public class UserService {
         User updatedUser = user.get();
         updatedUser.setPassword(newPassword); 
         roleServiceFactory.getRoleService(updatedUser.getRole()).save(updatedUser);
+
+        notificationService.addNotificationToUser(
+            updatedUser.getId(),
+        "Your password has been successfully reset.",
+            NotificationType.PASSWORD_RESET
+        );
+        
         passwordResetTokenRepository.delete(resetToken);
     }
 

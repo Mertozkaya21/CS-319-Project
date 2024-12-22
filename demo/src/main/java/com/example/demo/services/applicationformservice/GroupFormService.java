@@ -5,22 +5,24 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.GroupFormDTO;
 import com.example.demo.entities.event.Tour;
 import com.example.demo.entities.form.ApplicationForm;
 import com.example.demo.entities.form.GroupForm;
-import com.example.demo.entities.highschool.Counselor;
 import com.example.demo.entities.highschool.Highschool;
 import com.example.demo.enums.ApplicationFormStatus;
 import com.example.demo.enums.EventStatus;
+import com.example.demo.enums.NotificationType;
 import com.example.demo.enums.TourHours;
 import com.example.demo.enums.TourType;
 import com.example.demo.exceptions.ApplicationFormNotFoundException;
 import com.example.demo.repositories.event.TourRepository;
 import com.example.demo.repositories.form.GroupFormRepository;
 import com.example.demo.repositories.highschool.HighschoolRepository;
+import com.example.demo.services.NotificationService;
 import com.example.demo.services.applicationformservice.applicationformsorter.ApplicationFormSorter;
 import com.example.demo.services.applicationformservice.applicationformsorter.SortStrategy;
 
@@ -30,16 +32,19 @@ public class GroupFormService {
     private final ApplicationFormSorter applicationFormSorter;
     private final HighschoolRepository highschoolRepository;
     private final TourRepository tourRepository;
+    private final NotificationService notificationService;
 
 
     public GroupFormService(GroupFormRepository groupFormRepository, 
                             ApplicationFormSorter applicationFormSorter,
                             HighschoolRepository highschoolRepository,
-                            TourRepository tourRepository) {
+                            TourRepository tourRepository,
+                            NotificationService notificationService) {
         this.groupFormRepository = groupFormRepository;
         this.applicationFormSorter = applicationFormSorter;
         this.highschoolRepository = highschoolRepository;
         this.tourRepository = tourRepository;
+        this.notificationService = notificationService;
     }
     
     public List<GroupForm> getGroupFormsByTourHours(LocalDate date, TourHours tourHour){
@@ -56,7 +61,6 @@ public class GroupFormService {
         existingForm.setEventDate(LocalDate.parse(groupFormDTO.getEventDate()));
         existingForm.setTourHour(TourHours.fromString(groupFormDTO.getTourHour()));
 
-        // Save and return the updated form
         return groupFormRepository.save(existingForm);
     }
 
@@ -87,9 +91,14 @@ public class GroupFormService {
         GroupForm groupForm = getGroupFormById(groupFormId);
         groupForm.setStatus(newStatus);
 
-        if(newStatus == ApplicationFormStatus.BTO_APPROVED) {
+        if (newStatus == ApplicationFormStatus.BTO_APPROVED) {
             createGroupTour(groupForm);
-        } 
+            notificationService.createNotificationToAllUsersByRole(
+                "GUIDE",
+                "A new group tour has been scheduled on " + groupForm.getEventDate(),
+                NotificationType.NEW_TOUR_CREATED
+            );
+        }
 
         return groupFormRepository.save(groupForm);
     }
@@ -103,17 +112,13 @@ public class GroupFormService {
         groupTour.setVisitorSchool(groupForm.getHighschool()); 
         groupTour.setNumberOfGuidesNeeded((int) Math.ceil(groupTour.getNoOfGuests() / 60.0));
         groupTour.setStatus(EventStatus.SCHEDULED);
-
+        
         tourRepository.save(groupTour);
     }
 
-
     public GroupForm saveGroupForm(GroupFormDTO groupFormDto) {
         Highschool highschool = highschoolRepository.findByName(groupFormDto.getHighSchoolName());
-        /*if (highschool == null) {
-            highschool = createNewHighSchool(groupFormDto);
-            highschoolRepository.save(highschool);
-        } else*/ if (hasHighschoolAlreadyApplied(highschool.getName(), groupFormDto.getEventDateAsLocalDate())) {
+        if (hasHighschoolAlreadyApplied(highschool.getName(), groupFormDto.getEventDateAsLocalDate())) {
             throw new IllegalArgumentException("High school has already applied for a tour on this date.");
         }
 
@@ -123,23 +128,6 @@ public class GroupFormService {
 
         return groupFormRepository.save(groupForm);
     }
-
-    //useless method
-    /*private Highschool createNewHighSchool(GroupFormDTO groupFormDto) {
-        Highschool newHighschool = new Highschool();
-        newHighschool.setName(groupFormDto.getHighSchoolName());
-        newHighschool.setCity(groupFormDto.getCity());
-        newHighschool.setLgsPercentile(100);
-        newHighschool.setDateUpDated(LocalDate.now());
-
-        Counselor counselor = new Counselor();
-        counselor.setCounselorName(groupFormDto.getChaperoneName());
-        counselor.setEmail(groupFormDto.getEmail());
-        counselor.setPhone(groupFormDto.getPhoneNumber());
-        newHighschool.setCounselor(counselor);
-
-        return newHighschool;
-    }*/
 
     private boolean hasHighschoolAlreadyApplied(String highschoolName, LocalDate tourDate) {
         List<GroupForm> forms = groupFormRepository.findByEventDateAndHighschoolName(tourDate, highschoolName);
@@ -167,7 +155,6 @@ public class GroupFormService {
 
         return sortedForms;
     }
-
 
     public GroupForm save(GroupForm form) {
         return groupFormRepository.save(form);
