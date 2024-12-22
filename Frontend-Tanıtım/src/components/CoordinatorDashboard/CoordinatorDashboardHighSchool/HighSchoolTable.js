@@ -56,6 +56,7 @@ const HighSchoolTable = ({ rows, setSelectedRows }) => {
     { field: 'id', headerName: 'School ID', width: 80 },
     { field: 'dateUpDated', headerName: 'Date Updated', width: 110 },
     { field: 'city', headerName: 'City', width: 80 },
+    { field: 'lgsPercentile', headerName: 'LGS Percentile', width: 120 },
     { field: 'counselorName', headerName: 'Counselor Name', width: 130},
     {
       field: 'counselorContact',
