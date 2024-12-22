@@ -78,6 +78,7 @@ public class Guide extends User{
     )
     private List<Fair> fairs;
 
+    @Column(nullable = true)
     private double averageRating;
 
     @OneToMany(mappedBy = "guide", cascade = CascadeType.ALL, orphanRemoval = true)

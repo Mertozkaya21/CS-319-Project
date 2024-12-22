@@ -64,7 +64,6 @@ public class UserService {
             case TRAINEE -> new Trainee(newUserDTO);
         };
 
-
         return roleServiceFactory.getRoleService(userRole).save(user);
     }
     
@@ -80,7 +79,6 @@ public class UserService {
             throw new IllegalArgumentException("Invalid day of the week: " + day);
         }
 
-        // Hash the password before saving
         newUserDTO.setPassword(passwordEncoder.encode(newUserDTO.getPassword()));
         Advisor advisor = new Advisor(newUserDTO, undertakenDay);
         return roleServiceFactory.getRoleService(UserRole.ADVISOR).save(advisor);
@@ -254,14 +252,30 @@ public class UserService {
         roleServiceFactory.getRoleService(updatedUser.getRole()).save(updatedUser);
         passwordResetTokenRepository.delete(resetToken);
     }
-    
 
-    public User updateTrainee(Long id, UserUpdateDTO userUpdateDTO) throws UserNotFoundException {
-        TraineeService roleService = (TraineeService) roleServiceFactory.getRoleService(UserRole.TRAINEE);
-        
-        Trainee user = roleService.findById(id)
+    public User updateUser(String role, Long id, UserUpdateDTO userUpdateDTO) throws UserNotFoundException, EmailAlreadyExistsException, InvalidCredentialsException {
+        UserRole userRole = UserRole.fromString(role);
+        RoleService roleService = roleServiceFactory.getRoleService(userRole);
+
+        User user = roleService.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("User with ID " + id + " not found."));
 
+        switch (userRole) {
+            case TRAINEE -> {
+                updateTraineeFields((Trainee) user, userUpdateDTO);
+            }
+            case ADVISOR -> {
+                updateAdvisorFields((Advisor) user, userUpdateDTO);
+            }
+            case GUIDE, COORDINATOR -> {
+                updateCommonFields(user, userUpdateDTO);
+            }
+        }
+
+        return roleService.save(user);
+    }
+
+    private void updateCommonFields(User user, UserUpdateDTO userUpdateDTO) throws InvalidCredentialsException {
         if (userUpdateDTO.getFirstName() != null) {
             user.setFirstName(userUpdateDTO.getFirstName());
         }
@@ -269,29 +283,49 @@ public class UserService {
             user.setLastName(userUpdateDTO.getLastName());
         }
         if (userUpdateDTO.getEmail() != null) {
+            if (!isValidEmail(userUpdateDTO.getEmail())) {
+                throw new InvalidCredentialsException("Invalid email format.");
+            }
             user.setEmail(userUpdateDTO.getEmail());
+        }
+        if (userUpdateDTO.getPassword() != null) {
+            if (!isValidPassword(userUpdateDTO.getPassword())) {
+                throw new InvalidCredentialsException("Invalid password format.");
+            }
+            user.setPassword(passwordEncoder.encode(userUpdateDTO.getPassword()));
         }
         if (userUpdateDTO.getPhoneNo() != null) {
             user.setPhoneNo(userUpdateDTO.getPhoneNo());
         }
+    }
+
+    private void updateTraineeFields(Trainee trainee, UserUpdateDTO userUpdateDTO) throws UserNotFoundException, InvalidCredentialsException {
+        updateCommonFields(trainee, userUpdateDTO);
+
         if (userUpdateDTO.getAdvisorId() != null) {
             AdvisorService advisorService = (AdvisorService) roleServiceFactory.getRoleService(UserRole.ADVISOR);
-            Advisor advisor = advisorService.getById(Long.valueOf(userUpdateDTO.getAdvisorId()));
-            user.setAdvisor(advisor);
+            Advisor advisor = advisorService.findById(userUpdateDTO.getAdvisorId())
+                    .orElseThrow(() -> new UserNotFoundException("Advisor not found with ID: " + userUpdateDTO.getAdvisorId()));
+            trainee.setAdvisor(advisor);
         }
-        
+
         if (userUpdateDTO.getStatus() != null) {
             try {
                 TraineeStatus status = TraineeStatus.fromString(userUpdateDTO.getStatus());
-                user.setStatus(status);
+                trainee.setStatus(status);
             } catch (IllegalArgumentException e) {
                 throw new IllegalStateException("Invalid status value: " + userUpdateDTO.getStatus());
             }
         }
-        
-        return roleService.save(user);
     }
-    
+
+    private void updateAdvisorFields(Advisor advisor, UserUpdateDTO userUpdateDTO) throws InvalidCredentialsException {
+        updateCommonFields(advisor, userUpdateDTO);
+
+        if (userUpdateDTO.getUndertakenDay() != null) {
+            advisor.setUndertakenDay(DayOfWeek.valueOf(userUpdateDTO.getUndertakenDay().toUpperCase()));
+        }
+    }
     
     public void cancelEvent(Long userId, Long eventId, String eventType) throws UserNotFoundException {
         CoordinatorService roleService = roleServiceFactory.getCoordinatorService();
@@ -327,9 +361,14 @@ public class UserService {
         }
     }
 
+    public List<String> getAllEligibleTraineeFullNamesWithIds() {
+        TraineeService traineeService = (TraineeService) roleServiceFactory.getRoleService(UserRole.TRAINEE);
+        List<String> returnval = traineeService.getAllEligibleTraineeFullNamesWithIds();
+        return returnval;
+    }
+
     public List<Trainee> getTraineesByAdvisorId(Long id){
-        //RoleService traineeService = roleServiceFactory.getRoleService(UserRole.TRAINEE);
-        //return traineeService.findAllByAdvisorId(id);
-        return null;
+        TraineeService traineeService = (TraineeService) roleServiceFactory.getRoleService(UserRole.TRAINEE);
+        return traineeService.findAllByAdvisorId(id);
     }
 }

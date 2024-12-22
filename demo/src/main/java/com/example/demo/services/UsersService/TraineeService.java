@@ -57,6 +57,10 @@ public class TraineeService implements RoleService {
         return trainee;
     }
 
+    public List<Trainee> findAllByAdvisorId(Long advisorId) {
+        return traineeRepository.findAllByAdvisor_Id(advisorId);
+    }
+
     @Override
     public User save(User user) {
         return traineeRepository.save((Trainee) user);
