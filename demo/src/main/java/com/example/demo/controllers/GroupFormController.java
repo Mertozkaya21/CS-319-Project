@@ -49,8 +49,8 @@ public class GroupFormController {
         return ResponseEntity.ok(forms);
     }
 
-    @PostMapping("/changeparameter")
-    public ResponseEntity<Void> changeSortingParameter(@RequestBody String newParameter) {
+    @PostMapping("/changeparameter/{newParameter}")
+    public ResponseEntity<Void> changeSortingParameter(@PathVariable String newParameter) {
         if ("byDistance".equals(newParameter)) {
             groupFormService.setSortingStrategy(new SortByDistance());
         } else if ("byLgsPercentile".equals(newParameter)) {

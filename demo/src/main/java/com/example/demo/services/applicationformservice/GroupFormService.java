@@ -42,8 +42,7 @@ public class GroupFormService {
     
 
     public List<GroupForm> getGroupFormsByTourHours(LocalDate date, TourHours tourHour){
-        List<GroupForm> forms = groupFormRepository.findByEventDateAndTourHour(date,tourHour);
-        return applicationFormSorter.sortApplicationForms(forms);
+        return applicationFormSorter.sortApplicationForms(groupFormRepository.findByEventDateAndTourHour(date,tourHour));
     }
 
     public GroupForm updateGroupForm(Long id, GroupFormDTO groupFormDTO) throws ApplicationFormNotFoundException {
@@ -71,16 +70,11 @@ public class GroupFormService {
         groupForms.stream()
             .collect(Collectors.groupingBy(form -> new FormDateHourKey(form.getEventDate(), form.getTourHour())))
             .forEach((key, forms) -> {
-                List<GroupForm> sortedGroup = getApplicationFormsByTourHour(key.date, key.tourHour);
+                List<GroupForm> sortedGroup = getGroupFormsByTourHours(key.date, key.tourHour);
                 sortedForms.addAll(sortedGroup);
             });
 
         return sortedForms;
-    }
-
-    public List<GroupForm> getApplicationFormsByTourHour(LocalDate date, TourHours tourHour){
-        List<GroupForm> forms = groupFormRepository.findByEventDateAndTourHour(date,tourHour);
-        return applicationFormSorter.sortApplicationForms(forms);
     }
 
     public GroupForm getGroupFormById(Long id) throws ApplicationFormNotFoundException {
