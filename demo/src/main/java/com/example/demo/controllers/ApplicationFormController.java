@@ -2,6 +2,7 @@ package com.example.demo.controllers;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.UpdateApplicationFormStatusDTO;
 import com.example.demo.entities.form.ApplicationForm;
 import com.example.demo.enums.ApplicationFormStatus;
 import com.example.demo.enums.Department;
@@ -54,8 +56,15 @@ public class ApplicationFormController {
         }
         return ResponseEntity.ok(forms);
     }
-    
-    
+
+    @GetMapping("/pending")
+    public ResponseEntity<List<ApplicationForm>> getScheduledApplicationForms() {
+        List<ApplicationForm> scheduledForms = applicationFormService.getAllApplicationFormByStatus(ApplicationFormStatus.PENDING);
+        if (scheduledForms.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(scheduledForms);
+    }
 
     @GetMapping("/{id}/status") 
     public ResponseEntity<ApplicationFormStatus> getFormStatus(@PathVariable Long id) throws ApplicationFormNotFoundException {
@@ -97,6 +106,18 @@ public class ApplicationFormController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+
+    @PostMapping("/update-statuses")
+    public ResponseEntity<List<ApplicationForm>> updateApplicationFormStatuses(
+            @RequestBody UpdateApplicationFormStatusDTO dto) {
+        List<ApplicationForm> updatedForms = applicationFormService.updateStatuses(dto.getIds(), dto.getStatus());
+    
+        if (updatedForms.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(updatedForms);
+    }
+    
 
     @DeleteMapping("/{id}") 
     public ResponseEntity<Void> deleteApplicationForm(@PathVariable Long id) {

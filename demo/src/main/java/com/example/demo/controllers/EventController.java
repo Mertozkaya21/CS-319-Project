@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.entities.event.Event;
 import com.example.demo.entities.event.Fair;
 import com.example.demo.entities.event.Tour;
-import com.example.demo.entities.user.Guide;
 import com.example.demo.enums.EventStatus;
 import com.example.demo.enums.TourHours;
 import com.example.demo.exceptions.FairNotFoundException;
@@ -113,10 +112,16 @@ public class EventController {
         return ResponseEntity.ok(eventService.assignGuideToEvent(tourid, guideId));
     }
 
-    @PostMapping("/{tourid}/trainees/{traineeId}")
-    public ResponseEntity<Tour> assignTraineeToTour(@PathVariable Long tourid, @PathVariable Long traineeId)
+    @PostMapping("/{tourid}/trainees/{traineeId}/advisor/{advisorId}")
+    public ResponseEntity<Tour> assignTraineeToTourByAdvisor(@PathVariable Long tourid, @PathVariable Long traineeId, @PathVariable Long advisorId)
             throws UserNotFoundException, TourNotFoundException {
-        return ResponseEntity.ok(eventService.assignTraineeToTour(tourid, traineeId));
+        return ResponseEntity.ok(eventService.assignTraineeToTourByAdvisor(tourid, traineeId, advisorId));
+    }
+
+    @DeleteMapping("/{tourid}/trainees/{traineeId}")
+    public ResponseEntity<Tour> removeTraineeFromTour(@PathVariable Long tourid, @PathVariable Long traineeId)
+            throws TourNotFoundException, UserNotFoundException {
+        return ResponseEntity.ok(eventService.removeTraineeFromTour(tourid, traineeId));
     }
 
 

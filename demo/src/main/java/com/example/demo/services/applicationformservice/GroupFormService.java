@@ -147,4 +147,9 @@ public class GroupFormService {
     public List<GroupForm> getAllApplicationFormByStatus(ApplicationFormStatus stat) {
         return groupFormRepository.findByStatus(stat);
     }
+
+
+    public GroupForm save(GroupForm form) {
+        return groupFormRepository.save(form);
+    }
 }

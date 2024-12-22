@@ -36,6 +36,7 @@ public class ApplicationFormService {
         this.applicationFormSorter.setSortStrategy(strategy); 
     }
 
+
     public List<ApplicationForm> getAllApplicationForms() {
         List<ApplicationForm> allForms = new ArrayList<>();
         allForms.addAll(groupFormService.getAllGroupForms());
@@ -44,6 +45,7 @@ public class ApplicationFormService {
         allForms.sort(Comparator.comparing(ApplicationForm::getSubmitTimeDate));
         return allForms;
     }
+    
     
     public List<ApplicationForm> getAllApplicationFormByStatus(ApplicationFormStatus stat) {
         List<ApplicationForm> allForms = new ArrayList<>();
@@ -54,15 +56,19 @@ public class ApplicationFormService {
     }
 
     public ApplicationForm getOneFormById(Long formId) throws ApplicationFormNotFoundException {
-        GroupForm groupForm = groupFormService.getGroupFormById(formId);
-        if(groupForm != null)
-            return groupForm;
-        
-        IndividualForm individualForm = individualFormService.getIndividualFormById(formId);
-        if(individualForm != null)
-            return individualForm;
+        try {
+            GroupForm groupForm = groupFormService.getGroupFormById(formId);
+            if (groupForm != null) return groupForm;
+        } catch (ApplicationFormNotFoundException ignored) {
+        }
 
-        return null;
+        try {
+            IndividualForm individualForm = individualFormService.getIndividualFormById(formId);
+            if (individualForm != null) return individualForm;
+        } catch (ApplicationFormNotFoundException ignored) {
+        }
+
+        throw new ApplicationFormNotFoundException("No application form found with ID: " + formId);
     }
 
     public List<ApplicationForm> getApplicationFormsByEventDate(LocalDate eventDate) {
@@ -74,31 +80,25 @@ public class ApplicationFormService {
     }
 
 
-    public boolean updateOneApplicationFormStatus(Long formId, ApplicationFormStatus newStatus) throws ApplicationFormNotFoundException { //BTO_APPROVED or BTO_DENIED
-        GroupForm groupForm = groupFormService.updateGroupFormStatus(formId, newStatus);
-        if(groupForm != null)
-            return true;
-
-        IndividualForm individualForm = individualFormService.updateIndividualFormStatus(formId, newStatus);
-        if(individualForm != null)
-            return true;
-
-        return false;
+    public boolean updateOneApplicationFormStatus(Long formId, ApplicationFormStatus newStatus) throws ApplicationFormNotFoundException {
+        ApplicationForm form = getOneFormById(formId);
+    
+        form.setStatus(newStatus);
+    
+        if (form instanceof GroupForm) {
+            groupFormService.save((GroupForm) form);
+        } else if (form instanceof IndividualForm) {
+            individualFormService.save((IndividualForm) form);
+        }
+    
+        return true; 
     }
 
     public ApplicationFormStatus getOneApplicationFormStatusByID(Long formId) throws ApplicationFormNotFoundException {
-        GroupForm groupForm = groupFormService.getGroupFormById(formId);
-        if(groupForm != null){
-            return groupForm.getStatus();
-        } 
-
-        IndividualForm individualForm = individualFormService.getIndividualFormById(formId);
-        if(individualForm != null){
-            return individualForm.getStatus();
-        } 
-
-        return null;        
+        ApplicationForm form = getOneFormById(formId);
+        return form.getStatus();
     }
+    
 
     public boolean deleteById(Long formId) {
         if(groupFormService.deleteGroupFormById(formId)) {
@@ -111,6 +111,27 @@ public class ApplicationFormService {
         
         return false;
     }
+
+    public List<ApplicationForm> updateStatuses(List<Long> ids, ApplicationFormStatus status) {
+        List<ApplicationForm> updatedForms = new ArrayList<>();
+        for (Long id : ids) {
+            try {
+                ApplicationForm form = getOneFormById(id);
+                if (form != null) {
+                    form.setStatus(status);
+                    if (form instanceof GroupForm) {
+                        groupFormService.save((GroupForm) form);
+                    } else if (form instanceof IndividualForm) {
+                        individualFormService.save((IndividualForm) form);
+                    }
+                    updatedForms.add(form);
+                }
+            } catch (ApplicationFormNotFoundException e) {
+            }
+        }
+        return updatedForms;
+    }
+
 }
 
 

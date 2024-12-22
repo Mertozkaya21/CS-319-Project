@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.entities.event.Tour;
 import com.example.demo.entities.highschool.Highschool;
+import com.example.demo.entities.user.Advisor;
 import com.example.demo.entities.user.Guide;
 import com.example.demo.entities.user.Trainee;
 import com.example.demo.enums.EventStatus;
@@ -11,7 +12,7 @@ import com.example.demo.exceptions.GuideNotFoundException;
 import com.example.demo.exceptions.TourNotFoundException;
 import com.example.demo.exceptions.UserNotFoundException;
 import com.example.demo.repositories.event.TourRepository;
-import com.example.demo.repositories.user.GuideRepository;
+import com.example.demo.services.UsersService.AdvisorService;
 import com.example.demo.services.UsersService.GuideService;
 import com.example.demo.services.UsersService.TraineeService;
 
@@ -27,11 +28,14 @@ public class TourService {
     private final TourRepository tourRepository;
     private final GuideService guideService;
     private final TraineeService traineeService;
+    private final AdvisorService advisorService;
 
-    public TourService(TourRepository tourRepository,GuideService guideService, TraineeService traineeService) {
+    public TourService(TourRepository tourRepository,GuideService guideService, TraineeService traineeService,
+                        AdvisorService advisorService) {
         this.tourRepository = tourRepository;
         this.guideService = guideService;
         this.traineeService = traineeService;
+        this.advisorService = advisorService;
     }
 
     public List<Tour> getAllTours() {
@@ -159,17 +163,37 @@ public class TourService {
         return tourRepository.save(tour);
     }
 
-    public Tour assignTraineeToTour(Long tourId, Long traineeId) throws TourNotFoundException, UserNotFoundException {
+    public Tour assignTraineeToTourByAdvisor(Long tourId, Long traineeId, Long advisorId) 
+        throws TourNotFoundException, UserNotFoundException {
+    Tour tour = getTourById(tourId);
+    Trainee trainee = traineeService.getById(traineeId);
+    Advisor advisor = advisorService.getById(advisorId);
+
+    if (!advisor.getTrainees().contains(trainee)) {
+        throw new IllegalArgumentException("Trainee is not assigned to this advisor");
+    }
+
+    if (tour.getTrainees().contains(trainee)) {
+        throw new IllegalArgumentException("Trainee is already assigned to this event");
+    }
+
+    tour.getTrainees().add(trainee);
+
+    traineeService.updateTraineeStatus(trainee.getId());
+
+    return tourRepository.save(tour);
+    }
+
+    public Tour removeTraineeFromTour(Long tourId, Long traineeId) throws TourNotFoundException, UserNotFoundException {
         Tour tour = getTourById(tourId);
         Trainee trainee = traineeService.getById(traineeId);
-
-        if (tour.getTrainees().contains(trainee)) {
-            throw new IllegalArgumentException("Trainee is already assigned to this event");
+    
+        if (!tour.getTrainees().remove(trainee)) {
+            throw new IllegalArgumentException("Trainee is not assigned to this event");
         }
-
-        tour.getTrainees().add(trainee);
+    
         traineeService.updateTraineeStatus(trainee.getId());
-
+    
         return tourRepository.save(tour);
     }
 

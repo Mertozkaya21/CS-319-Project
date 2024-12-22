@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.IndividualFormDTO;
 import com.example.demo.entities.form.IndividualForm;
 import com.example.demo.enums.ApplicationFormStatus;
+import com.example.demo.enums.Department;
 import com.example.demo.exceptions.ApplicationFormNotFoundException;
 import com.example.demo.services.applicationformservice.IndividualFormService;
 
@@ -34,6 +36,20 @@ public class IndividualFormController {
     @GetMapping
     public ResponseEntity<List<IndividualForm>> getAllIndividualForms() {
         return ResponseEntity.ok(individualFormService.getAllIndividualForms());
+    }
+
+    @GetMapping("/department")
+    public ResponseEntity<List<IndividualForm>> getIndividualFormsByDepartment(@RequestParam String department) {
+    try {
+        Department dept = Department.fromString(department);
+        List<IndividualForm> forms = individualFormService.getIndividualFormsByDepartment(dept);
+        if (forms.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(forms);
+    } catch (IllegalArgumentException e) {
+        return ResponseEntity.badRequest().body(null); 
+    }
     }
 
     @PostMapping

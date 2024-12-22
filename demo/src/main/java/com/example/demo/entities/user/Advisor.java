@@ -71,6 +71,5 @@ public class Advisor extends User {
                     .toList() : 
             new ArrayList<>();
     }
-
     
 }

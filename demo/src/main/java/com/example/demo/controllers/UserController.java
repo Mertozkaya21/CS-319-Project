@@ -5,7 +5,6 @@ import com.example.demo.dto.UserUpdateDTO;
 import com.example.demo.entities.user.Advisor;
 import com.example.demo.entities.user.Trainee;
 import com.example.demo.entities.user.User;
-import com.example.demo.enums.UserRole;
 import com.example.demo.exceptions.EmailAlreadyExistsException;
 import com.example.demo.exceptions.InvalidCredentialsException;
 import com.example.demo.exceptions.UserNotFoundException;

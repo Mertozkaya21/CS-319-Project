@@ -3,8 +3,6 @@ package com.example.demo.services;
 import com.example.demo.entities.event.Event;
 import com.example.demo.entities.event.Fair;
 import com.example.demo.entities.event.Tour;
-import com.example.demo.entities.user.Guide;
-import com.example.demo.entities.user.Trainee;
 import com.example.demo.enums.EventStatus;
 import com.example.demo.enums.TourHours;
 import com.example.demo.exceptions.FairNotFoundException;
@@ -105,8 +103,12 @@ public class EventService {
         }
     }
 
-    public Tour assignTraineeToTour(Long tourId, Long traineeId) throws TourNotFoundException, UserNotFoundException {
-        return tourService.assignTraineeToTour(tourId, traineeId);
+    public Tour assignTraineeToTourByAdvisor(Long tourId, Long traineeId, Long advisorId) throws TourNotFoundException, UserNotFoundException {
+        return tourService.assignTraineeToTourByAdvisor(tourId, traineeId, advisorId);
+    }
+
+    public Tour removeTraineeFromTour(Long tourid, Long traineeId) throws TourNotFoundException, UserNotFoundException {
+        return tourService.removeTraineeFromTour(tourid, traineeId);
     }
 
     public Event removeGuideFromEvent(Long eventId, Long guideid) throws GuideNotFoundException {
@@ -158,9 +160,5 @@ public class EventService {
 
     public Tour cancelTour(Long tourId) {
         return tourService.cancelTour(tourId);
-    }
-
-    public Object assignTraineeToEvent(Long tourid, Long traineeId) {
-        return null;
     }
 }
