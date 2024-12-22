@@ -5,8 +5,9 @@ import com.example.demo.entities.user.Guide;
 import com.example.demo.enums.EventStatus;
 import com.example.demo.exceptions.FairNotFoundException;
 import com.example.demo.exceptions.GuideNotFoundException;
+import com.example.demo.exceptions.UserNotFoundException;
 import com.example.demo.repositories.event.FairRepository;
-import com.example.demo.repositories.user.GuideRepository;
+import com.example.demo.services.UsersService.GuideService;
 
 import org.springframework.stereotype.Service;
 
@@ -17,11 +18,11 @@ import java.util.List;
 public class FairService {
 
     private final FairRepository fairRepository;
-    private final GuideRepository guideRepository;
+    private final GuideService guideService;
 
-    public FairService(FairRepository fairRepository, GuideRepository guideRepository) {
+    public FairService(FairRepository fairRepository, GuideService guideService) {
         this.fairRepository = fairRepository;
-        this.guideRepository = guideRepository;
+        this.guideService = guideService;
     }
 
     public List<Fair> getAllFairs() {
@@ -42,8 +43,7 @@ public class FairService {
     }
 
     public Fair upadteFairStatus(Long fairid, EventStatus status) {
-        Fair fair = fairRepository.findById(fairid)
-                .orElseThrow(() -> new FairNotFoundException("Fair with ID " + fairid + " not found."));
+        Fair fair = getFairById(fairid);
 
         switch (status) {
             case ASSIGNED -> {
@@ -81,9 +81,9 @@ public class FairService {
         return false;
     }
 
-    public Fair assignGuideToFair(Long fairId, Long guideId) throws GuideNotFoundException {
+    public Fair assignGuideToFair(Long fairId, Long guideId) throws GuideNotFoundException, UserNotFoundException {
         Fair fair = getFairById(fairId);
-        Guide guide = getGuideById(guideId);
+        Guide guide = guideService.getById(guideId);
 
         if (fair.getGuides().contains(guide)) {
             throw new GuideNotFoundException("Guide is already assigned to this fair.");
@@ -94,9 +94,9 @@ public class FairService {
     }
 
 
-    public Fair removeGuideFromFair(Long fairId, Long guideId) throws GuideNotFoundException {
+    public Fair removeGuideFromFair(Long fairId, Long guideId) throws GuideNotFoundException, UserNotFoundException {
         Fair fair = getFairById(fairId);
-        Guide guide = getGuideById(guideId);
+        Guide guide = guideService.getById(guideId);
 
         if (!fair.getGuides().remove(guide)) {
             throw new GuideNotFoundException("Guide with ID " + guide.getId() + " is not assigned to the fair with ID " + fairId);
@@ -111,12 +111,6 @@ public class FairService {
         return fairRepository.save(fair);
     }
     
-
-    public Guide getGuideById(Long guideId) throws GuideNotFoundException {
-        return guideRepository.findById(guideId)
-                .orElseThrow(() -> new GuideNotFoundException("Guide with ID " + guideId + " not found"));
-    }
-
 
     public List<Fair> getFairsByDate(LocalDate date) {
         return fairRepository.findByDate(date);

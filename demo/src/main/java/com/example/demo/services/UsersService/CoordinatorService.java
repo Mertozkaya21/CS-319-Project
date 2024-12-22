@@ -42,6 +42,12 @@ public class CoordinatorService implements RoleService{
     }
 
     @Override
+    public Coordinator getById(Long id) throws UserNotFoundException {
+        return coordinatorRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("Coordinator not found with ID: " + id));
+    }
+
+    @Override
     public List<Coordinator> findAll() {
         return coordinatorRepository.findAll();
     }
@@ -75,8 +81,7 @@ public class CoordinatorService implements RoleService{
     }
 
     public void cancelEvent(Long coordinatorId, Long eventId, String eventType) throws UserNotFoundException {
-        Coordinator coordinator = findById(coordinatorId)
-                .orElseThrow(() -> new UserNotFoundException("Coordinator not found."));
+        getById(coordinatorId);
 
         if (eventType.equalsIgnoreCase("fair")) {
             Fair fair = fairRepository.findById(eventId)

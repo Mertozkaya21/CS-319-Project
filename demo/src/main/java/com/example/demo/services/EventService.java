@@ -10,6 +10,7 @@ import com.example.demo.exceptions.GuideNotFoundException;
 import com.example.demo.exceptions.TourNotFoundException;
 import com.example.demo.exceptions.UserNotFoundException;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -28,6 +29,32 @@ public class EventService {
         this.tourService = tourService;
         this.fairService = fairService;
     }
+
+    @Scheduled(cron = "0 0 0 * * ?") // Runs every day at midnight
+    public void updateEventStatusesDaily() {
+        updateStatusForPastEvents();
+    }
+
+    private void updateStatusForPastEvents() {
+        LocalDate today = LocalDate.now();
+
+        List<Tour> tours = tourService.getAllTours();
+        for (Tour tour : tours) {
+            if (tour.getDate().isBefore(today) && tour.getStatus() == EventStatus.SCHEDULED) {
+                tour.setStatus(EventStatus.COMPLETED);
+                tourService.saveTour(tour);
+            }
+        }
+
+        List<Fair> fairs = fairService.getAllFairs();
+        for (Fair fair : fairs) {
+            if (fair.getDate().isBefore(today) && fair.getStatus() == EventStatus.SCHEDULED) {
+                fair.setStatus(EventStatus.COMPLETED);
+                fairService.saveFair(fair);
+            }
+        }
+    }
+    
 
     public List<Event> getAllEvents() {
         List<Event> events = new ArrayList<>();
@@ -104,14 +131,18 @@ public class EventService {
     }
 
     public Tour assignTraineeToTourByAdvisor(Long tourId, Long traineeId, Long advisorId) throws TourNotFoundException, UserNotFoundException {
-        return tourService.assignTraineeToTourByAdvisor(tourId, traineeId, advisorId);
+        try {
+            return tourService.assignTraineeToTourByAdvisor(tourId, traineeId, advisorId);
+        } catch (TourNotFoundException ex) {
+            throw new TourNotFoundException("Tour not found with ID: " + tourId);
+        }
     }
 
     public Tour removeTraineeFromTour(Long tourid, Long traineeId) throws TourNotFoundException, UserNotFoundException {
         return tourService.removeTraineeFromTour(tourid, traineeId);
     }
 
-    public Event removeGuideFromEvent(Long eventId, Long guideid) throws GuideNotFoundException {
+    public Event removeGuideFromEvent(Long eventId, Long guideid) throws GuideNotFoundException, UserNotFoundException {
         try {
             return fairService.removeGuideFromFair(eventId, guideid);
         } catch (FairNotFoundException e) {

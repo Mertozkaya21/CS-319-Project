@@ -78,8 +78,7 @@ public class TourService {
 
     // I do not think that it is logical to update an existing tour maybe we can delete
     public Tour updateTour(Long id, Tour updatedTour) {
-        Tour tour = tourRepository.findById(id)
-                    .orElseThrow(() -> new TourNotFoundException("Tour with ID " + id + " not found"));
+        Tour tour = getTourById(id);
         tour.setTourType(updatedTour.getTourType());
         tour.setTourHours(updatedTour.getTourHours());
         tour.setVisitorSchool(updatedTour.getVisitorSchool());
@@ -99,8 +98,7 @@ public class TourService {
     }
 
     public Tour updateTourStatus(Long tourId, EventStatus status) {
-        Tour tour = tourRepository.findById(tourId)
-                .orElseThrow(() -> new TourNotFoundException("Tour with ID " + tourId + " not found."));
+        Tour tour = getTourById(tourId);
 
         switch (status) {
             case ASSIGNED -> {
@@ -125,8 +123,7 @@ public class TourService {
     }
     
     public Tour cancelTour(Long tourId) {
-        Tour tour = tourRepository.findById(tourId)
-                .orElseThrow(() -> new TourNotFoundException("Tour with ID " + tourId + " not found."));
+        Tour tour = getTourById(tourId);
         tour.setStatus(EventStatus.CANCELLED);
         return tourRepository.save(tour);
     }
@@ -138,6 +135,7 @@ public class TourService {
         if (!tour.getGuides().remove(guide)) {
             throw new GuideNotFoundException("Guide with ID " + guide.getId() + " is not assigned to the tour with ID " + tourId);
         }
+
         return tourRepository.save(tour);
     }
 
@@ -165,23 +163,24 @@ public class TourService {
 
     public Tour assignTraineeToTourByAdvisor(Long tourId, Long traineeId, Long advisorId) 
         throws TourNotFoundException, UserNotFoundException {
-    Tour tour = getTourById(tourId);
-    Trainee trainee = traineeService.getById(traineeId);
-    Advisor advisor = advisorService.getById(advisorId);
 
-    if (!advisor.getTrainees().contains(trainee)) {
-        throw new IllegalArgumentException("Trainee is not assigned to this advisor");
-    }
+        Tour tour = getTourById(tourId);
+        Trainee trainee = traineeService.getById(traineeId);
+        Advisor advisor = advisorService.getById(advisorId);
 
-    if (tour.getTrainees().contains(trainee)) {
-        throw new IllegalArgumentException("Trainee is already assigned to this event");
-    }
+        if (!advisor.getTrainees().contains(trainee)) {
+            throw new IllegalArgumentException("Trainee is not assigned to this advisor");
+        }
 
-    tour.getTrainees().add(trainee);
+        if (tour.getTrainees().contains(trainee)) {
+            throw new IllegalArgumentException("Trainee is already assigned to this event");
+        }
 
-    traineeService.updateTraineeStatus(trainee.getId());
+        tour.getTrainees().add(trainee);
 
-    return tourRepository.save(tour);
+        traineeService.updateTraineeStatus(trainee.getId());
+
+        return tourRepository.save(tour);
     }
 
     public Tour removeTraineeFromTour(Long tourId, Long traineeId) throws TourNotFoundException, UserNotFoundException {
@@ -218,8 +217,7 @@ public class TourService {
     }
 
     public Tour assignGuideToTour(Long tourId, Guide guide) {
-        Tour tour = tourRepository.findById(tourId)
-                .orElseThrow(() ->  new TourNotFoundException("Tour with ID " + tourId + " not found"));;
+        Tour tour = getTourById(tourId);
         tour.getGuides().add(guide);
         return tourRepository.save(tour);
     }

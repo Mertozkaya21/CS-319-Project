@@ -51,12 +51,12 @@ public class TraineeService implements RoleService {
         return traineeRepository.save(trainee);
     }
     
+    @Override
     public Trainee getById(Long id) throws UserNotFoundException {
-        Trainee trainee = traineeRepository.findById(id)
+        return traineeRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("Trainee not found with ID: " + id));
-        return trainee;
     }
-
+    
     public List<Trainee> findAllByAdvisorId(Long advisorId) {
         return traineeRepository.findAllByAdvisor_Id(advisorId);
     }
