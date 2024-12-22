@@ -2,16 +2,21 @@ package com.example.demo.services;
 
 import com.example.demo.entities.event.Fair;
 import com.example.demo.entities.user.Guide;
+import com.example.demo.entities.user.User;
 import com.example.demo.enums.EventStatus;
+import com.example.demo.enums.NotificationType;
+import com.example.demo.enums.UserRole;
 import com.example.demo.exceptions.FairNotFoundException;
 import com.example.demo.exceptions.GuideNotFoundException;
 import com.example.demo.exceptions.UserNotFoundException;
 import com.example.demo.repositories.event.FairRepository;
 import com.example.demo.services.UsersService.GuideService;
+import com.example.demo.services.UsersService.RoleServiceFactory;
 
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,10 +24,17 @@ public class FairService {
 
     private final FairRepository fairRepository;
     private final GuideService guideService;
+    private final RoleServiceFactory roleServiceFactory;
+    private final NotificationService notificationService;
 
-    public FairService(FairRepository fairRepository, GuideService guideService) {
+    public FairService(FairRepository fairRepository, 
+                        GuideService guideService, 
+                        RoleServiceFactory roleServiceFactory,
+                        NotificationService notificationService) {
         this.fairRepository = fairRepository;
         this.guideService = guideService;
+        this.roleServiceFactory = roleServiceFactory;
+        this.notificationService = notificationService;
     }
 
     public List<Fair> getAllFairs() {
@@ -39,6 +51,13 @@ public class FairService {
     }
 
     public Fair saveFair(Fair fair) {
+        notificationService.createNotificationToAllUsersByRole(
+                "COORDINATOR",
+                "The fair scheduled on " + fair.getDate() + " to " + fair.getCity() + 
+                " still requires guides to be assigned.",
+                NotificationType.NEW_FAIR_CREATED
+            );
+
         return fairRepository.save(fair);
     }
 
@@ -58,6 +77,7 @@ public class FairService {
             }
             case CANCELLED -> {
                 fair.setStatus(EventStatus.CANCELLED);
+                notifyCancellation(fair);
             }
             default -> {
                 return fair;
@@ -75,6 +95,8 @@ public class FairService {
 
     public boolean deleteFairById(Long id) {
         if (fairRepository.existsById(id)) {
+            Fair fair = getFairById(id);
+            notifyCancellation(fair);
             fairRepository.deleteById(id);
             return true;
         }
@@ -90,6 +112,13 @@ public class FairService {
         }
 
         fair.getGuides().add(guide);
+
+        notificationService.addNotificationToUser(
+            guide.getId(),
+            "You have been assigned to a fair scheduled on " + fair.getDate(),
+            NotificationType.GUIDE_ASSIGNED_TOUR
+        );
+        
         return fairRepository.save(fair);
     }
 
@@ -102,12 +131,30 @@ public class FairService {
             throw new GuideNotFoundException("Guide with ID " + guide.getId() + " is not assigned to the fair with ID " + fairId);
         }
 
+        notificationService.addNotificationToUser(
+            guide.getId(),
+            "You have been removed from the fair scheduled on " + fair.getDate(),
+            NotificationType.CANCELLED_EVENT
+        );
+
         return fairRepository.save(fair);
     }
 
     public Fair removeAllGuidesFromFair(Long fairId) {
         Fair fair = getFairById(fairId);
         fair.getGuides().clear();
+
+        fair.getGuides().forEach(guide -> {
+            try {
+                notificationService.addNotificationToUser(
+                    guide.getId(),
+                    "You have been removed from the fair scheduled on " + fair.getDate(),
+                    NotificationType.CANCELLED_EVENT
+                );
+            } catch (UserNotFoundException e) {
+            }
+        });
+
         return fairRepository.save(fair);
     }
     
@@ -125,5 +172,20 @@ public class FairService {
         return fairRepository.countEventsByMonthAndStatus(status);
     }
 
+
+    private void notifyCancellation(Fair fair) {
+        List<User> usersToNotify = new ArrayList<>();
+
+        usersToNotify.addAll(roleServiceFactory.getRoleService(UserRole.COORDINATOR).findAll());
+
+        usersToNotify.addAll(fair.getGuides());
+        notificationService.notifyCancellation(
+            "fair",
+            fair.getId(),
+            fair.getName(),
+            fair.getDate(),
+            usersToNotify
+        );
+    }
 
 }

@@ -19,8 +19,9 @@ const DashboardTourApplications = () => {
   };
 
   const confirmSelectedChanges = async () => {
+    console.log(JSON.stringify(selectedRows));
     try {
-      const response = await fetch('http://localhost:8080/v1/groupform/confirmchanges', {
+      const response = await fetch(`http://localhost:8080/v1/applicationform/update-statuses`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -47,7 +48,7 @@ const DashboardTourApplications = () => {
 
   const fetchTourRows = async () => {
     try {
-      const response = await fetch('http://localhost:8080/v1/groupform'); 
+      const response = await fetch('http://localhost:8080/v1/groupform/pending'); 
       const data = await response.json();
 
       setTourRows(data);
@@ -85,6 +86,7 @@ const DashboardTourApplications = () => {
 
         {/* Tour Applications Table */}
         <TourApplicationsTable rows={filteredRows} 
+        selectedRows={selectedRows}
         setSelectedRows={setSelectedRows}
         fetchTourRows={fetchTourRows}/> {/* Render rows dynamically */}
       </div>

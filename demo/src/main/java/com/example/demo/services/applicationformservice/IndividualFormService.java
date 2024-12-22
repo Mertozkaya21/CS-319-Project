@@ -12,21 +12,26 @@ import com.example.demo.entities.form.IndividualForm;
 import com.example.demo.enums.ApplicationFormStatus;
 import com.example.demo.enums.Department;
 import com.example.demo.enums.EventStatus;
+import com.example.demo.enums.NotificationType;
 import com.example.demo.enums.TourType;
 import com.example.demo.exceptions.ApplicationFormNotFoundException;
 import com.example.demo.repositories.event.TourRepository;
 import com.example.demo.repositories.form.IndividualFormRepository;
+import com.example.demo.services.NotificationService;
 
 @Service
 public class IndividualFormService {
 
     private final IndividualFormRepository individualFormRepository;
     private final TourRepository tourRepository;
+    private final NotificationService notificationService;
 
     public IndividualFormService(IndividualFormRepository individualFormRepository,
-                                TourRepository tourRepository) {
+                                TourRepository tourRepository,
+                                NotificationService notificationService) {
         this.individualFormRepository = individualFormRepository;
         this.tourRepository = tourRepository;
+        this.notificationService = notificationService;
     }
 
 
@@ -60,9 +65,14 @@ public class IndividualFormService {
         individualForm.setStatus(newStatus);
 
         if (newStatus == ApplicationFormStatus.BTO_APPROVED) {
-            createIndividualTour(individualForm); 
+            createIndividualTour(individualForm);
+            notificationService.createNotificationToAllUsersByRole(
+                "GUIDE",
+                "A individual tour has been scheduled on " + individualForm.getEventDate(),
+                NotificationType.NEW_TOUR_CREATED
+            );
         }
-
+        
         return individualFormRepository.save(individualForm);
     }
 

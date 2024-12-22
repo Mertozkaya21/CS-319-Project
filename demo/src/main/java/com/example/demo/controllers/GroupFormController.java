@@ -49,6 +49,15 @@ public class GroupFormController {
         return ResponseEntity.ok(forms);
     }
 
+     @GetMapping("/pending")
+    public ResponseEntity<List<GroupForm>> getScheduledGroupForms() {
+        List<GroupForm> scheduledForms = groupFormService.getAllApplicationFormByStatus(ApplicationFormStatus.PENDING);
+        if (scheduledForms.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(scheduledForms);
+    }
+
     @PostMapping("/changeparameter/{newParameter}")
     public ResponseEntity<Void> changeSortingParameter(@PathVariable String newParameter) {
         if ("byDistance".equals(newParameter)) {
@@ -101,4 +110,5 @@ public class GroupFormController {
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
+    
 }
