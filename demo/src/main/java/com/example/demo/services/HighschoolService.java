@@ -170,6 +170,8 @@ public class HighschoolService {
         return false;
     }
 
+    
+
     public void deleteHighschoolsByIds(List<Long> highschoolIds) {
         for (Long id : highschoolIds) {
             if(highschoolRepository.existsById(id))

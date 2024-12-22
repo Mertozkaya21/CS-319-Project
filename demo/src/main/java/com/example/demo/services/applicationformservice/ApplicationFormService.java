@@ -63,7 +63,6 @@ public class ApplicationFormService {
         this.applicationFormSorter.setSortStrategy(strategy); 
     }
 
-
     public List<ApplicationForm> getAllApplicationForms() {
         List<ApplicationForm> allForms = new ArrayList<>();
         allForms.addAll(groupFormService.getAllGroupForms());
@@ -107,8 +106,12 @@ public class ApplicationFormService {
     }
 
 
-    public boolean updateOneApplicationFormStatus(Long formId, ApplicationFormStatus newStatus) throws ApplicationFormNotFoundException {
+    public void updateApplicationFormStatus(Long formId, ApplicationFormStatus newStatus) throws ApplicationFormNotFoundException {
         ApplicationForm form = getOneFormById(formId);
+    
+        if (form == null) {
+            throw new ApplicationFormNotFoundException("Application form not found for ID: " + formId);
+        }
     
         form.setStatus(newStatus);
     
@@ -117,9 +120,8 @@ public class ApplicationFormService {
         } else if (form instanceof IndividualForm) {
             individualFormService.save((IndividualForm) form);
         }
-    
-        return true; 
     }
+    
 
     public ApplicationFormStatus getOneApplicationFormStatusByID(Long formId) throws ApplicationFormNotFoundException {
         ApplicationForm form = getOneFormById(formId);
