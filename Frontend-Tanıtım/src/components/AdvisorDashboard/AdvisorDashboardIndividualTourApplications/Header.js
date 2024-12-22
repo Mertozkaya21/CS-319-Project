@@ -10,10 +10,11 @@ import TextField from '@mui/material/TextField';
 const Header = ({ title, onSearchSelection, applications }) => {
   const [sortOption, setSortOption] = useState('Date Updated');
 
-  const searchOptions = applications?.map((app) => ({
-    label: app.name,
-    id: app.id
-  })) || [];
+  // Map the search options from the applications list
+  const searchOptions = applications.map((app) => ({
+    label: app.name,  // Only store name for label
+    id: app.id        // Keep the id for filtering purposes
+  }));
 
   return (
     <div className={styles.header}>
@@ -42,37 +43,13 @@ const Header = ({ title, onSearchSelection, applications }) => {
       <div className={styles.headerBottomRow}>
         <Autocomplete
           disablePortal
-          options={searchOptions}
-          onChange={(event, value) => onSearchSelection(value)}
-          sx={{
-            width: 300,
-            '& .MuiOutlinedInput-root': {
-              '& fieldset': {
-                borderColor: '#8a0303',
-              },
-              '&:hover fieldset': {
-                borderColor: '#6c0101',
-              },
-              '&.Mui-focused fieldset': {
-                borderColor: '#8a0303',
-              },
-              color: '#8a0303',
-            },
-            '& .MuiInputBase-input': {
-              color: '#8a0303',
-            },
-            '& .MuiInputLabel-root': {
-              color: '#8a0303',
-            },
-            '& .MuiInputLabel-root.Mui-focused': {
-              color: '#6c0101',
-            },
-          }}
+          options={searchOptions}  // Filter options by name
+          getOptionLabel={(option) => option.label}  // Set the label
+          onChange={(event, value) => onSearchSelection(value ? value.label : '')}
           renderInput={(params) => (
             <TextField {...params} label="Search Applications" />
           )}
         />
-
         <Button
           variant="contained"
           startIcon={<AddIcon />}

@@ -10,146 +10,113 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import RestartAltIcon from '@mui/icons-material/RestartAlt'; // Reset icon
-import styles from './AdvisorDashboardTourApplications.module.css';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import Tooltip from '@mui/material/Tooltip';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import EditIcon from '@mui/icons-material/Edit';
+import { NavLink } from 'react-router-dom';
+import styles from './AdvisorDashboardTourApplications.module.css';  // Correct path for the Advisor Dashboard CSS
 
-// Dummy Data. replace with data from database
+
+// Example of data, use the actual data from backend in your case
 export const tourApplicationsRows = [
-  { id: 1, name: 'High School A', priority: 1, date: 'Dec 20, 2023', time: '11:00 - 13:00', city: 'Ankara', phone: '555-123-4561', email: 'jane.doe1@example.com', distance: '5 km', lgsPercentile: 85 },
-  { id: 2, name: 'High School B', priority: 2, date: 'Dec 21, 2023', time: '09:00 - 11:00', city: 'Ankara', phone: '555-123-4562', email: 'jane.doe2@example.com', distance: '8 km', lgsPercentile: 88 },
-  { id: 3, name: 'High School C', priority: 3, date: 'Dec 22, 2023', time: '11:00 - 13:00', city: 'Istanbul', phone: '555-123-4563', email: 'jane.doe3@example.com', distance: '15 km', lgsPercentile: 90 },
-  { id: 4, name: 'High School D', priority: 4, date: 'Dec 23, 2023', time: '11:00 - 13:00', city: 'Izmir', phone: '555-987-6541', email: 'john.doe1@example.com', distance: '20 km', lgsPercentile: 92 },
-];
-
-export const individualTourApplicationRows = [
-  {
-    individualName: 'John Smith',
-    email: 'john.smith@example.com',
-    phoneNumber: '555-123-4561',
-    city: 'New York',
-    date: '2024-01-15',
-    timeSlot: '10:00 - 12:00',
-    departmentOfInterest: 'Computer Science',
-    numberOfAttendees: 3,
-    comments: 'Looking forward to the tour.',
+  { 
+    id: 1, 
+    name: 'High School A', 
+    priority: 1, 
+    date: 'Dec 20, 2023', 
+    time: '11:00 - 13:00', 
+    city: 'Ankara', 
+    phone: '555-123-4561', 
+    email: 'jane.doe1@example.com', 
+    distance: '5 km', 
+    lgsPercentile: 85, 
+    numberOfAttendees: 100,
+    comments: 'Looking forward to the tour and meeting the students.'
   },
-  {
-    individualName: 'Emily Johnson',
-    email: 'emily.johnson@example.com',
-    phoneNumber: '555-123-4562',
-    city: 'Los Angeles',
-    date: '2024-01-20',
-    timeSlot: '14:00 - 16:00',
-    departmentOfInterest: 'Business Administration',
-    numberOfAttendees: 2,
-    comments: 'Please provide parking information.',
+  { 
+    id: 2, 
+    name: 'High School B', 
+    priority: 2, 
+    date: 'Dec 21, 2023', 
+    time: '09:00 - 11:00', 
+    city: 'Ankara', 
+    phone: '555-123-4562', 
+    email: 'jane.doe2@example.com', 
+    distance: '8 km', 
+    lgsPercentile: 88, 
+    numberOfAttendees: 100,
+    comments: 'Please share parking instructions.'
   },
-  {
-    individualName: 'Michael Williams',
-    email: 'michael.williams@example.com',
-    phoneNumber: '555-123-4563',
-    city: 'Chicago',
-    date: '2024-01-25',
-    timeSlot: '09:00 - 11:00',
-    departmentOfInterest: 'Engineering',
-    numberOfAttendees: 4,
-    comments: 'Interested in meeting faculty.',
+  { 
+    id: 3, 
+    name: 'High School C', 
+    priority: 3, 
+    date: 'Dec 22, 2023', 
+    time: '11:00 - 13:00', 
+    city: 'Istanbul', 
+    phone: '555-123-4563', 
+    email: 'jane.doe3@example.com', 
+    distance: '15 km', 
+    lgsPercentile: 90, 
+    numberOfAttendees: 100,
+    comments: 'We have some questions about campus facilities.'
   },
-  {
-    individualName: 'Sophia Brown',
-    email: 'sophia.brown@example.com',
-    phoneNumber: '555-123-4564',
-    city: 'Houston',
-    date: '2024-02-01',
-    timeSlot: '11:00 - 13:00',
-    departmentOfInterest: 'Architecture',
-    numberOfAttendees: 1,
-    comments: 'Please confirm availability.',
-  },
-  {
-    individualName: 'James Davis',
-    email: 'james.davis@example.com',
-    phoneNumber: '555-123-4565',
-    city: 'Phoenix',
-    date: '2024-02-05',
-    timeSlot: '15:00 - 17:00',
-    departmentOfInterest: 'Law',
-    numberOfAttendees: 2,
-    comments: 'Will the library be open?',
-  },
-  {
-    individualName: 'Olivia Miller',
-    email: 'olivia.miller@example.com',
-    phoneNumber: '555-123-4566',
-    city: 'Philadelphia',
-    date: '2024-02-10',
-    timeSlot: '13:00 - 15:00',
-    departmentOfInterest: 'Medicine',
-    numberOfAttendees: 3,
-    comments: 'Are refreshments provided?',
-  },
-  {
-    individualName: 'William Garcia',
-    email: 'william.garcia@example.com',
-    phoneNumber: '555-123-4567',
-    city: 'San Antonio',
-    date: '2024-02-15',
-    timeSlot: '08:00 - 10:00',
-    departmentOfInterest: 'Psychology',
-    numberOfAttendees: 4,
-    comments: 'Do we need prior registration?',
-  },
-  {
-    individualName: 'Mia Martinez',
-    email: 'mia.martinez@example.com',
-    phoneNumber: '555-123-4568',
-    city: 'San Diego',
-    date: '2024-02-20',
-    timeSlot: '12:00 - 14:00',
-    departmentOfInterest: 'Art and Design',
-    numberOfAttendees: 1,
-    comments: 'Excited to visit!',
-  },
-  {
-    individualName: 'Alexander Wilson',
-    email: 'alexander.wilson@example.com',
-    phoneNumber: '555-123-4569',
-    city: 'Dallas',
-    date: '2024-02-25',
-    timeSlot: '10:00 - 12:00',
-    departmentOfInterest: 'Education',
-    numberOfAttendees: 5,
-    comments: 'Are there group discounts?',
-  },
-  {
-    individualName: 'Charlotte Anderson',
-    email: 'charlotte.anderson@example.com',
-    phoneNumber: '555-123-4570',
-    city: 'San Jose',
-    date: '2024-03-01',
-    timeSlot: '16:00 - 18:00',
-    departmentOfInterest: 'Environmental Science',
-    numberOfAttendees: 2,
-    comments: 'Interested in campus sustainability programs.',
+  { 
+    id: 4, 
+    name: 'High School D', 
+    priority: 4, 
+    date: 'Dec 23, 2023', 
+    time: '11:00 - 13:00', 
+    city: 'Izmir', 
+    phone: '555-987-6541', 
+    email: 'john.doe1@example.com', 
+    distance: '20 km', 
+    lgsPercentile: 92, 
+    numberOfAttendees: 100,
+    comments: 'Are refreshments provided during the tour?'
   },
 ];
 
-const TourApplicationsTable = ({ rows }) => {
+const TourApplicationsTable = ({ rows, setSelectedRows, fetchTourRows }) => {
+  const [formData, setFormData] = useState({ newParameter: "" });
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogContent, setDialogContent] = useState('');
   const [decisions, setDecisions] = useState({}); // Store decisions for each row
-  
-  const [selectedColumn, setSelectedColumn] = useState('priority'); // State for dropdown selection
+  const [selectedColumn, setSelectedColumn] = useState(); // State for dropdown selection
 
-  const handleColumnChange = (event) => {
-    setSelectedColumn(event.target.value); // Update selected column type
+  const handleColumnChange = async (event) => {
+    const newValue = event.target.value;
+    setFormData((prevData) => ({ ...prevData, newParameter: newValue })); // Update selected column type
+    setSelectedColumn(newValue); 
+    console.log(formData);
+
+    try {
+      const response = await fetch(`http://localhost:8080/v1/groupform/changeparameter/${selectedColumn}`, {
+        method: 'POST',
+      });
+
+      if (response.ok) {
+        console.log('Backend updated successfully:', response.data);
+        alert('Applications are sorted by new parameter!');
+        fetchTourRows();
+      } else {
+        console.error('Unexpected response status:', response.status);
+        alert('Unexpected error while updating column.');
+      }
+    } catch (error) {
+      console.error('Error updating column:', error);
+      alert('Failed to update column. Please try again later.');
+    }
   };
 
   const handleContactClick = (type, row) => {
     const content =
-      type === 'phone'
-        ? `Phone: ${row.phone}`
+      type === 'phoneNumber'
+        ? `Phone: ${row.phoneNumber}`
         : `Email: ${row.email}`;
     setDialogContent(content);
     setOpenDialog(true);
@@ -160,10 +127,12 @@ const TourApplicationsTable = ({ rows }) => {
   };
 
   const handleDecisionChange = (decision, id) => {
-    setDecisions((prevDecisions) => ({
-      ...prevDecisions,
-      [id]: decision,
-    }));
+    if (decision) { // Prevents deselecting both options
+      setDecisions((prevDecisions) => ({
+        ...prevDecisions,
+        [id]: decision,
+      }));
+    }
   };
 
   const handleResetDecision = (id) => {
@@ -173,113 +142,176 @@ const TourApplicationsTable = ({ rows }) => {
     }));
   };
 
-
-// Columns
-const columns = [
-  { field: 'name', headerName: 'High School Name', width: 150 },
-  {
-    field: 'priority',
-    headerName: (
-      <div>
-        <Select
-          value={selectedColumn}
-          onChange={handleColumnChange}
-          displayEmpty
+  // Columns
+  const columns = [
+    { field: 'name', headerName: 'High School Name', width: 150 },
+    {
+      field: 'newParameter',
+      headerName: (
+        <div>
+          <Select
+            value={selectedColumn}
+            onChange={handleColumnChange}
+            displayEmpty
+            sx={{
+              fontSize: '14px',
+              color: '#8a0303',
+              fontWeight: 'bold',
+            }}
+          >
+            <MenuItem value="byPriorityScore">By Priority Score</MenuItem>
+            <MenuItem value="byDistance">By Distance</MenuItem>
+            <MenuItem value="byLgsPercentile">By LGS Percentile</MenuItem>
+            <MenuItem value="bySubmitTime">By Submit Time</MenuItem>
+          </Select>
+        </div>
+      ),
+      width: selectedColumn === 'byPriorityScore' ? 185 : selectedColumn === 'byDistance' ? 195 : 235, // Dynamic width for different columns
+      renderCell: (params) => <div>{params.row.newParameter}</div>,
+    },
+    { field: 'eventDate', headerName: 'Tour Date', width: 110 },
+    { field: 'tourHour', headerName: 'Tour Time', width: 100 },
+    { field: 'city', headerName: 'City', width: 70 },
+    { field: 'numberOfAttendees', headerName: 'Count', width: 60 },
+    {
+      field: 'contact',
+      headerName: 'Contact',
+      width: 80,
+      renderCell: (params) => (
+        <div className={styles.contactButtons}>
+          <IconButton onClick={() => params.row.handleContactClick('phoneNumber', params.row)}>
+            <FaPhoneAlt className={styles.contactIcon} />
+          </IconButton>
+          <IconButton onClick={() => params.row.handleContactClick('email', params.row)}>
+            <FaEnvelope className={styles.contactIcon} />
+          </IconButton>
+        </div>
+      ),
+    },
+    {
+      field: 'comments',
+      headerName: 'Comments',
+      width: 90,
+      renderCell: (params) => (
+        params.row.comments && (
+          <Tooltip title={params.row.comments} arrow>
+            <ChatBubbleOutlineIcon sx={{ color: '#8a0303' }} />
+          </Tooltip>
+        )
+      ),
+    },
+    {
+      field: 'decision',
+      headerName: 'Decision',
+      width: 130,
+      renderCell: (params) => (
+        <ToggleButtonGroup
+          value={params.row.decision}
+          exclusive
+          onChange={(e, value) => handleDecisionChange(value, params.row.id)}
+          size="small"
           sx={{
-            fontSize: '14px',
-            color: '#8a0303',
-            fontWeight: 'bold',
+            '& .MuiToggleButton-root': {
+              padding: '2px 6px', // Smaller padding
+              fontSize: '12px',   // Smaller font size
+              minHeight: '28px',  // Reduce the minimum height
+              minWidth: '60px',   // Reduce the minimum width
+            },
           }}
         >
-          <MenuItem value="priority">Priority</MenuItem>
-          <MenuItem value="distance">Distance</MenuItem>
-          <MenuItem value="lgsPercentile">LGS Percentile</MenuItem>
-        </Select>
-      </div>
-    ),
-    width: 200,
-    renderCell: (params) => <div>{params.row[selectedColumn]}</div>, // Render the selected column value dynamically
-  },
-  { field: 'date', headerName: 'Tour Date', width: 100 },
-  { field: 'time', headerName: 'Tour Time', width: 100 },
-  { field: 'city', headerName: 'City', width: 100 },
-  {
-    field: 'contact',
-    headerName: 'Contact',
-    width: 100,
-    renderCell: (params) => (
-      <div className={styles.contactButtons}>
-        <IconButton onClick={() => params.row.handleContactClick('phone', params.row)}>
-          <FaPhoneAlt className={styles.contactIcon} />
-        </IconButton>
-        <IconButton onClick={() => params.row.handleContactClick('email', params.row)}>
-          <FaEnvelope className={styles.contactIcon} />
-        </IconButton>
-      </div>
-    ),
-  },
-  {
-    field: 'decision',
-    headerName: 'Accept / Reject',
-    width: 120,
-    renderCell: (params) => (
-      <div>
-        <Radio
-          checked={params.row.decision === 'accept'}
-          onChange={() => params.row.handleDecisionChange('accept', params.row.id)}
-          value="accept"
-          name={`decision-${params.row.id}`}
-          inputProps={{ 'aria-label': 'Accept' }}
+          <ToggleButton
+            value="BTO_APPROVED"
+            sx={{
+              color: params.row.decision === 'BTO_APPROVED' ? '#fff' : 'grey', // White when selected
+              backgroundColor: params.row.decision === 'BTO_APPROVED' ? 'green' : '#e0e0e0', // Green when selected
+              '&:hover': {
+                backgroundColor: params.row.decision === 'BTO_APPROVED' ? 'rgba(0, 128, 0, 0.8)' : '#d5d5d5',
+                color: params.row.decision === 'BTO_APPROVED' ? '#fff' : 'grey',
+              },
+              '&.Mui-selected': {
+                backgroundColor: 'green', // Force green when clicked
+                color: '#fff',
+                '&:hover': {
+                  backgroundColor: 'rgba(0, 128, 0, 0.8)',
+                },
+              },
+              fontWeight: 'bold',
+              borderRadius: '8px',
+            }}
+          >
+            Accept
+          </ToggleButton>
+          <ToggleButton
+            value="BTO_DENIED"
+            sx={{
+              color: params.row.decision === 'BTO_DENIED' ? '#fff' : 'grey', // White when selected
+              backgroundColor: params.row.decision === 'BTO_DENIED' ? 'red' : '#e0e0e0', // Red when selected
+              '&:hover': {
+                backgroundColor: params.row.decision === 'BTO_DENIED' ? 'rgba(255, 0, 0, 0.8)' : '#d5d5d5',
+                color: params.row.decision === 'BTO_DENIED' ? '#fff' : 'grey',
+              },
+              '&.Mui-selected': {
+                backgroundColor: 'red', // Force red when clicked
+                color: '#fff',
+                '&:hover': {
+                  backgroundColor: 'rgba(255, 0, 0, 0.8)',
+                },
+              },
+              fontWeight: 'bold',
+              borderRadius: '8px',
+            }}
+          >
+            Reject
+          </ToggleButton>
+        </ToggleButtonGroup>
+      ),
+    },
+    {
+      field: 'reset',
+      headerName: 'Reset',
+      width: 55,
+      renderCell: (params) => (
+        <IconButton
+          onClick={() => params.row.handleResetDecision(params.row.id)}
           sx={{
             color: '#8a0303',
-            '&.Mui-checked': {
+            '&:hover': {
               color: '#6c0101',
             },
           }}
-        />
-        <Radio
-          checked={params.row.decision === 'reject'}
-          onChange={() => params.row.handleDecisionChange('reject', params.row.id)}
-          value="reject"
-          name={`decision-${params.row.id}`}
-          inputProps={{ 'aria-label': 'Reject' }}
-          sx={{
-            color: '#8a0303',
-            '&.Mui-checked': {
-              color: '#6c0101',
-            },
-          }}
-        />
-      </div>
-    ),
-  },
-  {
-    field: 'reset',
-    headerName: 'Reset',
-    width: 60,
-    renderCell: (params) => (
-      <IconButton
-        onClick={() => params.row.handleResetDecision(params.row.id)}
-        sx={{
-          color: '#8a0303',
-          '&:hover': {
-            color: '#6c0101',
-          },
-        }}
-      >
-        <RestartAltIcon />
-      </IconButton>
-    ),
-  },
-];
+        >
+          <RestartAltIcon />
+        </IconButton>
+      ),
+    },
+    {
+      field: 'action',
+      headerName: 'Edit',
+      width: 40,
+      renderCell: (params) => {
+        return (
+          <NavLink
+            to={`/coordinatordashboardedithighschoolapplication/${params.row.id}`} // Dynamically pass ID
+            className={({ isActive }) =>
+              `${styles.navItem} ${isActive ? styles.active : ''}`
+            }
+          >
+            <IconButton aria-label="edit">
+              <EditIcon />
+            </IconButton>
+          </NavLink>
+        );
+      },
+    },
+  ];
 
-  // Map rows and add handlers to each row
+  // Add handlers to rows
   const rowsWithHandlers = rows.map((row) => ({
     ...row,
-    handleContactClick, // Add the handler for contact
-    handleDecisionChange, // Add the handler for decision change
-    handleResetDecision, // Add the handler for reset
-    decision: decisions[row.id] || null, // Attach decision state
+    handleContactClick,
+    handleDecisionChange,
+    handleResetDecision,
+    decision: decisions[row.id] || null,
   }));
 
   return (
@@ -294,7 +326,8 @@ const columns = [
         }}
       >
         <DataGrid
-          rows={rowsWithHandlers} // Pass rows with handlers
+          rows={rowsWithHandlers}
+          getRowId={(row) => row.id} // Use the unique id from data
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5, 10]}
@@ -312,7 +345,7 @@ const columns = [
               display: 'block',
             },
             '& .MuiDataGrid-row:nth-of-type(odd)': {
-              backgroundColor: '#fce4e4', // Highlight every other row with light red
+              backgroundColor: '#fce4e4',
             },
             '& .MuiDataGrid-row:hover': {
               backgroundColor: '#f9d5d5',

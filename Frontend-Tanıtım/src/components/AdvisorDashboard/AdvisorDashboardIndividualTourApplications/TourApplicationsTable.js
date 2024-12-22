@@ -181,22 +181,22 @@ const TourApplicationsTable = ({ rows }) => {
 
 // Columns
 const columns = [
-  { field: 'name', headerName: 'Student Name', width: 130 },
-  { field: 'date', headerName: 'Tour Date', width: 90 },
-  { field: 'timeSlot', headerName: 'Tour Time', width: 100 },
+  { field: 'name', headerName: 'Student Name', width: 150 },
+  { field: 'date', headerName: 'Tour Date', width: 120 },
+  { field: 'timeSlot', headerName: 'Tour Time', width: 120 },
   { field: 'city', headerName: 'City', width: 100 },
   { field: 'departmentOfInterest', headerName: 'Department of Interest', width: 160 },
-  { field: 'numberOfAttendees', headerName: 'Attendees', width: 85 },
+  { field: 'numberOfAttendees', headerName: 'Attendees', width: 100 },
   {
     field: 'contact',
     headerName: 'Contact',
-    width: 70,
+    width: 90,
     renderCell: (params) => (
       <div className={styles.contactButtons}>
-        <IconButton onClick={() => params.row.handleContactClick('phone', params.row)}>
+        <IconButton onClick={() => handleContactClick('phone', params.row)}>
           <FaPhoneAlt className={styles.contactIcon} />
         </IconButton>
-        <IconButton onClick={() => params.row.handleContactClick('email', params.row)}>
+        <IconButton onClick={() => handleContactClick('email', params.row)}>
           <FaEnvelope className={styles.contactIcon} />
         </IconButton>
       </div>
@@ -210,29 +210,15 @@ const columns = [
       <div>
         <Radio
           checked={params.row.decision === 'accept'}
-          onChange={() => params.row.handleDecisionChange('accept', params.row.id)}
+          onChange={() => handleDecisionChange('accept', params.row.id)}
           value="accept"
           name={`decision-${params.row.id}`}
-          inputProps={{ 'aria-label': 'Accept' }}
-          sx={{
-            color: '#8a0303',
-            '&.Mui-checked': {
-              color: '#6c0101',
-            },
-          }}
         />
         <Radio
           checked={params.row.decision === 'reject'}
-          onChange={() => params.row.handleDecisionChange('reject', params.row.id)}
+          onChange={() => handleDecisionChange('reject', params.row.id)}
           value="reject"
           name={`decision-${params.row.id}`}
-          inputProps={{ 'aria-label': 'Reject' }}
-          sx={{
-            color: '#8a0303',
-            '&.Mui-checked': {
-              color: '#6c0101',
-            },
-          }}
         />
       </div>
     ),
@@ -243,7 +229,7 @@ const columns = [
     width: 60,
     renderCell: (params) => (
       <IconButton
-        onClick={() => params.row.handleResetDecision(params.row.id)}
+        onClick={() => handleResetDecision(params.row.id)}
         sx={{
           color: '#8a0303',
           '&:hover': {
@@ -258,7 +244,7 @@ const columns = [
   {
     field: 'comments',
     headerName: 'Comments',
-    width: 90,
+    width: 140,
     renderCell: (params) => (
       params.row.comments && (
         <Tooltip title={params.row.comments} arrow>
@@ -268,6 +254,7 @@ const columns = [
     ),
   },
 ];
+
   // Map rows and add handlers to each row
   const rowsWithHandlers = rows.map((row) => ({
     ...row,

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../AdvisorDashboardCommon/Sidebar';
 import Header from './Header';
-import TourApplicationsTable from './TourApplicationsTable';
+import TourApplicationsTable from './TourApplicationsTable'; // Correct component import
 import styles from './AdvisorDashboardTourApplications.module.css';
 import axios from 'axios';
 
@@ -15,8 +15,16 @@ const DashboardTourApplications = () => {
     const fetchApplications = async () => {
       try {
         const response = await axios.get('http://localhost:8080/v1/individualform');
-        setApplications(response.data);
-        setFilteredApplications(response.data);
+        const data = response.data;
+
+        // Add unique id for DataGrid
+        const dataWithId = data.map((item, index) => ({
+          ...item,
+          id: item.applicationFormID || index, // Ensure each row has a unique 'id'
+        }));
+
+        setApplications(dataWithId);
+        setFilteredApplications(dataWithId);
         setIsLoading(false);
       } catch (err) {
         console.error('Error fetching applications:', err);
@@ -44,8 +52,8 @@ const DashboardTourApplications = () => {
     <div className={styles.dashboardContainer}>
       <Sidebar />
       <div className={styles.mainContent}>
-        <Header 
-          title="Individual Tour Applications" 
+        <Header
+          title="Individual Tour Applications"
           onSearchSelection={handleSearchSelection}
           applications={applications}
         />
