@@ -37,12 +37,15 @@ const DashboardTourApplications = () => {
         setTourRows(updatedTourRows);
         setFilteredRows(updatedTourRows);
         alert('Applications confirmed successfully!');
+        fetchTourRows();
       } else {
         alert('Failed to confirm applications.');
+        fetchTourRows();
       }
     } catch (error) {
       console.error('Error confirming applications:', error);
       alert('An error occurred while confirming applications.');
+      fetchTourRows();
     }
   };
 

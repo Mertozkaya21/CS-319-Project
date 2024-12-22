@@ -6,7 +6,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.entities.event.Tour;
+import com.example.demo.entities.form.GroupForm;
+
 import java.util.List;
+import java.util.Optional;
 import java.time.LocalDate;
 import com.example.demo.enums.EventStatus;
 import com.example.demo.enums.TourHours;
@@ -25,6 +28,8 @@ public interface TourRepository extends JpaRepository<Tour, Long>{
     List<Tour> findByTourType(TourType tourType);
     List<Tour> findByVisitorSchool(Highschool visitorSchool);
     List<Tour> findByDateAndTourHours(LocalDate date, TourHours hours);
+    Optional<Tour> findById(Long id);
+    <S extends GroupForm> S save(S groupForm);
 
 
     @Query(value = "SELECT MONTH(date) AS month, COUNT(*) AS count " +

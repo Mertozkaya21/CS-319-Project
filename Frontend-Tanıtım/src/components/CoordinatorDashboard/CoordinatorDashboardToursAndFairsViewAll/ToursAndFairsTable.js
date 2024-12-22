@@ -148,7 +148,7 @@ export const eventRows = [
     comments: 'Special request for refreshments.' 
   },
 ];
-const ToursAndFairsTable = ({ rows }) => {
+const ToursAndFairsTable = ({ rows, setSelectedRows }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogContent, setDialogContent] = useState('');
 
@@ -159,6 +159,11 @@ const ToursAndFairsTable = ({ rows }) => {
         : `Email: ${row.email}`;
     setDialogContent(content);
     setOpenDialog(true);
+  };
+
+  const handleSelectionModelChange = (newSelectionModel) => {
+    setSelectedRows(newSelectionModel);
+    console.log("Selected Row IDs:", newSelectionModel); // Seçilen satır ID'lerini log'la
   };
 
   const handleCloseDialog = () => {
@@ -220,6 +225,10 @@ const ToursAndFairsTable = ({ rows }) => {
           rowsPerPageOptions={[5, 10]}
           checkboxSelection
           disableSelectionOnClick
+          onRowSelectionModelChange={(newSelectionModel) => {
+            console.log("Row Selection Changed:", newSelectionModel);
+            setSelectedRows(newSelectionModel);
+          }} 
           sx={{
             '& .MuiDataGrid-columnHeaders': {
               backgroundColor: '#f7f7f7',
