@@ -1,28 +1,33 @@
 package com.example.demo.services;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.HighschoolDTO;
 import com.example.demo.entities.event.Tour;
+import com.example.demo.entities.form.GroupForm;
 import com.example.demo.entities.highschool.Counselor;
 import com.example.demo.entities.highschool.Highschool;
 import com.example.demo.enums.City;
 import com.example.demo.exceptions.HighschoolNotFoundException;
+import com.example.demo.repositories.form.GroupFormRepository;
 import com.example.demo.repositories.highschool.CounselorRepository;
 import com.example.demo.repositories.highschool.HighschoolRepository;
 
 @Service
 public class HighschoolService {
     
-    private HighschoolRepository highschoolRepository;
+    private final HighschoolRepository highschoolRepository;
     private final CounselorRepository counselorRepository;
+    private final GroupFormRepository groupFormRepository;
 
-    public HighschoolService(HighschoolRepository hRepository, CounselorRepository counselorRepository) {
+    public HighschoolService(HighschoolRepository hRepository, CounselorRepository counselorRepository, GroupFormRepository groupFormRepository) {
         this.highschoolRepository = hRepository;
         this.counselorRepository = counselorRepository;
+        this.groupFormRepository = groupFormRepository;
     }
 
     public List<Highschool> getAllHighschool() {
@@ -43,15 +48,13 @@ public class HighschoolService {
 
 
     public Highschool assignCounselorToHighschool(Long highschoolId, Counselor counselor) throws HighschoolNotFoundException {
-        Highschool highschool = highschoolRepository.findById(highschoolId)
-                .orElseThrow(() -> new HighschoolNotFoundException("Highschool with ID " + highschoolId + " not found"));
+        Highschool highschool = getHighschoolByID(highschoolId);
         highschool.setCounselor(counselor);
         return highschoolRepository.save(highschool);
     } 
 
     public Highschool updateCounselor(Long highschoolId, Counselor updatedCounselor) throws HighschoolNotFoundException {
-        Highschool highschool = highschoolRepository.findById(highschoolId)
-                .orElseThrow(() -> new HighschoolNotFoundException("Highschool with ID " + highschoolId + " not found"));
+        Highschool highschool = getHighschoolByID(highschoolId);
         Counselor currentCounselor = highschool.getCounselor();
         if (currentCounselor != null) {
             currentCounselor.setCounselorName(updatedCounselor.getCounselorName());
@@ -71,6 +74,7 @@ public class HighschoolService {
         highschool.getCounselor().setEmail(highschoolDTO.getCounselorEmail());
         highschool.getCounselor().setPhone(highschoolDTO.getCounselorPhoneNo());
         highschool.setDateUpDated(LocalDate.now());
+        highschool.setLgsPercentile(highschoolDTO.getLgsPercentile());
         return highschoolRepository.save(highschool);
     }
 
@@ -139,7 +143,9 @@ public class HighschoolService {
 
     public Highschool saveHighschool(HighschoolDTO highschoolDTO) throws HighschoolNotFoundException {
         Highschool temp = highschoolRepository.findByName(highschoolDTO.getName());
-        if (temp != null){
+
+        if (temp!=null && (temp.getCity() == highschoolDTO.getCity() &&
+            temp.getName().equals(highschoolDTO.getName()) )) {
             throw new HighschoolNotFoundException("Highschool with name '" + highschoolDTO.getName() + "' already exists.");
         }
 
@@ -161,18 +167,65 @@ public class HighschoolService {
     }
     
 
-    public boolean deleteHighschoolByID(Long id) {
-        if (highschoolRepository.existsById(id)) {
-            highschoolRepository.deleteById(id);
-            return true;
+    public void deleteHighschoolById(Long id) {
+        if (!highschoolRepository.existsById(id)) {
+            throw new IllegalArgumentException("Highschool with ID " + id + " does not exist.");
         }
-        return false;
+    
+        List<GroupForm> groupForms = groupFormRepository.findByHighschoolId(id);
+        if (!groupForms.isEmpty()) {
+            for (GroupForm groupForm : groupForms) {
+                groupForm.setHighschool(null); 
+                groupFormRepository.save(groupForm); 
+            }
+        }
+    
+        highschoolRepository.deleteById(id);
+    }
+    
+
+    public boolean checkHighschoolHasGroupForms(Long id) {
+        if (!highschoolRepository.existsById(id)) {
+            throw new IllegalArgumentException("Highschool with ID " + id + " does not exist.");
+        }
+    
+        List<GroupForm> groupForms = groupFormRepository.findByHighschoolId(id);
+        return !groupForms.isEmpty();
+    }
+
+    public List<Long> checkHighschoolsHaveGroupForms(List<Long> highschoolIds) {
+        List<Long> idsWithGroupForms = new ArrayList<>();
+    
+        for (Long id : highschoolIds) {
+            if (!highschoolRepository.existsById(id)) {
+                continue;
+            }
+    
+            List<GroupForm> groupForms = groupFormRepository.findByHighschoolId(id);
+            if (!groupForms.isEmpty()) {
+                idsWithGroupForms.add(id);
+            }
+        }
+    
+        return idsWithGroupForms;
     }
 
     public void deleteHighschoolsByIds(List<Long> highschoolIds) {
         for (Long id : highschoolIds) {
-            if(highschoolRepository.existsById(id))
-                highschoolRepository.deleteById(id);
+            if (!highschoolRepository.existsById(id)) {
+                continue;
+            }
+    
+            List<GroupForm> groupForms = groupFormRepository.findByHighschoolId(id);
+            if (!groupForms.isEmpty()) {
+                for (GroupForm groupForm : groupForms) {
+                    groupForm.setHighschool(null); 
+                    groupFormRepository.save(groupForm); 
+                }
+            }
+    
+            highschoolRepository.deleteById(id);
         }
     }
+
 }

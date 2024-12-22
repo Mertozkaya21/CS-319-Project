@@ -12,6 +12,9 @@ public class SortByLgsPercentile implements SortStrategy{
     @Override
     public List<GroupForm> sort(List<GroupForm> applicationForms) {
         Collections.sort(applicationForms, (a, b) -> Double.compare(a.getHighschool().getLgsPercentile(), b.getHighschool().getLgsPercentile()));
+        for (GroupForm form : applicationForms) {
+            form.setSortType("byLgsPercentile");
+        }
         return applicationForms;    }
 
 }

@@ -2,7 +2,9 @@ package com.example.demo.services;
 
 import com.example.demo.entities.event.Tour;
 import com.example.demo.entities.highschool.Highschool;
+import com.example.demo.entities.user.Advisor;
 import com.example.demo.entities.user.Guide;
+import com.example.demo.entities.user.Trainee;
 import com.example.demo.enums.EventStatus;
 import com.example.demo.enums.TourHours;
 import com.example.demo.enums.TourType;
@@ -10,8 +12,9 @@ import com.example.demo.exceptions.GuideNotFoundException;
 import com.example.demo.exceptions.TourNotFoundException;
 import com.example.demo.exceptions.UserNotFoundException;
 import com.example.demo.repositories.event.TourRepository;
-import com.example.demo.repositories.user.GuideRepository;
-
+import com.example.demo.services.UsersService.AdvisorService;
+import com.example.demo.services.UsersService.GuideService;
+import com.example.demo.services.UsersService.TraineeService;
 
 import org.springframework.stereotype.Service;
 
@@ -23,11 +26,16 @@ import java.util.List;
 public class TourService {
 
     private final TourRepository tourRepository;
-    private final GuideRepository guideRepository;
+    private final GuideService guideService;
+    private final TraineeService traineeService;
+    private final AdvisorService advisorService;
 
-    public TourService(TourRepository tourRepository,GuideRepository repository) {
+    public TourService(TourRepository tourRepository,GuideService guideService, TraineeService traineeService,
+                        AdvisorService advisorService) {
         this.tourRepository = tourRepository;
-        this.guideRepository = repository;
+        this.guideService = guideService;
+        this.traineeService = traineeService;
+        this.advisorService = advisorService;
     }
 
     public List<Tour> getAllTours() {
@@ -70,8 +78,7 @@ public class TourService {
 
     // I do not think that it is logical to update an existing tour maybe we can delete
     public Tour updateTour(Long id, Tour updatedTour) {
-        Tour tour = tourRepository.findById(id)
-                    .orElseThrow(() -> new TourNotFoundException("Tour with ID " + id + " not found"));
+        Tour tour = getTourById(id);
         tour.setTourType(updatedTour.getTourType());
         tour.setTourHours(updatedTour.getTourHours());
         tour.setVisitorSchool(updatedTour.getVisitorSchool());
@@ -91,8 +98,7 @@ public class TourService {
     }
 
     public Tour updateTourStatus(Long tourId, EventStatus status) {
-        Tour tour = tourRepository.findById(tourId)
-                .orElseThrow(() -> new TourNotFoundException("Tour with ID " + tourId + " not found."));
+        Tour tour = getTourById(tourId);
 
         switch (status) {
             case ASSIGNED -> {
@@ -117,17 +123,19 @@ public class TourService {
     }
     
     public Tour cancelTour(Long tourId) {
-        Tour tour = tourRepository.findById(tourId)
-                .orElseThrow(() -> new TourNotFoundException("Tour with ID " + tourId + " not found."));
+        Tour tour = getTourById(tourId);
         tour.setStatus(EventStatus.CANCELLED);
         return tourRepository.save(tour);
     }
 
-    public Tour removeGuideFromTour(Long tourId, Guide guide) throws GuideNotFoundException{
+    public Tour removeGuideFromTour(Long tourId, Long guideId) throws GuideNotFoundException{
         Tour tour = getTourById(tourId);
+        Guide guide = getGuideById(tourId);
+
         if (!tour.getGuides().remove(guide)) {
             throw new GuideNotFoundException("Guide with ID " + guide.getId() + " is not assigned to the tour with ID " + tourId);
         }
+
         return tourRepository.save(tour);
     }
 
@@ -153,15 +161,50 @@ public class TourService {
         return tourRepository.save(tour);
     }
 
+    public Tour assignTraineeToTourByAdvisor(Long tourId, Long traineeId, Long advisorId) 
+        throws TourNotFoundException, UserNotFoundException {
+
+        Tour tour = getTourById(tourId);
+        Trainee trainee = traineeService.getById(traineeId);
+        Advisor advisor = advisorService.getById(advisorId);
+
+        if (!advisor.getTrainees().contains(trainee)) {
+            throw new IllegalArgumentException("Trainee is not assigned to this advisor");
+        }
+
+        if (tour.getTrainees().contains(trainee)) {
+            throw new IllegalArgumentException("Trainee is already assigned to this event");
+        }
+
+        tour.getTrainees().add(trainee);
+
+        traineeService.updateTraineeStatus(trainee.getId());
+
+        return tourRepository.save(tour);
+    }
+
+    public Tour removeTraineeFromTour(Long tourId, Long traineeId) throws TourNotFoundException, UserNotFoundException {
+        Tour tour = getTourById(tourId);
+        Trainee trainee = traineeService.getById(traineeId);
+    
+        if (!tour.getTrainees().remove(trainee)) {
+            throw new IllegalArgumentException("Trainee is not assigned to this event");
+        }
+    
+        traineeService.updateTraineeStatus(trainee.getId());
+    
+        return tourRepository.save(tour);
+    }
+
     public Tour assignGuidesToTour(Long tourId, List<Long> guideIds) {
         Tour tour = getTourById(tourId);
-        List<Guide> guides = guideRepository.findAllById(guideIds);
+        List<Guide> guides = guideService.findAllByIds(guideIds);
         tour.getGuides().addAll(guides);
         return tourRepository.save(tour);
     }
     
     public Guide getGuideById(Long guideId) throws GuideNotFoundException {
-        return guideRepository.findById(guideId)
+        return guideService.findById(guideId)
                 .orElseThrow(() -> new GuideNotFoundException("Guide with ID " + guideId + " not found"));
     }
 
@@ -174,8 +217,7 @@ public class TourService {
     }
 
     public Tour assignGuideToTour(Long tourId, Guide guide) {
-        Tour tour = tourRepository.findById(tourId)
-                .orElseThrow(() ->  new TourNotFoundException("Tour with ID " + tourId + " not found"));;
+        Tour tour = getTourById(tourId);
         tour.getGuides().add(guide);
         return tourRepository.save(tour);
     }

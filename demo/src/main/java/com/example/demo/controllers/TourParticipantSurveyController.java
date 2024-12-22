@@ -57,9 +57,4 @@ public class TourParticipantSurveyController {
     public ResponseEntity<Map<String, Long>> getInfoCardStats() {
         return ResponseEntity.ok(surveyService.getInfoCardStats());
     }
-
-    // @GetMapping("/departments")
-    // public ResponseEntity<List<Map<String, Object>>> getDepartmentDistribution() {
-    //     return ResponseEntity.ok(surveyService.getDepartmentDistribution());
-    // }
 }

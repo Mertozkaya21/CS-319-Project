@@ -49,8 +49,8 @@ public class GroupFormController {
         return ResponseEntity.ok(forms);
     }
 
-    @PostMapping("/changeparameter")
-    public ResponseEntity<Void> changeSortingParameter(@RequestBody String newParameter) {
+    @PostMapping("/changeparameter/{newParameter}")
+    public ResponseEntity<Void> changeSortingParameter(@PathVariable String newParameter) {
         if ("byDistance".equals(newParameter)) {
             groupFormService.setSortingStrategy(new SortByDistance());
         } else if ("byLgsPercentile".equals(newParameter)) {
@@ -59,8 +59,6 @@ public class GroupFormController {
             groupFormService.setSortingStrategy(new SortBySubmissionTime());
         } else if ("byPriorityScore".equals(newParameter)) {
             groupFormService.setSortingStrategy(new SortByPriorityScore());
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         return ResponseEntity.noContent().build();
     }

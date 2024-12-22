@@ -48,6 +48,12 @@ public class AdvisorService implements RoleService {
     }
 
     @Override
+    public Advisor getById(Long id) throws UserNotFoundException {
+        return advisorRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("Advisor not found with ID: " + id));
+    }
+
+    @Override
     public Optional<Advisor> findById(Long id) {
         return advisorRepository.findById(id);
     }

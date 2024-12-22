@@ -12,7 +12,8 @@ public class UserUpdateDTO {
     private String lastName;
     private String email;
     private String phoneNo;
+    private String password;
     private String undertakenDay;
-    private String advisorId; //
-    private String status; //bu ikisinin ismi aynı kalsın
+    private Long advisorId; 
+    private String status; 
 }

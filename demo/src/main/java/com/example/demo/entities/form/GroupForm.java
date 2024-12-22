@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -40,14 +41,15 @@ public class GroupForm extends ApplicationForm{
         this.setCity(groupFormDTO.getCity());
         this.setNumberOfAttendees(Integer.parseInt(groupFormDTO.getNumberOfAttendees()));
         this.setSubmitTimeDate(LocalDate.now());
+        this.sortType="byLgsPercentile";
     }
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "counselorID", nullable = false)
     @JsonIgnore
     private Counselor counselor;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "highschoolID", nullable = true)
     @JsonIgnore
     private Highschool highschool;
@@ -66,4 +68,19 @@ public class GroupForm extends ApplicationForm{
     public String getHighschoolName() {
         return highschool != null ? highschool.getName() : null;
     }
+
+    @JsonGetter("newParameter")
+    public String getNewParameter() {
+        if(this.sortType.equals("byLgsPercentile"))
+            return String.valueOf(this.highschool.getLgsPercentile()); 
+        else if(this.sortType.equals("byDistance"))
+            return String.valueOf(this.highschool.getCity().getDistanceFromAnkara());  
+        else if(this.sortType.equals("bySubmitTime"))
+            return String.valueOf(this.getSubmitTimeDate()); 
+        else
+            return String.valueOf(this.getPriorityScore()); 
+    }
+
+    @JsonIgnore
+    private String sortType = "byLgsPercentile";
 }

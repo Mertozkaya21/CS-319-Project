@@ -94,7 +94,7 @@ public enum City {
         return distanceFromAnkara;
     }
 
-    @JsonCreator // For deserialization: allows case-insensitive and display name matching
+    @JsonCreator 
     public static City fromString(String value) {
         for (City city : City.values()) {
             if (city.name().equalsIgnoreCase(value) || city.getDisplayName().equalsIgnoreCase(value)) {

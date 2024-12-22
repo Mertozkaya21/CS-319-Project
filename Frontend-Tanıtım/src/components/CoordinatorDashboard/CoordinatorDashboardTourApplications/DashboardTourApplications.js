@@ -45,24 +45,24 @@ const DashboardTourApplications = () => {
     }
   };
 
+  const fetchTourRows = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/v1/groupform'); 
+      const data = await response.json();
+
+      setTourRows(data);
+      setFilteredRows(data);
+
+      setLoading(false); // Set loading to false after data is fetched
+    } catch (error) {
+      console.error('Error fetching tour data:', error);
+      setLoading(false); // Stop loading in case of an error
+    }
+  };
+
   useEffect(() => {
-        const fetchTourRows = async () => {
-          try {
-            const response = await fetch('http://localhost:8080/v1/groupform'); 
-            const data = await response.json();
-    
-            setTourRows(data);
-            setFilteredRows(data);
-    
-            setLoading(false); // Set loading to false after data is fetched
-          } catch (error) {
-            console.error('Error fetching tour data:', error);
-            setLoading(false); // Stop loading in case of an error
-          }
-        };
-    
-        fetchTourRows(); // Call the function to fetch data
-      }, []); 
+    fetchTourRows(); // Call the function to fetch data
+  }, []);
 
       if (loading) {
         return <div>Loading...</div>; // Show loading indicator while fetching data
@@ -85,7 +85,8 @@ const DashboardTourApplications = () => {
 
         {/* Tour Applications Table */}
         <TourApplicationsTable rows={filteredRows} 
-        setSelectedRows={setSelectedRows}/> {/* Render rows dynamically */}
+        setSelectedRows={setSelectedRows}
+        fetchTourRows={fetchTourRows}/> {/* Render rows dynamically */}
       </div>
     </div>
   );

@@ -79,14 +79,39 @@ export const tourApplicationsRows = [
   },
 ];
 
-const TourApplicationsTable = ({ rows, setSelectedRows }) => {
+const TourApplicationsTable = ({ rows, setSelectedRows, fetchTourRows}) => {
+  const [formData, setFormData] = useState({
+      newParameter: "",
+    });
+
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogContent, setDialogContent] = useState('');
   const [decisions, setDecisions] = useState({}); // Store decisions for each row
-  const [selectedColumn, setSelectedColumn] = useState('priority'); // State for dropdown selection
+  const [selectedColumn, setSelectedColumn] = useState(); // State for dropdown selection
 
-  const handleColumnChange = (event) => {
-    setSelectedColumn(event.target.value); // Update selected column type
+  const handleColumnChange = async (event) => {
+    const newValue = event.target.value;
+    setFormData((prevData) => ({ ...prevData, newParameter: newValue })); // Update selected column type
+    setSelectedColumn(newValue); 
+    console.log(formData);
+    try {
+      const response = await fetch(`http://localhost:8080/v1/groupform/changeparameter/${selectedColumn}`, {
+        method: 'POST',
+      });
+  
+      if (response.ok) {
+        console.log('Backend updated successfully:', response.data);
+        alert('Applications are sorted by new parameter!');
+        fetchTourRows();
+      } else {
+        console.error('Unexpected response status:', response.status);
+        alert('Unexpected error while updating column.');
+      }
+    } catch (error) {
+      // Hata durumu
+      console.error('Error updating column:', error);
+      alert('Failed to update column. Please try again later.');
+    }
   };
 
   const handleContactClick = (type, row) => {
@@ -123,7 +148,7 @@ const TourApplicationsTable = ({ rows, setSelectedRows }) => {
 const columns = [
   { field: 'name', headerName: 'High School Name', width: 150 },
   {
-    field: 'priority',
+    field: 'newParameter',
     headerName: (
       <div>
         <Select
@@ -136,14 +161,16 @@ const columns = [
             fontWeight: 'bold',
           }}
         >
-          <MenuItem value="priority">Priority</MenuItem>
-          <MenuItem value="distance">Distance</MenuItem>
-          <MenuItem value="lgsPercentile">LGS Percentile</MenuItem>
+          <MenuItem value="byPriorityScore">By Priority Score</MenuItem>
+          <MenuItem value="byDistance">By Distance</MenuItem>
+          <MenuItem value="byLgsPercentile">By LGS Percentile</MenuItem>
+          <MenuItem value="bySubmitTime">By Submit Time</MenuItem>
+          
         </Select>
       </div>
     ),
-    width: selectedColumn === 'priority' ? 170 : selectedColumn === 'distance' ? 180 : 220,
-    renderCell: (params) => <div>{params.row[selectedColumn]}</div>,
+    width: selectedColumn === 'byPriorityScore' ? 185 : selectedColumn === 'byDistance' ? 195 : 235, //TODO
+    renderCell: (params) => <div>{params.row.newParameter}</div>,
   },
   { field: 'eventDate', headerName: 'Tour Date', width: 110 },
   { field: 'tourHour', headerName: 'Tour Time', width: 100 },

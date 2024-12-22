@@ -3,6 +3,7 @@ package com.example.demo.services.UsersService;
 import com.example.demo.entities.user.Guide;
 import com.example.demo.entities.user.User;
 import com.example.demo.exceptions.GuideNotFoundException;
+import com.example.demo.exceptions.UserNotFoundException;
 import com.example.demo.repositories.user.GuideRepository;
 
 import org.springframework.stereotype.Service;
@@ -32,6 +33,12 @@ public class GuideService implements RoleService {
     @Override
     public List<Guide> findAll() {
         return guideRepository.findAll();
+    }
+
+    @Override
+    public Guide getById(Long id) throws UserNotFoundException {
+        return guideRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("Guide not found with ID: " + id));
     }
 
     @Override
@@ -69,5 +76,9 @@ public class GuideService implements RoleService {
         guide.updateAverageRating();
         guideRepository.save(guide);
     }
-    
+
+    public List<Guide> findAllByIds(List<Long> guideIds) {
+        return guideRepository.findAllByIdIn(guideIds);
+    }
+
 }

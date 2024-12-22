@@ -9,4 +9,5 @@ import java.util.List;
 public interface GuideRepository extends JpaRepository<Guide, Long>{
     List<Guide> findByEmail(String email);
     List<Guide> findByPassword(String password);
+    List<Guide> findAllByIdIn(List<Long> ids);
 }

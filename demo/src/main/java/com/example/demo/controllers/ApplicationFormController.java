@@ -14,12 +14,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.UpdateApplicationFormStatusDTO;
 import com.example.demo.entities.form.ApplicationForm;
 import com.example.demo.enums.ApplicationFormStatus;
 import com.example.demo.enums.Department;
 import com.example.demo.exceptions.ApplicationFormNotFoundException;
 import com.example.demo.services.applicationformservice.ApplicationFormService;
 import com.example.demo.services.applicationformservice.applicationformsorter.*;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping("/v1/applicationform")
@@ -42,6 +45,24 @@ public class ApplicationFormController {
     @GetMapping
     public ResponseEntity<List<ApplicationForm>> getAllApplicationForms() {
         return ResponseEntity.ok(applicationFormService.getAllApplicationForms());
+    }
+
+    @GetMapping("/status")
+    public ResponseEntity<List<ApplicationForm>> getApplicationFormsByStatus(@RequestParam("stat") ApplicationFormStatus stat) {
+        List<ApplicationForm> forms = applicationFormService.getAllApplicationFormByStatus(stat);
+        if (forms.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(forms);
+    }
+
+    @GetMapping("/pending")
+    public ResponseEntity<List<ApplicationForm>> getScheduledApplicationForms() {
+        List<ApplicationForm> scheduledForms = applicationFormService.getAllApplicationFormByStatus(ApplicationFormStatus.PENDING);
+        if (scheduledForms.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(scheduledForms);
     }
 
     @GetMapping("/{id}/status") 
@@ -81,9 +102,21 @@ public class ApplicationFormController {
             return ResponseEntity.noContent().build();
         }
         else{
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+    @PostMapping("/update-statuses")
+    public ResponseEntity<List<ApplicationForm>> updateApplicationFormStatuses(
+            @RequestBody UpdateApplicationFormStatusDTO dto) {
+        List<ApplicationForm> updatedForms = applicationFormService.updateStatuses(dto.getIds(), dto.getStatus());
+    
+        if (updatedForms.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(updatedForms);
+    }
+    
 
     @DeleteMapping("/{id}") 
     public ResponseEntity<Void> deleteApplicationForm(@PathVariable Long id) {

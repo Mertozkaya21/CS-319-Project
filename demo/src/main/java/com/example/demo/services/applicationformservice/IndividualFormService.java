@@ -2,6 +2,7 @@ package com.example.demo.services.applicationformservice;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -9,6 +10,7 @@ import com.example.demo.dto.IndividualFormDTO;
 import com.example.demo.entities.event.Tour;
 import com.example.demo.entities.form.IndividualForm;
 import com.example.demo.enums.ApplicationFormStatus;
+import com.example.demo.enums.Department;
 import com.example.demo.enums.EventStatus;
 import com.example.demo.enums.TourType;
 import com.example.demo.exceptions.ApplicationFormNotFoundException;
@@ -27,8 +29,19 @@ public class IndividualFormService {
         this.tourRepository = tourRepository;
     }
 
+
     public List<IndividualForm> getAllIndividualForms() {
         return individualFormRepository.findAll();
+    }
+    
+    public List<IndividualForm> getFormsByDepartment(Department department) {
+        return individualFormRepository.findByDepartmentOfInterest(department);
+    }
+
+    public List<IndividualForm> getIndividualFormsByDepartment(Department department) {
+        return  getAllIndividualForms().stream()
+                .filter(form -> form.getDepartmentOfInterest() == department)
+                .collect(Collectors.toList());
     }
 
     public IndividualForm getIndividualFormById(Long id) throws ApplicationFormNotFoundException {
@@ -77,5 +90,13 @@ public class IndividualFormService {
             return true;
         }
         return false;
+    }
+
+    public List<IndividualForm> getAllApplicationFormByStatus(ApplicationFormStatus stat) {
+        return individualFormRepository.findByStatus(stat);
+    }
+
+    public IndividualForm save(IndividualForm form) {
+        return individualFormRepository.save(form);
     }
 }

@@ -23,7 +23,7 @@ const DashboardHighSchool = () => {
 
   const deleteSelectedHighschools = async () => {
     try {
-      const response = await fetch('http://localhost:8080/v1/highschool/remove', {
+      const response = await fetch(`http://localhost:8080/v1/highschool/remove`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
