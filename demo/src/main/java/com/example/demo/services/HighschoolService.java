@@ -139,8 +139,8 @@ public class HighschoolService {
     public Highschool saveHighschool(HighschoolDTO highschoolDTO) throws HighschoolNotFoundException {
         Highschool temp = highschoolRepository.findByName(highschoolDTO.getName());
 
-        if (temp.getCity() == highschoolDTO.getCity() &&
-            temp.getName() == highschoolDTO.getName()) {
+        if (temp!=null && (temp.getCity() == highschoolDTO.getCity() &&
+            temp.getName().equals(highschoolDTO.getName()) )) {
             throw new HighschoolNotFoundException("Highschool with name '" + highschoolDTO.getName() + "' already exists.");
         }
 

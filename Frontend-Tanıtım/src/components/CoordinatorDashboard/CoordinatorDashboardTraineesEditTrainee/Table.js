@@ -40,7 +40,7 @@ const Table = () => {
     phone: "",
     email: "",
     status: "",
-    advisorResponsible: "",
+    advisorId: "",
   });
   const [loading, setLoading] = useState(true);
 
@@ -234,14 +234,12 @@ const Table = () => {
         {/* Dropdown for Responsible Advisor */}
         <TextField
           select
-          name="advisorResponsible"
+          name="advisorId"
           label="Advisor Responsible"
-          value={`${formData.advisor.firstName} ${formData.advisor.lastName}`}
-          /*onChange={(event) => {
-            const selectedId = event.target.value;
-            setFormData((prevFormData) => ({ ...prevFormData, advisorId: selectedId }));
-          }}*/
-          onChange={handleInputChange}
+          value={formData.advisorId}
+          onChange={(event) => {
+            setFormData({ ...formData, advisorId: event.target.value });
+          }}
           fullWidth
           InputProps={{
             startAdornment: (
@@ -252,7 +250,7 @@ const Table = () => {
           }}
         >
           {advisors.map((advisor) => (
-            <MenuItem key={advisor.id} value={advisor.id}>
+            <MenuItem key={advisor.name} value={advisor.id}>
               {advisor.name}
             </MenuItem>
           ))}
