@@ -2,7 +2,6 @@ package com.example.demo.services.applicationformservice;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.GroupFormDTO;
 import com.example.demo.entities.event.Tour;
-import com.example.demo.entities.form.ApplicationForm;
 import com.example.demo.entities.form.GroupForm;
 import com.example.demo.entities.highschool.Highschool;
 import com.example.demo.enums.ApplicationFormStatus;

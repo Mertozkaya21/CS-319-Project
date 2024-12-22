@@ -2,6 +2,8 @@ package com.example.demo.controllers;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,8 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.example.demo.dto.UpdateApplicationFormStatusDTO;
 import com.example.demo.entities.form.ApplicationForm;
 import com.example.demo.enums.ApplicationFormStatus;
 import com.example.demo.enums.Department;
@@ -108,14 +108,22 @@ public class ApplicationFormController {
 
     @PostMapping("/update-statuses")
     public ResponseEntity<List<ApplicationForm>> updateApplicationFormStatuses(
-            @RequestBody UpdateApplicationFormStatusDTO dto) {
-        List<ApplicationForm> updatedForms = applicationFormService.updateStatuses(dto.getStatuses());
-
+            @RequestBody Map<String, String> statuses) {
+    
+        Map<Long, String> statusUpdates = statuses.entrySet().stream()
+                .collect(Collectors.toMap(
+                        entry -> Long.parseLong(entry.getKey()), 
+                        entry -> entry.getValue() 
+                ));
+    
+        List<ApplicationForm> updatedForms = applicationFormService.updateStatuses(statusUpdates);
+    
         if (updatedForms.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(updatedForms);
     }
+    
 
 
     @DeleteMapping("/{id}") 
