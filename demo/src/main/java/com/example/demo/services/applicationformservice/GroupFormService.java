@@ -2,12 +2,14 @@ package com.example.demo.services.applicationformservice;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.GroupFormDTO;
 import com.example.demo.entities.event.Tour;
+import com.example.demo.entities.form.ApplicationForm;
 import com.example.demo.entities.form.GroupForm;
 import com.example.demo.entities.highschool.Counselor;
 import com.example.demo.entities.highschool.Highschool;
@@ -40,7 +42,6 @@ public class GroupFormService {
         this.tourRepository = tourRepository;
     }
     
-
     public List<GroupForm> getGroupFormsByTourHours(LocalDate date, TourHours tourHour){
         return applicationFormSorter.sortApplicationForms(groupFormRepository.findByEventDateAndTourHour(date,tourHour));
     }
@@ -154,7 +155,17 @@ public class GroupFormService {
     }
 
     public List<GroupForm> getAllApplicationFormByStatus(ApplicationFormStatus stat) {
-        return groupFormRepository.findByStatus(stat);
+        List<GroupForm> groupForms = groupFormRepository.findByStatus(stat);
+        List<GroupForm> sortedForms = new ArrayList<>();
+
+        groupForms.stream()
+            .collect(Collectors.groupingBy(form -> new FormDateHourKey(form.getEventDate(), form.getTourHour())))
+            .forEach((key, forms) -> {
+                List<GroupForm> sortedGroup = getGroupFormsByTourHours(key.date, key.tourHour);
+                sortedForms.addAll(sortedGroup);
+            });
+
+        return sortedForms;
     }
 
 

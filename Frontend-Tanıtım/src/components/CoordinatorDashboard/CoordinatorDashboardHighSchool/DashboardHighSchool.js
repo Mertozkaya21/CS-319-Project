@@ -22,6 +22,13 @@ const DashboardHighSchool = () => {
   };
 
   const deleteSelectedHighschools = async () => {
+    const confirmation = window.confirm(
+      "If the selected high schools have ongoing application(s), they will also be deleted. Are you sure you want to proceed?"
+    );
+  
+    if (!confirmation) {
+      return; // If user cancels, stop the deletion process
+    }
     try {
       const response = await fetch(`http://localhost:8080/v1/highschool/remove`, {
         method: 'DELETE',

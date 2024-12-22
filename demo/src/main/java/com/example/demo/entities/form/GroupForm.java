@@ -71,16 +71,16 @@ public class GroupForm extends ApplicationForm{
 
     @JsonGetter("newParameter")
     public String getNewParameter() {
-        if(this.sortType.equals("byLgsPercentile"))
+        if(sortType!=null && this.sortType.equals("byLgsPercentile"))
             return String.valueOf(this.highschool.getLgsPercentile()); 
-        else if(this.sortType.equals("byDistance"))
+        else if(sortType!=null && this.sortType.equals("byDistance"))
             return String.valueOf(this.highschool.getCity().getDistanceFromAnkara());  
-        else if(this.sortType.equals("bySubmitTime"))
+        else if(sortType!=null && this.sortType.equals("bySubmitTime"))
             return String.valueOf(this.getSubmitTimeDate()); 
         else
             return String.valueOf(this.getPriorityScore()); 
     }
 
     @JsonIgnore
-    private String sortType = "byLgsPercentile";
+    private String sortType = "byLgsPercentile"; //default value
 }

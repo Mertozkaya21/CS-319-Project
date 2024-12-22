@@ -79,28 +79,27 @@ export const tourApplicationsRows = [
   },
 ];
 
-const TourApplicationsTable = ({ rows, setSelectedRows, fetchTourRows}) => {
+const TourApplicationsTable = ({ rows, selectedRows, setSelectedRows, fetchTourRows}) => {
   const [formData, setFormData] = useState({
       newParameter: "",
     });
 
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogContent, setDialogContent] = useState('');
-  const [decisions, setDecisions] = useState({}); // Store decisions for each row
-  const [selectedColumn, setSelectedColumn] = useState(); // State for dropdown selection
+  const [selectedColumn, setSelectedColumn] = useState(); 
 
   const handleColumnChange = async (event) => {
     const newValue = event.target.value;
     setFormData((prevData) => ({ ...prevData, newParameter: newValue })); // Update selected column type
     setSelectedColumn(newValue); 
-    console.log(formData);
+    console.log(selectedColumn);
     try {
-      const response = await fetch(`http://localhost:8080/v1/groupform/changeparameter/${selectedColumn}`, {
+      const response = await fetch(`http://localhost:8080/v1/groupform/changeparameter/${newValue}`, {
         method: 'POST',
       });
   
       if (response.ok) {
-        console.log('Backend updated successfully:', response.data);
+        console.log('Backend updated successfully:');
         alert('Applications are sorted by new parameter!');
         fetchTourRows();
       } else {
@@ -129,7 +128,7 @@ const TourApplicationsTable = ({ rows, setSelectedRows, fetchTourRows}) => {
 
   const handleDecisionChange = (decision, id) => {
     if (decision) { // Prevents deselecting both options
-      setDecisions((prevDecisions) => ({
+      setSelectedRows((prevDecisions) => ({
         ...prevDecisions,
         [id]: decision,
       }));
@@ -137,10 +136,11 @@ const TourApplicationsTable = ({ rows, setSelectedRows, fetchTourRows}) => {
   };
 
   const handleResetDecision = (id) => {
-    setDecisions((prevDecisions) => ({
+    setSelectedRows((prevDecisions) => ({
       ...prevDecisions,
       [id]: null, // Reset the decision for the specified row
     }));
+    
   };
 
 
@@ -161,16 +161,23 @@ const columns = [
             fontWeight: 'bold',
           }}
         >
-          <MenuItem value="byPriorityScore">By Priority Score</MenuItem>
-          <MenuItem value="byDistance">By Distance</MenuItem>
-          <MenuItem value="byLgsPercentile">By LGS Percentile</MenuItem>
-          <MenuItem value="bySubmitTime">By Submit Time</MenuItem>
-          
+          <MenuItem value="">
+          <em>Select Parameter</em> {/* Default "Select Parameter" option */}
+        </MenuItem>
+          <MenuItem value='bySubmitTime'>By Submit Time</MenuItem>
+          <MenuItem value='byPriorityScore'>By Priority Score</MenuItem>
+          <MenuItem value='byDistance'>By Distance</MenuItem>
+          <MenuItem value='byLgsPercentile'>By LGS Percentile</MenuItem>
         </Select>
       </div>
     ),
-    width: selectedColumn === 'byPriorityScore' ? 185 : selectedColumn === 'byDistance' ? 195 : 235, //TODO
-    renderCell: (params) => <div>{params.row.newParameter}</div>,
+    width: selectedColumn === 'byPriorityScore' ? 175 : selectedColumn === 'byDistance' ? 185 : 225,
+    renderCell: (params) => {
+      if (!selectedColumn) {
+        return <div>Select Parameter</div>;
+      }
+      return <div>{params.row.newParameter}</div>;
+    },
   },
   { field: 'eventDate', headerName: 'Tour Date', width: 110 },
   { field: 'tourHour', headerName: 'Tour Time', width: 100 },
@@ -204,14 +211,14 @@ const columns = [
     ),
   },
   {
-    field: 'decision',
+    field: 'status',
     headerName: 'Decision',
     width: 130,
     renderCell: (params) => (
       <ToggleButtonGroup
-        value={params.row.decision}
+        value={params.row.status}
         exclusive
-        onChange={(e, value) => handleDecisionChange(value, params.row.id)}
+        onChange={(e, value) => handleDecisionChange(value, params.row.applicationFormID)}
         size="small"
         sx={{
           '& .MuiToggleButton-root': {
@@ -315,7 +322,7 @@ const columns = [
     handleContactClick, // Add the handler for contact
     handleDecisionChange, // Add the handler for decision change
     handleResetDecision, // Add the handler for reset
-    decision: decisions[row.id] || null, // Attach decision state
+    selectedRow: selectedRows[row.applicationFormID] || null, // Attach decision state
   }));
 
   return (

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.GroupFormDTO;
+import com.example.demo.entities.form.ApplicationForm;
 import com.example.demo.entities.form.GroupForm;
 import com.example.demo.enums.ApplicationFormStatus;
 import com.example.demo.enums.TourHours;
@@ -47,6 +48,15 @@ public class GroupFormController {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(forms);
         }
         return ResponseEntity.ok(forms);
+    }
+
+     @GetMapping("/pending")
+    public ResponseEntity<List<GroupForm>> getScheduledGroupForms() {
+        List<GroupForm> scheduledForms = groupFormService.getAllApplicationFormByStatus(ApplicationFormStatus.PENDING);
+        if (scheduledForms.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(scheduledForms);
     }
 
     @PostMapping("/changeparameter/{newParameter}")
@@ -101,4 +111,5 @@ public class GroupFormController {
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
+    
 }
