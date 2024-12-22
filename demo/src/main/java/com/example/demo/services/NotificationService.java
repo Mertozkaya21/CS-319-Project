@@ -6,25 +6,23 @@ import com.example.demo.enums.NotificationType;
 import com.example.demo.repositories.Notification.NotificationRepository;
 import com.example.demo.services.UsersService.RoleService;
 import com.example.demo.services.UsersService.RoleServiceFactory;
-import com.example.demo.services.UsersService.UserService;
 import com.example.demo.enums.UserRole;
 import com.example.demo.exceptions.UserNotFoundException;
 
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
 public class NotificationService {
 
     private final NotificationRepository notificationRepository;
-    private final UserService userService;
     private final RoleServiceFactory roleServiceFactory;
 
-    public NotificationService(NotificationRepository notificationRepository, UserService userService, RoleServiceFactory roleServiceFactory) {
+    public NotificationService(NotificationRepository notificationRepository, RoleServiceFactory roleServiceFactory) {
         this.notificationRepository = notificationRepository;
-        this.userService = userService;
         this.roleServiceFactory = roleServiceFactory;
     }
 
@@ -47,8 +45,12 @@ public class NotificationService {
     }
 
     public List<Notification> getNotificationsByUserId(Long userId) {
-        return notificationRepository.findByUserId(userId);
+        return notificationRepository.findByUserId(userId)
+            .stream()
+            .sorted(Comparator.comparing(Notification::getCreatedAt).reversed()) // sort in the newest comes first
+            .toList();
     }
+    
 
     public void deleteNotification(Long notificationId) {
         if (notificationRepository.existsById(notificationId)) {
@@ -84,10 +86,8 @@ public class NotificationService {
     }
 
     public void addNotificationToUser(Long userId, String message, NotificationType type) throws UserNotFoundException {
-        User user = userService.getUserById(userId);
-
         Notification notification = new Notification();
-        notification.setUserId(user.getId());
+        notification.setUserId(userId);
         notification.setTitle(generateNotificationTitle(type));
         notification.setMessage(message);
         notification.setType(type);
