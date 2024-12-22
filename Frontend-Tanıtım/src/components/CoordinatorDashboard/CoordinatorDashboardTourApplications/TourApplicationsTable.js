@@ -211,12 +211,12 @@ const columns = [
     ),
   },
   {
-    field: 'status',
+    field: 'decision',
     headerName: 'Decision',
     width: 130,
     renderCell: (params) => (
       <ToggleButtonGroup
-        value={params.row.status}
+        value={params.row.decision}
         exclusive
         onChange={(e, value) => handleDecisionChange(value, params.row.applicationFormID)}
         size="small"
@@ -230,13 +230,13 @@ const columns = [
         }}
       >
         <ToggleButton
-          value="accept"
+          value="BTO_APPROVED"
           sx={{
-            color: params.row.decision === 'accept' ? '#fff' : 'grey', // White when selected
-            backgroundColor: params.row.decision === 'accept' ? 'green' : '#e0e0e0', // Green when selected
+            color: params.row.decision === 'BTO_APPROVED' ? '#fff' : 'grey', // White when selected
+            backgroundColor: params.row.decision === 'BTO_APPROVED' ? 'green' : '#e0e0e0', // Green when selected
             '&:hover': {
-              backgroundColor: params.row.decision === 'accept' ? 'rgba(0, 128, 0, 0.8)' : '#d5d5d5',
-              color: params.row.decision === 'accept' ? '#fff' : 'grey',
+              backgroundColor: params.row.decision === 'BTO_APPROVED' ? 'rgba(0, 128, 0, 0.8)' : '#d5d5d5',
+              color: params.row.decision === 'BTO_APPROVED' ? '#fff' : 'grey',
             },
             '&.Mui-selected': {
               backgroundColor: 'green', // Force green when clicked
@@ -252,13 +252,13 @@ const columns = [
           Accept
         </ToggleButton>
         <ToggleButton
-        value="reject"
+        value="BTO_DENIED"
         sx={{
-          color: params.row.decision === 'reject' ? '#fff' : 'grey', // White when selected
-          backgroundColor: params.row.decision === 'reject' ? 'red' : '#e0e0e0', // Red when selected
+          color: params.row.decision === 'BTO_DENIED' ? '#fff' : 'grey', // White when selected
+          backgroundColor: params.row.decision === 'BTO_DENIED' ? 'red' : '#e0e0e0', // Red when selected
           '&:hover': {
-            backgroundColor: params.row.decision === 'reject' ? 'rgba(255, 0, 0, 0.8)' : '#d5d5d5',
-            color: params.row.decision === 'reject' ? '#fff' : 'grey',
+            backgroundColor: params.row.decision === 'BTO_DENIED' ? 'rgba(255, 0, 0, 0.8)' : '#d5d5d5',
+            color: params.row.decision === 'BTO_DENIED' ? '#fff' : 'grey',
           },
           '&.Mui-selected': {
             backgroundColor: 'red', // Force red when clicked
