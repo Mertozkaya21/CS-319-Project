@@ -3,7 +3,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 import { FaPhoneAlt, FaEnvelope } from 'react-icons/fa';
 import IconButton from '@mui/material/IconButton';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'; // Import Schedule Icon
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
@@ -22,7 +22,6 @@ export const traineesRows = [
   { id: 6, name: 'Johnny Ahmad',  dateAdded: 'Oct 27, 2023', status: 'Observing', advisorResponsible: 'Jane Doe', phone: '555-654-3211', email: 'johnny.ahmad@example.com', schedulePic: 'https://via.placeholder.com/150'},
 ];
 
-// Table Columns
 const columns = [
   { field: 'name', headerName: 'Trainee Name', width: 160 },
   { field: 'id', headerName: 'Trainee ID', width: 90 },
@@ -53,16 +52,14 @@ const columns = [
         <CalendarMonthIcon className={styles.calendarIcon} />
       </IconButton>
     ),
-  },
-
+  }
 ];
 
-const TraineesTable = ({ rows }) => {
+const TraineesTable = ({ rows, setSelectedRows }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogContent, setDialogContent] = useState('');
-  const [dialogTitle, setDialogTitle] = useState(''); // State for dynamic dialog title
+  const [dialogTitle, setDialogTitle] = useState('');
 
-  // Handle contact click (phone/email)
   const handleContactClick = (type, row) => {
     const content =
       type === 'phone'
@@ -73,7 +70,6 @@ const TraineesTable = ({ rows }) => {
     setOpenDialog(true);
   };
 
-  // Handle View Schedule click
   const handleViewScheduleClick = (row) => {
     setDialogContent(
       <img
@@ -82,7 +78,7 @@ const TraineesTable = ({ rows }) => {
         style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
       />
     );
-    setDialogTitle(`${row.name}'s Schedule`); // Set the title dynamically
+    setDialogTitle(`${row.name}'s Schedule`);
     setOpenDialog(true);
   };
 
@@ -90,7 +86,6 @@ const TraineesTable = ({ rows }) => {
     setOpenDialog(false);
   };
 
-  // Add `handleContactClick` to each row
   const rowsWithHandlers = rows.map((row) => ({
     ...row,
     handleContactClick,
@@ -109,13 +104,16 @@ const TraineesTable = ({ rows }) => {
         }}
       >
         <DataGrid
-          rows={rowsWithHandlers} // Rows with handlers
+          rows={rowsWithHandlers}
           columns={columns}
           pageSize={5}
           rowsPerPageOptions={[5, 10]}
           checkboxSelection
           disableSelectionOnClick
-          sx={{
+          onRowSelectionModelChange={(newSelectionModel) => {
+            setSelectedRows(newSelectionModel);
+          }}
+          sx={{ 
             '& .MuiDataGrid-columnHeaders': {
               backgroundColor: '#f7f7f7',
               fontWeight: 'bold',
@@ -127,7 +125,7 @@ const TraineesTable = ({ rows }) => {
               display: 'block',
             },
             '& .MuiDataGrid-row:nth-of-type(odd)': {
-              backgroundColor: '#fce4e4', // Highlight every other row with light red
+              backgroundColor: '#fce4e4',
             },
             '& .MuiDataGrid-row:hover': {
               backgroundColor: '#f9d5d5',
@@ -142,9 +140,8 @@ const TraineesTable = ({ rows }) => {
         />
       </Paper>
 
-      {/* Dialog for contact information */}
       <Dialog open={openDialog} onClose={handleCloseDialog}>
-        <DialogTitle>{dialogTitle}</DialogTitle> {/* Dynamic title */}
+        <DialogTitle>{dialogTitle}</DialogTitle>
         <DialogContent>{dialogContent}</DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog} color="primary">
