@@ -2,120 +2,37 @@ import React, { useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
-import styles from './GuideDashboardPuantaj.module.css'; // Keep your existing CSS file
+import styles from './GuideDashboardPuantaj.module.css';
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-// New dummy data based on the screenshot
-export const eventRows = [
-  {
-    id: 1,
-    taskCategory: "Tour",
-    task: "Campus Tour 1",
-    date: "Oct 30, 2024",
-    hoursTaken: 2,
-    pointsCollected: 20,
-    claimPoints: false,
-  },
-  {
-    id: 2,
-    taskCategory: "Tour",
-    task: "Campus Tour 2",
-    date: "Oct 30, 2024",
-    hoursTaken: 2,
-    pointsCollected: 20,
-    claimPoints: true,
-  },
-  {
-    id: 3,
-    taskCategory: "Tour",
-    task: "Campus Tour 3",
-    date: "Oct 30, 2024",
-    hoursTaken: 2,
-    pointsCollected: 20,
-    claimPoints: true,
-  },
-  {
-    id: 4,
-    taskCategory: "Tour",
-    task: "Campus Tour 4",
-    date: "Oct 30, 2024",
-    hoursTaken: 2,
-    pointsCollected: 20,
-    claimPoints: false,
-  },
-  {
-    id: 5,
-    taskCategory: "Fair",
-    task: "Career Fair",
-    date: "Oct 30, 2024",
-    hoursTaken: 5,
-    pointsCollected: 20,
-    claimPoints: true,
-  },
-  {
-    id: 6,
-    taskCategory: "Tour",
-    task: "Campus Tour 5",
-    date: "Oct 30, 2024",
-    hoursTaken: 2,
-    pointsCollected: 20,
-    claimPoints: "Claimed",
-  },
-  {
-    id: 7,
-    taskCategory: "Tour",
-    task: "Campus Tour 6",
-    date: "Oct 30, 2024",
-    hoursTaken: 2,
-    pointsCollected: 20,
-    claimPoints: "Claimed",
-  },
-];
-
-
-// Dropdown component
+// Keep the existing BasicSelect component exactly as is
 const BasicSelect = ({ value, options, label, onChange }) => {
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100%', // Ensures it takes the full height of the cell
-      }}
-    >
-      <FormControl
-        fullWidth
-        sx={{
-          '.MuiInputBase-root': {
-            height: '30px', // Adjust dropdown height
-          },
-          '.MuiSelect-select': {
-            display: 'flex',
-            alignItems: 'center', // Ensures the dropdown text is vertically centered
-          },
-        }}
-      >
+    <Box sx={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100%',
+    }}>
+      <FormControl fullWidth sx={{
+        '.MuiInputBase-root': { height: '30px' },
+        '.MuiSelect-select': {
+          display: 'flex',
+          alignItems: 'center',
+        },
+      }}>
         <InputLabel sx={{ fontSize: '12px' }}>{label}</InputLabel>
         <Select
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          sx={{
-            fontSize: '12px',
-          }}
+          sx={{ fontSize: '12px' }}
         >
           {options.map((option, index) => (
-            <MenuItem
-              key={index}
-              value={option}
-              sx={{
-                fontSize: '12px',
-              }}
-            >
+            <MenuItem key={index} value={option} sx={{ fontSize: '12px' }}>
               {option}
             </MenuItem>
           ))}
@@ -125,7 +42,7 @@ const BasicSelect = ({ value, options, label, onChange }) => {
   );
 };
 
-// Updated columns to reflect the table structure
+// Keep the existing columns structure
 const columns = [
   {
     field: 'taskCategory',
@@ -177,24 +94,32 @@ const columns = [
   },
 ];
 
-const Table = () => {
+const Table = ({ events }) => {
+  const rows = events.map(event => ({
+    id: event.id,
+    taskCategory: event.tourType ? "Tour" : "Fair",
+    task: event.name,
+    date: new Date(event.date).toLocaleDateString(),
+    hoursTaken: event.duration || 2,
+    pointsCollected: event.points || 20,
+    claimPoints: false,
+  }));
+
   return (
     <div className={styles.tableContainer}>
-      <Paper
-        sx={{
-          height: '500px',
-          width: '100%',
-          boxShadow: '0 3px 5px rgba(0, 0, 0, 0.1)',
-          borderRadius: '10px',
-          overflow: 'hidden',
-        }}
-      >
+      <Paper sx={{
+        height: '500px',
+        width: '100%',
+        boxShadow: '0 3px 5px rgba(0, 0, 0, 0.1)',
+        borderRadius: '10px',
+        overflow: 'hidden',
+      }}>
         <DataGrid
-          rows={eventRows} // Use the updated dummy data
-          columns={columns} // Use the updated columns
+          rows={rows}
+          columns={columns}
           pageSize={6}
           rowsPerPageOptions={[6, 10]}
-          checkboxSelection={false} // Disable default checkbox selection
+          checkboxSelection={false}
           disableSelectionOnClick
           sx={{
             '& .MuiDataGrid-columnHeaders': {

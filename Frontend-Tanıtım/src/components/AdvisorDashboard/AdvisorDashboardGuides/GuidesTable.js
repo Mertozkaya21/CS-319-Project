@@ -10,14 +10,14 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import styles from './AdvisorDashboardGuides.module.css';
-import { NavLink } from 'react-router-dom';
 
-// Data: Adapted from GuidesTable dummy data
+// Data: This remains the same as previously provided
 export const guidesRows = [
   {
     id: 1,
     name: 'Samanta William',
     dateAdded: 'Oct 25, 2023',
+    guideId: '#123456789',
     tours: 23,
     phone: '555-123-4561',
     email: 'samanta.william@example.com',
@@ -27,6 +27,7 @@ export const guidesRows = [
     id: 2,
     name: 'Tony Soap',
     dateAdded: 'Oct 25, 2023',
+    guideId: '#123456789',
     tours: 23,
     phone: '555-123-4562',
     email: 'tony.soap@example.com',
@@ -36,6 +37,7 @@ export const guidesRows = [
     id: 3,
     name: 'Karen Hope',
     dateAdded: 'Oct 25, 2023',
+    guideId: '#123456789',
     tours: 23,
     phone: '555-123-4563',
     email: 'karen.hope@example.com',
@@ -45,6 +47,7 @@ export const guidesRows = [
     id: 4,
     name: 'Jordan Nico',
     dateAdded: 'Oct 26, 2023',
+    guideId: '#987654321',
     tours: 23,
     phone: '555-987-6541',
     email: 'jordan.nico@example.com',
@@ -54,6 +57,7 @@ export const guidesRows = [
     id: 5,
     name: 'Nadila Adja',
     dateAdded: 'Oct 26, 2023',
+    guideId: '#987654321',
     tours: 23,
     phone: '555-987-6542',
     email: 'nadila.adja@example.com',
@@ -63,6 +67,7 @@ export const guidesRows = [
     id: 6,
     name: 'Johnny Ahmad',
     dateAdded: 'Oct 27, 2023',
+    guideId: '#987654321',
     tours: 23,
     phone: '555-654-3211',
     email: 'johnny.ahmad@example.com',
@@ -73,14 +78,9 @@ export const guidesRows = [
 // Table Columns
 const columns = [
   { field: 'name', headerName: 'Guide Name', width: 160 },
-  { field: 'id', headerName: 'Guide ID', width: 120 },
-  { 
-    field: 'dateCreated', 
-    headerName: 'Date Added', 
-    width: 120,
-    valueGetter: (params) => new Date(params.row.dateCreated).toLocaleDateString()
-  },
-  { field: 'tourCount', headerName: 'Tours Conducted', width: 130 },
+  { field: 'guideId', headerName: 'Guide ID', width: 120 },  // Ensure this column is correctly defined
+  { field: 'dateAdded', headerName: 'Date Added', width: 120 },
+  { field: 'tours', headerName: 'Tours Conducted', width: 130 },
   {
     field: 'contact',
     headerName: 'Contact',
@@ -111,12 +111,13 @@ const columns = [
 const GuidesTable = ({ rows }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogContent, setDialogContent] = useState('');
-  const [dialogTitle, setDialogTitle] = useState('');
+  const [dialogTitle, setDialogTitle] = useState(''); // State for dynamic dialog title
 
   const handleContactClick = (type, row) => {
-    const content = type === 'phone' 
-      ? `Phone: ${row.phoneNo}`
-      : `Email: ${row.email}`;
+    const content =
+      type === 'phone'
+        ? `Phone: ${row.phone}`
+        : `Email: ${row.email}`;
     setDialogTitle(`${row.name}'s Contact Information`);
     setDialogContent(content);
     setOpenDialog(true);
@@ -125,12 +126,12 @@ const GuidesTable = ({ rows }) => {
   const handleViewScheduleClick = (row) => {
     setDialogContent(
       <img
-        src={row.imagePath || 'https://via.placeholder.com/150'}
+        src={row.schedulePic}
         alt={`${row.name}'s Schedule`}
         style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
       />
     );
-    setDialogTitle(`${row.name}'s Schedule`);
+    setDialogTitle(`${row.name}'s Schedule`); // Set the title dynamically
     setOpenDialog(true);
   };
 
@@ -156,10 +157,11 @@ const GuidesTable = ({ rows }) => {
         }}
       >
         <DataGrid
-          rows={rowsWithHandlers}
-          columns={columns}
+          rows={rowsWithHandlers} // Rows with handlers
+          columns={columns}  // Use the columns array as defined
           pageSize={10}
           rowsPerPageOptions={[10, 20, 50]}
+          checkboxSelection
           disableSelectionOnClick
           sx={{ 
             '& .MuiDataGrid-columnHeaders': {
@@ -169,15 +171,15 @@ const GuidesTable = ({ rows }) => {
               textAlign: 'center',
             },
             '& .MuiDataGrid-columnHeader': {
-              justifyContent: 'center', // Center align content
+              justifyContent: 'center',
             },
             '& .MuiDataGrid-columnHeaderTitle': {
-              textAlign: 'center', // Center align text
+              textAlign: 'center',
               display: 'block',
               width: '100%',
             },
             '& .MuiDataGrid-row:nth-of-type(odd)': {
-              backgroundColor: '#fce4e4', // Highlight every other row with light red
+              backgroundColor: '#fce4e4',
             },
             '& .MuiDataGrid-row:hover': {
               backgroundColor: '#f9d5d5',
@@ -192,6 +194,7 @@ const GuidesTable = ({ rows }) => {
         />
       </Paper>
 
+      {/* Dialog for displaying information */}
       <Dialog open={openDialog} onClose={handleCloseDialog}>
         <DialogTitle>{dialogTitle}</DialogTitle>
         <DialogContent>{dialogContent}</DialogContent>

@@ -1,36 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Sidebar from '../AdvisorDashboardCommon/Sidebar';
 import Header from './Header';
 import Table from './Table';
-import { eventRows } from './Table'; // Import data
 import styles from './AdvisorDashboardPuantaj.module.css';
+import axios from 'axios';
 
 const DashboardPuantaj = () => {
-  const [filteredRows, setFilteredRows] = useState(eventRows); // Manage filtered rows
+  const [trainees, setTrainees] = useState([]);
+  const advisorId = localStorage.getItem('userId');
 
-  const handleSearchSelection = (value) => {
-    if (value) {
-      // Filter rows based on the selected event name
-      const filtered = eventRows.filter((row) => row.name === value.label);
-      setFilteredRows(filtered);
-    } else {
-      // Reset to show all rows when the search is cleared
-      setFilteredRows(eventRows);
+  useEffect(() => {
+    const fetchTrainees = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/v1/user/advisor/${advisorId}/trainees`);
+        setTrainees(response.data || []);
+      } catch (err) {
+        console.error('Error fetching trainees:', err);
+      }
+    };
+
+    if (advisorId) {
+      fetchTrainees();
     }
-  };
+  }, [advisorId]);
 
   return (
     <div className={styles.dashboardContainer}>
-      {/* Sidebar */}
       <Sidebar />
-
-      {/* Main Content */}
       <div className={styles.mainContent}>
-        {/* Header */}
-        <Header title="Puantaj" onSearchSelection={handleSearchSelection} />
-
-        {/* Events Table */}
-        <Table rows={filteredRows} />
+        <Header 
+          title="Puantaj" 
+          onSearchSelection={(value) => console.log(value)}
+          trainees={trainees}
+        />
+        <Table />
       </div>
     </div>
   );
