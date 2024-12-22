@@ -41,5 +41,4 @@ public class IndividualForm extends ApplicationForm{
 
     @Column(nullable = true)
     private String individualName;
-
 }
