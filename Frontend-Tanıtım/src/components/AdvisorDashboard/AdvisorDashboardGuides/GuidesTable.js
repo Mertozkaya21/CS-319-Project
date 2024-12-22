@@ -74,8 +74,13 @@ export const guidesRows = [
 const columns = [
   { field: 'name', headerName: 'Guide Name', width: 160 },
   { field: 'id', headerName: 'Guide ID', width: 120 },
-  { field: 'dateAdded', headerName: 'Date Added', width: 120 },
-  { field: 'tours', headerName: 'Tours Conducted', width: 130 },
+  { 
+    field: 'dateCreated', 
+    headerName: 'Date Added', 
+    width: 120,
+    valueGetter: (params) => new Date(params.row.dateCreated).toLocaleDateString()
+  },
+  { field: 'tourCount', headerName: 'Tours Conducted', width: 130 },
   {
     field: 'contact',
     headerName: 'Contact',
@@ -106,36 +111,33 @@ const columns = [
 const GuidesTable = ({ rows }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogContent, setDialogContent] = useState('');
-  const [dialogTitle, setDialogTitle] = useState(''); // State for dynamic dialog title
+  const [dialogTitle, setDialogTitle] = useState('');
 
-  // Handle contact click (phone/email)
   const handleContactClick = (type, row) => {
-    const content =
-      type === 'phone'
-        ? `Phone: ${row.phone}`
-        : `Email: ${row.email}`;
+    const content = type === 'phone' 
+      ? `Phone: ${row.phoneNo}`
+      : `Email: ${row.email}`;
     setDialogTitle(`${row.name}'s Contact Information`);
     setDialogContent(content);
     setOpenDialog(true);
   };
 
   const handleViewScheduleClick = (row) => {
-  setDialogContent(
-    <img
-      src={row.schedulePic}
-      alt={`${row.name}'s Schedule`}
-      style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
-    />
-  );
-  setDialogTitle(`${row.name}'s Schedule`); // Set the title dynamically
-  setOpenDialog(true);
-};
+    setDialogContent(
+      <img
+        src={row.imagePath || 'https://via.placeholder.com/150'}
+        alt={`${row.name}'s Schedule`}
+        style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
+      />
+    );
+    setDialogTitle(`${row.name}'s Schedule`);
+    setOpenDialog(true);
+  };
 
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
 
-  // Add handlers to each row
   const rowsWithHandlers = rows.map((row) => ({
     ...row,
     handleContactClick,
@@ -154,11 +156,10 @@ const GuidesTable = ({ rows }) => {
         }}
       >
         <DataGrid
-          rows={rowsWithHandlers} // Rows with handlers
+          rows={rowsWithHandlers}
           columns={columns}
           pageSize={10}
           rowsPerPageOptions={[10, 20, 50]}
-          checkboxSelection
           disableSelectionOnClick
           sx={{ 
             '& .MuiDataGrid-columnHeaders': {
@@ -191,9 +192,8 @@ const GuidesTable = ({ rows }) => {
         />
       </Paper>
 
-     {/* Dialog for displaying information */}
-     <Dialog open={openDialog} onClose={handleCloseDialog}>
-        <DialogTitle>{dialogTitle}</DialogTitle> {/* Dynamic title */}
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>{dialogTitle}</DialogTitle>
         <DialogContent>{dialogContent}</DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog} color="primary">
