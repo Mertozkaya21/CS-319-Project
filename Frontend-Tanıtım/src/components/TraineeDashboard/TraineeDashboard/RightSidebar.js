@@ -1,69 +1,110 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './TraineeDashboard.module.css';
 import { FaBell, FaCog } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
+import axios from 'axios';
 
 const RightSidebar = () => {
+  const [recentContacts, setRecentContacts] = useState([]);
+  const [upcomingFairs, setUpcomingFairs] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Current user info (this could come from auth context/state)
+  const user = {
+    name: 'Nabila A.',
+    role: 'Trainee',
+    profilePic: 'https://via.placeholder.com/40',
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Fetch guides (recent contacts)
+        const guidesResponse = await axios.get('http://localhost:8080/v1/user/guide');
+        const guides = guidesResponse.data.slice(0, 5).map(guide => ({
+          name: `${guide.firstName} ${guide.lastName}`,
+          profilePic: guide.imagePath || 'https://via.placeholder.com/30'
+        }));
+
+        // Fetch upcoming fairs
+        const fairsResponse = await axios.get('http://localhost:8080/v1/events');
+        const fairs = fairsResponse.data
+          .filter(event => !event.tourType) // Filter for fairs
+          .slice(0, 4) // Take only first 4 fairs
+          .map(fair => ({
+            image: 'https://via.placeholder.com/50',
+            organizationName: fair.name || 'Organization'
+          }));
+
+        setRecentContacts(guides);
+        setUpcomingFairs(fairs);
+        setIsLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // Messages would typically come from a real-time system
+  const messages = [
+    {
+      name: 'Tour Coordinator',
+      time: '12:45 PM',
+      message: 'New tour schedule available',
+      profilePic: 'https://via.placeholder.com/30',
+    },
+    // ... more messages
+  ];
+
+  if (isLoading) return <div className={styles.rightSidebar}>Loading...</div>;
+  if (error) return <div className={styles.rightSidebar}>Error: {error}</div>;
+
   return (
     <div className={styles.rightSidebar}>
-      {/* Top Section: User Info and Icons */}
       <div className={styles.topSection}>
-        {/* User Info and Notification/Settings in one row */}
         <div className={styles.userInfoWithIcons}>
-          {/* User Info */}
           <div className={styles.userInfo}>
-          <NavLink to="/traineedashboardprofile" className={styles.userAvatar}>
-              <img
-                src="https://via.placeholder.com/40" // Placeholder for now
-                alt="User"
-                className={styles.avatarImage}
-              />
+            <NavLink to="/traineedashboardprofile" className={styles.userAvatar}>
+              <img src={user.profilePic} alt="User" className={styles.avatarImage} />
             </NavLink>
             <div>
-              <p className={styles.userName}>Nabila A.</p>
-              <p className={styles.userRole}>Trainee</p>
+              <p className={styles.userName}>{user.name}</p>
+              <p className={styles.userRole}>{user.role}</p>
             </div>
           </div>
 
-          {/* Notification and Settings Icons */}
           <div className={styles.topIcons}>
-            {/* Notification Button */}
-          <NavLink to="/traineedashboardnotifications" className={styles.iconButton}>
-            <FaBell className={styles.notificationIcon} />
-            <span className={styles.notificationDot}></span>
-          </NavLink>
+            <NavLink to="/traineedashboardnotifications" className={styles.iconButton}>
+              <FaBell className={styles.notificationIcon} />
+              <span className={styles.notificationDot}></span>
+            </NavLink>
 
-          {/* Settings Button */}
-          <NavLink to="/traineedashboardsettings" className={styles.iconButton}>
-            <FaCog />
-          </NavLink>
+            <NavLink to="/traineedashboardsettings" className={styles.iconButton}>
+              <FaCog />
+            </NavLink>
           </div>
         </div>
       </div>
 
-      {/* Other Sections: Recent Contacts, Messages, Upcoming Fairs */}
       <div className={styles.section}>
         <h3 className={styles.sectionTitle}>Recent Contacts</h3>
         <ul className={styles.contactList}>
-          {['Samantha William', 'Tony Soap', 'Karen Hope', 'Jordan Nico', 'Nadila Adja'].map(
-            (contact, index) => (
-              <li key={index} className={styles.contactItem}>
-                <div className={styles.contactAvatar}>
-                  <img
-                    src="https://via.placeholder.com/30"
-                    alt={contact}
-                    className={styles.avatarImage}
-                  />
-                </div>
-                <span className={styles.contactName}>{contact}</span>
-                <button className={styles.contactButton}>
-                  <i className="fas fa-envelope" />
-                </button>
-              </li>
-            )
-          )}
+          {recentContacts.map((contact, index) => (
+            <li key={index} className={styles.contactItem}>
+              <div className={styles.contactAvatar}>
+                <img src={contact.profilePic} alt={contact.name} className={styles.avatarImage} />
+              </div>
+              <span className={styles.contactName}>{contact.name}</span>
+              <button className={styles.contactButton}>
+                <i className="fas fa-envelope" />
+              </button>
+            </li>
+          ))}
         </ul>
-        {/* Navigate to Chat Page */}
         <NavLink to="/traineedashboardchat" className={styles.viewAllButton}>
           View All
         </NavLink>
@@ -72,19 +113,10 @@ const RightSidebar = () => {
       <div className={styles.section}>
         <h3 className={styles.sectionTitle}>Messages</h3>
         <ul className={styles.messageList}>
-          {[
-            { name: 'Samantha William', time: '12:45 PM', message: 'Lorem ipsum dolor sit amet...' },
-            { name: 'Tony Soap', time: '12:45 PM', message: 'Lorem ipsum dolor sit amet...' },
-            { name: 'Jordan Nico', time: '12:45 PM', message: 'Lorem ipsum dolor sit amet...' },
-            { name: 'Nadila Adja', time: '12:45 PM', message: 'Lorem ipsum dolor sit amet...' },
-          ].map((message, index) => (
+          {messages.map((message, index) => (
             <li key={index} className={styles.messageItem}>
               <div className={styles.messageAvatar}>
-                <img
-                  src="https://via.placeholder.com/30"
-                  alt={message.name}
-                  className={styles.avatarImage}
-                />
+                <img src={message.profilePic} alt={message.name} className={styles.avatarImage} />
               </div>
               <div className={styles.messageContent}>
                 <p className={styles.messageName}>{message.name}</p>
@@ -94,7 +126,6 @@ const RightSidebar = () => {
             </li>
           ))}
         </ul>
-        {/* Navigate to Chat Page */}
         <NavLink to="/traineedashboardchat" className={styles.viewAllButton}>
           View All
         </NavLink>
@@ -103,21 +134,16 @@ const RightSidebar = () => {
       <div className={styles.section}>
         <h3 className={styles.sectionTitle}>Upcoming Fairs</h3>
         <ul className={styles.fairList}>
-          {[1, 2, 3, 4].map((fair, index) => (
+          {upcomingFairs.map((fair, index) => (
             <li key={index} className={styles.fairItem}>
               <div className={styles.fairImage}>
-                <img
-                  src="https://via.placeholder.com/50"
-                  alt="Fair"
-                  className={styles.fairImageContent}
-                />
+                <img src={fair.image} alt="Fair" className={styles.fairImageContent} />
               </div>
-              <p className={styles.fairTitle}>Lorem ipsum dolor sit amet...</p>
+              <p className={styles.fairTitle}>{fair.organizationName}</p>
             </li>
           ))}
         </ul>
-        {/* Navigate to Tours and Fairs Page */}
-        <NavLink to="/traineedashboardtoursandfairs" className={styles.viewAllButtonLast}>
+        <NavLink to="/traineedashboardfairs" className={styles.viewAllButtonLast}>
           View All
         </NavLink>
       </div>

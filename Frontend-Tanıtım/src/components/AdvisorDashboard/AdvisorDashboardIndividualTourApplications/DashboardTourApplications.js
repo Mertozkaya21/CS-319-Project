@@ -1,35 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Sidebar from '../AdvisorDashboardCommon/Sidebar';
 import Header from './Header';
-import TourApplicationsTable from './TourApplicationsTable'; // Correct component import
-import { tourApplicationsRows } from './TourApplicationsTable'; // Import dataset
+import TourApplicationsTable from './TourApplicationsTable';
 import styles from './AdvisorDashboardTourApplications.module.css';
+import axios from 'axios';
 
 const DashboardTourApplications = () => {
-  const [filteredRows, setFilteredRows] = useState(tourApplicationsRows); // Manage filtered rows
+  const [applications, setApplications] = useState([]);
+  const [filteredApplications, setFilteredApplications] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const handleSearchSelection = (selectedValue) => {
-    const filtered = selectedValue
-      ? tourApplicationsRows.filter((row) => row.name === selectedValue)
-      : tourApplicationsRows;
-    setFilteredRows(filtered);
+  useEffect(() => {
+    const fetchApplications = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/v1/individualform');
+        setApplications(response.data);
+        setFilteredApplications(response.data);
+        setIsLoading(false);
+      } catch (err) {
+        console.error('Error fetching applications:', err);
+        setError(err.message);
+        setIsLoading(false);
+      }
+    };
+
+    fetchApplications();
+  }, []);
+
+  const handleSearchSelection = (value) => {
+    if (value) {
+      const filtered = applications.filter((app) => app.name === value.label);
+      setFilteredApplications(filtered);
+    } else {
+      setFilteredApplications(applications);
+    }
   };
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div className={styles.dashboardContainer}>
-      {/* Sidebar */}
       <Sidebar />
-
-      {/* Main Content */}
       <div className={styles.mainContent}>
-        {/* Header */}
-        <Header
-          title="Individual Tour Applications"
+        <Header 
+          title="Individual Tour Applications" 
           onSearchSelection={handleSearchSelection}
+          applications={applications}
         />
-
-        {/* Tour Applications Table */}
-        <TourApplicationsTable rows={filteredRows} /> {/* Render rows dynamically */}
+        <TourApplicationsTable rows={filteredApplications} />
       </div>
     </div>
   );

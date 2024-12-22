@@ -1,32 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Sidebar from '../AdvisorDashboardCommon/Sidebar';
 import Header from './Header';
-import TourApplicationsTable from './TourApplicationsTable'; // Correct component import
-import { tourApplicationsRows } from './TourApplicationsTable'; // Import data
+import TourApplicationsTable from './TourApplicationsTable';
 import styles from './AdvisorDashboardTourApplications.module.css';
 
 const DashboardTourApplications = () => {
-  const [filteredRows, setFilteredRows] = useState(tourApplicationsRows); // Manage filtered rows
+  const [applications, setApplications] = useState([]);
+  const [filteredApplications, setFilteredApplications] = useState([]);
+
+  useEffect(() => {
+    fetchApplications();
+  }, []);
+
+  const fetchApplications = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/v1/groupform');
+      const data = await response.json();
+      setApplications(data);
+      setFilteredApplications(data);
+    } catch (error) {
+      console.error('Error fetching applications:', error);
+    }
+  };
 
   const handleSearchSelection = (selectedValue) => {
-    const filtered = selectedValue
-      ? tourApplicationsRows.filter((row) => row.name === selectedValue)
-      : tourApplicationsRows;
-    setFilteredRows(filtered);
+    if (selectedValue) {
+      const filtered = applications.filter(app => 
+        app.highSchoolName === selectedValue.label
+      );
+      setFilteredApplications(filtered);
+    } else {
+      setFilteredApplications(applications);
+    }
   };
 
   return (
     <div className={styles.dashboardContainer}>
-      {/* Sidebar */}
       <Sidebar />
-
-      {/* Main Content */}
       <div className={styles.mainContent}>
-        {/* Header */}
-        <Header title="Tour Applications" onSearchSelection={handleSearchSelection} />
-
-        {/* Tour Applications Table */}
-        <TourApplicationsTable rows={filteredRows} /> {/* Capitalized component name */}
+        <Header 
+          title="Tour Applications" 
+          onSearchSelection={handleSearchSelection}
+          applications={applications}
+        />
+        <TourApplicationsTable rows={filteredApplications} onDataChange={fetchApplications} />
       </div>
     </div>
   );
