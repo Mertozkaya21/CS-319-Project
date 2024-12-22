@@ -71,13 +71,10 @@ export const tourApplicationsRows = [
 const Table = () => {
   const { id } = useParams(); // Extract ID from URL params
   const [formData, setFormData] = useState({
-    name: "",
-    city: "",
     phoneNumber: "",
     email: "",
     eventDate: "",
     tourHour: "",
-    priority: "",
   });
   const [loading, setLoading] = useState(true);
   const [tourHours, setTourHours] = useState(true);
@@ -300,7 +297,7 @@ const Table = () => {
       >
         <Button
           component={NavLink}
-          to="/coordinatordashboardtoursapplications"
+          to="/coordinatordashboardtourapplications"
           variant="outlined"
           sx={{
             color: "#8a0303",

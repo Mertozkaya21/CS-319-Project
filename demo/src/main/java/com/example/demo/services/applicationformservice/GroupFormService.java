@@ -50,11 +50,7 @@ public class GroupFormService {
         GroupForm existingForm = groupFormRepository.findById(id)
                 .orElseThrow(() -> new ApplicationFormNotFoundException("GroupForm with id " + id + " not found"));
 
-        Highschool highschool = highschoolRepository.findByName(groupFormDTO.getHighSchoolName());
         
-        // Update the fields of the existing form with the new data from the DTO
-        existingForm.setHighschool(highschool);
-        existingForm.setCity(groupFormDTO.getCity());
         existingForm.setPhoneNumber(groupFormDTO.getPhoneNumber());
         existingForm.setEmail(groupFormDTO.getEmail());
         existingForm.setEventDate(LocalDate.parse(groupFormDTO.getEventDate()));
