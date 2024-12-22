@@ -92,9 +92,10 @@ const TourApplicationsTable = ({ rows, setSelectedRows, fetchTourRows}) => {
   const handleColumnChange = async (event) => {
     const newValue = event.target.value;
     setFormData((prevData) => ({ ...prevData, newParameter: newValue })); // Update selected column type
+    setSelectedColumn(newValue); 
     console.log(formData);
     try {
-      const response = await fetch(`http://localhost:8080/v1/groupform/changeparameter/${formData.newParameter}`, {
+      const response = await fetch(`http://localhost:8080/v1/groupform/changeparameter/${selectedColumn}`, {
         method: 'POST',
       });
   
