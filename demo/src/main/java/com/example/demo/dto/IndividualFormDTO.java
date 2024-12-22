@@ -11,7 +11,7 @@ public class IndividualFormDTO {
     private City city;
     private String comments;
     private String date;
-    private Department departmentOfInterest;
+    private String departmentOfInterest;
     private String email;
     private String individualName;
     private String numberOfAttendees;
