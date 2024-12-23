@@ -232,11 +232,10 @@ const columns = [
         <ToggleButton
           value="BTO_APPROVED"
           sx={{
-            color: params.row.decision === 'BTO_APPROVED' ? '#fff' : 'grey', // White when selected
+            color: '#fff', // White when selected
             backgroundColor: params.row.decision === 'BTO_APPROVED' ? 'green' : '#e0e0e0', // Green when selected
             '&:hover': {
               backgroundColor: params.row.decision === 'BTO_APPROVED' ? 'rgba(0, 128, 0, 0.8)' : '#d5d5d5',
-              color: params.row.decision === 'BTO_APPROVED' ? '#fff' : 'grey',
             },
             '&.Mui-selected': {
               backgroundColor: 'green', // Force green when clicked
@@ -254,11 +253,10 @@ const columns = [
         <ToggleButton
         value="BTO_DENIED"
         sx={{
-          color: params.row.decision === 'BTO_DENIED' ? '#fff' : 'grey', // White when selected
+          color: '#fff',
           backgroundColor: params.row.decision === 'BTO_DENIED' ? 'red' : '#e0e0e0', // Red when selected
           '&:hover': {
             backgroundColor: params.row.decision === 'BTO_DENIED' ? 'rgba(255, 0, 0, 0.8)' : '#d5d5d5',
-            color: params.row.decision === 'BTO_DENIED' ? '#fff' : 'grey',
           },
           '&.Mui-selected': {
             backgroundColor: 'red', // Force red when clicked
