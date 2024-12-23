@@ -3,6 +3,7 @@ package com.example.demo.services;
 import com.example.demo.entities.event.Event;
 import com.example.demo.entities.event.Fair;
 import com.example.demo.entities.event.Tour;
+import com.example.demo.entities.form.GroupForm;
 import com.example.demo.enums.EventStatus;
 import com.example.demo.enums.TourHours;
 import com.example.demo.exceptions.FairNotFoundException;
@@ -187,6 +188,12 @@ public class EventService {
         }
 
         return monthlyStats;
+    }
+    
+    public void deleteEventsByIds(List<Long> eventIds) {
+        for (Long id : eventIds) {
+            tourService.deleteTourById(id);
+        }
     }
 
     public Tour cancelTour(Long tourId) {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import Sidebar from '../CoordinatorDashboardCommon/Sidebar';
 import { FaCalendarAlt, FaClock } from 'react-icons/fa';
@@ -10,28 +10,35 @@ const DashboardToursAndFairs = () => {
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth()); // Current month (0-based)
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const [selectedDay, setSelectedDay] = useState(null);
- 
-  const scheduleDetails = [
-    { date: '2024-12-10', eventType: 'tour', time: '09:00 - 11:00' },
-    { date: '2024-12-10', eventType: 'fair', time: '10:00 - 12:00' },
-    { date: '2024-12-10', eventType: 'fair', time: '10:00 - 12:00' },
-    { date: '2024-12-10', eventType: 'fair', time: '10:00 - 12:00' },
-    { date: '2024-12-10', eventType: 'fair', time: '10:00 - 12:00' },
-    { date: '2024-12-10', eventType: 'fair', time: '10:00 - 12:00' },
-    { date: '2024-12-15', eventType: 'tour', time: '13:30 - 16:00' },
-    { date: '2024-12-15', eventType: 'tour', time: '13:30 - 16:00' },
-    { date: '2024-12-15', eventType: 'tour', time: '13:30 - 16:00' },
-    { date: '2024-12-15', eventType: 'tour', time: '13:30 - 16:00' },
-    { date: '2024-12-18', eventType: 'fair', time: '14:00 - 16:00' },
-    { date: '2024-12-20', eventType: 'tour', time: '11:00 - 13:00' },
-    { date: '2024-12-20', eventType: 'tour', time: '11:00 - 13:00' },
-    { date: '2024-12-20', eventType: 'tour', time: '11:00 - 13:00' },
-    { date: '2024-12-20', eventType: 'tour', time: '11:00 - 13:00' },
-    { date: '2024-12-29', eventType: 'tour', time: '09:00 - 11:00' },
-  ];
+  const [scheduleDetails, setScheduleDetails] = useState([]); // State for events
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    // Fetch data from backend
+    const fetchEvents = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch('http://localhost:8080/v1/events'); // Replace with your actual API endpoint
+        if (!response.ok) {
+          throw new Error('Failed to fetch events');
+        }
+        const data = await response.json();
+        setScheduleDetails(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, []);
 
   const daysInMonth = getDaysInMonth(new Date(currentYear, currentMonth));
   const firstDayOfMonth = getDay(startOfMonth(new Date(currentYear, currentMonth)));
+
+
 
   const generateCalendarDays = () => {
     const days = [];
@@ -66,7 +73,7 @@ const DashboardToursAndFairs = () => {
                 <div
                   key={idx}
                   className={`${styles.eventIndicator} ${
-                    event.eventType === 'tour' ? styles.tour : styles.fair
+                    event.tourType === 'GROUP' ? styles.tour : styles.fair
                   }`}
                 ></div>
               ))}
@@ -152,8 +159,8 @@ const DashboardToursAndFairs = () => {
               {filteredDetails.length > 0 ? (
                 filteredDetails.map((event, idx) => (
                   <div key={idx} className={styles.eventCard}>
-                    <div className={styles.eventType}>
-                      {event.eventType === 'tour' ? 'Tour' : 'Fair'}
+                    <div className={styles.tourType}>
+                      {event.tourType === 'GROUP' ? 'Tour' : 'Fair'}
                     </div>
                     <div className={styles.eventDetails}>
                       <FaCalendarAlt />
@@ -161,7 +168,7 @@ const DashboardToursAndFairs = () => {
                     </div>
                     <div className={styles.eventDetails}>
                       <FaClock />
-                      <span>{event.time}</span>
+                      <span>{event.tourHours}</span>
                     </div>
                   </div>
                 ))

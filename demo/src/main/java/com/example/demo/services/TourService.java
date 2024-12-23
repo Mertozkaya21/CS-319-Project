@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.entities.event.Tour;
+import com.example.demo.entities.form.GroupForm;
 import com.example.demo.entities.highschool.Highschool;
 import com.example.demo.entities.user.Advisor;
 import com.example.demo.entities.user.Guide;
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class TourService {
@@ -302,14 +304,15 @@ public class TourService {
             usersToNotify.addAll(tour.getTrainees());
             usersToNotify.addAll(tour.getGuides());
 
-            notificationService.notifyCancellation(
-                "tour",
-                id,
-                "Tour to " + tour.getVisitorSchool().getName(),
-                tour.getDate(),
-                usersToNotify
-            );
-
+            if (tour.getVisitorSchool() != null) {
+                notificationService.notifyCancellation(
+                    "tour",
+                    id,
+                    "Tour to " + tour.getVisitorSchool().getName(),
+                    tour.getDate(),
+                    usersToNotify
+                );
+            }
 
             tourRepository.deleteById(id);
             return true;

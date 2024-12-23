@@ -107,6 +107,16 @@ public class EventController {
         return ResponseEntity.notFound().build();
     }
 
+    @DeleteMapping("/remove")
+    public ResponseEntity<?> deleteSelectedEvents(@RequestBody List<Long> eventIds) {
+        try {
+            eventService.deleteEventsByIds(eventIds);
+            return ResponseEntity.ok("Selected events have been removed successfully.");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid request. Some event IDs do not exist.");
+        }
+    }
+
     @PostMapping("/{tourid}/guides/{guideId}")
     public ResponseEntity<Event> assignGuideToEvent(@PathVariable Long tourid, @PathVariable Long guideId) throws GuideNotFoundException, UserNotFoundException {
         return ResponseEntity.ok(eventService.assignGuideToEvent(tourid, guideId));

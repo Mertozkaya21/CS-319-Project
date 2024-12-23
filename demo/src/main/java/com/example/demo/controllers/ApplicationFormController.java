@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.entities.form.ApplicationForm;
+import com.example.demo.entities.form.GroupForm;
 import com.example.demo.enums.ApplicationFormStatus;
 import com.example.demo.enums.Department;
 import com.example.demo.exceptions.ApplicationFormNotFoundException;
@@ -107,7 +108,7 @@ public class ApplicationFormController {
     }
 
     @PostMapping("/update-statuses")
-    public ResponseEntity<List<ApplicationForm>> updateApplicationFormStatuses(
+    public ResponseEntity<List<GroupForm>> updateApplicationFormStatuses(
             @RequestBody Map<String, String> statuses) {
     
         Map<Long, String> statusUpdates = statuses.entrySet().stream()
@@ -116,7 +117,7 @@ public class ApplicationFormController {
                         entry -> entry.getValue() 
                 ));
     
-        List<ApplicationForm> updatedForms = applicationFormService.updateStatuses(statusUpdates);
+        List<GroupForm> updatedForms = applicationFormService.updateStatuses(statusUpdates);
     
         if (updatedForms.isEmpty()) {
             return ResponseEntity.noContent().build();

@@ -8,13 +8,17 @@ import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import { eventRows } from './ToursAndFairsTable'; // Import event data
 
-const Header = ({ title, onSearchSelection }) => {
+const Header = ({ title, onSearchSelection, deleteSelectedEvents, rows }) => {
   const [sortOption, setSortOption] = useState('Date Updated');
 
   // Transform eventRows into a format suitable for Autocomplete
   const eventOptions = eventRows.map((school) => ({
     label: school.name, // Only the school name will be displayed
   }));
+
+  const handleRemoveClick = () => {
+    deleteSelectedEvents();
+  };
 
   return (
     <div className={styles.header}>
@@ -83,6 +87,7 @@ const Header = ({ title, onSearchSelection }) => {
 
         <Button
           variant="outlined"
+          onClick={handleRemoveClick}
           startIcon={<DoDisturbIcon />}
           sx={{
             color: '#8a0303', // Red text

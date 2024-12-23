@@ -148,7 +148,7 @@ export const eventRows = [
     comments: 'Special request for refreshments.' 
   },
 ];
-const ToursAndFairsTable = ({ rows }) => {
+const ToursAndFairsTable = ({ rows, setSelectedRows }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const [dialogContent, setDialogContent] = useState('');
 
@@ -161,17 +161,22 @@ const ToursAndFairsTable = ({ rows }) => {
     setOpenDialog(true);
   };
 
+  const handleSelectionModelChange = (newSelectionModel) => {
+    setSelectedRows(newSelectionModel);
+    console.log("Selected Row IDs:", newSelectionModel); // Seçilen satır ID'lerini log'la
+  };
+
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
 
   // Columns definition
   const columns = [
-    { field: 'eventType', headerName: 'Event', width: 100 },
+    { field: 'tourType', headerName: 'Event', width: 100 },
     { field: 'name', headerName: 'Institute Name', width: 180 },
-    { field: 'guide', headerName: 'Guide', width: 130 },
+    { field: 'guideIds', headerName: 'Guide', width: 130 },
     { field: 'date', headerName: 'Event Date', width: 120 },
-    { field: 'time', headerName: 'Event Time', width: 120 },
+    { field: 'tourHours', headerName: 'Event Time', width: 120 },
     { field: 'city', headerName: 'City', width: 100 },
     {
       field: 'contact',
@@ -220,6 +225,10 @@ const ToursAndFairsTable = ({ rows }) => {
           rowsPerPageOptions={[5, 10]}
           checkboxSelection
           disableSelectionOnClick
+          onRowSelectionModelChange={(newSelectionModel) => {
+            console.log("Row Selection Changed:", newSelectionModel);
+            setSelectedRows(newSelectionModel);
+          }} 
           sx={{
             '& .MuiDataGrid-columnHeaders': {
               backgroundColor: '#f7f7f7',
