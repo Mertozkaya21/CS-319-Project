@@ -11,9 +11,11 @@
 	</parent>
 
 	<groupId>com.cs319</groupId>
-	<artifactId>backend</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>backend</name>
+    <artifactId>backend</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>backend</name>
+    <packaging>jar</packaging>  <!-- Ensure we are packaging a JAR -->
+	
 	
 	<description>Demo project for Spring Boot</description>
 	<url/>
