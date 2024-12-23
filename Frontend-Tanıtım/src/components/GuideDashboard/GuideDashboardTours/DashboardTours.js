@@ -10,20 +10,15 @@ const DashboardTours = () => {
   const [filteredTours, setFilteredTours] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const guideId = localStorage.getItem('userId');
 
   useEffect(() => {
     const fetchTours = async () => {
       try {
         const response = await axios.get('http://localhost:8080/v1/events');
-        // Filter tours assigned to this guide
-        const guideTours = response.data.filter(event => 
-          event.tourType && 
-          event.guideIds && 
-          event.guideIds.includes(Number(guideId))
-        );
-        setTours(guideTours);
-        setFilteredTours(guideTours);
+        // Filter only tour type events
+        const tourEvents = response.data.filter(event => event.tourType);
+        setTours(tourEvents);
+        setFilteredTours(tourEvents);
         setIsLoading(false);
       } catch (err) {
         console.error('Error fetching tours:', err);
@@ -32,10 +27,8 @@ const DashboardTours = () => {
       }
     };
 
-    if (guideId) {
-      fetchTours();
-    }
-  }, [guideId]);
+    fetchTours();
+  }, []);
 
   const handleSearchSelection = (value) => {
     if (value) {
@@ -54,7 +47,7 @@ const DashboardTours = () => {
       <Sidebar />
       <div className={styles.mainContent}>
         <Header 
-          title="My Tours" 
+          title="Tours"
           onSearchSelection={handleSearchSelection}
           tours={tours}
         />

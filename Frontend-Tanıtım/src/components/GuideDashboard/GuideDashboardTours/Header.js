@@ -6,15 +6,14 @@ import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 import Button from '@mui/material/Button';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
-import { eventRows } from './ToursTable'; // Import event data
-import AddIcon from '@mui/icons-material/Add'; // Import plus icon
+import AddIcon from '@mui/icons-material/Add';
 
-const Header = ({ title, onSearchSelection }) => {
+const Header = ({ title, onSearchSelection, tours }) => {
   const [sortOption, setSortOption] = useState('Date Updated');
 
-  // Transform eventRows into a format suitable for Autocomplete
-  const eventOptions = eventRows.map((school) => ({
-    label: school.name, // Only the school name will be displayed
+  // Transform tours data into options for Autocomplete
+  const tourOptions = tours.map((tour) => ({
+    label: tour.name || 'Unnamed Tour', // Fallback if name is undefined
   }));
 
   return (
@@ -37,12 +36,11 @@ const Header = ({ title, onSearchSelection }) => {
           {/* User Info */}
           <NavLink to="/guidedashboardprofile" className={styles.userAvatar}>
             <div className={styles.avatarCircle}></div>
-            
           </NavLink>
           <div className={styles.userInfoText}>
-              <p className={styles.userName}>Nabila A.</p>
-              <p className={styles.userRole}>Guide</p>
-            </div>
+            <p className={styles.userName}>Nabila A.</p>
+            <p className={styles.userRole}>Guide</p>
+          </div>
         </div>
       </div>
 
@@ -51,30 +49,30 @@ const Header = ({ title, onSearchSelection }) => {
         {/* Replace Search Bar with Autocomplete */}
         <Autocomplete
           disablePortal
-          options={eventOptions} // event name options
-          onChange={(event, value) => onSearchSelection(value)} // Handle selection
+          options={tourOptions}
+          onChange={(event, value) => onSearchSelection(value)}
           sx={{
             width: 300,
             '& .MuiOutlinedInput-root': {
               '& fieldset': {
-                borderColor: '#8a0303', // Red outline
+                borderColor: '#8a0303',
               },
               '&:hover fieldset': {
-                borderColor: '#6c0101', // Darker red on hover
+                borderColor: '#6c0101',
               },
               '&.Mui-focused fieldset': {
-                borderColor: '#8a0303', // Red outline when focused
+                borderColor: '#8a0303',
               },
-              color: '#8a0303', // Ensures input text stays red
+              color: '#8a0303',
             },
             '& .MuiInputBase-input': {
-              color: '#8a0303', // Set the text color of the input
+              color: '#8a0303',
             },
             '& .MuiInputLabel-root': {
-              color: '#8a0303', // Red label color
+              color: '#8a0303',
             },
             '& .MuiInputLabel-root.Mui-focused': {
-              color: '#6c0101', // Darker red when label is focused
+              color: '#6c0101',
             },
           }}
           renderInput={(params) => (
@@ -82,20 +80,20 @@ const Header = ({ title, onSearchSelection }) => {
           )}
         />
 
-          <Button
-            variant="contained" // Contained style
-            startIcon={<AddIcon />}
-            sx={{
-              backgroundColor: '#8a0303', // Red background
-              color: '#ffffff', // White text
-              marginLeft: '10px', // Add spacing between buttons
-              '&:hover': {
-                backgroundColor: '#6c0101', // Darker red background on hover
-              },
-            }}
-          >
-            Confirm Changes
-          </Button>
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          sx={{
+            backgroundColor: '#8a0303',
+            color: '#ffffff',
+            marginLeft: '10px',
+            '&:hover': {
+              backgroundColor: '#6c0101',
+            },
+          }}
+        >
+          Confirm Changes
+        </Button>
       </div>
     </div>
   );
