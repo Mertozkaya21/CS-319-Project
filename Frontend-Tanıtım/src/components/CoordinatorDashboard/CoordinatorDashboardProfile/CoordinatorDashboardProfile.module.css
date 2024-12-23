@@ -26,18 +26,18 @@
   padding: 2rem;
   background-color: #f5f7fc;
 }
-
 /* Profile Header Section */
 .profileHeader {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: center; /* Align content vertically */
   background-color: #fff;
   padding: 2rem;
   border-radius: 16px; /* Rounded corners */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  position: relative; /* For layered content like avatar */
-  overflow: hidden; /* Ensure child elements don't spill out */
+  position: relative; /* Important for pseudo-elements */
+  overflow: hidden; /* Prevent circles from spilling out */
+  z-index: 1; /* Ensure content is above pseudo-elements */
 }
 
 /* Background circles */
@@ -67,65 +67,63 @@
   z-index: 0;
 }
 
-/* Avatar */
+/* Left Section: Avatar and Details */
+.profileLeft {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
 .profileAvatar {
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  background-color: #d32f2f;
-  position: relative;
-  z-index: 1; /* Bring above background circles */
-  border: 4px solid #fff; /* White border around the avatar */
+  background-color: #d32f2f; /* Avatar background */
+  border: 4px solid #fff; /* White border */
+  z-index: 2; /* Ensure the avatar stays above the circles */
+  position: relative; /* Ensure z-index works properly */
 }
 
-/* Profile Details */
 .profileDetails {
-  flex: 1;
-  margin-left: 1.5rem;
-  z-index: 1; /* Ensure it's above the background */
-  color: #333;
+  display: flex;
+  flex-direction: column;
 }
 
 .profileName {
   font-size: 2rem;
   font-weight: 600;
-  color: #333366; /* Dark blue color */
+  color: #333366;
 }
 
 .profileRole {
   font-size: 1.2rem;
   font-weight: 500;
   color: #777;
-  margin-bottom: 0.5rem;
+  margin-top: 0.5rem;
 }
 
-.profileLocation {
-  font-size: 1rem;
-  color: #999;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
+/* Contact Info Styling */
 .profileContact {
-  z-index: 1; /* Bring contact details above background */
-  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; /* Align contact info to the right */
+  gap: 8px;
+  margin-bottom: 1rem;
+  padding-right: 100px;
 }
 
 .profileContactItem {
   display: flex;
-  gap: 0.5rem;
+  align-items: center;
+  gap: 8px;
   font-size: 1rem;
   color: #333;
   font-weight: 500;
-  margin-bottom: 1rem;
-  margin-right: 60px;
 }
 
 .profileContactItem svg {
-  color: #d32f2f; /* Red for icons */
+  color: #d32f2f;
 }
-
 /* Responsive Design */
 @media (max-width: 768px) {
   .profileHeader {
@@ -142,6 +140,71 @@
   .profileContact {
     text-align: center;
     margin-top: 1rem;
+  }
+}
+
+/* Buttons Below Contact Info */
+.profileActions {
+  display: flex;
+  gap: 12px;
+}
+
+/* Add New Coordinator Button */
+.addButton {
+  background-color: #8a0303;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.addButton:hover {
+  background-color: #6c0101;
+}
+
+/* Manage Coordinators Button */
+.manageButton {
+  background-color: transparent;
+  color: #8a0303;
+  padding: 8px 16px;
+  border: 1px solid #8a0303;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.manageButton:hover {
+  background-color: #fbe8e8;
+  border-color: #6c0101;
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .profileHeader {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    padding: 1.5rem;
+  }
+
+  .profileLeft {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .profileRight {
+    align-items: center;
+    text-align: center;
+  }
+
+  .profileActions {
+    justify-content: center;
   }
 }
 

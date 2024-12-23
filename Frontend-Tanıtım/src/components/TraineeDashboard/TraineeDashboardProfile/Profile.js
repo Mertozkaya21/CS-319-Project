@@ -245,7 +245,7 @@ const Profile = () => {
         <div className={styles.profileDetails}>
           <h2 className={styles.profileName}>Nabila Azalea</h2>
           <p className={styles.profileRole}>Trainee</p>
-          <p className={styles.profileLocation}>📍 Ankara, Turkey</p>
+          <p className={styles.profileLocation}>Status: </p>
         </div>
         <div className={styles.profileContact}>
           <p className={styles.profileContactItem}>

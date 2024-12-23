@@ -4,7 +4,9 @@ import styles from './CoordinatorDashboardProfile.module.css';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import TablePagination from '@mui/material/TablePagination';
-import { FaEnvelope } from 'react-icons/fa';
+import { FaEnvelope, FaPhone } from 'react-icons/fa';
+import AddIcon from '@mui/icons-material/Add';
+import { Button } from '@mui/material';
 
 const contactsData = [
     {
@@ -173,17 +175,16 @@ const contactsData = [
 const Profile = () => {
     const [searchValue, setSearchValue] = useState('');
     const [filteredContacts, setFilteredContacts] = useState(contactsData);
-
-  const [messagesSearchValue, setMessagesSearchValue] = useState("");
-  const [filteredMessages, setFilteredMessages] = useState(contactsData);
+    const [messagesSearchValue, setMessagesSearchValue] = useState("");
+    const [filteredMessages, setFilteredMessages] = useState(contactsData);
 
     // Pagination States
     const [contactsPage, setContactsPage] = useState(0);
     const [contactsRowsPerPage, setContactsRowsPerPage] = useState(5);
   
-  // Pagination States for Messages
-  const [messagesPage, setMessagesPage] = useState(0);
-  const [messagesRowsPerPage, setMessagesRowsPerPage] = useState(5);
+    // Pagination States for Messages
+    const [messagesPage, setMessagesPage] = useState(0);
+    const [messagesRowsPerPage, setMessagesRowsPerPage] = useState(5);
 
   // Search Filter
   const handleSearchChange = (event, value) => {
@@ -241,19 +242,70 @@ const Profile = () => {
     <div className={styles.profileContainer}>
       {/* Profile Header Section */}
       <div className={styles.profileHeader}>
-        <div className={styles.profileAvatar}></div>
-        <div className={styles.profileDetails}>
-          <h2 className={styles.profileName}>Nabila Azalea</h2>
-          <p className={styles.profileRole}>Coordinator</p>
-          <p className={styles.profileLocation}>📍 Ankara, Turkey</p>
+        {/* Left Side: Avatar and Details */}
+        <div className={styles.profileLeft}>
+          <div className={styles.profileAvatar}></div>
+          <div className={styles.profileDetails}>
+            <h2 className={styles.profileName}>Nabila Azalea</h2>
+            <p className={styles.profileRole}>Coordinator</p>
+          </div>
         </div>
-        <div className={styles.profileContact}>
-          <p className={styles.profileContactItem}>
-            📞 +90 345 6789 0
-          </p>
-          <p className={styles.profileContactItem}>
-            ✉️ nabila@mail.com
-          </p>
+
+        {/* Right Side: Contact Info and Actions */}
+        <div className={styles.profileRight}>
+          <div className={styles.profileContact}>
+            <p className={styles.profileContactItem}>
+              <FaPhone /> +90 345 6789 0
+            </p>
+            <p className={styles.profileContactItem}>
+              <FaEnvelope /> nabila@mail.com
+            </p>
+          </div>
+
+          <div className={styles.profileActions}>
+          
+          <Button
+            component={NavLink}
+            to="/coordinatordashboardprofileaddcoordinator" // Route for Add New Coordinator
+            variant="contained" // Contained style
+            startIcon={<AddIcon />} // Add icon
+            sx={{
+              backgroundColor: '#8a0303', // Red background
+              color: '#ffffff', // White text
+              padding: '4px 12px', // Smaller padding
+              fontSize: '0.85rem', // Smaller text
+              fontWeight: '500', // Less bold text
+              borderRadius: '6px', // Slightly smaller border radius
+              textTransform: 'none', // Prevent uppercase transformation
+              '&:hover': {
+                backgroundColor: '#6c0101', // Darker red background on hover
+              },
+            }}
+          >
+            Add New Coordinator
+          </Button>
+          {/* Manage Coordinators Button */}
+          <Button
+            variant="outlined"
+            component={NavLink}
+            to="/coordinatordashboardprofilemanagecoordinator"
+            sx={{
+              color: '#8a0303', // Red text
+              borderColor: '#8a0303', // Red border
+              padding: '4px 12px', // Smaller padding
+              fontSize: '0.85rem', // Smaller text
+              fontWeight: '500', // Less bold text
+              borderRadius: '6px', // Slightly smaller border radius
+              textTransform: 'none', // Prevent uppercase transformation
+              '&:hover': {
+                backgroundColor: '#fbe8e8', // Light red background
+                borderColor: '#6c0101', // Darker red border on hover
+              },
+            }}
+          >
+            Manage Coordinators
+          </Button>
+          </div>
         </div>
       </div>
 
@@ -308,8 +360,8 @@ const Profile = () => {
             onRowsPerPageChange={handleContactsRowsPerPageChange}
           />
         </div>
-{/* Messages Section */}
-<div className={styles.messages}>
+        {/* Messages Section */}
+        <div className={styles.messages}>
           <div className={styles.messagesHeader}>
             <h3>Messages</h3>
           </div>

@@ -1,0 +1,148 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html, body {
+    height: 100%;
+    background-color: #f5f7fc;
+  }
+  
+  #root {
+    height: 100%; /* Ensure React root fills the viewport */
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Main Dashboard Container */
+  .dashboard {
+    display: flex;
+    flex-direction: column;
+    height: 100vh; /* Full viewport height */
+    margin: 0;
+    padding: 0;
+    background-color: #f5f7fc; /* Same background color throughout */
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  /* Main Content */
+  .mainContent {
+    margin-left: 250px; /* Offset for the fixed sidebar */
+    margin-top: 0; /* Space below the fixed header */
+    padding: 20px; /* Consistent padding */
+    padding-top: 0; /* No extra padding on top */
+    flex-grow: 1; /* Ensure it takes up all remaining space */
+    background-color: #f5f7fc;
+    overflow-y: auto; /* Enable vertical scrolling only */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    height: calc(100vh - 60px); /* Full height minus header (adjust header height as needed) */
+    box-sizing: border-box; /* Include padding and borders in dimensions */
+    width: calc(100vw - 250px); /* Adjust width to fit around sidebar */
+    max-width: 100%; /* Prevent exceeding available width */
+  }
+  
+  /* Header */
+  .header {
+    display: flex;
+    flex-direction: column; /* Separate title and controls into two rows */
+    padding-left: 30px;
+    padding-right: 20px;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    background-color: #f5f7fc;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  /* Top Row */
+  .headerTopRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 0px; /* Add horizontal padding to align with the table edges */
+  }
+  
+  .headerTitle {
+    font-size: 24px;
+    font-weight: bold;
+    color: #343a40;
+  }
+  
+  /* User Section */
+  .userSection {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .iconButton {
+    background: #ffffff;
+    border: none;
+    border-radius: 50%;
+    padding: 8px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+  }
+  
+  .iconButton svg {
+    color: #686565; /* Set icon color to dark red */
+  }
+  
+  .iconButton:hover svg {
+    color: #686565; /* Darker red on hover */
+  }
+  
+  .iconButton:hover {
+    background-color: #f8d7da; /* Light red background on hover */
+  }
+  
+  .notificationDot {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background-color: #dc3545;
+    border-radius: 50%;
+    top: 4px;
+    right: 4px;
+  }
+  
+  .userAvatar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .avatarCircle {
+    width: 40px;
+    height: 40px;
+    background-color: #8a0303;
+    border-radius: 50%;
+  }
+  
+  .userInfoText {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .userName {
+    font-weight: bold;
+    font-size: 14px;
+    margin: 0;
+    color: #343a40;
+  }
+  
+  .userRole {
+    font-size: 12px;
+    margin: 0;
+    color: #6c757d;
+  }
+  
+  /* Table Container */
+  .tableContainer {
+    background-color: #ffffff; /* White background */
+    padding: 20px 40px; /* Add left and right padding */
+    border-radius: 12px; /* Rounded corners for the container */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  }

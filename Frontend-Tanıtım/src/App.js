@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-import Home from './components/Home';
+import Home from './components/LandingPage/LandingPage';
 import Login from './components/Login'; // Login.js dosyasını içe aktar
 import ForgotPassword from './components/ForgotPassword'; // ForgotPassword.js dosyasını içe aktar
 import HighSchoolForm from './components/Forms/HighSchoolForm/HighSchoolFormDashboard';
@@ -10,6 +10,8 @@ import Survey from './components/Forms/Survey/SurveyDashboard';
 
 import CoordinatorDashboard from './components/CoordinatorDashboard/CoordinatorDashboard/Dashboard';
 import CoordinatorDashboardHighSchool from './components/CoordinatorDashboard/CoordinatorDashboardHighSchool/DashboardHighSchool';
+import CoordinatorDashboardHighSchoolAddHighSchool from './components/CoordinatorDashboard/CoordinatorDashboardHighSchoolAddHighSchool/DashboardHighSchoolAddHighSchool';
+
 import CoordinatorDashboardEditHighSchool from './components/CoordinatorDashboard/CoordinatorDashboardHighSchoolsEditHighSchool/DashboardEditHighSchool';
 import CoordinatorDashboardAdvisors from './components/CoordinatorDashboard/CoordinatorDashboardAdvisors/DashboardAdvisors';
 import CoordinatorDashboardAddAdvisor from './components/CoordinatorDashboard/CoordinatorDashboardAdvisorsAddNewAdvisor/DashboardAddAdvisor';
@@ -30,6 +32,8 @@ import CoordinatorDashboardEditIndividualApplication from './components/Coordina
 import CoordinatorDashboardFeedbackAnalysis from './components/CoordinatorDashboard/CoordinatorDashboardFeedbackAnalysis/DashboardFeedbackAnalysis';
 import CoordinatorDashboardPayments from './components/CoordinatorDashboard/CoordinatorDashboardPayments/DashboardPayments';
 import CoordinatorDashboardProfile from './components/CoordinatorDashboard/CoordinatorDashboardProfile/DashboardProfile';
+import CoordinatorDashboardProfileAddCoordinator from './components/CoordinatorDashboard/CoordinatorDashboardProfileAddCoordinator/DashboardProfileAddCoordinator';
+import CoordinatorDashboardProfileManageCoordinators from './components/CoordinatorDashboard/CoordinatorDashboardProfileManageCoordinators/DashboardProfileManageCoordinators';
 import CoordinatorDashboardChat from './components/CoordinatorDashboard/CoordinatorDashboardChat/DashboardChat';
 import CoordinatorDashboardSettings from './components/CoordinatorDashboard/CoordinatorDashboardSettings/DashboardSettings';
 import CoordinatorDashboardNotifications from './components/CoordinatorDashboard/CoordinatorDashboardNotifications/DashboardNotifications';
@@ -78,6 +82,7 @@ const App = () => {
         
         <Route path="/coordinatordashboard" element={<CoordinatorDashboard />} />
         <Route path="/coordinatordashboardhighschool" element={<CoordinatorDashboardHighSchool />} />
+        <Route path="/coordinatordashboardhighschooladdhighschool" element={<CoordinatorDashboardHighSchoolAddHighSchool />} />
         <Route path="/coordinatordashboardedithighschool/:id" element={<CoordinatorDashboardEditHighSchool />} />
         <Route path="/coordinatordashboardadvisors" element={<CoordinatorDashboardAdvisors />} />
         <Route path="/coordinatordashboardaddadvisor" element={<CoordinatorDashboardAddAdvisor />} />
@@ -98,6 +103,8 @@ const App = () => {
         <Route path="/coordinatordashboardfeedbackanalysis" element={<CoordinatorDashboardFeedbackAnalysis />} />
         <Route path="/coordinatordashboardpayments" element={<CoordinatorDashboardPayments />} />
         <Route path="/coordinatordashboardprofile" element={<CoordinatorDashboardProfile />} />
+        <Route path="/coordinatordashboardprofileaddcoordinator" element={<CoordinatorDashboardProfileAddCoordinator />} />
+        <Route path="/coordinatordashboardprofilemanagecoordinator" element={<CoordinatorDashboardProfileManageCoordinators />} />
         <Route path="/coordinatordashboardchat" element={<CoordinatorDashboardChat />} />
         <Route path="/coordinatordashboardsettings" element={<CoordinatorDashboardSettings />} />
         <Route path="/coordinatordashboardnotifications" element={<CoordinatorDashboardNotifications />} />

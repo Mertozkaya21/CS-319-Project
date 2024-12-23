@@ -139,7 +139,7 @@ const LandingPage = () => {
         viewport={{ once: true }}
     >
         <motion.h2 variants={fadeInUp} className={styles.coursesTitle}>
-        Most Popular Courses
+        Most Popular Programs
         </motion.h2>
         <motion.div variants={fadeInUp} className={styles.titleUnderline}></motion.div>
         

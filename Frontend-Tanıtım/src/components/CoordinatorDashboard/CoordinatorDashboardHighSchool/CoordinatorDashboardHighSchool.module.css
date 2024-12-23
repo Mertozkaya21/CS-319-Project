@@ -209,6 +209,19 @@ body, html {
   font-size: 12px;
 }
 
+/* Add New High School Button */
+.addButton {
+  background-color: #8a0303;
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: bold;
+}
+
+.addButton:hover {
+  background-color: #6c0101;
+}
+
 /* Remove Selected Button */
 .removeButton {
   background-color: #8a0303;
