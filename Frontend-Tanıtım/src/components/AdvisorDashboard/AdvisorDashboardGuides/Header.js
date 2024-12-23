@@ -2,20 +2,15 @@ import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import styles from './AdvisorDashboardGuides.module.css';
 import { FaBell, FaCog } from 'react-icons/fa';
-import DeleteIcon from '@mui/icons-material/Delete';
-import Button from '@mui/material/Button';
+import { guidesRows } from './GuidesTable'; // Import guide data
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
-import { guidesRows } from './GuidesTable'; // Import guide data
-import AddIcon from '@mui/icons-material/Add'; // Import plus icon
 
-const Header = ({ title, onSearchSelection, guides }) => {
-  const [sortOption, setSortOption] = useState('Date Updated');
-
-  // Transform guides into options for Autocomplete
-  const guidesOptions = guides?.map((guide) => ({
-    label: guide.name,
-  })) || [];
+const Header = ({ title, onSearchSelection }) => {
+  // Transform guidesRows into a format suitable for Autocomplete
+  const guidesOptions = guidesRows.map((guide) => ({
+    label: guide.name, // Display guide name
+  }));
 
   return (
     <div className={styles.header}>
@@ -50,37 +45,36 @@ const Header = ({ title, onSearchSelection, guides }) => {
         {/* Replace Search Bar with Autocomplete */}
         <Autocomplete
           disablePortal
-          options={guidesOptions}
-          onChange={(event, value) => onSearchSelection(value)}
+          options={guidesOptions} // Guide name options
+          onChange={(event, value) => onSearchSelection(value)} // Handle selection
           sx={{
             width: 300,
             '& .MuiOutlinedInput-root': {
               '& fieldset': {
-                borderColor: '#8a0303',
+                borderColor: '#8a0303', // Red outline
               },
               '&:hover fieldset': {
-                borderColor: '#6c0101',
+                borderColor: '#6c0101', // Darker red on hover
               },
               '&.Mui-focused fieldset': {
-                borderColor: '#8a0303',
+                borderColor: '#8a0303', // Red outline when focused
               },
-              color: '#8a0303',
+              color: '#8a0303', // Ensures input text stays red
             },
             '& .MuiInputBase-input': {
-              color: '#8a0303',
+              color: '#8a0303', // Set the text color of the input
             },
             '& .MuiInputLabel-root': {
-              color: '#8a0303',
+              color: '#8a0303', // Red label color
             },
             '& .MuiInputLabel-root.Mui-focused': {
-              color: '#6c0101',
+              color: '#6c0101', // Darker red when label is focused
             },
           }}
           renderInput={(params) => (
             <TextField {...params} label="Search Guide" />
           )}
         />
-
       </div>
     </div>
   );
