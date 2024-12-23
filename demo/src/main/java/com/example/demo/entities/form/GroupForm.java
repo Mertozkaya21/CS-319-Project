@@ -30,8 +30,8 @@ public class GroupForm extends ApplicationForm{
     
     public GroupForm(GroupFormDTO groupFormDTO){
         super();
-        this.setTourHour(TourHours.fromString(groupFormDTO.getTimeSlot()));
-        this.setEventDate(LocalDate.parse(groupFormDTO.getDate()));
+        this.setTourHour(TourHours.fromString(groupFormDTO.getTourHour()));
+        this.setEventDate(LocalDate.parse(groupFormDTO.getEventDate()));
         this.setComments(groupFormDTO.getComments());
         this.setChaperoneName(groupFormDTO.getChaperoneName());
         this.setChaperoneRole(groupFormDTO.getChaperoneRole());
@@ -40,6 +40,7 @@ public class GroupForm extends ApplicationForm{
         this.setCity(groupFormDTO.getCity());
         this.setNumberOfAttendees(Integer.parseInt(groupFormDTO.getNumberOfAttendees()));
         this.setSubmitTimeDate(LocalDate.now());
+        this.sortType="byLgsPercentile";
     }
 
     @ManyToOne
@@ -66,4 +67,19 @@ public class GroupForm extends ApplicationForm{
     public String getHighschoolName() {
         return highschool != null ? highschool.getName() : null;
     }
+
+    @JsonGetter("newParameter")
+    public String getNewParameter() {
+        if(this.sortType.equals("byLgsPercentile"))
+            return String.valueOf(this.highschool.getLgsPercentile()); 
+        else if(this.sortType.equals("byDistance"))
+            return String.valueOf(this.highschool.getCity().getDistanceFromAnkara());  
+        else if(this.sortType.equals("bySubmitTime"))
+            return String.valueOf(this.getSubmitTimeDate()); 
+        else
+            return String.valueOf(this.getPriorityScore()); 
+    }
+
+    @JsonIgnore
+    private String sortType = "byLgsPercentile";
 }

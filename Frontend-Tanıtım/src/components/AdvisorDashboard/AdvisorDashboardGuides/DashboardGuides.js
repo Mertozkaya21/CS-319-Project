@@ -1,35 +1,59 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Sidebar from '../AdvisorDashboardCommon/Sidebar';
 import Header from './Header';
 import GuidesTable from './GuidesTable';
-import { guidesRows } from './GuidesTable'; // Import data
 import styles from './AdvisorDashboardGuides.module.css';
+import axios from 'axios';
 
 const DashboardGuides = () => {
-  const [filteredRows, setFilteredRows] = useState(guidesRows); // Manage filtered rows
+  const [guideRows, setGuideRows] = useState([]);
+  const [filteredRows, setFilteredRows] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchGuideRows = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/v1/user/guide');
+        const updatedData = response.data.map(guide => ({
+          ...guide,
+          name: `${guide.firstName} ${guide.lastName}`,
+        }));
+
+        setGuideRows(updatedData);
+        setFilteredRows(updatedData);
+        setLoading(false);
+      } catch (err) {
+        console.error('Error fetching guide data:', err);
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+
+    fetchGuideRows();
+  }, []);
 
   const handleSearchSelection = (value) => {
     if (value) {
-      // Filter rows based on the selected guide name
-      const filtered = guidesRows.filter((row) => row.name === value.label);
+      const filtered = guideRows.filter((row) => row.name === value.label);
       setFilteredRows(filtered);
     } else {
-      // Reset to show all rows when the search is cleared
-      setFilteredRows(guidesRows);
+      setFilteredRows(guideRows);
     }
   };
 
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
   return (
     <div className={styles.dashboardContainer}>
-      {/* Sidebar */}
       <Sidebar />
-
-      {/* Main Content */}
       <div className={styles.mainContent}>
-        {/* Header */}
-        <Header title="Guides" onSearchSelection={handleSearchSelection} />
-
-        {/* Guides Table */}
+        <Header 
+          title="Guides" 
+          onSearchSelection={handleSearchSelection} 
+          guides={guideRows}
+        />
         <GuidesTable rows={filteredRows} />
       </div>
     </div>

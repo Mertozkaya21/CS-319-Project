@@ -42,8 +42,21 @@ public class GroupFormService {
     
 
     public List<GroupForm> getGroupFormsByTourHours(LocalDate date, TourHours tourHour){
-        List<GroupForm> forms = groupFormRepository.findByEventDateAndTourHour(date,tourHour);
-        return applicationFormSorter.sortApplicationForms(forms);
+        return applicationFormSorter.sortApplicationForms(groupFormRepository.findByEventDateAndTourHour(date,tourHour));
+    }
+
+    public GroupForm updateGroupForm(Long id, GroupFormDTO groupFormDTO) throws ApplicationFormNotFoundException {
+        GroupForm existingForm = groupFormRepository.findById(id)
+                .orElseThrow(() -> new ApplicationFormNotFoundException("GroupForm with id " + id + " not found"));
+
+        
+        existingForm.setPhoneNumber(groupFormDTO.getPhoneNumber());
+        existingForm.setEmail(groupFormDTO.getEmail());
+        existingForm.setEventDate(LocalDate.parse(groupFormDTO.getEventDate()));
+        existingForm.setTourHour(TourHours.fromString(groupFormDTO.getTourHour()));
+
+        // Save and return the updated form
+        return groupFormRepository.save(existingForm);
     }
 
     public void setSortingStrategy(SortStrategy strategy){
@@ -57,16 +70,11 @@ public class GroupFormService {
         groupForms.stream()
             .collect(Collectors.groupingBy(form -> new FormDateHourKey(form.getEventDate(), form.getTourHour())))
             .forEach((key, forms) -> {
-                List<GroupForm> sortedGroup = getApplicationFormsByTourHour(key.date, key.tourHour);
+                List<GroupForm> sortedGroup = getGroupFormsByTourHours(key.date, key.tourHour);
                 sortedForms.addAll(sortedGroup);
             });
 
         return sortedForms;
-    }
-
-    public List<GroupForm> getApplicationFormsByTourHour(LocalDate date, TourHours tourHour){
-        List<GroupForm> forms = groupFormRepository.findByEventDateAndTourHour(date,tourHour);
-        return applicationFormSorter.sortApplicationForms(forms);
     }
 
     public GroupForm getGroupFormById(Long id) throws ApplicationFormNotFoundException {
@@ -101,10 +109,10 @@ public class GroupFormService {
 
     public GroupForm saveGroupForm(GroupFormDTO groupFormDto) {
         Highschool highschool = highschoolRepository.findByName(groupFormDto.getHighSchoolName());
-        if (highschool == null) {
+        /*if (highschool == null) {
             highschool = createNewHighSchool(groupFormDto);
             highschoolRepository.save(highschool);
-        } else if (hasHighschoolAlreadyApplied(highschool.getName(), groupFormDto.getEventDateAsLocalDate())) {
+        } else*/ if (hasHighschoolAlreadyApplied(highschool.getName(), groupFormDto.getEventDateAsLocalDate())) {
             throw new IllegalArgumentException("High school has already applied for a tour on this date.");
         }
 
@@ -115,7 +123,8 @@ public class GroupFormService {
         return groupFormRepository.save(groupForm);
     }
 
-    private Highschool createNewHighSchool(GroupFormDTO groupFormDto) {
+    //useless method
+    /*private Highschool createNewHighSchool(GroupFormDTO groupFormDto) {
         Highschool newHighschool = new Highschool();
         newHighschool.setName(groupFormDto.getHighSchoolName());
         newHighschool.setCity(groupFormDto.getCity());
@@ -129,7 +138,7 @@ public class GroupFormService {
         newHighschool.setCounselor(counselor);
 
         return newHighschool;
-    }
+    }*/
 
     private boolean hasHighschoolAlreadyApplied(String highschoolName, LocalDate tourDate) {
         List<GroupForm> forms = groupFormRepository.findByEventDateAndHighschoolName(tourDate, highschoolName);
