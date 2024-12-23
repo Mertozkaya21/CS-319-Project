@@ -3,7 +3,6 @@ import styles from './CoordinatorDashboardProfile.module.css';
 import { FaBell, FaCog } from 'react-icons/fa';
 
 const Header = ({ title }) => {
-
   return (
     <div className={styles.header}>
       {/* Title Row */}
@@ -27,14 +26,19 @@ const Header = ({ title }) => {
         </div>
       </div>
 
-      {/* Search and Action Buttons Row */}
-      <div className={styles.headerBottomRow}>
-
-        <div className={styles.actions}>
-          <div className={styles.dropdown}>
-
+      {/* Profile Info */}
+      <div className={styles.profileContainer}>
+        <div className={styles.profileDetails}>
+          <h2 className={styles.profileName}>Nabila Azalea</h2>
+          <p className={styles.profileRole}>Coordinator</p>
+          <p className={styles.profileLocation}>📍 Ankara, Turkey</p>
+          <div className={styles.profileContact}>
+            <p>📞 +90 345 6789 0</p>
+            <p>✉️ nabila@mail.com</p>
           </div>
         </div>
+
+        
       </div>
     </div>
   );

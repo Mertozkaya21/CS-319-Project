@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import styles from './CoordinatorDashboardHighSchool.module.css';
+import styles from './CoordinatorDashboardProfileManageCoordinators.module.css';
 import { FaBell, FaCog } from 'react-icons/fa';
 import DeleteIcon from '@mui/icons-material/Delete';
+import AddIcon from '@mui/icons-material/Add';
 import Button from '@mui/material/Button';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
@@ -10,23 +11,24 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
-//import { getHighSchoolData } from './DashboardHighSchool'; // Import high school data
+import { coordinatorRows } from './CoordinatorsTable'; // Import coordinator data
 
-const Header = ({ title, onSearchSelection , deleteSelectedHighschools, rows}) => {
-  const [isPopupOpen, setPopupOpen] = useState(false); // State to control the popup
+const Header = ({ title, onSearchSelection, deleteSelectedCoordinators}) => {
   const [sortOption, setSortOption] = useState('Date Updated');
+  const [isPopupOpen, setPopupOpen] = useState(false); // State to control popup visibility
 
-  // Transform highSchoolRows into a format suitable for Autocomplete
-  const highSchoolOptions = rows.map((school) => ({
-    label: school.name, // Only the school name will be displayed
+  // Transform coordinatorRows into a format suitable for Autocomplete
+  const coordinatorOptions = coordinatorRows.map((coordinator) => ({
+    label: coordinator.name, // Only the coordinator name will be displayed
   }));
 
+  // Open Confirmation Dialog
   const handleRemoveClick = () => {
     setPopupOpen(true);
   };
 
   const handleDeletions = () => {
-    deleteSelectedHighschools();
+    deleteSelectedCoordinators();
     setPopupOpen(false);
   };  
 
@@ -68,7 +70,7 @@ const Header = ({ title, onSearchSelection , deleteSelectedHighschools, rows}) =
         {/* Replace Search Bar with Autocomplete */}
         <Autocomplete
           disablePortal
-          options={highSchoolOptions} // High school name options
+          options={coordinatorOptions} // coordinator name options
           onChange={(event, value) => onSearchSelection(value)} // Handle selection
           sx={{
             width: 300,
@@ -95,72 +97,74 @@ const Header = ({ title, onSearchSelection , deleteSelectedHighschools, rows}) =
             },
           }}
           renderInput={(params) => (
-            <TextField {...params} label="Search High School" />
+            <TextField {...params} label="Search Coordinator" />
           )}
         />
 
-        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+        {/* Buttons */}
+        <div className={styles.actionButtons}>
+          <Button
+            variant="outlined"
+            startIcon={<DeleteIcon />}
+            onClick={handleRemoveClick}
+            sx={{
+              color: '#8a0303',
+              borderColor: '#8a0303',
+              '&:hover': {
+                backgroundColor: '#fbe8e8',
+                borderColor: '#6c0101',
+              },
+            }}
+          >
+            Remove Selected
+          </Button>
 
-        <Button
-          variant="outlined"
-          startIcon={<DeleteIcon />}
-          onClick={handleRemoveClick} // Open confirmation popup
-          sx={{
-            color: '#8a0303', // Red text
-            borderColor: '#8a0303', // Red border
-            '&:hover': {
-              backgroundColor: '#fbe8e8', // Light red background on hover
-              borderColor: '#6c0101', // Darker red border on hover
-            },
-          }}
-        >
-          Remove Selected
-        </Button>
-        {/* Add New High School Button */}
-        <Button
-        component={NavLink}
-  to="/coordinatordashboardhighschooladdhighschool"
-          variant="contained"
-          sx={{
-            backgroundColor: '#8a0303',
-            color: '#fff',
-            marginLeft: '8px', /* Space between buttons */
-            '&:hover': {
-              backgroundColor: '#6c0101',
-            },
-          }}
-        >
-          + Add New High School
-        </Button>
-
+          {/* Add New coordinator Button */}
+          <Button
+            component={NavLink}
+            to="/coordinatordashboardprofileaddcoordinator" // Route for Add New coordinator
+            variant="contained" // Contained style
+            startIcon={<AddIcon />}
+            sx={{
+              backgroundColor: '#8a0303', // Red background
+              color: '#ffffff', // White text
+              marginLeft: '10px', // Add spacing between buttons
+              '&:hover': {
+                backgroundColor: '#6c0101', // Darker red background on hover
+              },
+            }}
+          >
+            Add New Coordinator
+          </Button>
         </div>
       </div>
-      {/* Confirmation Popup */}
-      <Dialog open={isPopupOpen} onClose={handleClosePopup}>
+    {/* Confirmation Popup */}
+    <Dialog open={isPopupOpen} onClose={handleClosePopup}>
         <DialogTitle>Confirm Deletion</DialogTitle>
         <DialogContent>
-          Are you sure you want to delete the selected high school(s)? You will not be able to access their data if you proceed.
+          Are you sure you want to delete the selected coordinator(s)? You will not be able to access their data if you proceed.
         </DialogContent>
         <DialogActions>
+          {/* No Button */}
           <Button
             onClick={handleClosePopup}
             variant="outlined"
             sx={{
               color: '#8a0303',
               borderColor: '#8a0303',
-              '&:hover': {
-                backgroundColor: '#fdeaea',
-                borderColor: '#8a0303',
-              },
-            }}
+              '&:hover': { backgroundColor: '#fdeaea', borderColor: '#8a0303' },
+            }} 
           >
             No
           </Button>
+
+          {/* Yes Button */}
           <Button
-            onClick = {handleDeletions}
+            onClick={handleDeletions} // Replace with deletion logic if needed
             variant="contained"
             sx={{
               backgroundColor: '#8a0303',
+              color: '#ffffff',
               '&:hover': { backgroundColor: '#b10505' },
             }}
           >

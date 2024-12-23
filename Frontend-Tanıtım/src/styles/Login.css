@@ -1,186 +1,248 @@
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #ffffff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  
-  .shape-container {
-    position: absolute;
-    right: -100px;
-    top: 50;
-    height: 100%;
-    width: 40%;
-    background: none;
-  }
-  
-  .shape-container::before {
-    content: "";
-    position: absolute;
-    height: 1000px;
-    width: 1000px;
-    border-radius: 50%;
-    background-color: rgba(219, 82, 82, 0.2);
-    top: 20%;
-    right: -400px;
-    transform: translateY(-50%);
-  }
-  
-  .shape-container::after {
-    content: "";
-    position: absolute;
-    height: 800px;
-    width: 800px;
-    border-radius: 50%;
-    background-color: rgba(219, 82, 82, 0.767);
-    top: 20%;
-    right: -300px;
-    transform: translateY(-50%);
-    z-index: -1;
-  }
+/* Global Scroll Reset */
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
 
-  .shape-inner{
-    content: "";
-    position: absolute;
-    height: 600px;
-    width: 600px;
-    border-radius: 50%;
-    background-color: rgba(169, 40, 40, 0.917);
-    top: 20%;
-    right: -200px;
-    transform: translateY(-50%);
-  }
- 
-  /* Form KapsayÄ±cÄ±sÄ± */
-  .form-container {
-    width: 60%;
-    padding: 2rem;
-  }
+/* Shapes on the Right */
+.shape-container {
+  position: absolute;
+  right: -100px;
+  top: 0;
+  height: 100%;
+  width: 40%;
+  background: none;
+}
+
+.shape-container::before {
+  content: "";
+  position: absolute;
+  height: 1000px;
+  width: 1000px;
+  border-radius: 50%;
+  background-color: rgba(219, 82, 82, 0.2);
+  top: 20%;
+  right: -400px;
+  transform: translateY(-50%);
+}
+
+.shape-container::after {
+  content: "";
+  position: absolute;
+  height: 800px;
+  width: 800px;
+  border-radius: 50%;
+  background-color: rgba(219, 82, 82, 0.767);
+  top: 20%;
+  right: -300px;
+  transform: translateY(-50%);
+  z-index: -1;
+}
+
+.shape-inner {
+  content: "";
+  position: absolute;
+  height: 600px;
+  width: 600px;
+  border-radius: 50%;
+  background-color: rgba(169, 40, 40, 0.917);
+  top: 20%;
+  right: -200px;
+  transform: translateY(-50%);
+}
+
+/* Shapes on the Left (Mirror of Right Shapes) */
+.shape-container-left {
+  position: absolute;
+  left: -100px;
+  bottom: 0;
+  height: 100%;
+  width: 40%;
+  background: none;
+}
+
+.shape-container-left::before {
+  content: "";
+  position: absolute;
+  height: 1000px;
+  width: 1000px;
+  border-radius: 50%;
+  background-color: rgba(219, 82, 82, 0.2);
+  bottom: 20%;
+  left: -400px;
+  transform: translateY(50%);
+}
+
+.shape-container-left::after {
+  content: "";
+  position: absolute;
+  height: 800px;
+  width: 800px;
+  border-radius: 50%;
+  background-color: rgba(219, 82, 82, 0.767);
+  bottom: 20%;
+  left: -300px;
+  transform: translateY(50%);
+  z-index: -1;
+}
+
+.shape-inner-left {
+  content: "";
+  position: absolute;
+  height: 600px;
+  width: 600px;
+  border-radius: 50%;
+  background-color: rgba(169, 40, 40, 0.917);
+  bottom: 20%;
+  left: -200px;
+  transform: translateY(50%);
+}
+
+/* Form Container */
+.form-container {
+  width: 400px;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  z-index: 10;
+  position: relative;
   
-  /* Tab Bar */
-  .tab-container {
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 2rem;
-  }
-  
-  .tab {
-    font-size: 1.2rem;
-    font-weight: bold;
-    cursor: pointer;
-    padding: 0.5rem 1rem;
-    color: #aaa;
-    position: relative; 
-  }
-  .tab:hover,
-.tab.active {
+}
+
+/* Login Section */
+.login-container {
+  margin-top: 0rem;
+  text-align: center;
+}
+
+.login-container h2 {
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
   color: #7b2d26;
 }
 
-.tab:hover::after,
-.tab.active::after {
-  content: ""; 
-  position: absolute;
-  height: 2px;
-  width: 100%;
-  background-color: #7b2d26;
-  bottom: 0;
-  left: 0;
+.input-container {
+  margin-bottom: 1.5rem;
 }
-  
-  .tab.active {
-    color: #7b2d26;
-    border-bottom: 2px solid #7b2d26;
-  }
-  
 
-  .input-container {
-    position: relative;
-    margin-bottom: 1.5rem;
-  }
-  
-  .input {
-    width: 100%;
-    padding: 0.8rem 2.5rem; 
-    border: 1px solid #ccc;
-    border-radius: 20px; 
-    font-size: 1rem;
-  }
-  
-  .icon {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 1.2rem;
-    color: #7b2d26;
-  }
-  
-  .email-icon {
-    left: 10px;
-  }
-  
-  .password-icon {
-    left: 10px;
-  }
-  
-  .eye-icon {
-    right: -70px;
-    cursor: pointer;
-  }
-  
-  .button {
-    width: 140%;
-    padding: 0.8rem;
-    background-color: #7b2d26;
-    color: rgb(255, 255, 255);
-    border: none;
-    border-radius: 20px; 
-    cursor: pointer;
-    font-size: 1rem;
-  }
-  
-  .button:hover {
-    background-color: #a04236;
-  }
-  
-  .link-button {
-    margin-top: 1rem;
-    background: none;
-    border: none;
-    color: #7b2d26;
-    text-decoration: underline;
-    cursor: pointer;
-    text-align: left; 
-    display: block; 
-  }
-  .link-button:hover {
-    color: #a04236;
-  }
-  .send-button {
-    width: 117%; 
-    padding: 0.8rem;
-    background-color: #7b2d26;
-    color: white;
-    border: none;
-    border-radius: 20px; 
-    cursor: pointer;
-    font-size: 1rem;
-  }
-  
-  .send-button:hover {
-    background-color: #a04236;
-  }
-  
-   .forgot-password-container {
-    width: 100%;
-    margin: auto;
-    text-align: center;
-  }
-   
-   .message{
-    align-items: center;
-    margin-left: 20px;
-   }
+.error-message {
+  color: red;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.button {
+  width: 100%;
+  height: 3rem;
+  font-size: 1rem;
+  text-transform: none;
+  border-radius: 8px;
+}
+
+.link-button {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #7b2d26;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Link Buttons */
+.link-button {
+  margin-top: 1rem;
+  background: none;
+  border: none;
+  color: #7b2d26;
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.link-button:hover {
+  color: #a04236;
+}
+/* Forgot Password Section */
+.forgot-password-container {
+  margin-top: 0rem;
+  text-align: center;
+}
+
+.forgot-password-container h2 {
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+  color: #7b2d26;
+}
+
+.input-description {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+}
+
+.input-container {
+  margin-bottom: 1.5rem;
+}
+
+.button {
+  width: 100%;
+  height: 3rem;
+  font-size: 1rem;
+  text-transform: none;
+  border-radius: 8px;
+}
+
+.link-button {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #7b2d26;
+  text-decoration: underline;
+  cursor: pointer;
+}
+/* Reset Password Section */
+.reset-password-container {
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.reset-password-container h2 {
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+  color: #7b2d26;
+}
+
+.input-container {
+  margin-bottom: 1.5rem;
+}
+
+.error-message {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.button {
+  width: 100%;
+  height: 3rem;
+  font-size: 1rem;
+  text-transform: none;
+  border-radius: 8px;
+}
+
+ul {
+  margin-top: 0.5rem;
+  padding-left: 1.2rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+li {
+  margin-bottom: 0.3rem;
+}

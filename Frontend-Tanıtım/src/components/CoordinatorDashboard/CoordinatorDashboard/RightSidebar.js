@@ -2,7 +2,8 @@ import React from 'react';
 import styles from './CoordinatorDashboard.module.css';
 import { FaBell, FaCog } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
-
+import Button from '@mui/material/Button';
+import { Logout } from '@mui/icons-material';
 
 // Dummy Data
 const dummyData = {
@@ -74,7 +75,6 @@ const RightSidebar = () => {
             </div>
           </div>
 
-          
           {/* Notification and Settings Icons */}
           <div className={styles.topIcons}>
             {/* Notification Button */}
@@ -86,6 +86,18 @@ const RightSidebar = () => {
           {/* Settings Button */}
           <NavLink to="/coordinatordashboardsettings" className={styles.iconButton}>
               <FaCog />
+            </NavLink>
+            {/* Logout Button */}
+            <NavLink to="/login">
+              <Button
+                variant="text"
+                color="error"
+                size="small"
+                startIcon={<Logout fontSize="small" />}
+                className={styles.logoutButton}
+              >
+                Logout
+              </Button>
             </NavLink>
           </div>
         </div>

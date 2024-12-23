@@ -1,0 +1,442 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+  
+  /* Force remove overflow: hidden from critical elements */
+html, body, #root, .App {
+    overflow: visible !important;
+  }
+
+  body {
+    font-family: 'Arial', sans-serif;
+  }
+  
+/* Navbar Styles */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 30px;
+    background: #8a0303; /* Red Navbar */
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+}
+  /* Logo Container */
+.logoContainer {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Space between logo and text */
+  }
+  .logo {
+    height: 50px;
+  }
+  
+.logoText {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #ffffff; /* Matches the navbar text color */
+    letter-spacing: 1px;
+    cursor: default;
+  }
+  .navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    margin: 0;
+  }
+  
+  .navbar ul li a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+  }
+ /* Updated Login Button Styles */
+.loginBtn {
+    color: #ffffff !important; /* Red text to match the navbar theme */
+    font-weight: bold;
+    border: 2px solid #ffffff !important;
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: all 0.3s ease-in-out;
+  }
+
+.loginBtn:hover {
+    background-color: #ffcccc !important; /* Light red on hover */
+    color: #8a0303 !important;
+    border-color: #ffcccc !important;
+  }
+  /* Hero Section */
+.heroSection {
+    background-size: cover;
+    background-position: center;
+    color: white;
+    text-align: center;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1700px; /* Adjust based on navbar height */
+    overflow: hidden;
+  }
+
+  .heroContent {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 10px;
+  }
+  
+  .heroTitle {
+    font-size: 3rem;
+    margin-bottom: 10px;
+  }
+  
+  .heroSubtitle {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+.heroHighlight {
+    color: #FF3E3E;
+}
+
+.getStartedBtn {
+    margin-top: 10px;
+    background-color: #B71C1C !important;
+    color: white;
+  }
+
+/* Intro Section */
+.introSection {
+    padding: 50px 100px;
+    padding-bottom: 10px;
+    text-align: center;
+    background: #fff;
+    overflow: visible;
+}
+
+.introContent {
+    text-align: center;
+    margin: 0 auto;
+  }
+
+  .introText {
+    font-size: 1.1rem;
+    color: #333;
+    line-height: 1.6;
+    margin-bottom: 30px;
+  }
+  
+  .getStartedBtn {
+    background-color: #8a0303 !important; /* Exact red color */
+    color: white !important;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+  }
+  
+/* Cards Section */
+.cardsSection {
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 50vh;
+    overflow: visible;
+}
+  
+  .cardsContainer {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    padding: 20px;
+    text-align: center;
+    width: 300px;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .cardIcon {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    color: #8a0303;
+  }
+  
+  .card h3 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .card p {
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    color: #666;
+  }
+  /* Card Links */
+.cardLinks {
+    display: flex;
+    justify-content: center;
+    gap: 15px; /* Space between links */
+    margin-top: 10px;
+}
+
+.cardLink {
+    color: #8a0303;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 0.9rem;
+    white-space: nowrap; /* Prevent wrapping to a new line */
+}
+
+.cardLink:hover {
+    text-decoration: underline;
+}
+
+/* Courses Section */
+.coursesSection {
+    text-align: center;
+    padding: 50px 20px;
+    background: #fff;
+    min-height: 50vh;
+}
+  
+  .coursesTitle {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .titleUnderline {
+    width: 60px;
+    height: 4px;
+    background: #8a0303;
+    margin: 0 auto 30px;
+    border-radius: 2px;
+  }
+  
+  .coursesGrid {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .courseCard {
+    background: #f9f9f9;
+    border-radius: 10px;
+    text-align: center;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    width: 300px;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .courseCard:hover {
+    transform: translateY(-5px);
+  }
+  
+  .courseCard img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  .courseCard h3 {
+    margin: 15px 0 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+  }
+  
+  .courseLink {
+    display: block;
+    color: #8a0303;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-decoration: none;
+  }
+  
+  .courseLink:hover {
+    text-decoration: underline;
+  }
+  
+  .seeAllButtonWrapper {
+    margin-top: 30px;
+  }
+  
+  .seeAllBtn {
+    border-color: #8a0303 !important;
+    color: #8a0303 !important;
+    font-weight: bold;
+    padding: 8px 20px;
+  }
+
+/* FAQ Section */
+.faqSection {
+    padding: 0px 20px;
+    padding-bottom: 20px;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: visible;
+}
+  
+  .faqContainer {
+    display: flex;
+    gap: 50px;
+    align-items: center;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  
+  .faqImage img {
+    width: 100%;
+    max-width: 450px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .faqContent {
+    flex: 1;
+    text-align: left;
+  }
+  
+  .faqContent h2 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  
+  .faqContent p {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+  
+  .faqButtons {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+  }
+  
+  .readFaqsBtn {
+    background-color: #8a0303 !important;
+    color: #fff !important;
+    font-weight: bold;
+    padding: 8px 16px;
+  }
+  
+  .askQuestionBtn {
+    color: #8a0303 !important;
+    font-weight: bold;
+    font-size: 1rem;
+  }
+  
+/* About Section */
+.aboutSection {
+    background-color: #8a0303;
+    color: white;
+    padding: 30px 20px;
+    padding-bottom: 30px;
+    text-align: center;
+    overflow: visible;
+    margin-top: auto; /* Push footer to the bottom */
+
+}
+  
+  .aboutContainer {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .aboutTitle {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: white;
+  }
+  
+  .aboutSubtitle {
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+  
+  .aboutButtonWrapper {
+    margin-bottom: 30px;
+  }
+  
+  .subscribeBtn {
+    background-color: #ffffff !important;
+    color: #8a0303 !important;
+    font-weight: bold;
+    padding: 8px 16px;
+  }
+  
+  .socialLinks {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .socialLinks a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+  }
+  
+  .socialLinks a:hover {
+    transform: scale(1.2);
+  }
+  
+  .socialIcon {
+    font-size: 2rem !important;
+    color: white;
+  }
+  
+  .footerLinks {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    font-size: 0.9rem;
+  }
+  
+  .footerLinks a {
+    color: white;
+    text-decoration: none;
+  }
+  
+  .footerLinks a:hover {
+    text-decoration: underline;
+  }
+  
+  .copyright {
+    margin-top: 30px;
+    font-size: 0.8rem;
+    color: #ddd;
+  }

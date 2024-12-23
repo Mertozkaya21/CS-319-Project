@@ -150,13 +150,15 @@
   margin-bottom: 20px;
 }
 
-/* User Info with Icons */
+/* User Info and Icons Container */
 .userInfoWithIcons {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  gap: 16px; /* Increased gap between user info and icons */
 }
+
 
 .iconButton svg {
   color: #686565; /* Set icon color to dark red */
@@ -220,6 +222,23 @@
   color: #6c757d;
   margin: 0;
 }
+
+
+.logoutButton {
+  font-size: 0.8rem !important;
+  font-weight: 500 !important;
+  text-transform: capitalize !important;
+  color: #d32f2f !important; /* Material-UI error color */
+  transition: color 0.2s ease-in-out;
+  margin-right: 0;
+}
+
+.logoutButton:hover {
+  color: #b71c1c !important;
+  text-decoration: underline !important;
+}
+
+
 /* Section Titles */
 .sectionTitle {
   font-weight: 600;

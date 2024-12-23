@@ -2,6 +2,8 @@ import React from 'react';
 import styles from './AdvisorDashboard.module.css';
 import { FaBell, FaCog } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
+import Button from '@mui/material/Button';
+import { Logout } from '@mui/icons-material';
 
 
 // Dummy Data
@@ -86,6 +88,18 @@ const RightSidebar = () => {
           {/* Settings Button */}
           <NavLink to="/advisordashboardsettings" className={styles.iconButton}>
               <FaCog />
+            </NavLink>
+            {/* Logout Button */}
+            <NavLink to="/login">
+              <Button
+                variant="text"
+                color="error"
+                size="small"
+                startIcon={<Logout fontSize="small" />}
+                className={styles.logoutButton}
+              >
+                Logout
+              </Button>
             </NavLink>
           </div>
         </div>
