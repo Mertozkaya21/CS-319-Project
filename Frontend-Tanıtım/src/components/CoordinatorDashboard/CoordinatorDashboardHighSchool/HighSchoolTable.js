@@ -52,7 +52,7 @@ const HighSchoolTable = ({ rows, setSelectedRows }) => {
   };
 
   const columns = [
-    { field: 'name', headerName: 'High School Name', width: 200 },
+    { field: 'name', headerName: 'High School Name', width: 300 },
     { field: 'id', headerName: 'School ID', width: 80 },
     { field: 'dateUpDated', headerName: 'Date Updated', width: 110 },
     { field: 'city', headerName: 'City', width: 80 },

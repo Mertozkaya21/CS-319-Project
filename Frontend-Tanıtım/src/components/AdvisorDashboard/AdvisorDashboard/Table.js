@@ -43,7 +43,7 @@ import axios from 'axios';
           .filter(event => event.tourType) // Only get tours
           .map(tour => ({
             id: tour.id,
-            school: tour.visitorSchool?.name || 'N/A',
+            name: tour.visitorSchool?.name || 'N/A',
             timeSlot: tour.tourHours || 'N/A',
             guide: tour.guides?.length > 0 
               ? `${tour.guides[0].firstName} ${tour.guides[0].lastName}`
@@ -102,7 +102,7 @@ import axios from 'axios';
                     }}
                   >
                     <TableCell align="center">{row.id}</TableCell>
-                    <TableCell align="left">{row.school}</TableCell>
+                    <TableCell align="left">{row.name}</TableCell>
                     <TableCell align="left">{row.timeSlot}</TableCell>
                     <TableCell align="left">{row.guide}</TableCell>
                     <TableCell align="left">{row.date}</TableCell>
