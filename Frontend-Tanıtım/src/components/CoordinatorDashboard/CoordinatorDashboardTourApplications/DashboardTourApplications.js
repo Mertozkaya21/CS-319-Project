@@ -30,12 +30,12 @@ const DashboardTourApplications = () => {
       });
 
       if (response.ok) {
-        // If delete is successful, remove the deleted advisors from the list
-        const updatedTourRows = tourRows.filter(
+        // If delete is successful, remove the deleted tours from the list
+        /*const updatedTourRows = tourRows.filter(
           (tour) => !selectedRows.includes(tour.id)
-        );
-        setTourRows(updatedTourRows);
-        setFilteredRows(updatedTourRows);
+        );*/
+        //setTourRows(updatedTourRows);
+        //setFilteredRows(updatedTourRows);
         alert('Applications confirmed successfully!');
         fetchTourRows();
       } else {

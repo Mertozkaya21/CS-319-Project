@@ -24,7 +24,7 @@ const DashboardToursAndFairsViewAll = () => {
   const deleteSelectedEvents = async () => {
     
     try {
-      const response = await fetch(`http://localhost:8080/v1/events/remove`, {
+      const response = await fetch('http://localhost:8080/v1/events/remove', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

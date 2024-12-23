@@ -102,6 +102,17 @@ public class ApplicationFormService {
         throw new ApplicationFormNotFoundException("No application form found with ID: " + formId);
     }
 
+    public GroupForm getOneGroupFormById(Long formId) throws ApplicationFormNotFoundException {
+        try {
+            GroupForm groupForm = groupFormService.getGroupFormById(formId);
+            if (groupForm != null) return groupForm;
+        }
+        catch (ApplicationFormNotFoundException ignored) {
+        }
+
+        throw new ApplicationFormNotFoundException("No application form found with ID: " + formId);
+    }
+
     public List<ApplicationForm> getApplicationFormsByEventDate(LocalDate eventDate) {
         List<ApplicationForm> allForms = getAllApplicationForms(); 
         return allForms.stream()
@@ -146,8 +157,8 @@ public class ApplicationFormService {
         return false;
     }
 
-    public List<ApplicationForm> updateStatuses(Map<Long, String> statuses) {
-        List<ApplicationForm> updatedForms = new ArrayList<>();
+    public List<GroupForm> updateStatuses(Map<Long, String> statuses) {
+        List<GroupForm> updatedForms = new ArrayList<>();
     
         for (Map.Entry<Long, String> entry : statuses.entrySet()) {
             Long id = entry.getKey();
@@ -155,7 +166,7 @@ public class ApplicationFormService {
     
             try {
                 ApplicationFormStatus status = ApplicationFormStatus.valueOf(statusString.toUpperCase());
-                ApplicationForm form = getOneFormById(id);
+                GroupForm form = getOneGroupFormById(id);
     
                 if (form != null) {
                     form.setStatus(status);
@@ -164,12 +175,7 @@ public class ApplicationFormService {
                         tourService.saveTour(newTour);
                     }
     
-                    if (form instanceof GroupForm) {
-                        groupFormService.save((GroupForm) form);
-                    } else if (form instanceof IndividualForm) {
-                        individualFormService.save((IndividualForm) form);
-                        
-                    }
+                    groupFormService.save((GroupForm) form);
     
                     updatedForms.add(form);
                 }

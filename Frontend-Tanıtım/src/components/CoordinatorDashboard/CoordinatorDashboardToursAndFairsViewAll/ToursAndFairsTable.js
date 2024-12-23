@@ -172,11 +172,11 @@ const ToursAndFairsTable = ({ rows, setSelectedRows }) => {
 
   // Columns definition
   const columns = [
-    { field: 'eventType', headerName: 'Event', width: 100 },
+    { field: 'tourType', headerName: 'Event', width: 100 },
     { field: 'name', headerName: 'Institute Name', width: 180 },
-    { field: 'guide', headerName: 'Guide', width: 130 },
+    { field: 'guideIds', headerName: 'Guide', width: 130 },
     { field: 'date', headerName: 'Event Date', width: 120 },
-    { field: 'time', headerName: 'Event Time', width: 120 },
+    { field: 'tourHours', headerName: 'Event Time', width: 120 },
     { field: 'city', headerName: 'City', width: 100 },
     {
       field: 'contact',

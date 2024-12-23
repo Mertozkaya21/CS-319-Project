@@ -1,6 +1,7 @@
 package com.example.demo.entities.event;
 
 import com.example.demo.entities.form.ApplicationForm;
+import com.example.demo.entities.form.GroupForm;
 import com.example.demo.entities.highschool.Highschool;
 import com.example.demo.entities.user.Guide;
 import com.example.demo.entities.user.Trainee;
@@ -18,6 +19,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -29,14 +31,17 @@ import java.util.List;
 @Setter
 public class Tour extends Event {
 
-    public Tour(ApplicationForm applicationForm) {
+    public Tour(GroupForm applicationForm) {
+
         this.tourHours = applicationForm.getTourHour();
+        this.setDate(applicationForm.getEventDate());
+        this.setVisitorSchool(applicationForm.getHighschool());
         this.noOfGuests = applicationForm.getNumberOfAttendees();
         this.setNoOfGuests(applicationForm.getNumberOfAttendees());
         this.setDate(applicationForm.getEventDate()); 
+        this.comments = applicationForm.getComments();
         this.tourType = TourType.GROUP;
         this.setStatus(EventStatus.SCHEDULED);
-        this.visitorSchool = null;
         this.departmentOfInterest = null;
         this.guides = null;
         this.trainees = null;
@@ -96,6 +101,28 @@ public class Tour extends Event {
     public Long getVisitorSchoolId() {
         return visitorSchool != null ? visitorSchool.getId() : null;
     }
+
+    @JsonGetter("name")
+    public String getVisitorSchoolName() {
+        return visitorSchool != null ? visitorSchool.getName() : null;
+    }
+
+    @JsonGetter("city")
+    public String getVisitorSchoolCity() {
+        return visitorSchool != null ? visitorSchool.getCity().getDisplayName() : null;
+    }
+
+    @JsonGetter("phone")
+    public String getVisitorSchoolPhone() {
+        return visitorSchool != null ? visitorSchool.getCounselorPhoneNo() : null;
+    }
+
+    @JsonGetter("email")
+    public String getVisitorSchoolEmail() {
+        return visitorSchool != null ? visitorSchool.getCounselorEmail() : null;
+    }
+
+   private String comments;
 
     @JsonGetter("guideIds")
     public List<Long> getGuideIds() {

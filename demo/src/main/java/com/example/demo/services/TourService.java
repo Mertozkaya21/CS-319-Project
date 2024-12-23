@@ -304,14 +304,15 @@ public class TourService {
             usersToNotify.addAll(tour.getTrainees());
             usersToNotify.addAll(tour.getGuides());
 
-            notificationService.notifyCancellation(
-                "tour",
-                id,
-                "Tour to " + tour.getVisitorSchool().getName(),
-                tour.getDate(),
-                usersToNotify
-            );
-
+            if (tour.getVisitorSchool() != null) {
+                notificationService.notifyCancellation(
+                    "tour",
+                    id,
+                    "Tour to " + tour.getVisitorSchool().getName(),
+                    tour.getDate(),
+                    usersToNotify
+                );
+            }
 
             tourRepository.deleteById(id);
             return true;
