@@ -24,11 +24,11 @@ export const advisorRows = [
 
 // Table Columns
 const columns = [
-  { field: 'name', headerName: 'Advisor Name', width: 160 },
+  { field: 'name', headerName: 'Advisor Name', width: 200 },
   { field: 'id', headerName: 'Advisor ID', width: 90 },
-  { field: 'dateAdded', headerName: 'Date Added', width: 100 },
+  { field: 'dateAdded', headerName: 'Date Added', width: 120 },
   { field: 'tours', headerName: 'Tours Conducted', width: 130 },
-  { field: 'undertakenDay', headerName: 'Responsible Day', width: 130 }, // New column for Responsible Day
+  { field: 'undertakenDay', headerName: 'Responsible Day', width: 150 }, // New column for Responsible Day
   {
     field: 'contact',
     headerName: 'Contact',

@@ -131,8 +131,8 @@
   align-items: center;
   padding: 0 20px; /* Add horizontal padding to align with the table edges */
   box-sizing: border-box; /* Ensure padding is included in the element's total width */
-  padding-left: 9%;
-  padding-right: 9%;
+  padding-left: 16%;
+  padding-right: 16%;
 }
 
 .searchBar {

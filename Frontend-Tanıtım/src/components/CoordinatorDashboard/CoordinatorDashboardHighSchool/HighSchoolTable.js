@@ -52,12 +52,12 @@ const HighSchoolTable = ({ rows, setSelectedRows }) => {
   };
 
   const columns = [
-    { field: 'name', headerName: 'High School Name', width: 300 },
+    { field: 'name', headerName: 'High School Name', width: 290 },
     { field: 'id', headerName: 'School ID', width: 80 },
     { field: 'dateUpDated', headerName: 'Date Updated', width: 110 },
     { field: 'city', headerName: 'City', width: 80 },
     { field: 'lgsPercentile', headerName: 'LGS Percentile', width: 120 },
-    { field: 'counselorName', headerName: 'Counselor Name', width: 130},
+    { field: 'counselorName', headerName: 'Counselor Name', width: 200},
     {
       field: 'counselorContact',
       headerName: 'Counselor Contact',

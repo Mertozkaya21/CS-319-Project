@@ -73,10 +73,10 @@ export const guidesRows = [
 
 // Table Columns
 const columns = [
-  { field: 'name', headerName: 'Guide Name', width: 160 },
+  { field: 'name', headerName: 'Guide Name', width: 200 },
   { field: 'id', headerName: 'Guide ID', width: 80 },
   { field: 'dateAdded', headerName: 'Date Added', width: 100 },
-  { field: 'tours', headerName: 'Tours Conducted', width: 130 },
+  { field: 'tours', headerName: 'Tours Conducted', width: 150 },
   {
     field: 'contact',
     headerName: 'Contact',

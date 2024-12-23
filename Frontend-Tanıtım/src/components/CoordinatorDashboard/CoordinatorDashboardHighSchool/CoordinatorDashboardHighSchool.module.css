@@ -136,8 +136,8 @@ body, html {
   align-items: center;
   padding: 0 20px; /* Add horizontal padding to align with the table edges */
   box-sizing: border-box; /* Ensure padding is included in the element's total width */
-  padding-left: 80px;
-  padding-right: 90px;
+  padding-left: 120px;
+  padding-right: 120px;
 }
 
 .searchBar {
@@ -252,7 +252,8 @@ body, html {
   padding: 20px;
   flex: 1;
   max-width: 1200px;
-  padding-left: 80px;
+  min-width: 1200px;
+  margin-left: 100px;
 }
 
 .highSchoolTable {

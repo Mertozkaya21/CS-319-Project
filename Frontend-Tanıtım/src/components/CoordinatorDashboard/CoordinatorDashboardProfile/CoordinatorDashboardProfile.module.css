@@ -4,7 +4,7 @@
   height: 100vh; /* Full viewport height */
   flex-direction: column; /* Stack header and main content */
   overflow: hidden;
-}
+} 
 
 /* Main Content */
 .mainContent {
@@ -93,6 +93,8 @@
   font-size: 2rem;
   font-weight: 600;
   color: #333366;
+  margin-left: 0;
+  padding-right: 700px;
 }
 
 .profileRole {

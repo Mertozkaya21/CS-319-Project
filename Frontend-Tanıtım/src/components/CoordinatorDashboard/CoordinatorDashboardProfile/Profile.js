@@ -145,7 +145,6 @@ const Profile = () => {
                 <div className={styles.profileDetails}>
                     <h2 className={styles.profileName}>{`${coordinator.firstName} ${coordinator.lastName}`}</h2>
                     <p className={styles.profileRole}>Coordinator</p>
-                    <p className={styles.profileLocation}>📍 Ankara, Turkey</p>
                 </div>
                 <div className={styles.profileContact}>
                     <p className={styles.profileContactItem}>

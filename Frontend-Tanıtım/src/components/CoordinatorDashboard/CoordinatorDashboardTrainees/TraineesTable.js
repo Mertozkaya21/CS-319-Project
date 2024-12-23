@@ -25,14 +25,14 @@ export const traineesRows = [
 
 // Table Columns
 const columns = [
-  { field: 'name', headerName: 'Trainee Name', width: 130 },
+  { field: 'name', headerName: 'Trainee Name', width: 200 },
   { field: 'id', headerName: 'Trainee ID', width: 90 },
   { field: 'dateAdded', headerName: 'Date Added', width: 100 },
-  { field: 'status', headerName: 'Status', width: 100 },
+  { field: 'status', headerName: 'Status', width: 130 },
   { 
     field: 'advisorResponsible', 
     headerName: 'Responsible Advisor', 
-    width: 160,
+    width: 200,
     renderCell: (params) => (
       <span className={styles.responsibleAdvisor}>
         {params.row.advisorResponsible}

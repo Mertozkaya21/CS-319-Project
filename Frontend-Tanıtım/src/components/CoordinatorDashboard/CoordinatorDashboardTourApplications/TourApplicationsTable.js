@@ -230,36 +230,36 @@ const columns = [
         }}
       >
         <ToggleButton
-          value="BTO_APPROVED"
-          sx={{
-            color: '#fff', // White when selected
-            backgroundColor: params.row.decision === 'BTO_APPROVED' ? 'green' : '#e0e0e0', // Green when selected
-            '&:hover': {
-              backgroundColor: params.row.decision === 'BTO_APPROVED' ? 'rgba(0, 128, 0, 0.8)' : '#d5d5d5',
-            },
-            '&.Mui-selected': {
-              backgroundColor: 'green', // Force green when clicked
-              color: '#fff',
-              '&:hover': {
-                backgroundColor: 'rgba(0, 128, 0, 0.8)',
-              },
-            },
-            fontWeight: 'bold',
-            borderRadius: '8px',
-          }}
-        >
-          Accept
-        </ToggleButton>
-        <ToggleButton
-        value="BTO_DENIED"
+        value="BTO_APPROVED"
         sx={{
-          color: '#fff',
-          backgroundColor: params.row.decision === 'BTO_DENIED' ? 'red' : '#e0e0e0', // Red when selected
+          backgroundColor: params.row.decision === 'BTO_APPROVED' ? 'green' : '#e0e0e0',
+          color: params.row.decision === 'BTO_APPROVED' ? '#fff' : '#000',
           '&:hover': {
-            backgroundColor: params.row.decision === 'BTO_DENIED' ? 'rgba(255, 0, 0, 0.8)' : '#d5d5d5',
+            backgroundColor: params.row.decision === 'BTO_APPROVED' ? 'rgba(0, 128, 0, 0.8)' : '#d5d5d5',
           },
           '&.Mui-selected': {
-            backgroundColor: 'red', // Force red when clicked
+            backgroundColor: 'green', // Ensure green is applied when selected
+            color: '#fff',
+            '&:hover': {
+              backgroundColor: 'rgba(0, 128, 0, 0.8)',
+            },
+          },
+          fontWeight: 'bold',
+          borderRadius: '8px',
+        }}
+      >
+        Accept
+      </ToggleButton>
+      <ToggleButton
+        value="BTO_DENIED"
+        sx={{
+          backgroundColor: params.row.decision === 'BTO_DENIED' ? 'red' : '#e0e0e0',
+          color: params.row.decision === 'BTO_DENIED' ? '#fff' : '#000',
+          '&:hover': {
+            backgroundColor: params.row.decision === 'BTO_DENIED' ? 'rgba(255, 0, 0, 0.8)' : '#d5d5d5',
+          }, 
+          '&.Mui-selected': {
+            backgroundColor: 'red', // Ensure red is applied when selected
             color: '#fff',
             '&:hover': {
               backgroundColor: 'rgba(255, 0, 0, 0.8)',
