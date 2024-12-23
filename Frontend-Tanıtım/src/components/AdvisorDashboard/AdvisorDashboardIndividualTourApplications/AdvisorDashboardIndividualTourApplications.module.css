@@ -1,0 +1,19 @@
+.tableContainer {
+  padding: 20px;
+  width: 100%;
+}
+
+.contactButtons {
+  display: flex;
+  gap: 8px;
+}
+
+.contactIcon {
+  color: #8a0303;
+}
+
+.headerTitle {
+  font-size: 24px;
+  font-weight: bold;
+  color: #343a40;
+} 
