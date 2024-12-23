@@ -8,6 +8,7 @@ html, body {
   justify-content: center;
   align-items: center;
   height: 100vh;
+  overflow: hidden;
 }
 
 /* Shapes on the Right */
@@ -63,8 +64,10 @@ html, body {
   left: -100px;
   bottom: 0;
   height: 100%;
-  width: 40%;
+  width: 50%;
   background: none;
+  overflow-x: visible;
+  overflow-y: hidden;
 }
 
 .shape-container-left::before {
@@ -114,7 +117,6 @@ html, body {
   text-align: center;
   z-index: 10;
   position: relative;
-  
 }
 
 /* Login Section */
